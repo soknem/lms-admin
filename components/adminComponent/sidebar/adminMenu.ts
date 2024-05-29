@@ -12,7 +12,7 @@ export const MenuList = [
     active: false,
   },
   {
-    path: "/admin/academics",
+    path: "/admin/academics/generations",
     icon: HiMiniAcademicCap,
     active: false,
   },
