@@ -1,11 +1,13 @@
 "use client";
 import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -15,9 +17,13 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayoutParent({ children }: RootLayoutProps) {
+
+  // handle academic sidebar
+  const pathname = usePathname();
+  const showAcademicSidebar = pathname.startsWith("/admin/academics");
+
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
       <body
         className={cn(
           "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
@@ -28,8 +34,9 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
           <NavbarComponent />
         </nav>
         <section className="flex">
-          <aside>
-            <AdminSidebarComponent/>
+          <aside className="flex">
+            <AdminSidebarComponent />
+            {showAcademicSidebar && <AcademicSidebar />}
           </aside>
           <section className="flex w-full">{children}</section>
         </section>

@@ -6,6 +6,7 @@ import { ImBooks } from "react-icons/im";
 import { IoSettings } from "react-icons/io5";
 import { MdAssessment } from "react-icons/md";
 
+// set value of MenuList to display the sidebar menu
 export const MenuList = [
   {
     path: "/instructor/courses",

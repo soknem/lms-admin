@@ -1,6 +1,6 @@
 export const MenuList = [
   {
-    path: "/admin/academics/generations",
+    path: "/admin/academics",
     name: "Generations",
   },
   {

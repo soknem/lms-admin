@@ -6,13 +6,11 @@ import { Logout, MenuList } from "./studentMenu";
 
 type MenuItem = {
   path: string;
-  //   active: boolean;
   icon: any;
 };
 
 type Logout = {
   path: string;
-  //   active: boolean;
   icon: any;
 };
 
@@ -24,14 +22,17 @@ export default function StudentSidebarComponent() {
     <div className="h-screen w-[72px] text-white flex flex-col bg-primary py-9 ">
       <nav className="flex flex-col items-center gap-2 justify-between">
         {menuList.map((item, index) => (
+          // Link to the path of each sidebar item
           <Link key={index} href={item.path} passHref>
+            {/* custom the style to overwrite default */}
             <Button
-              // active={pathname === item.path}
+              // group hover:bg-background to make it affect to inner element
               className={`group flex items-center justify-center p-4 ${
                 pathname === item.path ? "bg-white text-primary" : ""
               }`}
             >
               <item.icon
+                // set the color of icon based on the current path
                 className={`w-5 h-5 ${
                   pathname === item.path
                     ? "text-primary"
