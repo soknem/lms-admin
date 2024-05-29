@@ -1,13 +1,13 @@
-import "@/app/globals.css"
-import { Inter as FontSans } from "next/font/google"
+import "@/app/globals.css";
+import { Inter as FontSans } from "next/font/google";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 interface RootLayoutProps {
   children: ReactNode;
 }
@@ -24,5 +24,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {children}
       </body>
     </html>
-  )
+  );
 }
+  

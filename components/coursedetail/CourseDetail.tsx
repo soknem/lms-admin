@@ -2,28 +2,31 @@ import Image from 'next/image';
 
 export default function CourseDetail ()  {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-full mx-auto p-24 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-between mb-4">
         <span className="px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">
           Semester 1
         </span>
-        <Image
-          src="/logocourse.png"
-          alt="Flutter Logo"
-          width={50}
-          height={50}
-        />
+        
       </div>
-      <h2 className="text-2xl font-bold mb-2">FLUTTER MOBILE DEVELOPMENT</h2>
+      <h2 className="text-2xl font-bold mb-2 text-blue-700">FLUTTER MOBILE DEVELOPMENT</h2>
       <p className="text-gray-700 mb-4">
         Flutter course is designed to develop multi-platform like iOS and Android App, Web, Desktop
         apps like MacOS, Windows and Linux using one code base. We also include with UI / UX
         design concept.
       </p>
+      <div className="flex  justify-end">
+      <Image
+          src="/logocourse.png"
+          alt="Flutter Logo"
+          width={300}
+          height={215}
+        />
+        </div>
       <div className="flex items-center mb-4">
         <span className="mr-4 font-semibold">Credit: 3</span>
-        <span className="mr-4">Theory: 2</span>
-        <span>Practice: 1</span>
+        <span className="mr-4 font-semibold">Theory: 2</span>
+        <span className='mr-4 font-semibold'>Practice: 1</span>
       </div>
       <div className="flex items-center mb-4">
         <Image

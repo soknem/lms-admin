@@ -1,11 +1,7 @@
-import React from 'react'
-import CourseDetail from '@/components/ui/coursedetail/CourseDetail'
+import React from "react";
 
-export default function page() {
-  return (
-
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <CourseDetail />
-    </div>
-  )
+export default function Course() {
+  return <div className="w-full p-8">
+    <h2 className="text-4xl text-primary font-bold">Course</h2>
+  </div>;
 }

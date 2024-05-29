@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
 
-export default function page() {
+export default function Admissions() {
   return (
-    <div>admission page</div>
-  )
+    <main className="w-full p-8">
+      <h2 className="text-4xl text-primary font-bold">Admissions</h2>
+    </main>
+  );
 }
