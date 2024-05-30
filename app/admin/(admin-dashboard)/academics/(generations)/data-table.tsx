@@ -35,9 +35,9 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { CreateGenForm } from '@/components/admincomponent/academics/CreateGenForm'
 
 //custom component import
-import { CreateGenForm } from '@/components/adminComponent/academics/CreateGenForm';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
