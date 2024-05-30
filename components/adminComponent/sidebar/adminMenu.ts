@@ -5,6 +5,8 @@ import { FaBuilding, FaCashRegister, FaUser } from "react-icons/fa6";
 import { HiDocumentReport } from "react-icons/hi";
 import { HiCurrencyDollar, HiMiniAcademicCap } from "react-icons/hi2";
 
+
+// set value of MenuList to display the sidebar menu
 export const MenuList = [
   {
     path: "/admin/faculties",

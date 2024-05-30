@@ -4,6 +4,8 @@ import { FaAddressCard } from "react-icons/fa6";
 import { ImBooks } from "react-icons/im";
 import { IoSettings } from "react-icons/io5";
 
+
+// set value of MenuList to display the sidebar menu
 export const MenuList = [
   {
     path: "/student/courses",
