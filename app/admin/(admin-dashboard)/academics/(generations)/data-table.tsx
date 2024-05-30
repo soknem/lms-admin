@@ -150,7 +150,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Table */}
-      <div className='rounded-md p-4 bg-white'>
+      <div className='w-full rounded-md p-4 bg-white'>
         <Table>
           <TableHeader className='text-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
