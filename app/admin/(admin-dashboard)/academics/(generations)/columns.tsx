@@ -7,7 +7,7 @@ import { ColumnDef } from '@tanstack/react-table'
 
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
 
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 import { Button } from '@/components/ui/button'
 import {

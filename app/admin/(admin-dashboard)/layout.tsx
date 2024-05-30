@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
-import AdminSidebarComponent from "@/components/adminComponent/sidebar/AdminSidebarComponent";
-import AcademicSidebar from "@/components/adminComponent/academics/sidebar/AcademicSidebarComponent";
+import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
+import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
