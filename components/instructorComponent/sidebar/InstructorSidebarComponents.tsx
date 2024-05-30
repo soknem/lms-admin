@@ -30,7 +30,7 @@ export default function InstructorSidebarComponent() {
             <Button
               // active={pathname === item.path}
               //group hover:bg-background to make it affect to inner element
-              className={`group flex items-center justify-center p-4 ${
+              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
                 pathname === item.path ? "bg-white text-primary" : ""
               }`}
             >
@@ -48,7 +48,7 @@ export default function InstructorSidebarComponent() {
         {logout.map((item, index) => (
           <Link key={index} href={item.path} passHref>
             <Button
-              className={`group flex items-center justify-center p-4 ${
+              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
                 pathname === item.path ? "bg-white text-primary" : ""
               }`}
             >

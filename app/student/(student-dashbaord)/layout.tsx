@@ -28,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <NavbarComponent />
         </nav>
         <section className="flex">
-          <aside>
+          <aside className="flex">
             <StudentSidebarComponent/>
           </aside>
           <section className="flex w-full">{children}</section>

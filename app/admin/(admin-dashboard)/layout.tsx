@@ -38,7 +38,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}
           </aside>
-          <section className="flex w-full">{children}</section>
+          <section className="w-full">{children}</section>
         </section>
       </body>
     </html>

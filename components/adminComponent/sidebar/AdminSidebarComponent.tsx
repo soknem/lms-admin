@@ -30,7 +30,7 @@ export default function AdminSidebarComponent() {
             {/* custom the style to overwrite default */}
             <Button
               // group hover:bg-background to make it affect to inner element
-              className={`group flex items-center justify-center p-4 ${
+              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
                 // 
                 pathname.startsWith(item.path) ? "bg-white text-primary" : ""
               }`}
@@ -49,7 +49,7 @@ export default function AdminSidebarComponent() {
         {logout.map((item, index) => (
           <Link key={index} href={item.path} passHref>
             <Button
-              className={`group flex items-center justify-center p-4 ${
+              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
                 pathname === item.path ? "bg-white text-primary" : ""
               }`}
             >
