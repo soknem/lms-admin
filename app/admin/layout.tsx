@@ -20,7 +20,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
       <body
         className={cn(
-          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          " flex flex-col none-scroll-bar overflow-x-auto bg-background",
           fontSans.variable
         )}
       >
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <aside className="left-0 z-10">
             <SideBarComponent />
           </aside>
-          <section className="flex w-full">{children}</section>
+          <section className=" w-full">{children}</section>
         </main>
       </body>
     </html>
