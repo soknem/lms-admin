@@ -18,8 +18,8 @@ export function CardCourseComponent() {
         <CardTitle className="text-primary font-bold mb-4">{courseCardData.title}</CardTitle>
         <CardDescription className="text-gray-600 ">{courseCardData.description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex ">
-        <div className="flex items-center">
+      <CardContent className="flex  ">
+        <div className="flex items-center ">
           {courseCardData.images.map((image, index) => (
             <Image
               key={index}

@@ -55,7 +55,9 @@ export default function Course() {
             <p className="text-sm text-gray-800 font-semibold">8 Course</p>
           </div>
         </div>
+        
       </section>
+      <CardCourseComponent/>
     </div>
   );
 }

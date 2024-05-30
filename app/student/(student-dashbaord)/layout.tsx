@@ -1,11 +1,11 @@
 "use client";
 import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
-import { usePathname } from "next/navigation";
+
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/studentcomponent/navbar/NavbarComponent";
-import StudentSidebarComponent from "@/components/studentcomponent/sidebar/StudentSidebarComponents";
+import StudentSidebarComponent from "@/components/studentComponent/sidebar/StudentSidebarComponents";
+import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -15,10 +15,7 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayout({ children }: RootLayoutProps) {
-  const pathname = usePathname();
-  const showStudentSidebar = !pathname.includes("/coursedetail");
   return (
-
     <html lang="en" suppressHydrationWarning>
       {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
       <body
@@ -31,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <NavbarComponent />
         </nav>
         <section className="flex">
-          <aside>
+          <aside className="flex">
             <StudentSidebarComponent/>
           </aside>
           <section className="flex w-full">{children}</section>

@@ -1,4 +1,4 @@
-import { TabsDemo } from "@/components/admincomponent/faculties/FacultiesTabsComponent";
+import { TabsDemo } from "@/components/adminComponent/faculties/FacultiesTabsComponent";
 import React from "react";
 
 export default function Faculties() {
