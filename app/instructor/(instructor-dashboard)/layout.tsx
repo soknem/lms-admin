@@ -7,6 +7,7 @@ import { ReactNode, useState } from "react";
 import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 
+
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",

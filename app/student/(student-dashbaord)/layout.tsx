@@ -4,8 +4,8 @@ import { Inter as FontSans } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/studentComponent/navbar/NavbarComponent";
-import StudentSidebarComponent from "@/components/studentComponent/sidebar/StudentSidebarComponents";
+import NavbarComponent from "@/components/studentcomponent/navbar/NavbarComponent";
+import StudentSidebarComponent from "@/components/studentcomponent/sidebar/StudentSidebarComponents";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </nav>
         <section className="flex">
           <aside>
-          {showStudentSidebar&& <StudentSidebarComponent/>}
+            <StudentSidebarComponent/>
           </aside>
           <section className="flex w-full">{children}</section>
         </section>
