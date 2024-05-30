@@ -21,7 +21,7 @@ export default function InstructorSidebarComponent() {
   const [logout, setLogout] = useState<Logout[]>(Logout);
   const pathname = usePathname();
   return (
-    <div className="h-screen w-[72px] text-white flex flex-col bg-primary py-9 ">
+    <div className="h-full w-[72px] text-white flex flex-col bg-primary py-9 ">
       <nav className="flex flex-col items-center gap-2 justify-between">
         {menuList.map((item, index) => (
           // Link to the path of each sidebar item

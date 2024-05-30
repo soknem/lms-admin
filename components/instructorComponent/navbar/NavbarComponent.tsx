@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function NavbarComponent() {
   return (
-    <div className="flex w-full items-center px-4 justify-between h-20 bg-white">
+    <div className="flex w-full items-center px-4 justify-between h-[72px] bg-white">
       {/* loge */}
       <section>
         <Image src="/logo.png" alt="logo" width={135} height={48} />
