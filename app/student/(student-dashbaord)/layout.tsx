@@ -24,14 +24,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <nav className="w-full h-20">
+        <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex">
-          <aside className="flex">
-            <StudentSidebarComponent/>
+        <section className="flex flex-grow h-[calc(100vh-72px)]">
+          <aside>
+            <StudentSidebarComponent />
           </aside>
-          <section className="flex w-full">{children}</section>
+          <section className="w-full">{children}</section>
         </section>
       </body>
     </html>

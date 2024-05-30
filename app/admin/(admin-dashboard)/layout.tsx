@@ -30,10 +30,10 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <nav className="w-full h-20">
+        <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex">
+        <section className="flex flex-grow h-[calc(100vh-72px)]">
           <aside className="flex">
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}
