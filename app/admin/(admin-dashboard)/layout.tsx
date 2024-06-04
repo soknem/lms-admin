@@ -8,6 +8,7 @@ import { ReactNode, useState } from "react";
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+import { number } from "yup";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -17,10 +18,16 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayoutParent({ children }: RootLayoutProps) {
-
   // handle academic sidebar
   const pathname = usePathname();
-  const showAcademicSidebar = pathname.startsWith("/admin/academics");
+  const id = number;
+
+  // const classDetailPattern = id;
+  const showSubAcademicSidebar = pathname.includes(`/classDetail/${id}`);
+
+  // const showAcademicSidebar = pathname.startsWith("/admin/academics") && !classDetailPattern.test(pathname);
+  const showAcademicSidebar =
+    pathname.startsWith("/admin/academics") && !showSubAcademicSidebar;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -33,7 +40,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
         <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex flex-grow h-[calc(100vh-72px)]">
+        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
           <aside className="flex">
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}

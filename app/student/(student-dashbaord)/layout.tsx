@@ -27,7 +27,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex flex-grow h-[calc(100vh-72px)]">
+        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
           <aside>
             <StudentSidebarComponent />
           </aside>
