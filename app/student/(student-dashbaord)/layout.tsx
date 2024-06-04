@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
 import StudentSidebarComponent from "@/components/studentComponent/sidebar/StudentSidebarComponents";
 import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
+import { usePathname } from "next/navigation";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -15,6 +16,8 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayout({ children }: RootLayoutProps) {
+  const pathname = usePathname();
+  const showStudentSidebar = !pathname.includes("/coursedetail");
   return (
     <html lang="en" suppressHydrationWarning>
       {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
@@ -29,7 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </nav>
         <section className="flex flex-grow h-[calc(100vh-72px)]">
           <aside>
-            <StudentSidebarComponent />
+            {showStudentSidebar&& <StudentSidebarComponent/>} 
           </aside>
           <section className="w-full">{children}</section>
         </section>

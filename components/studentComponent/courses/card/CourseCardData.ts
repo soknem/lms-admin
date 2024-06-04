@@ -1,7 +1,7 @@
 // courseCardData.ts
 const courseCardData = {
-    title: "FLUTTER MOBILE DEVELOPMENT",
-    description: "Flutter course is designed to develop multi-platform like iOS and Android App, Web, Desktop apps like MacOS, ...",
+    title: "C++ PROGRAMMING",
+    description: "C++ is one of the world's most popular programming languages. C++ can be found in today's operating systems, Graphical User Interfaces, and embedded systems...",
     year: 1,
     semester: 2,
     credit: 45,

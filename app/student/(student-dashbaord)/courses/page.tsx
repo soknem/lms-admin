@@ -1,4 +1,3 @@
-import { CardCourseComponent } from "@/components/studentComponent/card/CardCourseComponent";
 import React from "react";
 import { FaBook } from "react-icons/fa6";
 
@@ -57,7 +56,6 @@ export default function Course() {
         </div>
         
       </section>
-      <CardCourseComponent/>
     </div>
   );
 }

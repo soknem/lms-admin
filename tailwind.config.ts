@@ -30,6 +30,7 @@ const config = {
         white_80: "#FFFBFB", // for text color
         success: "#008000",
         error: "#F73030",
+        black_90: "#000000",
         foreground: "hsl(var(--foreground))",
         muted: {
           DEFAULT: "hsl(var(--muted))",

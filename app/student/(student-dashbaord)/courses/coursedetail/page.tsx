@@ -1,25 +1,19 @@
 import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbComponent";
 import TabComponent from "@/components/TabComponent";
-import CurriculumComponent from "@/components/studentComponent/coursedetail-curriculum/CurriculumComponent";
-import CourseDetail from "@/components/studentComponent/coursedetail-header/CourseDetail";
-
 import React from "react";
+import CourseDetailHeader from "@/components/studentComponent/coursedetail/CourseDetailHeader";
 
-export default function Course() {
+export default function coursedetail() {
   return (
-    <main >
-      <div className="max-w-full mx-auto p-10 bg-white rounded-lg shadow-md ">
-        <CourseDetail />
+    <main>
+      <div className="bg-white py-[35px]">
+        <CourseDetailHeader />
       </div>
-      <div className="p-10">
+      <div className="p-5 mx-[100px]">
         <BreadcrumbWithCustomSeparator />
-      <div className=" mt-5">
-          <TabComponent/>
-          </div>
-          </div> 
-      
-      <div className="ml-10 bg-white rounded-xl">
-        <CurriculumComponent/>
+      </div>
+      <div className=" mx-[100px] ">
+        <TabComponent />
       </div>
     </main>
   );
