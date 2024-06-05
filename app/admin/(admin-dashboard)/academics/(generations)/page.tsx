@@ -18,13 +18,11 @@ export  default async function page() {
     const data = await getGenerations()
     
     return (
-      <section className='py-9'>
+      <main className='py-9'>
         <div className='container'>
           <h1 className='mb-6 text-3xl font-bold text-primary'>Generation</h1>
           <DataTable columns={columns} data={data} />
         </div>
-
-       
-      </section>
+      </main>
     )
 }

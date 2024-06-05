@@ -23,6 +23,8 @@ const config = {
         "white-80": "#FFFBFB",
         primary: "#253C95",
         background: "#F5F5F5",
+        "success": "#008000",
+        "error": "#F73030",
       },
     },
   },

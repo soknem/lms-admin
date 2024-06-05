@@ -26,11 +26,11 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
           fontSans.variable
         )}
       >
-        <nav className="w-full h-20">
+        <nav className="w-full flex flex-grow h-20">
           <NavbarComponent />
         </nav>
         <section className="flex">
