@@ -1,5 +1,5 @@
-import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbComponent";
-import TabComponent from "@/components/TabComponent";
+import { BreadcrumbWithCustomSeparator } from "@/components/studentComponent/coursedetail/BreadcrumbComponent";
+import TabComponent from "@/components/studentComponent/coursedetail/TabComponent";
 import React from "react";
 import CourseDetailHeader from "@/components/studentComponent/coursedetail/CourseDetailHeader";
 
