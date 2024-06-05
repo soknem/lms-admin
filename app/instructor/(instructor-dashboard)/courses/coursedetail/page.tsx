@@ -1,7 +1,7 @@
 import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbComponent";
 import TabComponent from "@/components/TabComponent";
+import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
-import CourseDetailHeader from "@/components/studentComponent/coursedetail/CourseDetailHeader";
 
 export default function coursedetail() {
   return (

@@ -37,7 +37,6 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <nav className="w-full flex flex-grow h-20">
         <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>

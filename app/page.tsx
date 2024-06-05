@@ -1,5 +1,4 @@
 "use client";
-import { CardCourseComponent } from "@/components/studentComponent/courses/card/CardCourseComponent";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
