@@ -18,14 +18,12 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayoutParent({ children }: RootLayoutProps) {
-  // handle academic sidebar
+
+
   const pathname = usePathname();
-  const id = number;
+  const classDetailPattern = "/classes/"; // Update this with your actual dynamic route pattern
+  const showSubAcademicSidebar = pathname.includes(classDetailPattern);
 
-  // const classDetailPattern = id;
-  const showSubAcademicSidebar = pathname.includes(`/classDetail/${id}`);
-
-  // const showAcademicSidebar = pathname.startsWith("/admin/academics") && !classDetailPattern.test(pathname);
   const showAcademicSidebar =
     pathname.startsWith("/admin/academics") && !showSubAcademicSidebar;
 

@@ -20,8 +20,9 @@ const labelsField = [
 ];
 
 export default function Achievement() {
-  return <main className="flex flex-col h-full w-full p-9">
-    {/* <h2 className="text-4xl text-primary font-bold">Achievement</h2> */}
+  return (
+    <main className="flex flex-col h-full w-full p-9">
+      {/* <h2 className="text-4xl text-primary font-bold">Achievement</h2> */}
       {/* student profile banner */}
       <section className="bg-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
         <div className="flex flex-col gap-4">
@@ -128,5 +129,6 @@ export default function Achievement() {
         {/* Table */}
         <AchievementTable />
       </section>
-  </main>;
+    </main>
+  );
 }
