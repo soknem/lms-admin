@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import AdminSidebarComponent from "@/components/adminComponent/sidebar/AdminSidebarComponent";
-import AcademicSidebar from "@/components/adminComponent/academics/sidebar/AcademicSidebarComponent";
-import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
+import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
+import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+import { number } from "yup";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -18,22 +19,26 @@ interface RootLayoutProps {
 }
 export default function RootLayoutParent({ children }: RootLayoutProps) {
 
-  // handle academic sidebar
+
   const pathname = usePathname();
-  const showAcademicSidebar = pathname.startsWith("/admin/academics");
+  const classDetailPattern = "/classes/"; // Update this with your actual dynamic route pattern
+  const showSubAcademicSidebar = pathname.includes(classDetailPattern);
+
+  const showAcademicSidebar =
+    pathname.startsWith("/admin/academics") && !showSubAcademicSidebar;
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
           fontSans.variable
         )}
       >
         <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex flex-grow h-[calc(100vh-72px)]">
+        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
           <aside className="flex">
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}

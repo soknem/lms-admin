@@ -1,17 +1,17 @@
-import { Stringifier } from "postcss"
+import { Stringifier } from "postcss";
 
 // **** Generation *****
 export type GenerationType = {
-    generation: string
-    startYear: string
-    endYear: string
-    status: string
-    alias: string
-}
+  generation: string;
+  startYear: string;
+  endYear: string;
+  status: string;
+  alias: string;
+};
 
 export type OptionType = {
-    label: string;
-    value: string;
+  label: string;
+  value: string;
 };
 
 // **** Class *****
@@ -25,4 +25,40 @@ export type ClassType = {
     isDelete: boolean
     isDraft: boolean
     studentAliases: string[]
+}
+
+
+export type StudentType = {
+    nameEn: string,
+    nameKh: string,
+    alias: string,
+    gender: string,
+    email: string,
+    password: string,
+    profileImage: string,
+    phoneNumber: string,
+    cityOrProvince: string,
+    khanOrDistrict: string,
+    sangkatOrCommune: string,
+    street: string,
+    status: number,
+    cardId: string,
+}
+
+export type InstructorType = {
+    nameEn: string,
+    nameKh: string,
+    alias: string,
+    gender: string,
+    email: string,
+    password: string,
+    profileImage: string,
+    phoneNumber: string,
+    cityOrProvince: string,
+    khanOrDistrict: string,
+    sangkatOrCommune: string,
+    street: string,
+    status: boolean,
+    cardId: string,
+    inCharged: boolean
 }

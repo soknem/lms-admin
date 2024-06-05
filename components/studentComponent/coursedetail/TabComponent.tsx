@@ -1,8 +1,8 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CurriculumComponent from "./CurriculumComponent";
-import SlideComponent from "./SlideComponent";
-import VideoComponent from "./VideoComponent";
+import CurriculumComponent from "./studentcomponent/coursedetail/CurriculumComponent";
+import SlideComponent from "./studentcomponent/coursedetail/SlideComponent";
+import VideoComponent from "./studentcomponent/coursedetail/VideoComponent";
 
 export default function TabComponent() {
   return (

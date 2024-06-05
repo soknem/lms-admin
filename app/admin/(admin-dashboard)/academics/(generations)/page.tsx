@@ -13,15 +13,16 @@ async function getGenerations(): Promise<GenerationType[]> {
   return data;
 }
 
-export default async function page() {
-  const data = await getGenerations();
 
-  return (
-    <section className="flex flex-col gap-4 h-full w-full p-9">
-      <div>
-        <h1 className="mb-6 text-3xl font-bold text-primary">Generation</h1>
-        <DataTable columns={columns} data={data} />
-      </div>
-    </section>
-  );
+export  default async function page() {
+    const data = await getGenerations()
+    
+    return (
+      <main className='py-9'>
+        <div className='container'>
+          <h1 className='mb-6 text-3xl font-bold text-primary'>Generation</h1>
+          <DataTable columns={columns} data={data} />
+        </div>
+      </main>
+    )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 
 //import from shad cn
@@ -33,11 +33,31 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-//custom component import
-import { CreateGenForm } from '@/components/adminComponent/academics/CreateGenForm'
+
+import { Button } from "@/components/ui/button"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+import { TbFilter } from "react-icons/tb";
+
+import { TbAdjustmentsHorizontal } from "react-icons/tb";
+import { useRouter } from 'next/navigation'
+import { CreateClassForm } from '@/components/admincomponent/academics/CreateClassForm'
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -55,6 +75,20 @@ export function DataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
+  // filters
+  const [openGeneration, setOpenGeneration] = useState(false);
+  const [selectedGen, setSelectedGen] = React.useState<any>(null);
+
+  const [openClass, setOpenClass] = useState(false);
+  const [selectedClass, setSelectedClass] = React.useState<any>(null);
+  
+  // const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
+  //   null
+  // )
+
+
+  const router = useRouter();
+
   const table = useReactTable({
     data,
     columns,
@@ -63,6 +97,8 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility
     },
+
+
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -102,30 +138,145 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  // const handleReset = (columnId: string) => {
+  //   setSelectedStatus(null);
+  //   setOpen(false);
+
+  //   table.getColumn(columnId)?.setFilterValue('');
+  //   setData([...originalData]);
+  // };
+
+  const handleReset = (columnId: string) => {
+    if (columnId === 'generationAlias') {
+      setSelectedGen(null);
+    }
+    table.getColumn(columnId)?.setFilterValue('');
+    setData([...originalData]);
+  };
+
+
+  // filter data of generation
+  const FilteredGen = data.reduce((generationAlias: string[], item: any) => {
+    if (!generationAlias.includes(item.generationAlias)) {
+      generationAlias.push(item.generationAlias);
+    }
+    return generationAlias;
+  }, []);
+
+
+  // filter data of study program
+  const FilteredProgram = data.reduce((studyProgramAlias: string[], item: any) => {
+    if (!studyProgramAlias.includes(item.studyProgramAlias)) {
+      studyProgramAlias.push(item.studyProgramAlias);
+    }
+    return studyProgramAlias;
+  }, []);
+
+
   return (
     <>
-      {/* Search */}
-      <div className='flex items-center justify-between gap-4 '>
-        <div className='flex items-center py-4 w-full'>
-          <Input
-            placeholder='Search by generation...'
-            value={(table.getColumn('generation')?.getFilterValue() as string) ?? ''}
-            onChange={event =>
-              table.getColumn('generation')?.setFilterValue(event.target.value)
-            }
-            className='border-[#E6E6E6] bg-white '
-          />
-        </div>
 
+      <div className='flex items-center justify-between gap-4 '>
+
+        {/* Search */}
+        <div className='flex items-center py-4 w-full'>
+          
+          <Input
+            placeholder='Search by class...'
+            value={(table.getColumn('className')?.getFilterValue() as string) ?? ''}
+            onChange={event =>
+              table.getColumn('className')?.setFilterValue(event.target.value)
+            }
+            className='border-[#E6E6E6] bg-white text-gray-30'
+          />
+        </div> 
+
+
+        {/* filter generation */}
+        <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Generation..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredGen.map((generation, index) => (
+                    <CommandItem
+                      key={index}
+                      value={generation}
+                      onSelect={(value) => {
+                        setSelectedGen(value);
+                        table.getColumn('generationAlias')?.setFilterValue(value);
+                        setOpenGeneration(false);
+                      }}
+                    >
+                      {generation}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedGen && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generationAlias')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        {/* filter class */}
+        <Popover open={openClass} onOpenChange={setOpenClass}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[250px] justify-center bg-white text-gray-30">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedClass ? <>{selectedClass}</> : <> Filter by study program</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Class..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredProgram.map((program, index) => (
+                    <CommandItem
+                      key={index}
+                      value={program}
+                      onSelect={(value) => {
+                        setSelectedClass(value);
+                        table.getColumn('studyProgramAlias')?.setFilterValue(value);
+                        setOpenClass(false);
+                      }}
+                    >
+                      {program}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedClass && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgramAlias')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
 
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto'>
-              Columns
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
+              View
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='bg-white'>
+          <DropdownMenuContent align='end' className='bg-white '>
             {table
               .getAllColumns()
               .filter(column => column.getCanHide())
@@ -144,9 +295,9 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-     
+        {/* Create class form */}
+        <CreateClassForm />
 
-        <CreateGenForm/>
       </div>
 
       {/* Table */}
@@ -170,12 +321,17 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+
+                  //on click go to class detail
+                  onClick={() => router.push(`classes/${row.id}`)}
+                  className='cursor-pointer'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -198,6 +354,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
+
         </Table>
       </div>
 
@@ -225,3 +382,4 @@ export function DataTable<TData, TValue>({
     </>
   )
 }
+

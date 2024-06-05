@@ -4,8 +4,9 @@ import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
-import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
+import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
+import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
+
 
 
 const fontSans = FontSans({
@@ -28,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex flex-grow h-[calc(100vh-72px)]">
+        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
           <aside>
           <InstructorSidebarComponent/>
           </aside>

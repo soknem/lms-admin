@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 
 //import from shad cn
@@ -33,18 +33,45 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { CreateGenForm } from '@/components/admincomponent/academics/CreateGenForm'
 
 //custom component import
+import { FaSearch } from "react-icons/fa";
+
+import { Button } from "@/components/ui/button"
+
+import { TbSearch } from "react-icons/tb";
+
+import { useMediaQuery } from "usehooks-ts"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+import { TbFilter } from "react-icons/tb";
+
+import { TbAdjustmentsHorizontal } from "react-icons/tb";
+import { useRouter } from 'next/navigation'
+import { Label } from '@radix-ui/react-dropdown-menu'
+import { AddEnrolledStuForm } from '@/components/admincomponent/academics/AddEnrolledStuForm'
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function StudentDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -55,6 +82,13 @@ export function DataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
+  // const [isFocused, setIsFocused] = useState(false);
+
+
+  const router = useRouter();
+
+
+
   const table = useReactTable({
     data,
     columns,
@@ -63,6 +97,8 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility
     },
+
+
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -104,28 +140,38 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      {/* Search */}
-      <div className='flex items-center justify-between gap-4 '>
-        <div className='flex items-center py-4 w-full'>
-          <Input
-            placeholder='Search by generation...'
-            value={(table.getColumn('generation')?.getFilterValue() as string) ?? ''}
-            onChange={event =>
-              table.getColumn('generation')?.setFilterValue(event.target.value)
-            }
-            className='border-[#E6E6E6] bg-white '
-          />
-        </div>
 
+      <div className='flex items-center justify-between gap-4 my-4'>
+
+
+        <div className="flex items-center w-full relative">
+          <Input
+            placeholder="Search Student Fullname(EN)"
+            value={
+              (table.getColumn("nameEn")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("nameEn")?.setFilterValue(event.target.value)
+            }
+
+            className="border-[#E6E6E6] bg-white pl-10 "
+          />
+
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FaSearch className="text-gray-400" />
+          </div>
+
+        </div>
 
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto'>
-              Columns
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
+              View
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='bg-white'>
+          <DropdownMenuContent align='end' className='bg-white '>
             {table
               .getAllColumns()
               .filter(column => column.getCanHide())
@@ -144,14 +190,58 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-     
+        {/* add enrolled student form */}
+        <AddEnrolledStuForm />
 
-        <CreateGenForm/>
       </div>
 
       {/* Table */}
-      <div className='w-full rounded-md p-4 bg-white'>
+      <div className='rounded-md p-4 bg-white'>
+        
+        {/* class detail information */}
+        <div className='flex justify-between p-4'>
+          <div>
+            <Label className='text-gray-30'>Generation</Label>
+            <p className='flex font-medium text-black'>Generation 1</p>
+          </div>
+
+          <div>
+            <Label className='text-gray-30'>Year</Label>
+            <p className='flex font-medium text-black'>Foundation Year</p>
+          </div>
+
+          <div>
+            <Label className='text-gray-30'>Academic Year</Label>
+            <p className='flex font-medium text-black'>2024-2025</p>
+          </div>
+
+          <div>
+            <Label className='text-gray-30'>Degree</Label>
+            <p className='flex font-medium text-black'>Bachelor</p>
+          </div>
+
+          <div>
+            <Label className='text-gray-30'>Study Program</Label>
+            <p className='flex font-medium text-black'>Software Engineer</p>
+          </div>
+
+          <div>
+            <Label className='text-gray-30'>Enrolled Student</Label>
+            <div className='flex gap-2'>
+              <p className='flex text-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
+              <p className='flex text-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
+              <p className='flex text-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
+            </div>
+            
+            
+          </div>
+        </div>
+
+
+
         <Table>
+
+
           <TableHeader className='text-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
@@ -170,12 +260,17 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+
+                  //on click go to class detail
+                  onClick={() => router.push(`classes/${row.id}`)}
+                  className='cursor-pointer'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -198,6 +293,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
+
         </Table>
       </div>
 
@@ -225,3 +321,4 @@ export function DataTable<TData, TValue>({
     </>
   )
 }
+
