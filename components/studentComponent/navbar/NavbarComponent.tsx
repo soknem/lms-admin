@@ -1,10 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-
 export default function NavbarComponent() {
   return (
-    <div className="flex w-full items-center px-4 justify-between h-20 bg-white">
+    <div className="flex w-full items-center px-4 justify-between h-[72px] bg-white">
       {/* loge */}
       <section>
         <Image src="/logo.png" alt="logo" width={135} height={48} />
@@ -12,7 +11,7 @@ export default function NavbarComponent() {
 
       {/* profile */}
       <section className="flex gap-4">
-        <Image src="/admin.png" alt="admin" width={30} height={30}/>
+        <Image src="/admin.png" alt="admin" width={30} height={30} />
         <p className="text-black font-semibold text-xl">Student</p>
       </section>
     </div>

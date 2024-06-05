@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
 import AdminSidebarComponent from "@/components/adminComponent/sidebar/AdminSidebarComponent";
 import AcademicSidebar from "@/components/adminComponent/academics/sidebar/AcademicSidebarComponent";
+import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,9 +31,10 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
         )}
       >
         <nav className="w-full flex flex-grow h-20">
+        <nav className="w-full h-[72px]">
           <NavbarComponent />
         </nav>
-        <section className="flex">
+        <section className="flex flex-grow h-[calc(100vh-72px)]">
           <aside className="flex">
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}

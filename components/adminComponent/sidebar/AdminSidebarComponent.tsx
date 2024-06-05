@@ -21,17 +21,16 @@ export default function AdminSidebarComponent() {
   const [logout, setLogout] = useState<Logout[]>(Logout);
   const pathname = usePathname();
   return (
-    <div className="h-screen w-[72px] text-white flex flex-col bg-primary py-9 ">
+    <div className="h-full w-[72px] text-white flex flex-col bg-primary py-9 ">
       <nav className="flex flex-col items-center gap-2 justify-between">
         {menuList.map((item, index) => (
           // Link to the path of each sidebar item
           <Link key={index} href={item.path} passHref>
-
             {/* custom the style to overwrite default */}
             <Button
               // group hover:bg-background to make it affect to inner element
-              className={`group flex items-center justify-center p-4 ${
-                // 
+              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
+                //
                 pathname.startsWith(item.path) ? "bg-white text-primary" : ""
               }`}
             >
@@ -49,7 +48,7 @@ export default function AdminSidebarComponent() {
         {logout.map((item, index) => (
           <Link key={index} href={item.path} passHref>
             <Button
-              className={`group flex items-center justify-center p-4 ${
+              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
                 pathname === item.path ? "bg-white text-primary" : ""
               }`}
             >
