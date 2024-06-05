@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
+import { FaSearch } from "react-icons/fa";
+import { TbFilter } from "react-icons/tb";
 //import from shad cn
 import {
   ColumnDef,
@@ -30,10 +31,12 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CommandInput } from "@/components/ui/command";
 
 //custom component import
 
@@ -42,7 +45,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function SubjectTable<TData, TValue>({
+export function PaymentTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -52,6 +55,7 @@ export function SubjectTable<TData, TValue>({
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
+  const [selectedFilter, setSelectedFilter] = useState("All");
 
   const table = useReactTable({
     data,
@@ -102,20 +106,75 @@ export function SubjectTable<TData, TValue>({
 
   console.log("data from page: ", data);
 
+  const [isFocused, setIsFocused] = useState(false);
+  const filterOptions = ["All", "Public", "Disable", "Draft"];
+  const handleFilterChange = (value: string) => {
+    setSelectedFilter(value);
+    const filterValue =
+      value === "All"
+        ? ""
+        : value === "Public"
+        ? "true"
+        : value === "Disable"
+        ? "false"
+        : "draft";
+    table.getColumn("status")?.setFilterValue(filterValue);
+  };
+
   return (
     <>
       {/* Search */}
       <div className="flex items-center justify-between gap-4 ">
         <div className="flex items-center py-4 w-full">
-          <Input
-            placeholder="Search Study Program"
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="border-[#E6E6E6] bg-white "
-          />
+          <div className="flex items-center w-full relative">
+            <Input
+              placeholder="Search Student"
+              value={
+                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("name")?.setFilterValue(event.target.value)
+              }
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              className="border-[#E6E6E6] bg-white focus:pl-8 "
+            />
+            {isFocused && (
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaSearch className="text-gray-400" />
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Filter */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="border-[#E6E6E6] bg-white ml-auto"
+            >
+              {selectedFilter}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="border-[#E6E6E6] bg-white"
+          >
+            {filterOptions.map((option) => (
+              <DropdownMenuItem
+                key={option}
+                onSelect={() => handleFilterChange(option)}
+                className={`cursor-pointer  ${
+                  (table.getColumn("status")?.getFilterValue() || "All") ===
+                  option
+                }`}
+              >
+                {option}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         {/* Column visibility */}
         <DropdownMenu>

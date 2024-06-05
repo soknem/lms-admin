@@ -1,12 +1,23 @@
-import React from "react";
+"use client";
+import { CardCourseComponent } from "@/components/studentComponent/courses/card/CardCourseComponent";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
 
 export default function Course() {
+  const [isFocused, setIsFocused] = useState(false);
   return (
-    <div className="flex flex-col h-full w-full p-9">
+    <div className="flex flex-col  h-full w-full p-9 gap-4">
       {/* <h2 className="text-4xl text-primary font-bold">Course</h2> */}
       {/* student profile banner */}
-      <section className="bg-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
+      <section className=" bg-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-white">
             Welcome back, Thida!
@@ -36,25 +47,31 @@ export default function Course() {
         </section>
       </section>
 
-      <section className="flex lg:hidden gap-9 py-8">
-        {/* image */}
-        <div className="w-[80px] h-[80px] lg:w-[150px] lg:h-[150px] rounded-full shadow-lg">
-          <img
-            src="https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"
-            alt="student"
-            className="h-full w-full object-cover rounded-full"
-          />
-        </div>
-
-        {/* name and course*/}
-        <div className="flex flex-col justify-center">
-          <h3 className="text-lg lg:text-3xl font-bold">Chan Tida</h3>
-          <div className="flex items-center gap-3">
-            <FaBook className="w-4 h-4 text-primary" />
-            <p className="text-sm text-gray-800 font-semibold">8 Course</p>
+      {/* search course */}
+      <section className="mt-24 flex items-center justify-center flex-col gap-4">
+        <div className="flex items-start py-4 w-[500px]">
+          <div className="flex items-start w-full relative">
+            <Input
+              placeholder="Search Student"
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              className="border-[#E6E6E6] bg-white focus:pl-8 "
+            />
+            {isFocused && (
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaSearch className="text-gray-400" />
+              </div>
+            )}
           </div>
         </div>
-        
+        <div className="flex items-center gap-4">
+          <CardCourseComponent />
+          <CardCourseComponent />
+        </div>
+        <div className="flex items-center gap-4">
+          <CardCourseComponent />
+          <CardCourseComponent />
+        </div>
       </section>
     </div>
   );

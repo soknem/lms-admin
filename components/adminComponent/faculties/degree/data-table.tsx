@@ -35,7 +35,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CreateGenForm } from "@/components/admincomponent/academics/CreateGenForm";
 
 //custom component import
 
@@ -206,7 +205,6 @@ export function DegreeTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <CreateGenForm />
       </div>
 
       {/* Table */}
