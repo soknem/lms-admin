@@ -56,7 +56,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { CreateClassForm } from '@/components/admincomponent/academics/CreateClassForm'
+import { CreateClassForm } from '@/components/adminComponent/academics/CreateClassForm'
 
 
 interface DataTableProps<TData, TValue> {
@@ -212,7 +212,7 @@ export function DataTable<TData, TValue>({
                     <CommandItem
                       key={index}
                       value={generation}
-                      onSelect={(value) => {
+                      onSelect={(value:any) => {
                         setSelectedGen(value);
                         table.getColumn('generationAlias')?.setFilterValue(value);
                         setOpenGeneration(false);
@@ -250,7 +250,7 @@ export function DataTable<TData, TValue>({
                     <CommandItem
                       key={index}
                       value={program}
-                      onSelect={(value) => {
+                      onSelect={(value:any) => {
                         setSelectedClass(value);
                         table.getColumn('studyProgramAlias')?.setFilterValue(value);
                         setOpenClass(false);
