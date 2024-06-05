@@ -33,19 +33,19 @@ const validationSchema = Yup.object().shape({
 })
 
 
-
+//handle submit here
 const handleSubmit = async (value: GenerationType) => {
-  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(value),
-  // });
+//   const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(value),
+//   });
 
-  // const data = await res.json()
+//   const data = await res.json()
 
-  // console.log("generation upload: ", data)
+//   console.log("generation upload: ", data)
 };
 
 const RadioButton = ({ field, value, label }: any) => {
@@ -77,17 +77,17 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 //   </select>
 // );
 
-export function CreateGenForm() {
+export function AddAssignedInstructorForm() {
   return (
     <Dialog >
       <DialogTrigger asChild>
         <Button className='text-white-80'>
-          <FiPlus className="mr-2 h-4 w-4" /> Add Generation
+          <FiPlus className="mr-2 h-4 w-4" /> Add Instructor
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[1024px] ">
         <DialogHeader>
-          <DialogTitle>Add Generation</DialogTitle>
+          <DialogTitle>Add Class</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}

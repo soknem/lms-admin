@@ -16,15 +16,49 @@ export type OptionType = {
 
 // **** Class *****
 export type ClassType = {
-  alias: string;
-  className: string;
-  description: string;
-  studyProgramAlias: string;
-  shiftAlias: string;
-  generationAlias: string;
-  isDelete: boolean;
-  isDraft: boolean;
-  studentAliases: string[];
-};
+    alias: string
+    className: string
+    description: string
+    studyProgramAlias: string
+    shiftAlias: string
+    generationAlias: string
+    isDelete: boolean
+    isDraft: boolean
+    studentAliases: string[]
+}
 
 
+export type StudentType = {
+    nameEn: string,
+    nameKh: string,
+    alias: string,
+    gender: string,
+    email: string,
+    password: string,
+    profileImage: string,
+    phoneNumber: string,
+    cityOrProvince: string,
+    khanOrDistrict: string,
+    sangkatOrCommune: string,
+    street: string,
+    status: number,
+    cardId: string,
+}
+
+export type InstructorType = {
+    nameEn: string,
+    nameKh: string,
+    alias: string,
+    gender: string,
+    email: string,
+    password: string,
+    profileImage: string,
+    phoneNumber: string,
+    cityOrProvince: string,
+    khanOrDistrict: string,
+    sangkatOrCommune: string,
+    street: string,
+    status: boolean,
+    cardId: string,
+    inCharged: boolean
+}
