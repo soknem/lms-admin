@@ -1,17 +1,17 @@
-import { Stringifier } from "postcss"
+import { Stringifier } from "postcss";
 
 // **** Generation *****
 export type GenerationType = {
-    generation: string
-    startYear: string
-    endYear: string
-    status: string
-    alias: string
-}
+  generation: string;
+  startYear: string;
+  endYear: string;
+  status: string;
+  alias: string;
+};
 
 export type OptionType = {
-    label: string;
-    value: string;
+  label: string;
+  value: string;
 };
 
 // **** Class *****

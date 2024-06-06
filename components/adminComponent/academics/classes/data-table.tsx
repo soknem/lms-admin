@@ -35,9 +35,6 @@ import {
 
 import { Input } from '@/components/ui/input'
 
-//custom component import
-import { CreateClassForm } from '@/components/adminComponent/academics/CreateClassForm'
-
 
 import { Button } from "@/components/ui/button"
 
@@ -65,6 +62,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
+import { CreateClassForm } from '@/components/admincomponent/academics/CreateClassForm'
 
 
 interface DataTableProps<TData, TValue> {
