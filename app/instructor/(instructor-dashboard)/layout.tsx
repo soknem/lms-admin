@@ -4,8 +4,9 @@ import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
-import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
+import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
+import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
+
 
 
 

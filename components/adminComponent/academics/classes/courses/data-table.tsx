@@ -37,7 +37,6 @@ import {
 import { Input } from '@/components/ui/input'
 
 //custom component import
-import { CreateClassForm } from '@/components/admincomponent/academics/CreateClassForm'
 import { FaSearch } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button"
@@ -64,8 +63,8 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { Label } from '@radix-ui/react-dropdown-menu'
-import { AddEnrolledStuForm } from '@/components/adminComponent/academics/AddEnrolledStuForm'
+
+
 
 
 interface DataTableProps<TData, TValue> {
