@@ -6,10 +6,12 @@ import { MdEdit } from "react-icons/md";
 import { ColumnDef } from '@tanstack/react-table'
 
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
-
-import { format } from "date-fns";
+import { TbArchive } from "react-icons/tb";
+import { TbFileIsr } from "react-icons/tb";
+import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button'
+import { TbTrash  } from "react-icons/tb";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,7 +22,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType , GenerationType } from "@/lib/types/admin/academics";
+import { OptionType , CourseType } from "@/lib/types/admin/academics";
+
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input";
+import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -43,34 +50,29 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         tableMeta?.updateData(row.index, column.id, e.target.value);
     };
 
+
     // custom render on cell
     const accessorKey = column.columnDef.accessorKey;
 
-
     // Custom rendering for specific columns : customize date which can take pick date time
-    if (accessorKey === 'startYear' || accessorKey === 'endYear') {
+    if (accessorKey === 'startDate' || accessorKey === 'endDate') {
         const dateValue = new Date(value);
-        const formattedDate = format(dateValue, 'yyyy');
-        const currentYear = new Date().getFullYear();
-        const years = Array.from(new Array(40), (val, index) => currentYear - index);
+        const formattedDate = format(dateValue, 'dd/mm/yyyy');
+        
 
         if (tableMeta?.editedRows[row.id]) {
             return (
                 //custom year selector only
                 <select
                     className="border-1 border-gray-30 rounded-md focus:to-primary"
-                    value={new Date(value).getFullYear()}
+                    value={new Date(value).getDate()}
                     onChange={(e) => {
                         const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
                         setValue(newValue);
                         tableMeta?.updateData(row.index, column.id, newValue);
                     }}
                 >
-                    {years.map((year) => (
-                        <option key={year} value={year}>
-                            {year}
-                        </option>
-                    ))}
+                
                 </select>
             );
         } else {
@@ -79,6 +81,69 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
         }
     }
+
+
+    // Custom rendering for specific columns 
+    if (accessorKey === 'visibility') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="false" id="public" />
+                        <Label htmlFor="public">Public</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="draft" />
+                        <Label htmlFor="draft">Draft</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Public" />
+            } else {
+                return <StatusBadge type="default" status="Draft" />
+            }
+
+
+        }
+    }
+
+
+     // Custom rendering for specific columns 
+     if (accessorKey === 'status') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="false" id="started" />
+                        <Label htmlFor="started">Started</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="pending" />
+                        <Label htmlFor="pending">Pending</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Started" />
+            } else {
+                return <StatusBadge type="warning" status="Pending" />
+            }
+
+
+        }
+    }
+   
 
 
     if (tableMeta?.editedRows[row.id]) {
@@ -92,8 +157,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
                 value={initialValue}
             >
                 {columnMeta?.options?.map((option: OptionType) => (
-                    <option 
-                        key={option.value} 
+                    <option
+                        key={option.value}
                         value={option.value}
                     >
                         {option.label}
@@ -104,8 +169,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         ) : (
 
             //custom on normal input text
-            <input
-                className="w-full p-2 border-1 border-gray-30 rounded-md"
+            <Input
+                className="w-full p-2 rounded-md"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -138,7 +203,7 @@ const EditCell = ({ row, table }: any) => {
     return (
         <div>
             {meta?.editedRows[row.id] ? (
-                <div>
+                <div className="flex flex-row">
 
                     <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel" >
                         <RxCross2 size={20}  className="text-red-500"/>
@@ -159,46 +224,51 @@ const EditCell = ({ row, table }: any) => {
     );
 };
 
-export const columns: ColumnDef<GenerationType>[] = [
+
+export const CourseColumns: ColumnDef<CourseType>[] = [
     {
-        accessorKey: 'generation',
+        accessorKey: 'subject',
+        header: ({ column }) => {
+            return (
+                <Button
+                    //to  customize the size of each column
+                    className="w-[200px] flex justify-start items-start"
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                   SUBJECT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell,
+
+    },
+    {
+        accessorKey: 'startDate',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    GENERATION
+                    START DATE
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
         },
         cell: TableCell
     },
+
     {
-        accessorKey: 'startYear',
+        accessorKey: 'endDate',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    START YEAR
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
-    },
-    {
-        accessorKey: 'endYear',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    END YEAR
+                    END DATE
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -206,6 +276,25 @@ export const columns: ColumnDef<GenerationType>[] = [
         cell: TableCell
 
     },
+
+    {
+        accessorKey: 'instructor',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    INSTRUCTOR
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+
+
     {
         accessorKey: 'status',
         header: ({ column }) => {
@@ -219,18 +308,11 @@ export const columns: ColumnDef<GenerationType>[] = [
                 </Button>
             )
         },
-        cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                { value: "Select", label: "Select Status" },
-                { value: "Public", label: "Public" },
-                { value: "Draft", label: "Draft" },
-                { value: "Disable", label: "Disable" },
-            ],
-        },
+        cell: TableCell
 
     },
+
+
     {
         id: "edit",
         cell: EditCell,
@@ -250,12 +332,6 @@ export const columns: ColumnDef<GenerationType>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='end' className="bg-white">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            className="focus:bg-background"
-                            onClick={() => navigator.clipboard.writeText(gen.alias)}
-                        >
-                            Copy ID
-                        </DropdownMenuItem>
                        {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
                         {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
                         <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">Disable</DropdownMenuItem>

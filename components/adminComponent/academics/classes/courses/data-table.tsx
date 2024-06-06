@@ -21,6 +21,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow
@@ -63,8 +64,8 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { Label } from '@/components/ui/label'
-import { AddAssignedInstructorForm } from '@/components/adminComponent/academics/AddAssignedInstructorForm'
+import { Label } from '@radix-ui/react-dropdown-menu'
+import { AddEnrolledStuForm } from '@/components/adminComponent/academics/AddEnrolledStuForm'
 
 
 interface DataTableProps<TData, TValue> {
@@ -72,7 +73,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function InstructorDataTable<TData, TValue>({
+export function CourseDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -85,9 +86,11 @@ export function InstructorDataTable<TData, TValue>({
 
   // const [isFocused, setIsFocused] = useState(false);
 
-  
+  // filters
+  const [openGeneration, setOpenGeneration] = useState(false);
+  const [selectedIns, setSelectedIns] = React.useState<any>(null);
   const router = useRouter();
-  
+
 
 
   const table = useReactTable({
@@ -139,32 +142,92 @@ export function InstructorDataTable<TData, TValue>({
     },
   })
 
+
+   //reset popup
+   const handleReset = (columnId: string) => {
+    if (columnId === 'instructor') {
+          setSelectedIns(null);
+    }
+        table.getColumn(columnId)?.setFilterValue('');
+        setData([...originalData]);
+  };
+
+
+  // filter data of instructor
+  const FilteredInstructor = data.reduce((instructor: string[], item: any) => {
+    if (!instructor.includes(item.instructor)) {
+      instructor.push(item.instructor);
+    }
+    return instructor;
+  }, []);
+
+
+
+
   return (
     <>
 
-      <div className='flex items-center justify-between gap-4 mb-4'>
+      <div className='flex items-center justify-between gap-4 my-4 p-1'>
 
-     
-        {/* search instructor */}
+        {/* search */}
         <div className="flex items-center w-full relative">
-            <Input
-              placeholder="Search Instructor fullname(EN)"
-              value={
-                (table.getColumn("nameEn")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("nameEn")?.setFilterValue(event.target.value)
-              }
-              
-              className="border-[#E6E6E6] bg-white pl-10 "
-            />
-            
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
-              </div>
-            
+          <Input
+            placeholder="Search Course Title"
+            value={
+              (table.getColumn("subject")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("subject")?.setFilterValue(event.target.value)
+            }
+
+            className="border-[#E6E6E6] bg-white pl-10 "
+          />
+
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FaSearch className="text-gray-400" />
           </div>
-        
+
+        </div>
+
+       {/* filter generation */}
+        <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedIns ? <>{selectedIns}</> : <> Filter by instructor</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Instructor..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredInstructor.map((Ins, index) => (
+                    <CommandItem
+                      key={index}
+                      value={Ins}
+                      onSelect={(value) => {
+                        setSelectedIns(value);
+                        table.getColumn('instructor')?.setFilterValue(value);
+                        setOpenGeneration(false);
+                      }}
+                    >
+                      {Ins}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedIns && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructor')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -192,57 +255,19 @@ export function InstructorDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Create class form */}
-        <AddAssignedInstructorForm />
 
       </div>
 
       {/* Table */}
       <div className='rounded-md p-4 bg-white'>
-        
+
         {/* class detail information */}
-        <div className='flex justify-between p-4'>
-          <div>
-            <Label className='text-gray-30'>Generation</Label>
-            <p className='flex font-medium text-black'>Generation 1</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Year</Label>
-            <p className='flex font-medium text-black'>Foundation Year</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Academic Year</Label>
-            <p className='flex font-medium text-black'>2024-2025</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Degree</Label>
-            <p className='flex font-medium text-black'>Bachelor</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Study Program</Label>
-            <p className='flex font-medium text-black'>Software Engineer</p>
-          </div>
-              
-          <div>
-            <Label className='text-gray-30'>Assigned Teachers</Label>
-            <div className='flex gap-2'>
-              <p className='flex text-gray-30'>Total:<span className='ml-2 text-black font-medium'>5</span></p>
-              <p className='flex text-gray-30'>Male: <span className='ml-2 text-black font-medium'>4</span></p>
-              <p className='flex text-gray-30'>Female: <span className='ml-2 text-black font-medium'>1</span></p>
-            </div>
-            
-            
-          </div>
-        </div>
 
 
 
 
         <Table>
+
           <TableHeader className='text-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
@@ -269,9 +294,6 @@ export function InstructorDataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
 
-                  //on click go to class detail
-                  onClick={() => router.push(`classes/${row.id}`)}
-                  className='cursor-pointer'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -295,30 +317,46 @@ export function InstructorDataTable<TData, TValue>({
             )}
           </TableBody>
 
+
+
         </Table>
+
+
+
+
       </div>
 
-      {/* Pagination */}
-      <div className='flex items-center justify-end space-x-2 py-4'>
-        <Button
-          className='border-gray-30'
-          variant='outline'
-          size='sm'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          className='border-gray-30 '
-          variant='outline'
-          size='sm'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div className='px-4 w-full flex justify-between items-center'>
+
+        {/* <div className="text-base text-muted-foreground">
+          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
+          students
+        </div> */}
+
+        {/* Pagination */}
+        <div className='flex items-center justify-end space-x-2 py-4'>
+          <Button
+            className='border-gray-30'
+            variant='outline'
+            size='sm'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            className='border-gray-30 '
+            variant='outline'
+            size='sm'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
       </div>
+
+
     </>
   )
 }

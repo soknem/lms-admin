@@ -29,6 +29,7 @@ const config = {
         gray_30: "#F8F9FB", //for gray stroke color
         white_80: "#FFFBFB", // for text color
         success: "#008000",
+        "accent-10": "#FFDE00",
         error: "#F73030",
         black_90: "#000000",
         foreground: "hsl(var(--foreground))",

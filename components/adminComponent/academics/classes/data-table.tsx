@@ -37,13 +37,15 @@ import { Input } from '@/components/ui/input'
 
 //custom component import
 import { CreateClassForm } from '@/components/adminComponent/academics/CreateClassForm'
-import { FaSearch } from "react-icons/fa";
+
 
 import { Button } from "@/components/ui/button"
 
 import { TbSearch } from "react-icons/tb";
 
 import { useMediaQuery } from "usehooks-ts"
+
+import { FaSearch } from "react-icons/fa";
 import {
   Command,
   CommandEmpty,
@@ -63,8 +65,6 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { Label } from '@radix-ui/react-dropdown-menu'
-import { AddEnrolledStuForm } from '@/components/adminComponent/academics/AddEnrolledStuForm'
 
 
 interface DataTableProps<TData, TValue> {
@@ -72,7 +72,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function StudentDataTable<TData, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -83,12 +83,19 @@ export function StudentDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  // const [isFocused, setIsFocused] = useState(false);
+  // filters
+  const [openGeneration, setOpenGeneration] = useState(false);
+  const [selectedGen, setSelectedGen] = React.useState<any>(null);
+
+  const [openClass, setOpenClass] = useState(false);
+  const [selectedClass, setSelectedClass] = React.useState<any>(null);
+
+  // const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
+  //   null
+  // )
 
 
   const router = useRouter();
-
-
 
   const table = useReactTable({
     data,
@@ -139,20 +146,59 @@ export function StudentDataTable<TData, TValue>({
     },
   })
 
+  // const handleReset = (columnId: string) => {
+  //   setSelectedStatus(null);
+  //   setOpen(false);
+
+  //   table.getColumn(columnId)?.setFilterValue('');
+  //   setData([...originalData]);
+  // };
+
+  //reset popup
+  const handleReset = (columnId: string) => {
+    if (columnId === 'generationAlias') {
+      setSelectedGen(null);
+    }
+    if (columnId === 'studyProgramAlias') {
+      setSelectedClass(null);
+    }
+    table.getColumn(columnId)?.setFilterValue('');
+    setData([...originalData]);
+  };
+
+
+  // filter data of generation
+  const FilteredGen = data.reduce((generationAlias: string[], item: any) => {
+    if (!generationAlias.includes(item.generationAlias)) {
+      generationAlias.push(item.generationAlias);
+    }
+    return generationAlias;
+  }, []);
+
+
+  // filter data of study program
+  const FilteredProgram = data.reduce((studyProgramAlias: string[], item: any) => {
+    if (!studyProgramAlias.includes(item.studyProgramAlias)) {
+      studyProgramAlias.push(item.studyProgramAlias);
+    }
+    return studyProgramAlias;
+  }, []);
+
+
   return (
     <>
 
-      <div className='flex items-center justify-between gap-4 my-4'>
+      <div className='flex items-center justify-between gap-4 '>
 
-
+        {/* Search */}
         <div className="flex items-center w-full relative">
           <Input
-            placeholder="Search Student Fullname(EN)"
+            placeholder="Search by class...."
             value={
-              (table.getColumn("nameEn")?.getFilterValue() as string) ?? ""
+              (table.getColumn("className")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("nameEn")?.setFilterValue(event.target.value)
+              table.getColumn("className")?.setFilterValue(event.target.value)
             }
 
             className="border-[#E6E6E6] bg-white pl-10 "
@@ -163,6 +209,83 @@ export function StudentDataTable<TData, TValue>({
           </div>
 
         </div>
+
+
+        {/* filter generation */}
+        <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Generation..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredGen.map((generation, index) => (
+                    <CommandItem
+                      key={index}
+                      value={generation}
+                      onSelect={(value) => {
+                        setSelectedGen(value);
+                        table.getColumn('generationAlias')?.setFilterValue(value);
+                        setOpenGeneration(false);
+                      }}
+                    >
+                      {generation}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedGen && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generationAlias')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        {/* filter class */}
+        <Popover open={openClass} onOpenChange={setOpenClass}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[250px] justify-center bg-white text-gray-30">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedClass ? <>{selectedClass}</> : <> Filter by study program</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Class..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredProgram.map((program, index) => (
+                    <CommandItem
+                      key={index}
+                      value={program}
+                      onSelect={(value) => {
+                        setSelectedClass(value);
+                        table.getColumn('studyProgramAlias')?.setFilterValue(value);
+                        setOpenClass(false);
+                      }}
+                    >
+                      {program}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedClass && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgramAlias')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
 
         {/* Column visibility */}
         <DropdownMenu>
@@ -191,58 +314,14 @@ export function StudentDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* add enrolled student form */}
-        <AddEnrolledStuForm />
+        {/* Create class form */}
+        <CreateClassForm />
 
       </div>
 
       {/* Table */}
       <div className='rounded-md p-4 bg-white'>
-        
-        {/* class detail information */}
-        <div className='flex justify-between p-4'>
-          <div>
-            <Label className='text-gray-30'>Generation</Label>
-            <p className='flex font-medium text-black'>Generation 1</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Year</Label>
-            <p className='flex font-medium text-black'>Foundation Year</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Academic Year</Label>
-            <p className='flex font-medium text-black'>2024-2025</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Degree</Label>
-            <p className='flex font-medium text-black'>Bachelor</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Study Program</Label>
-            <p className='flex font-medium text-black'>Software Engineer</p>
-          </div>
-
-          <div>
-            <Label className='text-gray-30'>Enrolled Student</Label>
-            <div className='flex gap-2'>
-              <p className='flex text-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-              <p className='flex text-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-              <p className='flex text-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
-            </div>
-            
-            
-          </div>
-        </div>
-
-
-
         <Table>
-
-
           <TableHeader className='text-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
@@ -298,28 +377,41 @@ export function StudentDataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Pagination */}
-      <div className='flex items-center justify-end space-x-2 py-4'>
-        <Button
-          className='border-gray-30'
-          variant='outline'
-          size='sm'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          className='border-gray-30 '
-          variant='outline'
-          size='sm'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+
+      {/* table footer */}
+      <div className='px-4 w-full flex justify-between items-center'>
+
+        <div className="text-base text-muted-foreground">
+          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
+          classes
+        </div>
+
+
+        {/* Pagination */}
+        <div className='flex items-center justify-end space-x-2 py-4'>
+
+          <Button
+            className='border-gray-30'
+            variant='outline'
+            size='sm'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            className='border-gray-30 '
+            variant='outline'
+            size='sm'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
       </div>
-    </>
-  )
+        
+      </>
+      )
 }
 
