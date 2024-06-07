@@ -16,12 +16,12 @@ import {
 import Link from 'next/link'
 import { Input } from '@/components/ui/input';
 import { StudentType, CourseType } from "@/lib/types/admin/academics";
-import { StudentDataTable } from "@/components/adminComponent/academics/classes/enrolledStudents/data-table";
-import { StuColumns } from "@/components/adminComponent/academics/classes/enrolledStudents/columns";
-import { CourseColumns } from "@/components/adminComponent/academics/classes/courses/columns";
-import { CourseDataTable } from "@/components/adminComponent/academics/classes/courses/data-table";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
+import { CourseDataTable } from "@/components/admincomponent/academics/classes/courses/data-table";
+import { CourseColumns } from "@/components/admincomponent/academics/classes/courses/columns";
+import { StudentDataTable } from "@/components/admincomponent/academics/classes/enrolledStudents/data-table";
+import { StuColumns } from "@/components/admincomponent/academics/classes/enrolledStudents/columns";
 
 
 async function getStudents(): Promise<StudentType[]> {

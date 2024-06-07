@@ -1,7 +1,7 @@
 import React from "react";
-import { columns } from "@/components/adminComponent/academics/generations/columns";
-import { DataTable } from "@/components/adminComponent/academics/generations/data-table";
 import { GenerationType } from "@/lib/types/admin/academics";
+import { DataTable } from "@/components/admincomponent/academics/generations/data-table";
+import { columns } from "@/components/admincomponent/academics/generations/columns";
 
 async function getGenerations(): Promise<GenerationType[]> {
   const res = await fetch(

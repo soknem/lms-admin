@@ -1,4 +1,3 @@
-import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbComponent";
 import { StudentAdmissionColumns } from "@/components/admincomponent/admissions/student-admission/columns";
 import { StudentAdmissionTable } from "@/components/admincomponent/admissions/student-admission/data-table";
 import {

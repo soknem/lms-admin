@@ -1,4 +1,3 @@
-import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbComponent";
 import { admissionColumns } from "@/components/admincomponent/admissions/columns";
 import { AdmissionTable } from "@/components/admincomponent/admissions/data-table";
 import { getAdmission } from "@/lib/endpoints/MokApi";
