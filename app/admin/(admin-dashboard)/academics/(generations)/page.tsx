@@ -1,6 +1,6 @@
 import React from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "@/components/adminComponent/academics/generations/columns";
+import { DataTable } from "@/components/adminComponent/academics/generations/data-table";
 import { GenerationType } from "@/lib/types/admin/academics";
 
 async function getGenerations(): Promise<GenerationType[]> {
