@@ -36,7 +36,6 @@ import {
 import { Input } from '@/components/ui/input'
 
 //custom component import
-import { CreateClassForm } from '@/components/admincomponent/academics/CreateClassForm'
 import { FaSearch } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button"
@@ -64,7 +63,7 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@/components/ui/label'
-import { AddAssignedInstructorForm } from '@/components/admincomponent/academics/AddAssignedInstructorForm'
+import { AddAssignedInstructorForm } from '@/components/adminComponent/academics/AddAssignedInstructorForm'
 
 
 interface DataTableProps<TData, TValue> {

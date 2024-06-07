@@ -2,19 +2,25 @@
 
 import * as React from "react"
 import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>()
+export function DateComponent() {
+  const [month, setMonth] = React.useState<number>(new Date().getMonth())
+  const [year, setYear] = React.useState<number>(new Date().getFullYear())
+
+  const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setMonth(parseInt(event.target.value))
+  }
+
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setYear(parseInt(event.target.value))
+  }
 
   return (
     <Popover>
@@ -22,21 +28,33 @@ export function DatePickerDemo() {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[216px] h-[44px] bg-white justify-start text-primary font-medium hover:bg-gray-200",
-            !date && "text-muted-foreground"
+            "w-[150px] h-[44px] bg-white justify-start text-primary text-[18px] hover:bg-gray-200 font-medium"
           )}
         >
-          {/* <CalendarIcon className="mr-2 h-4 w-4" /> */}
-          {date ? format(date, "P") : <span>Pick a date</span>}
+          {format(new Date(year, month), "MM / yyyy")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
+      <PopoverContent className="w-auto p-4">
+        <div className="flex space-x-4 mb-4">
+          <select
+            value={month}
+            onChange={handleMonthChange}
+            className="form-select px-2 py-1 border rounded"
+          >
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i} value={i}>{format(new Date(0, i), "MMMM")}</option>
+            ))}
+          </select>
+          <select
+            value={year}
+            onChange={handleYearChange}
+            className="form-select px-2 py-1 border rounded"
+          >
+            {Array.from({ length: 10 }, (_, i) => (
+              <option key={i} value={year - 5 + i}>{year - 5 + i}</option>
+            ))}
+          </select>
+        </div>
       </PopoverContent>
     </Popover>
   )
