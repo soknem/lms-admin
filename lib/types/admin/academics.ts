@@ -62,3 +62,14 @@ export type InstructorType = {
     cardId: string,
     inCharged: boolean
 }
+
+export type CourseType = {
+    subject: string,
+    startDate: Date,
+    endDate: Date,
+    status: boolean,
+    instructor: string,
+    semester: number,
+    year: number,
+    visibility: boolean
+}

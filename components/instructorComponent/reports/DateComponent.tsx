@@ -34,28 +34,7 @@ export function DateComponent() {
           {format(new Date(year, month), "MM / yyyy")}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-4">
-        <div className="flex space-x-4 mb-4">
-          <select
-            value={month}
-            onChange={handleMonthChange}
-            className="form-select px-2 py-1 border rounded"
-          >
-            {Array.from({ length: 12 }, (_, i) => (
-              <option key={i} value={i}>{format(new Date(0, i), "MMMM")}</option>
-            ))}
-          </select>
-          <select
-            value={year}
-            onChange={handleYearChange}
-            className="form-select px-2 py-1 border rounded"
-          >
-            {Array.from({ length: 10 }, (_, i) => (
-              <option key={i} value={year - 5 + i}>{year - 5 + i}</option>
-            ))}
-          </select>
-        </div>
-      </PopoverContent>
+     
     </Popover>
   )
 }

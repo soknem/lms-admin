@@ -23,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
       <body
         className={cn(
-          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
           fontSans.variable
         )}
       >

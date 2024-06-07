@@ -8,7 +8,7 @@ export default async function Payments() {
   const payData = await getPayment();
   return (
     <main className="flex flex-col h-full w-full p-9">
-      <h2 className="text-4xl text-primary font-bold">Payments</h2>
+      <h2 className="text-4xl text-lms-primary font-bold">Payments</h2>
       <PaymentTable columns={paymentColumns} data={payData}/>
     </main>
   );

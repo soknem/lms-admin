@@ -21,7 +21,7 @@ export default function AdminSidebarComponent() {
   const [logout, setLogout] = useState<Logout[]>(Logout);
   const pathname = usePathname();
   return (
-    <div className="h-full w-[72px] text-white flex flex-col bg-primary py-9 ">
+    <div className="h-full w-[72px] text-white flex flex-col bg-lms-primary py-9 ">
       <nav className="flex flex-col items-center gap-2 justify-between">
         {menuList.map((item, index) => (
           // Link to the path of each sidebar item
@@ -29,9 +29,9 @@ export default function AdminSidebarComponent() {
             {/* custom the style to overwrite default */}
             <Button
               // group hover:bg-background to make it affect to inner element
-              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
+              className={`group flex items-center rounded-[10px] justify-center p-4 hover:bg-white hover:text-lms-primary ${
                 //
-                pathname.startsWith(item.path) ? "bg-white text-primary" : ""
+                pathname.startsWith(item.path) ? "bg-white rounded-[10px] text-lms-primary" : ""
               }`}
             >
               <item.icon
@@ -48,13 +48,14 @@ export default function AdminSidebarComponent() {
         {logout.map((item, index) => (
           <Link key={index} href={item.path} passHref>
             <Button
-              className={`group flex items-center justify-center p-4 hover:bg-white hover:text-primary ${
-                pathname === item.path ? "bg-white text-primary" : ""
+              className={`group flex items-center rounded-[10px] justify-center p-4 hover:bg-white hover:text-lms-primary ${
+                //
+                pathname.startsWith(item.path) ? "bg-white rounded-[10px] text-lms-primary" : ""
               }`}
             >
               <item.icon
                 className={`w-5 h-5 ${
-                  pathname === item.path
+                  pathname.startsWith(item.path)
                     ? "text-primary"
                     : "text-white group-hover:text-primary"
                 }`}

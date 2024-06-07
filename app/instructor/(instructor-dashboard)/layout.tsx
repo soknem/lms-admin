@@ -1,11 +1,11 @@
 "use client";
 import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
-
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
 import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
+
 
 
 
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
       <body
         className={cn(
-          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
           fontSans.variable
         )}
       >

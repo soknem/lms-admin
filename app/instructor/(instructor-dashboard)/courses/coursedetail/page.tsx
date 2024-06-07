@@ -1,5 +1,5 @@
-import { BreadcrumbWithCustomSeparator } from "@/components/BreadcrumbComponent";
-import TabComponent from "@/components/TabComponent";
+import TabReportComponent from "@/components/instructorcomponent/reports/TabReportComponent";
+import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
 import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
 
@@ -13,7 +13,7 @@ export default function coursedetail() {
         <BreadcrumbWithCustomSeparator />
       </div>
       <div className=" mx-[100px] ">
-        <TabComponent />
+        <TabReportComponent />
       </div>
     </main>
   );

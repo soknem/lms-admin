@@ -31,8 +31,11 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { CreateGenForm } from '@/components/admincomponent/academics/CreateGenForm'
+
+//custom component import
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
