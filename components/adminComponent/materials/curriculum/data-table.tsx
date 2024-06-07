@@ -36,21 +36,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { number } from "yup";
+import { CommandInput } from "@/components/ui/command";
 
 //custom component import
 
@@ -59,7 +45,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function PaymentTable<TData, TValue>({
+export function CurriculumTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -70,9 +56,6 @@ export function PaymentTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
   const [selectedFilter, setSelectedFilter] = useState("All");
-  // filters
-  const [openGeneration, setOpenGeneration] = useState(false);
-  const [selectedGen, setSelectedGen] = useState<any>(null);
 
   const table = useReactTable({
     data,
@@ -123,33 +106,19 @@ export function PaymentTable<TData, TValue>({
 
   console.log("data from page: ", data);
 
-  const handleReset = (columnId: string) => {
-    if (columnId === "generation") {
-      setSelectedGen(null);
-    }
-    table.getColumn(columnId)?.setFilterValue("");
-    setData([...originalData]);
-  };
-
-  const FilteredGen = data.reduce((generation: string[], item: any) => {
-    if (!generation.includes(item.generation)) {
-      generation.push(item.generation);
-    }
-    return generation;
-  }, []);
-
   const [isFocused, setIsFocused] = useState(false);
   const filterOptions = ["All", "Public", "Disable", "Draft"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     const filterValue =
       value === "All"
-        ? ""
+        ? undefined
         : value === "Public"
-        ? "true"
+        ? 1
         : value === "Disable"
-        ? "false"
-        : "draft";
+        ? 2
+        : 3;
+
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 
@@ -160,12 +129,12 @@ export function PaymentTable<TData, TValue>({
         <div className="flex items-center py-4 w-full">
           <div className="flex items-center w-full relative">
             <Input
-              placeholder="Search Student"
+              placeholder="Search Curriculum"
               value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                (table.getColumn("title")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
+                table.getColumn("title")?.setFilterValue(event.target.value)
               }
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -207,6 +176,7 @@ export function PaymentTable<TData, TValue>({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -220,7 +190,7 @@ export function PaymentTable<TData, TValue>({
           <DropdownMenuContent align="end" className="bg-white">
             {table
               .getAllColumns()
-              .filter((column) => column.getCanHide() && column.id !== "generation")
+              .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
                   <DropdownMenuCheckboxItem
@@ -239,98 +209,8 @@ export function PaymentTable<TData, TValue>({
         </DropdownMenu>
       </div>
 
-      <div className="flex items-center justify-between gap-4 pb-4">
-        {" "}
-        {/* filter generation */}
-        <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
-              {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
-            <Command>
-              <CommandInput placeholder="Filter Generation..." />
-
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup>
-                  {FilteredGen.map((generation, index) => (
-                    <CommandItem
-                      key={index}
-                      value={generation}
-                      onSelect={(value) => {
-                        setSelectedGen(value);
-                        table.getColumn("generation")?.setFilterValue(value);
-                        setOpenGeneration(false);
-                      }}
-                    >
-                      {generation}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-            {selectedGen && (
-              <Button
-                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
-                onClick={() => handleReset("generation")}
-              >
-                Reset
-              </Button>
-            )}
-          </PopoverContent>
-        </Popover>
-      </div>
-
       {/* Table */}
       <div className="w-full rounded-md p-4 bg-white">
-        {/* class detail information */}
-        <div className="flex gap-16 p-4">
-          <div>
-            <Label className="text-gray-30">Generation</Label>
-            <p className="flex font-medium text-black">{selectedGen}</p>
-          </div>
-
-          <div>
-            <Label className="text-gray-30">Year</Label>
-            <p className="flex font-medium text-black">Foundation Year</p>
-          </div>
-
-          <div>
-            <Label className="text-gray-30">Academic Year</Label>
-            <p className="flex font-medium text-black">2024-2025</p>
-          </div>
-
-          <div>
-            <Label className="text-gray-30">Degree</Label>
-            <p className="flex font-medium text-black">Bachelor</p>
-          </div>
-          <div>
-            <Label className="text-gray-30">Faculty</Label>
-            <p className="flex font-medium text-black">Bachelor</p>
-          </div>
-
-          <div>
-            <Label className="text-gray-30">Major</Label>
-            <p className="flex font-medium text-black">Software Engineer</p>
-          </div>
-
-          <div>
-            <Label className="text-gray-30">Class</Label>
-            <p className="flex font-medium text-black">FY2025 - A1</p>
-          </div>
-
-          <div>
-            <Label className="text-gray-30">Shift</Label>
-            <p className="flex font-medium text-black">Morning</p>
-          </div>
-        </div>
-
         <Table>
           <TableHeader className="text-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (

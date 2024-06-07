@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
+import { AdmissionType, StatusOption } from "@/lib/types/admin/admission";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -40,27 +40,13 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
   }
 
-  // if (column.id === "profile_image") {
-  //   return (
-  //     <img
-  //       src={value}
-  //       alt="profile"
-  //       className="w-full h-full rounded-full object-cover"
-  //     />
-  //   );
-  // }
-
-  if (column.id === "student") {
-    const studentData = row.original;
+  if (column.id === "logo") {
     return (
-      <div className="flex items-center">
-        <img
-          src={studentData.profile_image}
-          alt={studentData.name}
-          className="w-8 h-8 rounded-full mr-2"
-        />
-        <span>{studentData.name}</span>
-      </div>
+      <img
+        src={value}
+        alt="Logo"
+        className="w-12 h-12 rounded-full object-cover"
+      />
     );
   }
 
@@ -91,21 +77,21 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return (
       <span
         className={
-          value === "true"
-            ? "Public text-green-500"
-            : value === "false"
-            ? "Disable text-red-500"
-            : value === "draft"
-            ? "Draft text-gray-400"
+          value === "opening"
+            ? "Opening text-green-500"
+            : value === "ended"
+            ? "Ended text-red-500"
+            : value === "achieved"
+            ? "Achieved text-gray-400"
             : ""
         }
       >
-        {value === "true"
-          ? "Public"
-          : value === "false"
-          ? "Disable"
-          : value === "draft"
-          ? "Draft"
+        {value === "opening"
+          ? "Opening"
+          : value === "ended"
+          ? "Ended"
+          : value === "achieved"
+          ? "Achieved"
           : ""}
       </span>
     );
@@ -160,54 +146,16 @@ const EditCell = ({ row, table }: any) => {
   );
 };
 
-export const paymentColumns: ColumnDef<PaymentType>[] = [
+export const admissionColumns: ColumnDef<AdmissionType>[] = [
   {
-    accessorKey: "receipt_id",
+    accessorKey: "academic_year",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          RECEIPT ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
-
-  // {
-  //   accessorKey: "profile_image",
-  //   header: () => {
-  //     return <div>PROFLE</div>;
-  //   },
-  //   cell: TableCell,
-  // },
-  // {
-  //   accessorKey: "name",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         NAME
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-  //   cell: TableCell,
-  // },
-  {
-    accessorKey: "student",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          STUDENT
+          ACADEMIC YEAR
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -215,14 +163,14 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "generation",
+    accessorKey: "start_date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          generation
+          START DATE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -230,30 +178,14 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "gender",
+    accessorKey: "end_date",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          GENDER
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
-
-  {
-    accessorKey: "date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          DATE
+          END DATE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -261,77 +193,9 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "discount",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          DISCOUNT
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
-  {
-    accessorKey: "total_payment",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          TOTAL PAYMENT
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
-  {
-    accessorKey: "balance_due",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          BALANCE DUE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
-  {
-    accessorKey: "academic_fee",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ACDEMIC FEE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
-  {
-    accessorKey: "payment_method",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          PAYMENT METHOD
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+    accessorKey: "telegram_group",
+    header: () => {
+      return <div>TELEGRAM GROUP</div>;
     },
     cell: TableCell,
   },
@@ -353,11 +217,18 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     meta: {
       type: "select",
       options: [
-        { value: "true", label: "Public" },
-        { value: "false", label: "Disable" },
-        { value: "draft", label: "Draft" },
+        { value: "opening", label: "Opening" },
+        { value: "ended", label: "Ended" },
+        { value: "achieved", label: "Achieved" },
       ],
     },
+  },
+  {
+    accessorKey: "remark",
+    header: () => {
+      return <div>REMARK</div>;
+    },
+    cell: TableCell,
   },
   {
     id: "edit",
@@ -366,7 +237,7 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const admission = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -379,7 +250,9 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               className="focus:bg-background"
-              onClick={() => navigator.clipboard.writeText(payment.student.name)}
+              onClick={() =>
+                navigator.clipboard.writeText(admission.academic_year)
+              }
             >
               Copy ID
             </DropdownMenuItem>

@@ -24,7 +24,7 @@ export default async function page() {
   return (
     <section className="flex flex-col h-full w-full p-9">
       <div>
-        <h1 className="mb-6 text-3xl font-bold text-primary">Faculty Management</h1>
+        <h1 className="mb-6 text-3xl font-bold text-lms-primary">Faculty Management</h1>
         <Tabs defaultValue="faculty" className="w-full">
           <TabsList>
             <TabsTrigger value="faculty">Faculty</TabsTrigger>

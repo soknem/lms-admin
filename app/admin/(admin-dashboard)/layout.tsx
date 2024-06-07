@@ -31,7 +31,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
           fontSans.variable
         )}
       >
@@ -43,7 +43,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}
           </aside>
-          <section className="w-full">{children}</section>
+          <section className="flex-grow overflow-auto">{children}</section>
         </section>
       </body>
     </html>
