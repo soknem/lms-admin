@@ -4,7 +4,7 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -226,7 +226,6 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
     id: "actions",
     cell: ({ row }) => {
       const study_program = row.original;
-      const router = useRouter();
       // const handleClick = (event: MouseEvent<HTMLDivElement>, path: string) => {
       //   event.stopPropagation();
       //   router.push(path);
@@ -252,18 +251,19 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
             <DropdownMenuItem className="focus:bg-background">
               Sort
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="focus:bg-background"
-              // onClick={(event) =>
-              //   handleClick(event, `/admin/faculties/studyprogram-detail`)
-              // }
-              onClick={(event: MouseEvent<HTMLDivElement>) => {
-                event.stopPropagation();
-                router.push(`/admin/faculties/studyprogram-detail`);
-              }}
-            >
-              View
-            </DropdownMenuItem>
+            {/* <Link href={`/admin/faculties/studyprogram-detail`}> */}
+              <DropdownMenuItem
+                className="focus:bg-background"
+                // onClick={(event) =>
+                //   handleClick(event, `/admin/faculties/studyprogram-detail`)
+                // }
+                onClick={(event: MouseEvent<HTMLDivElement>) => {
+                  event.stopPropagation();
+                }}
+              >
+                View
+              </DropdownMenuItem>
+            {/* </Link> */}
             <DropdownMenuItem className="focus:bg-background">
               Edit
             </DropdownMenuItem>
