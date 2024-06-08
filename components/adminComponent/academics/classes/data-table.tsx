@@ -213,7 +213,7 @@ export function DataTable<TData, TValue>({
         {/* filter generation */}
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
             </Button>
@@ -248,10 +248,10 @@ export function DataTable<TData, TValue>({
           </PopoverContent>
         </Popover>
 
-        {/* filter study program */}
+        {/* filter class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="w-[250px] justify-center bg-white text-gray-30">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedClass ? <>{selectedClass}</> : <> Filter by study program</>}
             </Button>
@@ -289,7 +289,7 @@ export function DataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30 hover:bg-white/60 '>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -376,27 +376,6 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      
-      {/* Class Remark */}
-      <div className='rounded-lg p-4 bg-white flex flex-row justify-between'>
-          <p className='text-lms-success font-semibold'>Class Code:</p>
-          <div className='flex gap-2 text-gray-500 '>
-            <p className='font-semibold'>FY2025</p>
-            <p className='khmer-font'>ថ្នាក់សិក្សាឆ្នាំមូលដ្ឋានឆ្នាំ​២០២៥</p>
-          </div>
-          <div className='flex gap-2 text-gray-500'>
-            <p className='font-semibold'>M1</p>
-            <p className='khmer-font'>ក្រុមទី ១ វេនព្រឹក</p>
-          </div>
-          <div className='flex gap-2 text-gray-500'>
-            <p className='font-semibold'>A1</p>
-            <p className='khmer-font'>ក្រុមទី ១ វេនរសៀល</p>
-          </div>
-          <div className='flex gap-2 text-gray-500'>
-            <p className='font-semibold'>E1</p>
-            <p className='khmer-font'>ក្រុមទី ១ វេនយប់</p>
-          </div>
-      </div>
 
       {/* table footer */}
       <div className='px-4 w-full flex justify-between items-center'>

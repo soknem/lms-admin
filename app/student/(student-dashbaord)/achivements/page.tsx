@@ -1,4 +1,4 @@
-import AchievementTable from "@/components/studentcomponent/achievements/AchievementComponent";
+import AchievementTable from "@/components/studentComponent/achievements/AchievementComponent";
 import React from "react";
 import { FaBook } from "react-icons/fa6";
 const labelsTitle = [
@@ -75,7 +75,7 @@ export default function Achievement() {
       </section>
 
       {/* Transcript */}
-      <section className="bg-white w-full flex flex-col items-center justify-center p-9 lg:mt-20 rounded-xl gap-9">
+      <section className="bg-white w-full flex flex-col items-center justify-center p-9 lg:mt-24 rounded-xl gap-9">
         <div className="flex flex-col gap-4 ">
           <h1 className="font-bold text-4xl text-center">
             Center of Science and Technology Advanced Development
@@ -132,3 +132,4 @@ export default function Achievement() {
     </main>
   );
 }
+

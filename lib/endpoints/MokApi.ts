@@ -2,6 +2,7 @@ import { AdmissionType, StudentAdmissionType } from "../types/admin/admission";
 import {
   DegreeType,
   FacultyType,
+  SetupStudyProgramType,
   StudyProgramType,
   SubjectType,
 } from "../types/admin/faculty";
@@ -30,6 +31,15 @@ export async function getDegree(): Promise<DegreeType[]> {
 export async function getStudyProgram(): Promise<StudyProgramType[]> {
   const res = await fetch(
     "https://665d2809e88051d604058d84.mockapi.io/api/v1/study_program"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+export async function getSetupStudyProgram(): Promise<SetupStudyProgramType[]> {
+  const res = await fetch(
+    "https://6657f7365c3617052646673e.mockapi.io/api/v1/study_program_setup"
   );
   const data = await res.json();
   // console.log("data from page: ",data);

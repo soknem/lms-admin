@@ -20,17 +20,19 @@ const config = {
     extend: {
       colors: {
         lms: {
-          gray30: "#808897",
-          white80: "#FFFBFB",
+          "transcript-header": "#E5EAFA",
+          "gray-30": "#808897",
+          "white-80": "#FFFBFB",
           primary: "#253C95",
           background: "#F5F5F5",
           secondary: "#F20A14",
           accent: "#FCB920",
-          gray80: "#808897", //(for gray text)
+          "gray-80": "#808897", //(for gray text)
           success: "#008000",
           error: "#F73030",
           black90: "#000000",
-          grayBorder: "#E6E6E6"
+          grayBorder: "#E6E6E6",
+          "black-90": "#000000",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -70,7 +72,11 @@ const config = {
         "1/5": "10%",
         "1/6": "5%",
       },
-
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

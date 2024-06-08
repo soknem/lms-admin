@@ -4,6 +4,7 @@ import CurriculumComponent from "./CurriculumComponent";
 import SlideComponent from "./SlideComponent";
 import VideoComponent from "./VideoComponent";
 
+
 export default function TabComponent() {
   return (
     <div>
