@@ -92,4 +92,3 @@ export type LectureType = {
 }
 
 
-export type TranscriptType
