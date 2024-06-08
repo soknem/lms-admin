@@ -19,8 +19,8 @@ export default async function Admissions() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink>
-              <Link href="/admin/admissions">
-                <a>ADMISSION</a>
+              <Link href="/admin/admissions" legacyBehavior>
+              <a>ADMISSION</a>
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>

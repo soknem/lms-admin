@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import { TbFilter } from "react-icons/tb";
+
 //import from shad cn
 import {
   ColumnDef,
@@ -30,14 +29,13 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CommandInput } from "@/components/ui/command";
-import { useRouter } from "next/navigation";
+import { FaSearch } from "react-icons/fa";
 
 //custom component import
 
@@ -46,7 +44,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function AdmissionTable<TData, TValue>({
+export function SetupStudyProgramTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -57,7 +55,6 @@ export function AdmissionTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
   const [selectedFilter, setSelectedFilter] = useState("All");
-  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -109,17 +106,17 @@ export function AdmissionTable<TData, TValue>({
   console.log("data from page: ", data);
 
   const [isFocused, setIsFocused] = useState(false);
-  const filterOptions = ["All", "Opening", "Ended", "Achieved"];
+  const filterOptions = ["All", "Public", "Disable", "Draft"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     const filterValue =
       value === "All"
         ? ""
-        : value === "Opening"
-        ? "opening"
-        : value === "Ended"
-        ? "ended"
-        : "achieved";
+        : value === "Public"
+        ? "true"
+        : value === "Disable"
+        ? "false"
+        : "draft";
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 
@@ -130,12 +127,12 @@ export function AdmissionTable<TData, TValue>({
         <div className="flex items-center py-4 w-full">
           <div className="flex items-center w-full relative">
             <Input
-              placeholder="Search admission academic year"
+              placeholder="Search Subject"
               value={
-                (table.getColumn("academic_year")?.getFilterValue() as string) ?? ""
+                (table.getColumn("subject")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("academic_year")?.setFilterValue(event.target.value)
+                table.getColumn("subject")?.setFilterValue(event.target.value)
               }
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -177,8 +174,6 @@ export function AdmissionTable<TData, TValue>({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-
-        {/* <ComboBoxResponsive/> */}
 
         {/* Column visibility */}
         <DropdownMenu>
@@ -239,8 +234,6 @@ export function AdmissionTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="hover:bg-lms-background cursor-pointer"
-                  onClick={() => router.push(`/admin/admissions/student-admission`)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

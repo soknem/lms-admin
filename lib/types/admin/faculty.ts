@@ -23,7 +23,19 @@ export type StudyProgramType = {
   logo: string;
   degree: string;
   faculty: string;
-  status: boolean;
+  status: string;
+};
+
+export type SetupStudyProgramType = {
+  id: string;
+  subject: string;
+  study_program: string;
+  semester: string;
+  hour: number;
+  theory: number;
+  practice: number;
+  internship: number;
+  status: string;
 };
 
 // **** Subjects *****
@@ -37,7 +49,6 @@ export type SubjectType = {
   description: string;
   status: boolean;
 };
-
 
 export type StatusOption = {
   label: string;

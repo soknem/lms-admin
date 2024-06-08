@@ -20,16 +20,17 @@ const config = {
     extend: {
       colors: {
         lms: {
-          gray30: "#808897",
-          white80: "#FFFBFB",
+          "transcript-header": "#E5EAFA",
+          "gray-30": "#808897",
+          "white-80": "#FFFBFB",
           primary: "#253C95",
           background: "#F5F5F5",
           secondary: "#F20A14",
           accent: "#FCB920",
-          gray80: "#808897", //(for gray text)
+          "gray-80": "#808897", //(for gray text)
           success: "#008000",
           error: "#F73030",
-          black90: "#000000",
+          "black-90": "#000000",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

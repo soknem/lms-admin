@@ -34,6 +34,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 //custom component import
 
@@ -52,6 +53,7 @@ export function StudyProgramTable<TData, TValue>({
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
+  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -177,6 +179,8 @@ export function StudyProgramTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-lms-background cursor-pointer"
+                  onClick={() => router.push(`/admin/faculties/setup-studyprogram`)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
