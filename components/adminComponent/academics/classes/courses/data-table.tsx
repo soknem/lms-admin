@@ -191,7 +191,7 @@ export function CourseDataTable<TData, TValue>({
        {/* filter generation */}
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedIns ? <>{selectedIns}</> : <> Filter by instructor</>}
             </Button>

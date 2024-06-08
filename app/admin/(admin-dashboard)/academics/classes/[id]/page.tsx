@@ -16,12 +16,12 @@ import {
 import Link from 'next/link'
 import { Input } from '@/components/ui/input';
 import { StudentType, CourseType } from "@/lib/types/admin/academics";
-import { StudentDataTable } from "@/components/adminComponent/academics/classes/enrolledStudents/data-table";
-import { StuColumns } from "@/components/adminComponent/academics/classes/enrolledStudents/columns";
-import { CourseColumns } from "@/components/adminComponent/academics/classes/courses/columns";
-import { CourseDataTable } from "@/components/adminComponent/academics/classes/courses/data-table";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
+import { CourseDataTable } from "@/components/admincomponent/academics/classes/courses/data-table";
+import { CourseColumns } from "@/components/admincomponent/academics/classes/courses/columns";
+import { StudentDataTable } from "@/components/admincomponent/academics/classes/enrolledStudents/data-table";
+import { StuColumns } from "@/components/admincomponent/academics/classes/enrolledStudents/columns";
 
 
 async function getStudents(): Promise<StudentType[]> {
@@ -64,11 +64,11 @@ export default async function ClassDetail() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="font-semibold text-primary uppercase">FY2025 - A1</BreadcrumbPage>
+              <BreadcrumbPage className="font-semibold text-lms-primary uppercase">FY2025 - A1</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className=' text-3xl font-bold text-primary'>FY2025 - A1</h1>
+        <h1 className=' text-3xl font-bold text-lms-primary'>FY2025 - A1</h1>
         <div>
           <Tabs defaultValue="enrolledStudent" className="w-full">
 

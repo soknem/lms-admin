@@ -35,6 +35,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+// @ts-ignore
 import { CreateGenForm } from './CreateGenForm'
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
@@ -135,7 +136,7 @@ export function DataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='rounded-[8px] hover:bg-gray-50 border-[#E6E6E6] bg-white ml-auto text-gray-30  '>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>

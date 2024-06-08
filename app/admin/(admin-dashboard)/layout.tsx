@@ -5,14 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-// import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
-// import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
-// import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
-import { number } from "yup";
+import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 
-import AdminSidebarComponent from "@/components/adminComponent/sidebar/AdminSidebarComponent";
-import AcademicSidebar from "@/components/adminComponent/academics/sidebar/AcademicSidebarComponent";
-import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,7 +31,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-background",
+          "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
           fontSans.variable
         )}
       >
@@ -47,7 +43,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
             <AdminSidebarComponent />
             {showAcademicSidebar && <AcademicSidebar />}
           </aside>
-          <section className="w-full">{children}</section>
+          <section className="flex-grow overflow-auto">{children}</section>
         </section>
       </body>
     </html>

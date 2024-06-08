@@ -15,7 +15,7 @@ export type PaymentType = {
   payment_method: string;
   status: string;
   remark: string;
-  generation: number;
+  generation: string;
   year: string;
   academic: string;
   degree: string;

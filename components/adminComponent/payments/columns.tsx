@@ -215,6 +215,21 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     cell: TableCell,
   },
   {
+    accessorKey: "generation",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          generation
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
     accessorKey: "gender",
     header: ({ column }) => {
       return (

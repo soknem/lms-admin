@@ -79,13 +79,13 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 
 export function CreateGenForm() {
   return (
-    <Dialog >
+    <Dialog>
       <DialogTrigger asChild>
-        <Button className='text-white-80'>
-          <FiPlus className="mr-2 h-4 w-4" /> Add Generation
+        <Button className='text-lms-white80 bg-lms-primary hover:bg-lms-primary/90'>
+          <FiPlus className="mr-2 h-4 w-4 " /> Add Generation
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+      <DialogContent className="bg-white w-[1024px] ">
         <DialogHeader>
           <DialogTitle>Add Generation</DialogTitle>
           {/* <DialogDescription>
@@ -268,7 +268,7 @@ export function CreateGenForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">Add</Button>
+                <Button type="submit" className="text-white bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
               </DialogFooter>
             </Form>
           )}

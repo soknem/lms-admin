@@ -62,7 +62,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { CreateClassForm } from './CreateClassForm'
+import { CreateClassForm } from '@/components/adminComponent/academics/classes/CreateClassForm'
 
 
 
@@ -213,7 +213,7 @@ export function DataTable<TData, TValue>({
         {/* filter generation */}
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
             </Button>
@@ -248,10 +248,10 @@ export function DataTable<TData, TValue>({
           </PopoverContent>
         </Popover>
 
-        {/* filter class */}
+        {/* filter study program */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[250px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedClass ? <>{selectedClass}</> : <> Filter by study program</>}
             </Button>
@@ -289,7 +289,7 @@ export function DataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30 hover:bg-white/60 '>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -379,7 +379,7 @@ export function DataTable<TData, TValue>({
       
       {/* Class Remark */}
       <div className='rounded-lg p-4 bg-white flex flex-row justify-between'>
-          <p className='text-success'>Class Code:</p>
+          <p className='text-lms-success'>Class Code:</p>
           <div className='flex gap-2 text-gray-500 '>
             <p className='font-semibold'>FY2025</p>
             <p className='khmer-font'>ថ្នាក់សិក្សាឆ្នាំមូលដ្ឋានឆ្នាំ​២០២៥</p>

@@ -81,11 +81,11 @@ export function AddEnrolledStuForm() {
   return (
     <Dialog >
       <DialogTrigger asChild>
-        <Button className='text-white-80'>
+        <Button className='text-lms-white80 bg-lms-primary hover:bg-lms-primary/90'>
           <FiPlus className="mr-2 h-4 w-4" /> Add Student
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+      <DialogContent className="w-[1024px] bg-white">
         <DialogHeader>
           <DialogTitle>Add Class</DialogTitle>
           {/* <DialogDescription>
@@ -268,7 +268,7 @@ export function AddEnrolledStuForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">Add</Button>
+                <Button type="submit" className="text-lms-white80 bg-lms-primary hover:bg-lms-primary/90">Add</Button>
               </DialogFooter>
             </Form>
           )}

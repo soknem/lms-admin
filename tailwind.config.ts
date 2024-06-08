@@ -19,28 +19,71 @@ const config = {
     },
     extend: {
       colors: {
-        "gray-30" : "#808897",
-        "white-80": "#FFFBFB",
-        primary: "#253C95",
-        background: "#F5F5F5",
-        secondary: "#F20A14",
-        // accent: "#FCB920",
-        gray_80: "#808897", //(for gray text)
-        gray_30: "#F8F9FB", //for gray stroke color
-        white_80: "#FFFBFB", // for text color
-        success: "#008000",
-        // "accent-10": "#FFDE00",
-        error: "#F73030",
-        black_90: "#000000",
+        lms: {
+          gray30: "#808897",
+          white80: "#FFFBFB",
+          primary: "#253C95",
+          background: "#F5F5F5",
+          secondary: "#F20A14",
+          accent: "#FCB920",
+          gray80: "#808897", //(for gray text)
+          success: "#008000",
+          error: "#F73030",
+          black90: "#000000",
+          grayBorder: "#E6E6E6"
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
       },
       inset: {
         "1/5": "10%",
         "1/6": "5%",
+      },
+
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

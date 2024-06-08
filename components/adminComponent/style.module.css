@@ -13,7 +13,7 @@
 }
 
 .form {
-	@apply max-w-6xl  mx-auto;
+	@apply max-w-6xl  mx-auto bg-white;
 }
 
 .error {
