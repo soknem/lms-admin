@@ -84,36 +84,36 @@ export default async function ClassDetail() {
             <TabsContent value="course" className="bg-white p-6 space-y-4 rounded-lg">
               <div className='flex justify-between '>
                 <div>
-                  <Label className='text-gray-30'>Generation</Label>
+                  <Label className='text-lms-gray30'>Generation</Label>
                   <p className='flex font-medium text-black'>Generation 1</p>
                 </div>
 
                 <div>
-                  <Label className='text-gray-30'>Year</Label>
+                  <Label className='text-lms-gray30'>Year</Label>
                   <p className='flex font-medium text-black'>Foundation Year</p>
                 </div>
 
                 <div>
-                  <Label className='text-gray-30'>Academic Year</Label>
+                  <Label className='text-lms-gray30'>Academic Year</Label>
                   <p className='flex font-medium text-black'>2024-2025</p>
                 </div>
 
                 <div>
-                  <Label className='text-gray-30'>Degree</Label>
+                  <Label className='text-lms-gray30'>Degree</Label>
                   <p className='flex font-medium text-black'>Bachelor</p>
                 </div>
 
                 <div>
-                  <Label className='text-gray-30'>Study Program</Label>
+                  <Label className='text-lms-gray30'>Study Program</Label>
                   <p className='flex font-medium text-black'>Software Engineer</p>
                 </div>
 
                 <div>
-                  <Label className='text-gray-30'>Enrolled Student</Label>
+                  <Label className='text-lms-gray30'>Enrolled Student</Label>
                   <div className='flex gap-2'>
-                    <p className='flex text-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-                    <p className='flex text-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-                    <p className='flex text-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
+                    <p className='flex text-lms-gray30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
+                    <p className='flex text-lms-gray30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
+                    <p className='flex text-lms-gray30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
                   </div>
 
 

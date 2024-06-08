@@ -225,7 +225,7 @@ export function LectureDataTable<TData, TValue>({
         {/* filter Instructor */}
         <Popover open={openIns} onOpenChange={setopenIns}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedIns ? <>{selectedIns}</> : <> Filter Instructor</>}
             </Button>
@@ -255,7 +255,7 @@ export function LectureDataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedIns && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generationAlias')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructor')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -263,7 +263,7 @@ export function LectureDataTable<TData, TValue>({
         {/* filter class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
             </Button>
@@ -281,9 +281,9 @@ export function LectureDataTable<TData, TValue>({
                       key={index}
                       value={cs}
                       onSelect={(value) => {
-                        setselectedIns(value);
+                        setSelectedClass(value);
                         table.getColumn('class')?.setFilterValue(value);
-                        setopenIns(false);
+                        setOpenClass(false);
                       }}
                     >
                       {cs}
@@ -301,7 +301,7 @@ export function LectureDataTable<TData, TValue>({
         {/* filter course */}
         <Popover open={openCourse} onOpenChange={setOpenCourse}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
             </Button>
@@ -319,9 +319,9 @@ export function LectureDataTable<TData, TValue>({
                       key={index}
                       value={course}
                       onSelect={(value) => {
-                        setselectedIns(value);
+                        setSelectedCourse(value);
                         table.getColumn('class')?.setFilterValue(value);
-                        setopenIns(false);
+                        setOpenCourse(false);
                       }}
                     >
                       {course}
@@ -331,7 +331,7 @@ export function LectureDataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedCourse && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('course')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset('course')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>

@@ -14,7 +14,7 @@ export default  function Lecture() {
 
   return (
     <section className="flex flex-col gap-4 h-full w-full p-9">
-    <h1 className=' text-3xl font-bold text-primary'>Lectures</h1>
+    <h1 className=' text-3xl font-bold text-lms-primary'>Lectures</h1>
       <LectureDataTable columns={LectureColumns} data={data} />
   </section>
   );

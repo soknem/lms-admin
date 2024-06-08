@@ -2,6 +2,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button"
+// import style from "../style.module.css";
 import style from "@/components/adminComponent/style.module.css"
 import { FiPlus } from "react-icons/fi";
 import {
@@ -81,13 +82,13 @@ export function CreateLectureForm() {
   return (
     <Dialog >
       <DialogTrigger asChild>
-        <Button className='text-white-80'>
-          <FiPlus className="mr-2 h-4 w-4" /> Create Lecture
+        <Button className='text-lms-white80 bg-lms-primary hover:bg-lms-primary/90'>
+          <FiPlus className="mr-2 h-4 w-4" /> Add Lecture
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+      <DialogContent className="w-[1024px] bg-white">
         <DialogHeader>
-          <DialogTitle>Add Class</DialogTitle>
+          <DialogTitle>Add Lecture</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -268,7 +269,7 @@ export function CreateLectureForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">Add</Button>
+                <Button type="submit" className="text-lms-white80 bg-lms-primary hover:bg-lms-primary/90">Add</Button>
               </DialogFooter>
             </Form>
           )}

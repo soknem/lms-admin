@@ -379,7 +379,7 @@ export function DataTable<TData, TValue>({
       
       {/* Class Remark */}
       <div className='rounded-lg p-4 bg-white flex flex-row justify-between'>
-          <p className='text-lms-success'>Class Code:</p>
+          <p className='text-lms-success font-semibold'>Class Code:</p>
           <div className='flex gap-2 text-gray-500 '>
             <p className='font-semibold'>FY2025</p>
             <p className='khmer-font'>ថ្នាក់សិក្សាឆ្នាំមូលដ្ឋានឆ្នាំ​២០២៥</p>
