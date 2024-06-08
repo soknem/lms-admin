@@ -24,7 +24,7 @@ export function CustomErrorMessagePass({ errors, touched, fieldName }: CustomErr
 
 
             toast({
-                variant: "default",
+                variant: "red",
                 title: "Validation Password Error",
                 description: errorMessage,
             });

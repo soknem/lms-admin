@@ -41,7 +41,7 @@ const getFieldClassName = (
   fieldName: keyof InitialValues
 ) => {
   const baseClass =
-    "bg-gray-50 border text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:border-gray-500 focus:ring-[1px] ";
+    "bg-gray-50 border text-gray-900 text-[15px] rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:border-gray-500 focus:ring-[1px] ";
   const errorClass = "border-red-500";
   const validClass = "border-gray-300";
 
@@ -181,7 +181,7 @@ export function CardLogin() {
 
                   <Button
                     type="submit"
-                    className="w-full text-white py-6 text-[15px]"
+                    className="w-full bg-[#253C95] hover:bg-[#243888] hover: rounded-xl text-white py-6 text-[15px]"
                   >
                     Login
                   </Button>

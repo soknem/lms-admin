@@ -36,7 +36,7 @@ const validationSchema = Yup.object({
 
 // Define function to get field class name based on validation status
 const getFieldClassName = (errors: FormikErrors<InitialValues>, touched: FormikTouched<InitialValues>, fieldName: keyof InitialValues) => {
-    const baseClass = "bg-gray-50 border text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5";
+    const baseClass = "bg-gray-50 border text-gray-900 text-[15px] rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5";
     const errorClass = "border-red-500";
     const validClass = "border-gray-300";
 
@@ -130,7 +130,7 @@ export function CardReset() {
                                     </section>
                                 </section>
                                 <section className="flex flex-col justify-between mt-6">
-                                    <Button onClick={() => router.push('/reset')} type="submit" className="w-full text-white py-6 text-[15px] ">
+                                    <Button onClick={() => router.push('/reset')} type="submit" className="w-full bg-[#253C95] hover:bg-[#243888] rounded-xl text-white py-6 text-[15px] ">
                                         Reset Password
                                     </Button>
                                 </section>
