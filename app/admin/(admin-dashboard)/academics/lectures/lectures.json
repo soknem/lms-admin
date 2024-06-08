@@ -1,0 +1,68 @@
+[
+    {
+        "id": "1",
+        "startTime": "8:30AM",
+        "endTime": "10:00AM",
+        "description": "teaching",
+        "lectureDate": "10/06/2024",
+        "status": 1,
+        "teachingType": "Theory",
+        "isDelete": false,
+        "class": "FY2025 - A2",
+        "instructor": "Sang Sokea",
+        "course": "Web Design"
+    },
+    {
+        "id": "2",
+        "startTime": "1:30PM",
+        "endTime": "3:00PM",
+        "description": "lab",
+        "lectureDate": "10/06/2024",
+        "status": 1,
+        "teachingType": "Lab",
+        "isDelete": false,
+        "class": "FY2025 - M1",
+        "instructor": "Mom Reksmey",
+        "course": "Intensive English I"
+    },
+    {
+        "id": "3",
+        "startTime": "5:30PM",
+        "endTime": "7:00PM",
+        "description": "Theory",
+        "lectureDate": "12/06/2024",
+        "status": 2,
+        "teachingType": "Theory",
+        "isDelete": false,
+        "class": "FY2025 - E1",
+        "instructor": "Mom Reksmey",
+        "course": "Academic Skill Development"
+    },
+    {
+        "id": "4",
+        "startTime": "8:30AM",
+        "endTime": "10:00AM",
+        "description": "Lab",
+        "lectureDate": "12/06/2024",
+        "status": 3,
+        "teachingType": "Lab",
+        "isDelete": false,
+        "class": "FY2025 - M1",
+        "instructor": "Kim ChanSokpheng",
+        "course": "Network Fundamental"
+    },
+    {
+        "id": "5",
+        "startTime": "1:30PM",
+        "endTime": "3:00PM",
+        "description": "Theory",
+        "lectureDate": "20/07/2024",
+        "status": 2,
+        "teachingType": "Theory",
+        "isDelete": false,
+        "class": "FY2025 - A1",
+        "instructor": "Sang Sokea",
+        "course": "Mathematics I"
+    }
+ 
+]

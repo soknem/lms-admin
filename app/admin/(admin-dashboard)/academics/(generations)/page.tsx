@@ -20,7 +20,7 @@ export  default async function page() {
     return (
       <main className='py-9'>
         <div className='container'>
-          <h1 className='mb-6 text-3xl font-bold text-primary'>Generation</h1>
+          <h1 className='mb-4 text-3xl font-bold text-primary'>Generation</h1>
           <DataTable columns={columns} data={data} />
         </div>
       </main>

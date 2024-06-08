@@ -35,7 +35,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { CreateGenForm } from '@/components/adminComponent/academics/CreateGenForm'
+import { CreateGenForm } from '@/components/adminComponent/academics/generations/CreateGenForm'
 
 //custom component import
 

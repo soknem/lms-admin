@@ -2,7 +2,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button"
-import style from "../style.module.css";
+import style from "@/components/adminComponent/style.module.css"
 import { FiPlus } from "react-icons/fi";
 import {
   Dialog,

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import "@/app/globals.css";
+
 
 //import from shad cn
 import {
@@ -62,7 +62,9 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { CreateClassForm } from './CreateClassForm'
+import { CreateLectureForm } from './form/CreateLectureForm'
+import { inspect } from 'util'
+import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
 
 
 
@@ -71,7 +73,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function LectureDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -83,15 +85,14 @@ export function DataTable<TData, TValue>({
   const [editedRows, setEditedRows] = useState({});
 
   // filters
-  const [openGeneration, setOpenGeneration] = useState(false);
-  const [selectedGen, setSelectedGen] = React.useState<any>(null);
+  const [openIns, setopenIns] = useState(false);
+  const [selectedIns, setselectedIns] = React.useState<any>(null);
 
   const [openClass, setOpenClass] = useState(false);
   const [selectedClass, setSelectedClass] = React.useState<any>(null);
 
-  // const [selectedStatus, setSelectedStatus] = React.useState<any | null>(
-  //   null
-  // )
+  const [openCourse, setOpenCourse] = useState(false);
+  const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
 
 
   const router = useRouter();
@@ -104,8 +105,6 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility
     },
-
-
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -155,33 +154,45 @@ export function DataTable<TData, TValue>({
 
   //reset popup
   const handleReset = (columnId: string) => {
-    if (columnId === 'generationAlias') {
-      setSelectedGen(null);
+    if (columnId === 'instructor') {
+      setselectedIns(null);
     }
-    if (columnId === 'studyProgramAlias') {
+    if (columnId === 'class') {
       setSelectedClass(null);
+    }
+    if (columnId === 'course') {
+      setSelectedCourse(null);
     }
     table.getColumn(columnId)?.setFilterValue('');
     setData([...originalData]);
   };
 
 
-  // filter data of generation
-  const FilteredGen = data.reduce((generationAlias: string[], item: any) => {
-    if (!generationAlias.includes(item.generationAlias)) {
-      generationAlias.push(item.generationAlias);
+  // filter data of instructor
+  const FilteredIns = data.reduce((instructor: string[], item: any) => {
+    if (!instructor.includes(item.instructor)) {
+      instructor.push(item.instructor);
     }
-    return generationAlias;
+    return instructor;
   }, []);
 
 
-  // filter data of study program
-  const FilteredProgram = data.reduce((studyProgramAlias: string[], item: any) => {
-    if (!studyProgramAlias.includes(item.studyProgramAlias)) {
-      studyProgramAlias.push(item.studyProgramAlias);
+  //filter data of class
+  const FilteredClass = data.reduce((cs: string[], item: any) => {
+    if (!cs.includes(item.class)) {
+      cs.push(item.class);
     }
-    return studyProgramAlias;
+    return cs;
   }, []);
+
+  //filter data of course
+  const FilteredCourse = data.reduce((course: string[], item: any) => {
+    if (!course.includes(item.course)) {
+      course.push(item.course);
+    }
+    return course;
+  }, []);
+
 
 
   return (
@@ -190,7 +201,7 @@ export function DataTable<TData, TValue>({
       <div className='flex items-center justify-between gap-4 '>
 
         {/* Search */}
-        <div className="flex items-center w-full relative">
+        {/* <div className="flex items-center w-full relative">
           <Input
             placeholder="Search by class...."
             value={
@@ -207,42 +218,43 @@ export function DataTable<TData, TValue>({
             <FaSearch className="text-gray-400" />
           </div>
 
-        </div>
+        </div> */}
 
+        <DatePickerWithRange/>
 
-        {/* filter generation */}
-        <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
+        {/* filter Instructor */}
+        <Popover open={openIns} onOpenChange={setopenIns}>
           <PopoverTrigger asChild>
             <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
+              {selectedIns ? <>{selectedIns}</> : <> Filter Instructor</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter Generation..." />
+                placeholder="Filter Instructor..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {FilteredGen.map((generation, index) => (
+                  {FilteredIns.map((ins, index) => (
                     <CommandItem
                       key={index}
-                      value={generation}
+                      value={ins}
                       onSelect={(value) => {
-                        setSelectedGen(value);
-                        table.getColumn('generationAlias')?.setFilterValue(value);
-                        setOpenGeneration(false);
+                        setselectedIns(value);
+                        table.getColumn('instructor')?.setFilterValue(value);
+                        setopenIns(false);
                       }}
                     >
-                      {generation}
+                      {ins}
                     </CommandItem>
                   ))}
                 </CommandGroup>
               </CommandList>
             </Command>
-            {selectedGen && (
+            {selectedIns && (
               <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generationAlias')}>Reset</Button>
             )}
           </PopoverContent>
@@ -251,37 +263,75 @@ export function DataTable<TData, TValue>({
         {/* filter class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[250px] justify-center bg-white text-gray-30">
+            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedClass ? <>{selectedClass}</> : <> Filter by study program</>}
+              {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter Class..." />
+                placeholder="Filter class..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {FilteredProgram.map((program, index) => (
+                  {FilteredClass.map((cs, index) => (
                     <CommandItem
                       key={index}
-                      value={program}
+                      value={cs}
                       onSelect={(value) => {
-                        setSelectedClass(value);
-                        table.getColumn('studyProgramAlias')?.setFilterValue(value);
-                        setOpenClass(false);
+                        setselectedIns(value);
+                        table.getColumn('class')?.setFilterValue(value);
+                        setopenIns(false);
                       }}
                     >
-                      {program}
+                      {cs}
                     </CommandItem>
                   ))}
                 </CommandGroup>
               </CommandList>
             </Command>
             {selectedClass && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgramAlias')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('class')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        {/* filter course */}
+        <Popover open={openCourse} onOpenChange={setOpenCourse}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="w-[200px] justify-center bg-white text-gray-30">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Course..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredCourse.map((course, index) => (
+                    <CommandItem
+                      key={index}
+                      value={course}
+                      onSelect={(value) => {
+                        setselectedIns(value);
+                        table.getColumn('class')?.setFilterValue(value);
+                        setopenIns(false);
+                      }}
+                    >
+                      {course}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedCourse && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('course')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -314,7 +364,7 @@ export function DataTable<TData, TValue>({
         </DropdownMenu>
 
         {/* Create class form */}
-        <CreateClassForm />
+        <CreateLectureForm />
 
       </div>
 
@@ -344,12 +394,9 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
+                
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-
-                  //on click go to class detail
-                  onClick={() => router.push(`classes/${row.id}`)}
-                  className='cursor-pointer'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -376,53 +423,31 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      
-      {/* Class Remark */}
-      <div className='rounded-lg p-4 bg-white flex flex-row'>
-          <p className='text-success'>Class Code:</p>
-          <div>
-            <p>FY2025</p>
-            <p className='khmer-font'>ថ្នាក់សិក្សាឆ្នាំមូលដ្ឋានឆ្នាំ​២០២៥</p>
-          </div>
-          <div></div>
-          <div></div>
-          <div></div>
+      {/* Pagination */}
+      <div className='flex items-center justify-end space-x-2 py-4'>
+
+        <Button
+          className='border-gray-30'
+          variant='outline'
+          size='sm'
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          className='border-gray-30 '
+          variant='outline'
+          size='sm'
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
 
-      {/* table footer */}
-      <div className='px-4 w-full flex justify-between items-center'>
 
-        <div className="text-base text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
-          classes
-        </div>
-
-
-        {/* Pagination */}
-        <div className='flex items-center justify-end space-x-2 py-4'>
-
-          <Button
-            className='border-gray-30'
-            variant='outline'
-            size='sm'
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            className='border-gray-30 '
-            variant='outline'
-            size='sm'
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
-        
-      </>
-      )
+    </>
+  )
 }
 

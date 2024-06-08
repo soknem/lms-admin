@@ -64,7 +64,7 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@radix-ui/react-dropdown-menu'
-import { AddEnrolledStuForm } from '@/components/adminComponent/academics/AddEnrolledStuForm'
+import { AddEnrolledStuForm } from '@/components/adminComponent/academics/classes/enrolledStudents/AddEnrolledStuForm'
 
 
 

@@ -2,7 +2,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button"
-import style from "../style.module.css";
+import style from "@/components/adminComponent/style.module.css"
 import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
@@ -77,12 +77,12 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 //   </select>
 // );
 
-export function AddEnrolledStuForm() {
+export function CreateLectureForm() {
   return (
     <Dialog >
       <DialogTrigger asChild>
         <Button className='text-white-80'>
-          <FiPlus className="mr-2 h-4 w-4" /> Add Student
+          <FiPlus className="mr-2 h-4 w-4" /> Create Lecture
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[1024px] ">
