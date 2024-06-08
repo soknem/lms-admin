@@ -11,7 +11,7 @@ import { TbFileIsr } from "react-icons/tb";
 import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button'
-import { TbPencil } from "react-icons/tb";
+import { TbTrash  } from "react-icons/tb";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -22,11 +22,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType, LectureType } from "@/lib/types/admin/academics";
+import { OptionType , StudentType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -53,25 +52,9 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     // custom render on cell
     const accessorKey = column.columnDef.accessorKey;
 
-
-    // Custom status
-    if (accessorKey === 'status') {
-
-        switch (value) {
-            case 1:
-              return <StatusBadge type="success" status="Started" />
-            case 2:
-              return <StatusBadge type="warning" status="Pending" />
-            case 3:
-              return <StatusBadge type="error" status="Ended" />
-          }
-    }
-
-    //data in session is a combination of starttime and end time
-    if (accessorKey === 'session') {
-        const startTime = row.original.startTime;
-        const endTime = row.original.endTime;
-        return <span>{`${startTime} - ${endTime}`}</span>;
+    //add font style to khmer name columns 
+    if(accessorKey === 'nameKh'){
+        return <div className="khmer-font" >{value}</div>;
     }
 
 
@@ -113,17 +96,17 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const LectureColumns: ColumnDef<LectureType>[] = [
+export const StuColumns: ColumnDef<StudentType>[] = [
     {
-        accessorKey: 'lectureDate',
+        accessorKey: 'cardId',
         header: ({ column }) => {
             return (
                 <Button
-                    className="text-start"
+                    
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    DATE
+                   CARD ID
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -132,32 +115,80 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
 
     },
     {
-        accessorKey: 'session',
+        accessorKey: 'nameEn',
         header: ({ column }) => {
             return (
                 <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    FULLNAME(EN)
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+    },
+
+    {
+        accessorKey: 'nameKh',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    FULLNAME(KH)
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+
+    {
+        accessorKey: 'gender',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    GENDER
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'phoneNumber',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    PERSONAL NUMBER
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'email',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                     //to  customize the size of each column
-                    // className="w-[200px] flex justify-start items-start"
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="w-[200px] flex justify-start items-start"
                 >
-                    SESSION
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
-    },
-
-    {
-        accessorKey: 'class',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    CLASS
+                    EMAIL
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -166,54 +197,6 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
 
     },
 
-    {
-        accessorKey: 'instructor',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    INSTRUCTOR
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
-
-    },
-    {
-        accessorKey: 'course',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    COURSE
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
-
-    },
-    {
-        accessorKey: 'teachingType',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    TEACHING TYPE
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
-
-    },
     {
         accessorKey: 'status',
         header: ({ column }) => {
@@ -231,28 +214,16 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
 
     },
 
+
     {
         id: 'actions',
         cell: ({ row }) => {
-            const classes = row.original;
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end' className="bg-white">
-                        <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"><TbPencil size={20} className="text-gray-30 mr-2" /> Edit</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 font-medium focus:bg-background"><TbArchive size={20} className="text-red-600 mr-2 "/>Disable</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="text-red-600 focus:text-red-600 font-medium focus:bg-background"><TbTrash  size={24} className="text-red-600 mr-2 "/></div>
             )
         }
     },
-    
 
 ]
 

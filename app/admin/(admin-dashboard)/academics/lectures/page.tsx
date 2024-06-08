@@ -7,7 +7,7 @@ import { LectureColumns } from "@/components/adminComponent/academics/lectures/L
 
 //import type
 import { LectureType } from "@/lib/types/admin/academics";
-import lectures from "./lectures.json"
+import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
 
 export default  function Lecture() {
   const data: LectureType[] = lectures;

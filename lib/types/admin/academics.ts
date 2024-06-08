@@ -90,3 +90,6 @@ export type LectureType = {
   course: string
 
 }
+
+
+export type TranscriptType
