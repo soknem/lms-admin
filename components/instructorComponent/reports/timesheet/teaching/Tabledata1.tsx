@@ -1,12 +1,11 @@
 import React from "react";
 import ReportsComponent from "@/components/adminComponent/reports/ReportComponent";
-import ReportComponent from "@/components/instructorComponent/reports/payment/HeaderComponent";
-import TabReportComponent from "@/components/instructorComponent/reports/TabReportComponent";
+import ReportComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
 import {
   columns,
   invoices,
-} from "../../../../app/instructor/(instructor-dashboard)/reports/teaching/columns";
-import { DataTable } from "@/components/instructorComponent/reports/teaching/TableComponent";
+} from "../../../../../app/instructor/(instructor-dashboard)/reports/timesheet/teaching/columns";
+import { DataTable } from "@/components/instructorComponent/reports/timesheet/teaching/TableComponent";
 import { Table } from "@/components/ui/table";
 async function getinvoices(): Promise<invoices[]> {
   const res = await fetch(

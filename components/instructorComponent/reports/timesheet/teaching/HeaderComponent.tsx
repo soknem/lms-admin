@@ -9,27 +9,27 @@ export default function HeaderComponent1() {
       </p>
       <div className="flex justify-between p-4">
         <div>
-          <Label className="text-gray-30">Generation</Label>
+          <Label className="text-lms-gray30">Generation</Label>
           <p className="flex font-medium text-black">Generation 1</p>
         </div>
         <div>
-          <Label className="text-gray-30">Year</Label>
+          <Label className="text-lms-gray30">Year</Label>
           <p className="flex font-medium text-black">Foundation Year</p>
         </div>
         <div>
-          <Label className="text-gray-30">Academic Year</Label>
+          <Label className="text-lms-gray30">Academic Year</Label>
           <p className="flex font-medium text-black">2024-2025</p>
         </div>
         <div>
-          <Label className="text-gray-30">Degree</Label>
+          <Label className="text-lms-gray30">Degree</Label>
           <p className="flex font-medium text-black">Bachelor</p>
         </div>
         <div>
-          <Label className="text-gray-30">Department</Label>
+          <Label className="text-lms-gray30">Department</Label>
           <p className="flex font-medium text-black">IT</p>
         </div>
         <div>
-          <Label className="text-gray-30">Major</Label>
+          <Label className="text-lms-gray30">Major</Label>
           <div className="flex gap-2">
             <p className="flex text-black font-medium">Information Techology</p>
           </div>

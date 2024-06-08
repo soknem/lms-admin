@@ -1,4 +1,4 @@
-import TabReportComponent from "@/components/instructorcomponent/reports/TabReportComponent";
+import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
 import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
 import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";

@@ -3,8 +3,9 @@ import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
-import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
+import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
+import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
+import ReportSidebar from "@/components/instructorComponent/reports/timesheet/sidebar/ReportSidebarComponent";
 
 
 
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <NavbarComponent />
         </nav>
         <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-          <aside>
+          <aside className="flex">
           <InstructorSidebarComponent/>
           </aside>
           <section className="w-full">{children}</section>
