@@ -13,7 +13,7 @@ export default function AcademicSidebar() {
   const [menuList, setMenuList] = useState<MenuItem[]>(MenuList);
   const pathname = usePathname();
   return (
-    <div className="h-full w-[270px] text-gray-800 flex flex-col bg-white py-9 ">
+    <div className="h-full w-[270px] flex flex-col bg-white py-9 ">
       <nav className="flex flex-col items-center gap-2 justify-between">
         {menuList.map((item, index) => (
           // Link to the path of each sidebar item
@@ -21,8 +21,8 @@ export default function AcademicSidebar() {
             {/* custom the style to overwrite default */}
             <Button
               // group hover:bg-background to make it affect to inner element
-              className={`group text-lg font-medium  flex items-center justify-start px-9 w-[240px] bg-white hover:bg-background" ${
-                pathname === item.path ? "bg-background text-primary" : ""
+              className={` text-lg text-lms-gray80 font-medium  flex items-center justify-start px-9 w-[240px] bg-white hover:bg-lms-background" ${
+                pathname === item.path ? "bg-lms-background text-lms-primary rounded-[10px]" : ""
               }`}
             >
               {item.name}

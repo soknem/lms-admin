@@ -10,8 +10,8 @@ import { FacultyTable } from "@/components/admincomponent/faculties/faculty/data
 import { facultyColumns } from "@/components/admincomponent/faculties/faculty/columns";
 import { DegreeTable } from "@/components/admincomponent/faculties/degree/data-table";
 import { degreeColumns } from "@/components/admincomponent/faculties/degree/columns";
-import { studyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/columns";
 import { StudyProgramTable } from "@/components/admincomponent/faculties/studygrogram/data-table";
+import { studyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/columns";
 import { SubjectTable } from "@/components/admincomponent/faculties/subject/data-table";
 import { subjectColumns } from "@/components/admincomponent/faculties/subject/columns";
 
@@ -24,7 +24,7 @@ export default async function page() {
   return (
     <section className="flex flex-col h-full w-full p-9">
       <div>
-        <h1 className="mb-6 text-3xl font-bold text-primary">Faculty Management</h1>
+        <h1 className="mb-6 text-3xl font-bold text-lms-primary">Faculty Management</h1>
         <Tabs defaultValue="faculty" className="w-full">
           <TabsList>
             <TabsTrigger value="faculty">Faculty</TabsTrigger>

@@ -1,7 +1,7 @@
 import React from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import { GenerationType } from "@/lib/types/admin/academics";
+import { DataTable } from "@/components/admincomponent/academics/generations/data-table";
+import { columns } from "@/components/admincomponent/academics/generations/columns";
 
 async function getGenerations(): Promise<GenerationType[]> {
   const res = await fetch(
@@ -20,7 +20,7 @@ export  default async function page() {
     return (
       <main className='py-9'>
         <div className='container'>
-          <h1 className='mb-6 text-3xl font-bold text-primary'>Generation</h1>
+          <h1 className='mb-6 text-3xl font-bold text-lms-primary'>Generation</h1>
           <DataTable columns={columns} data={data} />
         </div>
       </main>

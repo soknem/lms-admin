@@ -8,10 +8,6 @@ export const MenuList = [
     name: "Classes",
   },
   {
-    path: "/admin/academics/courses",
-    name: "Courses",
-  },
-  {
     path: "/admin/academics/assessments",
     name: "Assessments",
   },

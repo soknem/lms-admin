@@ -58,7 +58,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     }
 
 
-
     if (tableMeta?.editedRows[row.id]) {
 
         return columnMeta?.type === "select" ? (
@@ -97,7 +96,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const columns: ColumnDef<StudentType>[] = [
+export const StuColumns: ColumnDef<StudentType>[] = [
     {
         accessorKey: 'cardId',
         header: ({ column }) => {

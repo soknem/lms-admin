@@ -1,9 +1,11 @@
+import { AdmissionType, StudentAdmissionType } from "../types/admin/admission";
 import {
   DegreeType,
   FacultyType,
   StudyProgramType,
   SubjectType,
 } from "../types/admin/faculty";
+import { CurriculumType, SlideType, VideoType } from "../types/admin/materials";
 import { PaymentType } from "../types/admin/payments";
 
 export async function getFaculties(): Promise<FacultyType[]> {
@@ -18,7 +20,7 @@ export async function getFaculties(): Promise<FacultyType[]> {
 
 export async function getDegree(): Promise<DegreeType[]> {
   const res = await fetch(
-    "https://6657f7365c3617052646673e.mockapi.io/api/v1/degrees"
+    "https://6657f7365c3617052646673e.mockapi.io/api/v1/faculties"
   );
   const data = await res.json();
   // console.log("data from page: ",data);
@@ -46,6 +48,51 @@ export async function getSubject(): Promise<SubjectType[]> {
 export async function getPayment(): Promise<PaymentType[]> {
   const res = await fetch(
     "https://6657f7365c3617052646673e.mockapi.io/api/v1/payments"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+export async function getAdmission(): Promise<AdmissionType[]> {
+  const res = await fetch(
+    "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/admissions"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+export async function getStudentAdmission(): Promise<StudentAdmissionType[]> {
+  const res = await fetch(
+    "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/student-admission"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+export async function getCurriculum(): Promise<CurriculumType[]> {
+  const res = await fetch(
+    "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/curriculumns"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+export async function getSlide(): Promise<SlideType[]> {
+  const res = await fetch(
+    "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/slides"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+export async function getVideo(): Promise<VideoType[]> {
+  const res = await fetch(
+    "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/videos"
   );
   const data = await res.json();
   // console.log("data from page: ",data);

@@ -22,9 +22,9 @@ const labelsField = [
 export default function Achievement() {
   return (
     <main className="flex flex-col h-full w-full p-9">
-      {/* <h2 className="text-4xl text-primary font-bold">Achievement</h2> */}
+      {/* <h2 className="text-4xl text-lms-primary-color font-bold">Achievement</h2> */}
       {/* student profile banner */}
-      <section className="bg-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
+      <section className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold text-white">
             Welcome back, Thida!
@@ -47,7 +47,7 @@ export default function Achievement() {
           <div className="flex flex-col justify-end">
             <h3 className="text-3xl font-bold">Chan Tida</h3>
             <div className="flex items-center gap-3">
-              <FaBook className="w-4 h-4 text-primary" />
+              <FaBook className="w-4 h-4 text-lms-primary" />
               <p className="text-lg text-gray-800 font-semibold">8 Course</p>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default function Achievement() {
         <div className="flex flex-col justify-center ">
           <h3 className="text-lg lg:text-3xl font-bold">Chan Tida</h3>
           <div className="flex items-center gap-3">
-            <FaBook className="w-4 h-4 text-primary" />
+            <FaBook className="w-4 h-4 text-lms-primary" />
             <p className="text-sm text-gray-800 font-semibold">8 Course</p>
           </div>
         </div>

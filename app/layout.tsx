@@ -17,7 +17,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-lms-background font-sans antialiased",
           inter.variable, suwannaphum.variable
         )}
       >
