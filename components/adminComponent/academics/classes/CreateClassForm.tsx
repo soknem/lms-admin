@@ -19,34 +19,38 @@ import { GenerationType } from "@/lib/types/admin/academics";
 
 const initialValues = {
   alias: "",
-  generation: "",
-  startYear: "",
-  endYear: "",
-  status: "",
+  className: "",
+  studyProgramAlias: "Software Engineer",
+  shiftAlias: "Morning",
+  generationAlias: "Generation 1",
+  isDraft: "",
+  studentAliases: "",
 };
 
 const validationSchema = Yup.object().shape({
   alias: Yup.string().required("Required"),
-  generation: Yup.string().required("Required"),
-  startYear: Yup.string().required("Required"),
-  EndYear: Yup.number().required("Required"),
-  status: Yup.string().required('A selection is required'),
+  className: Yup.string().required("Required"),
+  studyProgramAlias: Yup.string().required("Required"),
+  generationAlias: Yup.string().required("Required"),
+  shiftAlias: Yup.string().required("Required"),
+  isDraft: Yup.string(),
+  studentAliases: Yup.string(),
 })
 
 
 //handle submit here
 const handleSubmit = async (value: GenerationType) => {
-//   const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(value),
-//   });
+  //   const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(value),
+  //   });
 
-//   const data = await res.json()
+  //   const data = await res.json()
 
-//   console.log("generation upload: ", data)
+  //   console.log("generation upload: ", data)
 };
 
 const RadioButton = ({ field, value, label }: any) => {
@@ -125,17 +129,17 @@ export function CreateClassForm() {
           onSubmit={async (values) => {
 
             // create generation post
-            const GenerationPost: GenerationType = {
-              alias: values.alias,
-              generation: values.generation,
-              startYear: values.startYear,
-              endYear: values.endYear,
-              status: values.status
+            // const GenerationPost: GenerationType = {
+            //   alias: values.alias,
+            //   generation: values.generation,
+            //   startYear: values.startYear,
+            //   endYear: values.endYear,
+            //   status: values.status
 
-            }
+            // }
 
-            // post product
-            handleSubmit(GenerationPost)
+            // // post product
+            // handleSubmit(GenerationPost)
           }}
         >
           {({ setFieldValue }) => (
@@ -144,78 +148,78 @@ export function CreateClassForm() {
 
                 {/* Generation title*/}
                 <div className={`${style.inputContainer}`} >
-                  <label className={`${style.label}`} htmlFor="generation">
-                    Title
+                  <label className={`${style.label}`} htmlFor="className">
+                    Class Code
                   </label>
                   <Field
                     type="text"
-                    name="generation"
-                    id="generation"
+                    name="className"
+                    id="className"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="generation"
+                    name="className"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* Alias */}
+                {/* Generation */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="alias">
-                    Alias
+                  <label className={`${style.label}`} htmlFor="generationAlias">
+                    Generation
                   </label>
-                  <Field
-                    type="text"
-                    name="alias"
-                    id="alias"
-                    className={`${style.input}`}
-                  />
+                  <Field as="select" name="generationAlias" className={`${style.input}`} >
+                    <option value="generation1">generation 1</option>
+                    <option value="generation2">generation 2</option>
+                    <option value="generation3">generation 3</option>
+                  </Field>
                   <ErrorMessage
-                    name="alias"
+                    name="generationAlias"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* start year */}
+                {/* study program*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="startYear">
-                    Start Year
+                  <label className={`${style.label}`} htmlFor="studyProgramAlias">
+                    Study Program
                   </label>
-                  <Field
-                    type="date"
-                    name="startYear"
-                    id="startYear"
-                    className={`${style.input}`}
-                  />
+                  <Field as="select" name="studyProgramAlias" className={`${style.input}`} >
+                    <option value="program1">Software Engineer</option>
+                    <option value="program2">Computer Science</option>
+                    <option value="program3">Data Science</option>
+                  </Field>
                   <ErrorMessage
-                    name="startYear"
+                    name="studyProgramAlias"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
 
-                {/* End year */}
+                {/* shift */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="endYear">
-                    End Year
+                  <label className={`${style.label}`} htmlFor="shiftAlias">
+                    Shift
                   </label>
-                  <Field
-                    type="date"
-                    name="endYear"
-                    id="endYear"
-                    className={`${style.input}`}
-                  />
+                  <Field as="select" name="shiftAlias" className={`${style.input}`} >
+                    <option value="shift1">Morning</option>
+                    <option value="shift2">Afternoon</option>
+                    <option value="shift3">Evening</option>
+                  </Field>
                   <ErrorMessage
-                    name="endYear"
+                    name="shiftAlias"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                   
+
+                
+
+
 
                 {/* status */}
                 <div className={`${style.inputContainer}  `}>

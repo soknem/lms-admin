@@ -65,7 +65,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
             return (
                 //custom year selector only
                 <select
-                    className="border-1 border-gray-30 rounded-md focus:to-primary"
+                    className="border-1 border-lms-gray-30 rounded-md focus:border-lms-gray-30"
                     value={new Date(value).getFullYear()}
                     onChange={(e) => {
                         const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
@@ -74,7 +74,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
                     }}
                 >
                     {years.map((year) => (
-                        <option key={year} value={year}>
+                        <option  key={year} value={year}>
                             {year}
                         </option>
                     ))}
@@ -96,7 +96,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
                 //custom year selector only
                 <RadioGroup defaultValue="comfortable" className="flex">
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="false" id="started" />
+                        <RadioGroupItem  value="false" id="started" />
                         <Label htmlFor="public">Public</Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -124,7 +124,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
             //custom on only normal dropdown 
             <select
-                className="border-1 border-gray-30 rounded-md focus:to-primary"
+                className="border-1 border-lms-gray-30 rounded-md focus:to-primary"
                 onChange={onSelectChange}
                 value={initialValue}
             >
@@ -142,7 +142,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
             //custom on normal input text
             <Input
-                className="w-full p-2 border-1 border-gray-30 rounded-md"
+                className="w-full p-2 border-1 border-lms-gray-30 rounded-md bg-white"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}

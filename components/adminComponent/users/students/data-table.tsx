@@ -73,7 +73,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function CourseAssesmentDataTable<TData, TValue>({
+export function TranscriptDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -85,12 +85,14 @@ export function CourseAssesmentDataTable<TData, TValue>({
   const [editedRows, setEditedRows] = useState({});
 
   // filters
-  const [openClass, setOpenClass] = useState(false);
-  const [selectedClass, setselectedClass] = React.useState<any>(null);
+  const [openProgram, setOpenProgram] = useState(false);
+  const [selectedProgram, setSelectedProgram] = React.useState<any>(null);
 
-  const [openCourse, setOpenCourse] = useState(false);
-  const [selectedCourse, setselectedCourse] = React.useState<any>(null);
+  const [openYear, setOpenYear] = useState(false);
+  const [selectedYear, setSelectedYear] = React.useState<any>(null);
 
+  const [openSemester, setOpenSemester] = useState(false);
+  const [selectedSemester, setSelectedSemester] = React.useState<any>(null);
 
 
   const router = useRouter();
@@ -146,33 +148,43 @@ export function CourseAssesmentDataTable<TData, TValue>({
 
   //reset filter popup
   const handleReset = (columnId: string) => {
-    if (columnId === 'class') {
-      setselectedClass(null);
+    if (columnId === 'studyProgram') {
+      setSelectedProgram(null);
     }
-    if (columnId === 'course') {
-      setselectedCourse(null);
+    if (columnId === 'year') {
+      setSelectedYear(null);
+    }
+    if (columnId === 'semester') {
+      setSelectedSemester(null);
     }
     table.getColumn(columnId)?.setFilterValue('');
     setData([...originalData]);
   };
 
-  // filter data of class
-  const FilteredClass = data.reduce((cls: string[], item: any) => {
-    if (!cls.includes(item.class)) {
-      cls.push(item.class);
+  // filter data of study program
+  const FilteredProgram = data.reduce((studyProgram: string[], item: any) => {
+    if (!studyProgram.includes(item.studyProgram)) {
+      studyProgram.push(item.studyProgram);
     }
-    return cls;
+    return studyProgram;
   }, []);
 
-  // filter data of course
-  const FilteredCourse = data.reduce((course: string[], item: any) => {
-    if (!course.includes(item.course)) {
-      course.push(item.course);
+  // filter data of year
+  const FilteredYear = data.reduce((year: string[], item: any) => {
+    if (!year.includes(item.year)) {
+      year.push(item.year);
     }
-    return course;
+    return year;
   }, []);
 
 
+  //filter data of semester
+  const FilteredSemester = data.reduce((semester: string[], item: any) => {
+    if (!semester.includes(item.semester)) {
+      semester.push(item.semester);
+    }
+    return semester;
+  }, []);
 
   return (
     <>
@@ -200,89 +212,125 @@ export function CourseAssesmentDataTable<TData, TValue>({
         </div>
 
 
-        {/* filter Class */}
-        <Popover open={openClass} onOpenChange={setOpenClass}>
+        {/* filter study program */}
+        <Popover open={openProgram} onOpenChange={setOpenProgram}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedClass ? <>{selectedClass}</> : <> Filter by Class</>}
+              {selectedProgram ? <>{selectedProgram}</> : <> Filter by Study Program</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter Class..." />
+                placeholder="Filter Study Program..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {FilteredClass.map((cls, index) => (
+                  {FilteredProgram.map((program, index) => (
                     <CommandItem
                       key={index}
-                      value={cls}
+                      value={program}
                       onSelect={(value) => {
-                        setselectedClass(value);
-                        table.getColumn('class')?.setFilterValue(value);
-                        setOpenClass(false);
+                        setSelectedProgram(value);
+                        table.getColumn('studyProgram')?.setFilterValue(value);
+                        setOpenProgram(false);
                       }}
                     >
-                      {cls}
+                      {program}
                     </CommandItem>
                   ))}
                 </CommandGroup>
               </CommandList>
             </Command>
-            {selectedClass && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('class')}>Reset</Button>
+            {selectedProgram && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgram')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
 
-        {/* filter study course */}
-        <Popover open={openCourse} onOpenChange={setOpenCourse}>
+        {/* filter study year */}
+        <Popover open={openYear} onOpenChange={setOpenYear}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedCourse ? <>{selectedCourse}</> : <> Filter by course</>}
+              {selectedYear ? <>{selectedYear}</> : <> Filter by Year</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter course..." />
+                placeholder="Filter Year..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {FilteredCourse.map((course, index) => (
+                  {FilteredYear.map((year, index) => (
                     <CommandItem
                       key={index}
-                      value={course}
+                      value={year}
                       onSelect={(value) => {
-                        setselectedCourse(value);
-                        table.getColumn('course')?.setFilterValue(value);
-                        setOpenCourse(false);
+                        setSelectedYear(value);
+                        table.getColumn('year')?.setFilterValue(value);
+                        setOpenYear(false);
                       }}
                     >
-                      {course}
+                      {year}
                     </CommandItem>
                   ))}
                 </CommandGroup>
               </CommandList>
             </Command>
-            {selectedCourse && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('course')}>Reset</Button>
+            {selectedYear && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('year')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
 
-        
+        {/* filter semester */}
+        <Popover open={openSemester} onOpenChange={setOpenSemester}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedSemester ? <>{selectedSemester}</> : <> Filter by Semester</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Semester..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredSemester.map((semester, index) => (
+                    <CommandItem
+                      key={index}
+                      value={semester}
+                      onSelect={(value) => {
+                        setSelectedSemester(value);
+                        table.getColumn('semester')?.setFilterValue(value);
+                        setOpenSemester(false);
+                      }}
+                    >
+                      {semester}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedSemester && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('semester')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
 
 
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -339,16 +387,6 @@ export function CourseAssesmentDataTable<TData, TValue>({
             <p className='flex font-medium text-black'>Software Engineer</p>
           </div>
 
-          <div>
-            <Label className='text-lms-gray-30'>Class</Label>
-            <p className='flex font-medium text-black'>FY2025 - A3</p>
-          </div>
-
-          <div>
-            <Label className='text-lms-gray-30'>Course</Label>
-            <p className='flex font-medium text-black'>Introduction To IT</p>
-          </div>
-
           
         </div>
 
@@ -379,7 +417,7 @@ export function CourseAssesmentDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  className='hover:bg-gray-50'
+
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -459,5 +497,6 @@ export function CourseAssesmentDataTable<TData, TValue>({
     </>
   )
 }
+
 
 

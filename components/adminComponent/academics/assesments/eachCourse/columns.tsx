@@ -96,7 +96,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
             //custom on normal input text
             <input
-                className="w-full p-2 border-1 border-gray-30 rounded-md"
+                className="w-full p-2 border-1 border-gray-30 rounded-md bg-gray-100 "
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}

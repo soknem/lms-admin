@@ -1,4 +1,3 @@
-import { Stringifier } from "postcss";
 
 // **** Generation *****
 export type GenerationType = {
@@ -18,13 +17,13 @@ export type OptionType = {
 export type ClassType = {
     alias: string
     className: string
-    description: string
     studyProgramAlias: string
     shiftAlias: string
     generationAlias: string
     isDelete: boolean
     isDraft: boolean
     studentAliases: string[]
+    instructorAias: string[]
 }
 
 
