@@ -54,7 +54,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select
-        className="border-1 border-gray-300 rounded-md focus:to-primary"
+        className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
         onChange={onSelectChange}
         value={value}
       >
@@ -66,7 +66,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       </select>
     ) : (
       <input
-        className="w-full p-2 border-1 border-gray-300 rounded-md"
+        className="w-full p-2 border-1 border-gray-300 "
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
@@ -163,6 +163,8 @@ export const facultyColumns: ColumnDef<FacultyType>[] = [
     },
     cell: TableCell,
   },
+
+
   {
     accessorKey: "name",
     header: ({ column }) => {
