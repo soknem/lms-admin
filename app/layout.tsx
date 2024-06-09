@@ -6,12 +6,13 @@ import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
 import { inter, suwannaphum } from "./font";
+import { ThemeProvider } from "@/components/ui/themeProvider";
 
 interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayout({ children }: RootLayoutProps) {
-  
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -21,9 +22,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
           inter.variable, suwannaphum.variable
         )}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+        >
+
+          {children}
+          
+        </ThemeProvider>
       </body>
     </html>
   );
 }
-  

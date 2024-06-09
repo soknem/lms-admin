@@ -1,3 +1,4 @@
+
 import AchievementTable from "@/components/studentComponent/achievements/AchievementComponent";
 import React from "react";
 import { FaBook } from "react-icons/fa6";
@@ -127,7 +128,7 @@ export default function Achievement() {
         </div>
 
         {/* Table */}
-        <AchievementTable />
+        <AchievementTable/>
       </section>
     </main>
   );

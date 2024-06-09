@@ -1,4 +1,5 @@
 "use client";
+import { ModeToggle } from "@/components/theme/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -6,6 +7,7 @@ export default function Home() {
   const router = useRouter();
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
+
       <h1>hello</h1>
       <div className="flex gap-4">
         <Button

@@ -7,13 +7,14 @@ import {
   getSubject,
 } from "@/lib/endpoints/MokApi";
 import { FacultyTable } from "@/components/adminComponent/faculties/faculty/data-table";
-import { facultyColumns } from "@/components/adminComponent/faculties/faculty/columns";
 import { DegreeTable } from "@/components/adminComponent/faculties/degree/data-table";
+import { facultyColumns } from "@/components/adminComponent/faculties/faculty/columns";
 import { degreeColumns } from "@/components/adminComponent/faculties/degree/columns";
 import { StudyProgramTable } from "@/components/adminComponent/faculties/studygrogram/data-table";
 import { studyProgramColumns } from "@/components/adminComponent/faculties/studygrogram/columns";
 import { SubjectTable } from "@/components/adminComponent/faculties/subject/data-table";
 import { subjectColumns } from "@/components/adminComponent/faculties/subject/columns";
+
 
 
 export default async function page() {
