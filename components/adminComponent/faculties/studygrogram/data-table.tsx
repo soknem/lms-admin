@@ -35,6 +35,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { CreateStudyProForm } from "./CreateFacForm";
 
 //custom component import
 
@@ -149,6 +150,9 @@ export function StudyProgramTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <CreateStudyProForm />
+        
 
       </div>
 

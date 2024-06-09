@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { FacultyType, StatusOption } from "@/lib/types/admin/faculty";
+import ActionsCell from "@/components/admincomponent/faculties/faculty/FacActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -53,7 +54,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
       <select
-        className="border-1 border-gray-300 rounded-md focus:to-primary"
+        className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
         onChange={onSelectChange}
         value={value}
       >
@@ -65,7 +66,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       </select>
     ) : (
       <input
-        className="w-full p-2 border-1 border-gray-300 rounded-md"
+        className="w-full p-2 border-1 border-gray-300 "
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
@@ -162,6 +163,8 @@ export const facultyColumns: ColumnDef<FacultyType>[] = [
     },
     cell: TableCell,
   },
+
+
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -220,32 +223,6 @@ export const facultyColumns: ColumnDef<FacultyType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const faculty = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              className="focus:bg-background"
-              onClick={() => navigator.clipboard.writeText(faculty.id)}
-            >
-              Copy ID
-            </DropdownMenuItem>
-            {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-            {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-            <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-              Disable
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ActionsCell,
   },
 ];

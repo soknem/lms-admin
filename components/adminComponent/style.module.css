@@ -25,6 +25,9 @@
 }
 
 .inputContainer {
-	@apply mb-5 w-[300px]
+	@apply mb-5 w-[420px] 
 }
 
+.imageContainer{
+	@apply w-[100px] h-[100px] rounded-full
+}

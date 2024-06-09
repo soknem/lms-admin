@@ -7,8 +7,8 @@ import { ReactNode, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { ThemeProvider } from "@/components/ui/themeProvider";
-import NavbarComponent from "@/components/studentComponent/navbar/NavbarComponent";
-import StudentSidebarComponent from "@/components/studentComponent/sidebar/StudentSidebarComponents";
+import NavbarComponent from "@/components/studentcomponent/navbar/NavbarComponent";
+import StudentSidebarComponent from "@/components/studentcomponent/sidebar/StudentSidebarComponents";
 
 const fontSans = FontSans({
   subsets: ["latin"],

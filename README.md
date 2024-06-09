@@ -13,6 +13,7 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#local-installation">Local Installation</a></li>
+         <li><a href="#email-and-password-for-login">Email and Password for Login</a></li>
       </ul>
     </li>
     <li><a href="#page-url">Page URL</a></li>
@@ -23,7 +24,6 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
 
 <!-- ABOUT THE PROJECT -->
 ## About istad lms
-<br />
 <h4 >ISTAD LMS website is an innovative learning management system solution to facilitate course management and educational content delivery to bachelor degree program.</h4>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -32,7 +32,6 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
 ## Getting Started
 
 ### Local Installation
-
 
 1. Clone the repo
    ```sh
@@ -47,16 +46,30 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
    npm run dev
    ```
 
+## Email and Password for Login
+
+### student Dashboard
+<p>Email: <b>student@gmail.com</b></p>
+<p>Password: <b>student123</b></p>
+
+### Instructor Dashboard
+<p>Email: <b>instructor@gmail.com</b></p>
+<p>Password: <b>instructor123</b></p>
+
+### Admin Dashboard
+<p>Email: <b>admin@gmail.com</b></p>
+<p>Password: <b>admin123</b></p>
+
 <!-- Page URL -->
 ## Page URL
 
-## Student Dashboard 
+### Student Dashboard 
 
 01. student courses : /student/courses
 02. student achivement: /student/achivements
 03. student profile setting: /student/settings (not started)
 
-## Instructor Dashboard
+### Instructor Dashboard
 
 01. instructor course : /instructor/courses
 02. instructor schedule: /instructor/schedules (not started)
@@ -65,7 +78,7 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
 05. instructor report : /instructor/reports
 
 
-## Admin Dashboard
+### Admin Dashboard
 
 01. admin faculty : /admin/faculties
 02. admin academic : /admin/academics
