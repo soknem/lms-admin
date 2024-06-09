@@ -3,8 +3,10 @@ import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
-import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
+import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
+import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
+import { ThemeProvider } from "@/components/ui/themeProvider";
+
 
 
 
@@ -26,15 +28,20 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <nav className="w-full h-[72px]">
-          <NavbarComponent />
-        </nav>
-        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-          <aside>
-          <InstructorSidebarComponent/>
-          </aside>
-          <section className="w-full">{children}</section>
-        </section>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+        >
+          <nav className="w-full h-[72px]">
+            <NavbarComponent />
+          </nav>
+          <section className="flex flex-grow min-h-[calc(100vh-72px)]">
+            <aside>
+              <InstructorSidebarComponent />
+            </aside>
+            <section className="w-full">{children}</section>
+          </section>
+        </ThemeProvider>
       </body>
     </html>
   );

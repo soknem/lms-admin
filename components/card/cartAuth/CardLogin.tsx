@@ -1,25 +1,19 @@
-'use client';
+'use client'
 import * as React from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiEyeOff } from "react-icons/hi";
+import { useRouter } from "next/navigation"; // Import the useRouter hook from next/router
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Formik, Form, Field, FormikErrors, FormikTouched } from "formik";
 import * as Yup from "yup";
-import { useToast } from "@/components/ui/use-toast";
 import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail'
 import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
 
+// Define initial values for the form fields
 interface InitialValues {
   email: string;
   password: string;
@@ -30,30 +24,25 @@ const initialValues: InitialValues = {
   password: "",
 };
 
+// Define validation schema using Yup
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Required"),
   password: Yup.string().required("Required"),
 });
 
-const getFieldClassName = (
-  errors: FormikErrors<InitialValues>,
-  touched: FormikTouched<InitialValues>,
-  fieldName: keyof InitialValues
-) => {
-  const baseClass =
-    "bg-gray-50 border text-gray-900 text-[15px] rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:border-gray-500 focus:ring-[1px] ";
-  const errorClass = "border-red-500";
-  const validClass = "border-gray-300";
+// Define function to get field class name based on validation status
+const getFieldClassName = (errors: FormikErrors<InitialValues>, touched: FormikTouched<InitialValues>, fieldName: keyof InitialValues) => {
+  const baseClass = "bg-gray-100 dark:bg-gray-100 border text-gray-900 dark:text-gray-700 text-[15px] rounded-xl focus:ring-blue-500 block w-full p-2.5";
+  const errorClass = "border-red-500 dark:border-red-500 focus:border-red-500";
+  const validClass = "border-gray-300 dark:border-gray-300 ";
 
-  return touched[fieldName] && errors[fieldName]
-    ? `${baseClass} ${errorClass}`
-    : `${baseClass} ${validClass}`;
+  return touched[fieldName] && errors[fieldName] ? `${baseClass} ${errorClass}` : `${baseClass} ${validClass}`;
 };
 
+// Define CardLogin component
 export function CardLogin() {
   const [showPassword, setShowPassword] = useState(false);
-  const { toast } = useToast();
-  const router = useRouter();
+  const router = useRouter(); // Instantiate the router
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -70,33 +59,26 @@ export function CardLogin() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          toast({
-            title: "Login Successful",
-            description: "You have successfully logged in.",
-          });
-          // Perform additional success actions here, e.g., redirect
+          // Show toast for successful login
+          alert("Login Successful");
+
+          // Redirect to a specific page after successful login
           router.push("/dashboard");
         } else {
-          toast({
-            title: "Login Failed",
-            description: "Invalid credentials, please try again.",
-            variant: "destructive",
-          });
+          // Show toast for failed login
+          alert("Login Failed");
           actions.setSubmitting(false);
         }
       })
       .catch((error) => {
-        toast({
-          title: "Login Failed",
-          description: "An unexpected error occurred, please try again later.",
-          variant: "destructive",
-        });
+        // Show toast for unexpected error
+        alert("An unexpected error occurred");
         actions.setSubmitting(false);
       });
   };
 
   return (
-    <Card className="w-[550px] bg-white p-[24px]">
+    <Card className="w-[550px] bg-white dark:bg-white p-[24px] border border-gray-300 dark:border-white ">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -106,25 +88,23 @@ export function CardLogin() {
       >
         {({ errors, touched }) => (
           <section>
-            <CardHeader className="items-center">
+            <CardHeader className="items-center dark:border-white">
               <section className="mb-5">
                 <Image src="/logo.png" alt="logo" width={200} height={200} />
               </section>
-
-              <CardTitle className="text-[36px] font-bold text-[#253C95]">
+              <CardTitle className="text-[36px] font-bold text-[#253C95] dark:text-[#253C95]">
                 Welcome Back!
               </CardTitle>
-
-              <CardDescription className="text-[20px] text-[#808897]">
-                Login to access to your account
+              <CardDescription className="text-[20px] text-[#808897] dark:text-[#808897]">
+                Login to access your account
               </CardDescription>
             </CardHeader>
-
             <CardContent>
               <Form>
                 <section className="grid w-full items-center gap-4">
+                  {/* Email field */}
                   <section className="space-y-2">
-                    <label className="text-[15px]" htmlFor="email">
+                    <label className="text-[15px] dark:text-gray-600" htmlFor="email">
                       Email
                     </label>
                     <Field
@@ -139,13 +119,12 @@ export function CardLogin() {
                     />
                     <CustomErrorMessageEmail errors={errors} touched={touched} fieldName="email" />
                   </section>
-
+                  {/* Password field */}
                   <section className="space-y-2">
-                    <label className="text-[15px]" htmlFor="password">
+                    <label className="text-[15px] dark:text-gray-600" htmlFor="password">
                       Password
                     </label>
-
-                    <div className="relative">
+                    <section className="relative">
                       <Field
                         type={showPassword ? "text" : "password"}
                         name="password"
@@ -155,33 +134,28 @@ export function CardLogin() {
                       />
                       {!showPassword ? (
                         <BsFillEyeFill
-                          className="absolute w-8 right-2 top-4 text-gray-500 cursor-pointer"
+                          className="absolute w-8 right-2 top-4 text-gray-500 dark:text-gray-400 cursor-pointer"
                           onClick={handleShowPassword}
                         />
                       ) : (
                         <HiEyeOff
-                          className="absolute w-8 right-2 top-4 text-gray-500 cursor-pointer"
+                          className="absolute w-8 right-2 top-4 text-gray-500 dark:text-gray-400 cursor-pointer"
                           onClick={handleShowPassword}
                         />
                       )}
-                      <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password" />
-                    </div>
+                    </section>
+                    <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password" />
                   </section>
-                </section>
-
-                <section className="flex flex-col justify-between gap-5">
-                  <a
-                    className="cursor-pointer flex justify-center mt-6"
-                    onClick={() => router.push("/reset")}
-                  >
-                    <p className="text-[15px] text-[#253C95] hover:underline">
+                  {/* Link for first time login */}
+                  <p className="text-center mt-4">
+                    <a href="/reset" className="text-[#253C95] dark:text-[#253C95] hover:underline">
                       First time login?
-                    </p>
-                  </a>
-
+                    </a>
+                  </p>
+                  {/* Submit button */}
                   <Button
+                    className="w-full bg-[#253C95] dark:bg-[#253C95] hover:bg-blue-500 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl"
                     type="submit"
-                    className="w-full bg-[#253C95] hover:bg-[#243888] hover: rounded-xl text-white py-6 text-[15px]"
                   >
                     Login
                   </Button>

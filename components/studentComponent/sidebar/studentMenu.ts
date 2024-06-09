@@ -22,12 +22,7 @@ export const MenuList = [
     path: "/student/settings",
     icon: IoSettings,
     active: false,
-  },
-  {
-    path: "#",
-    icon: BsMoonStarsFill,
-    active: false,
-  },
+  }
 ];
 
 export const Logout = [

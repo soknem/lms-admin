@@ -39,12 +39,7 @@ export const MenuList = [
     path: "/instructor/settings",
     icon: IoSettings,
     active: false,
-  },
-  {
-    path: "#",
-    icon: BsMoonStarsFill,
-    active: false,
-  },
+  }
 ];
 
 export const Logout = [

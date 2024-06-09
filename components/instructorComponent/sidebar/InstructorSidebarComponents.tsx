@@ -2,7 +2,9 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Logout, MenuList } from "./instructorMenu";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { BsMoonStarsFill, BsSunFill } from 'react-icons/bs';
 
 type MenuItem = {
   path: string;
@@ -17,9 +19,21 @@ type Logout = {
 };
 
 export default function InstructorSidebarComponent() {
+
+  const { theme, setTheme } = useTheme();
   const [menuList, setMenuList] = useState<MenuItem[]>(MenuList);
   const [logout, setLogout] = useState<Logout[]>(Logout);
   const pathname = usePathname();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+   // Function to handle theme toggle
+   const handleThemeToggle = () => {
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    setTheme(newTheme);
+    setIsDarkMode(!isDarkMode);
+  };
+
+
   return (
     <div className="h-full w-[72px] text-white flex flex-col bg-lms-primary py-9 ">
       <nav className="flex flex-col items-center gap-2 justify-between">
@@ -46,6 +60,17 @@ export default function InstructorSidebarComponent() {
             </Button>
           </Link>
         ))}
+
+        {/* Render theme switch button */}
+        <Button
+          onClick={handleThemeToggle}
+          className={`group flex items-center rounded-[10px] justify-center p-4 hover:bg-white hover:text-lms-primary ${
+            isDarkMode ? 'rounded-[10px] text-white ' : ''
+          }`}
+        >
+          {isDarkMode ? <BsMoonStarsFill className="w-5 h-5 text-primary" /> : <BsSunFill className="w-5 h-5 text-white group-hover:text-primary" />}
+        </Button>
+
 
         {logout.map((item, index) => (
           <Link key={index} href={item.path} passHref>
