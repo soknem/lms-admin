@@ -30,6 +30,8 @@ const config = {
           "gray-80": "#808897", //(for gray text)
           success: "#008000",
           error: "#F73030",
+          black90: "#000000",
+          grayBorder: "#E6E6E6",
           "black-90": "#000000",
         },
         border: "hsl(var(--border))",

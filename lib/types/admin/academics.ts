@@ -73,3 +73,22 @@ export type CourseType = {
     year: number,
     visibility: boolean
 }
+
+export type LectureType = {
+  // alias: string,
+  startTime: string,
+  endTime: string,
+  description: string,
+  lectureDate: string,
+  status: number,
+  // courseAlias: string,
+  // additional on not have in api
+  teachingType: string,
+  isDelete: boolean,
+  class: string,
+  instructor: string,
+  course: string
+
+}
+
+

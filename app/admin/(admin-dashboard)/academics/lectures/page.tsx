@@ -1,9 +1,21 @@
 import React from "react";
 
-export default function Lecture() {
+//import component
+import { LectureDataTable } from "@/components/adminComponent/academics/lectures/LectureDataTable";
+import { LectureColumns } from "@/components/adminComponent/academics/lectures/LectureColumns";
+
+
+//import type
+import { LectureType } from "@/lib/types/admin/academics";
+import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
+
+export default  function Lecture() {
+  const data: LectureType[] = lectures;
+
   return (
-    <main className="flex flex-col gap-4 h-full w-full p-9">
-      <h2 className="text-4xl text-lms-primary font-bold">Lecture</h2>
-    </main>
+    <section className="flex flex-col gap-4 h-full w-full p-9">
+    <h1 className=' text-3xl font-bold text-lms-primary'>Lectures</h1>
+      <LectureDataTable columns={LectureColumns} data={data} />
+  </section>
   );
 }
