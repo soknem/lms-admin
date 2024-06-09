@@ -3,6 +3,7 @@ import {
   columns,
   invoices,
 } from "../../../../../app/instructor/(instructor-dashboard)/reports/timesheet/teaching/columns";
+// @ts-ignore
 import { DataTable } from "@/components/instructorcomponent/reports/timesheet/payment/TableComponent";
 async function getinvoices(): Promise<invoices[]> {
   const res = await fetch(

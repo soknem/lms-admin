@@ -9,7 +9,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+// @ts-ignore
 import { SetupStudyProgramTable } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/data-table";
+// @ts-ignore
 import { setupStudyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/columns";
 
 

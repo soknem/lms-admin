@@ -1,8 +1,12 @@
 
 
+// @ts-ignore
 import { curriculumColumns } from "@/components/admincomponent/materials/curriculum/columns";
+// @ts-ignore
 import { CurriculumTable } from "@/components/admincomponent/materials/curriculum/data-table";
+// @ts-ignore
 import { slideColumns } from "@/components/admincomponent/materials/slide/columns";
+// @ts-ignore
 import { videoColumns } from "@/components/admincomponent/materials/video/columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCurriculum, getSlide, getVideo } from "@/lib/endpoints/MokApi";

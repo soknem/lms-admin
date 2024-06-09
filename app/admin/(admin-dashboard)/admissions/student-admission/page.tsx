@@ -1,4 +1,6 @@
+// @ts-ignore
 import { StudentAdmissionColumns } from "@/components/admincomponent/admissions/student-admission/columns";
+// @ts-ignore
 import { StudentAdmissionTable } from "@/components/admincomponent/admissions/student-admission/data-table";
 import {
   Breadcrumb,

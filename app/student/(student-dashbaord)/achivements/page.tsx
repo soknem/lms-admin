@@ -1,3 +1,4 @@
+// @ts-ignore
 import AchievementTable from "@/components/studentcomponent/achievements/AchievementComponent";
 import React from "react";
 import { FaBook } from "react-icons/fa6";

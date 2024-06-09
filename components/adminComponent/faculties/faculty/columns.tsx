@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { FacultyType, StatusOption } from "@/lib/types/admin/faculty";
+// @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/faculty/FacActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {

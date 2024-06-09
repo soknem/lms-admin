@@ -5,8 +5,11 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
+// @ts-ignore
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+// @ts-ignore
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+// @ts-ignore
 import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 
 

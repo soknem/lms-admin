@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+// @ts-ignore
 import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";

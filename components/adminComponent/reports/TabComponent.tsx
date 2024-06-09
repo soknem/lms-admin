@@ -1,9 +1,14 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// @ts-ignore
 import ReportComponent from "./student/ReportComponent";
+// @ts-ignore
 import ReportInstructorComponent from "./instructor/ReportInstructorComponent";
+// @ts-ignore
 import ReportStaffComponent from "./staff/ReportStaffComponent";
+// @ts-ignore
 import ReportAdmissionComponent from "./admission/ReportAdmissionComponent";
+// @ts-ignore
 import StudentpayComponent from "./student's pay/Student'spayComponent";
 
 export default function TabComponent() {

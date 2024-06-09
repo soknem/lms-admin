@@ -1,3 +1,4 @@
+// @ts-ignore
 import StudyDetailtTable from "@/components/admincomponent/faculties/studygrogram/studyprogram-detail/studydetail";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

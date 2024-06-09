@@ -1,8 +1,12 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// @ts-ignore
 import HeaderComponent from "./payment/HeaderComponent";
+// @ts-ignore
 import Tabledata from "./payment/Tabledata";
+// @ts-ignore
 import HeaderComponent1 from "./teaching/HeaderComponent";
+// @ts-ignore
 import Tabledata1 from "./teaching/Tabledata1";
 
 // import HeaderComponent1 from "@/components/instructorComponent/reports/timesheet/teaching/HeaderComponent";

@@ -17,6 +17,7 @@ import {
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
+// @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/subject/SubActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {

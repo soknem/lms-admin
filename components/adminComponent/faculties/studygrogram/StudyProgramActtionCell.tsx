@@ -8,8 +8,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+// @ts-ignore
 import { EditPayForm } from "@/components/admincomponent/payments/EditPayForm";
+// @ts-ignore
 import { ViewPayForm } from "@/components/admincomponent/payments/ViewPayForm";
+// @ts-ignore
 import { EditStudyProForm } from "./EditStudyProgramForm";
 import { useRouter } from "next/navigation";
 

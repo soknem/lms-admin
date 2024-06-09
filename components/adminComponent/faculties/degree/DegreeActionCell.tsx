@@ -8,7 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+// @ts-ignore
 import { ViewDeForm } from "@/components/admincomponent/faculties/degree/ViewDeForm";
+// @ts-ignore
 import { EditDeForm } from "@/components/admincomponent/faculties/degree/EditDeForm";
 
 

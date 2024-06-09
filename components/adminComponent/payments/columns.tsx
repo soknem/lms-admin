@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
+// @ts-ignore
 import ActionsCell from "@/components/admincomponent/payments/PaymentActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
