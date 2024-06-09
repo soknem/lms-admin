@@ -201,7 +201,7 @@ export function AttendenceTable<TData, TValue>({
         </div>
         {/* score point */}
         <div className=" mx-auto my-4 p-4 bg-gray-100 rounded-lg">
-        <div className="font-bold mx-6 text-lms-gray-30">Score's Point</div>
+        <div className="font-bold mx-6 text-lms-gray-30">Score Point</div>
         <div className="flex gap-6 mx-6">
         <div>
           Present <span className="font-bold">P</span>

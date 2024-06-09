@@ -138,7 +138,7 @@ const StudentpayComponent: React.FC = () => {
         <Table className="w-full">
           <TableHeader>
             <TableRow>
-              <TableHead>STUDENT'S PAYMENT</TableHead>
+              <TableHead>STUDENT PAYMENT</TableHead>
               <TableHead>TOTAL</TableHead>
               <TableHead>PERCENT</TableHead>
             </TableRow>

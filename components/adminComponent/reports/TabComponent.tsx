@@ -15,7 +15,7 @@ export default function TabComponent() {
           <TabsTrigger value="instructor">Instructor</TabsTrigger>
           <TabsTrigger value="staff">Staff</TabsTrigger>
           <TabsTrigger value="admission">Admission</TabsTrigger>
-          <TabsTrigger value="payment">Student's payment</TabsTrigger>
+          <TabsTrigger value="payment">Student payment</TabsTrigger>
           <TabsTrigger value="earning">Earning</TabsTrigger>
 
 
