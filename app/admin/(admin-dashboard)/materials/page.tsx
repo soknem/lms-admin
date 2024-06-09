@@ -1,5 +1,4 @@
 
-
 import { curriculumColumns } from "@/components/admincomponent/materials/curriculum/columns";
 import { CurriculumTable } from "@/components/admincomponent/materials/curriculum/data-table";
 import { slideColumns } from "@/components/admincomponent/materials/slide/columns";

@@ -6,6 +6,8 @@ import ReportStaffComponent from "./staff/ReportStaffComponent";
 import ReportAdmissionComponent from "./admission/ReportAdmissionComponent";
 import StudentpayComponent from "./student's pay/Student'spayComponent";
 
+
+
 export default function TabComponent() {
   return (
     <div>
@@ -17,8 +19,6 @@ export default function TabComponent() {
           <TabsTrigger value="admission">Admission</TabsTrigger>
           <TabsTrigger value="payment">Student payment</TabsTrigger>
           <TabsTrigger value="earning">Earning</TabsTrigger>
-
-
         </TabsList>
         <TabsContent value="student">
           <ReportComponent />

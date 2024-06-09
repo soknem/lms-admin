@@ -8,8 +8,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { ViewDeForm } from "@/components/admincomponent/faculties/degree/ViewDeForm";
-import { EditDeForm } from "@/components/admincomponent/faculties/degree/EditDeForm";
+import { ViewDeForm } from "./ViewDeForm";
+import { EditDeForm } from "./EditDeForm";
+
 
 
 const ActionsCell = ({ row }: any) => {

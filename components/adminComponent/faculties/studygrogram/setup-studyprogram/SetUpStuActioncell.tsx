@@ -9,7 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { EditSetStuProForm } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/EditSetStuProForm";
+import { EditSetStuProForm } from "./EditSetStuProForm";
+
 
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);

@@ -65,6 +65,7 @@ import { useRouter } from "next/navigation";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { AddEnrolledStuForm } from "./AddEnrolledStuForm";
 
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];

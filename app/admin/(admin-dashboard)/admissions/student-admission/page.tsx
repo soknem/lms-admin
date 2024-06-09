@@ -1,5 +1,6 @@
-import { StudentAdmissionColumns } from "@/components/admincomponent/admissions/student-admission/columns";
-import { StudentAdmissionTable } from "@/components/admincomponent/admissions/student-admission/data-table";
+
+import { StudentAdmissionColumns } from "@/components/adminComponent/admissions/student-admission/columns";
+import { StudentAdmissionTable } from "@/components/adminComponent/admissions/student-admission/data-table";
 import {
   Breadcrumb,
   BreadcrumbItem,

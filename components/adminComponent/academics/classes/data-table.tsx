@@ -63,6 +63,7 @@ import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { CreateClassForm } from "./CreateClassForm";
 
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];

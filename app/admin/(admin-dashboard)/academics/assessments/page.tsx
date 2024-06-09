@@ -15,10 +15,11 @@ import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments
 
 
 import React from "react";
-import { TranscriptDataTable } from "@/components/admincomponent/academics/assesments/transcript/data-table";
-import { TranscriptColumns } from "@/components/admincomponent/academics/assesments/transcript/columns";
-import { CourseAssesmentDataTable } from "@/components/admincomponent/academics/assesments/eachCourse/data-table";
-import { CourseAssessmentColumns } from "@/components/admincomponent/academics/assesments/eachCourse/columns";
+import { TranscriptColumns } from "@/components/adminComponent/academics/assesments/transcript/columns";
+import { TranscriptDataTable } from "@/components/adminComponent/academics/assesments/transcript/data-table";
+import { CourseAssesmentDataTable } from "@/components/adminComponent/academics/assesments/eachCourse/data-table";
+import { CourseAssessmentColumns } from "@/components/adminComponent/academics/assesments/eachCourse/columns";
+
 
 export default function Assessment() {
 
