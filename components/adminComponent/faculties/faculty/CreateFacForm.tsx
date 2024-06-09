@@ -2,38 +2,70 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
-import style from "../style.module.css";
+import style from "../../style.module.css";
 import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { GenerationType } from "@/lib/types/admin/academics";
+import { FacultyType } from "@/lib/types/admin/faculty";
+import { useState } from "react";
+import Image from "next/image";
 
 const initialValues = {
-  alias: "",
-  generation: "",
-  startYear: "",
-  endYear: "",
+  id: "",
+  name: "",
+  description: "",
+  logo: "",
   status: "",
 };
 
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+
 const validationSchema = Yup.object().shape({
-  alias: Yup.string().required("Required"),
-  generation: Yup.string().required("Required"),
-  startYear: Yup.string().required("Required"),
-  EndYear: Yup.number().required("Required"),
+  id: Yup.number(),
+  name: Yup.string().required("Required"),
+  description: Yup.string().required("Required"),
+  logo: Yup.mixed()
+    .test("fileFormat", "Unsupported Format", (value: any) => {
+      if (!value) {
+        return true;
+      }
+      return SUPPORTED_FORMATS.includes(value.type);
+    })
+    .test("fileSize", "File Size is too large", (value: any) => {
+      if (!value) {
+        true;
+      }
+      return value.size <= FILE_SIZE;
+    })
+    .required("Required"),
+  fileProduct: Yup.mixed()
+    .test("fileFormat", "Unsupported Format", (value: any) => {
+      if (!value) {
+        return true;
+      }
+      return SUPPORTED_FORMATS.includes(value.type);
+    })
+    .test("fileSize", "File Size is too large", (value: any) => {
+      if (!value) {
+        true;
+      }
+      return value.size <= FILE_SIZE;
+    })
+
+    .required("Required"),
   status: Yup.string().required("A selection is required"),
 });
 
-const handleSubmit = async (value: GenerationType) => {
-  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
+const handleSubmit = async (value: FacultyType) => {
+  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/facultys`, {
   //   method: "POST",
   //   headers: {
   //     "Content-Type": "application/json",
@@ -41,7 +73,7 @@ const handleSubmit = async (value: GenerationType) => {
   //   body: JSON.stringify(value),
   // });
   // const data = await res.json()
-  // console.log("generation upload: ", data)
+  // console.log("faculty upload: ", data)
 };
 
 const RadioButton = ({ field, value, label }: any) => {
@@ -61,6 +93,27 @@ const RadioButton = ({ field, value, label }: any) => {
   );
 };
 
+const CustomInput = ({ field, setFieldValue }: any) => {
+  const [imagePreview, setImagePreview] = useState("");
+
+  const handleUploadFile = (e: any) => {
+    const file = e.target.files[0];
+    const localUrl = URL.createObjectURL(file);
+    console.log(localUrl);
+    setImagePreview(localUrl);
+
+    setFieldValue(field.name, file);
+  };
+  return (
+    <div>
+      <input onChange={(e) => handleUploadFile(e)} type="file" />
+      {imagePreview && (
+        <Image src={imagePreview} alt="preview" width={200} height={200} />
+      )}
+    </div>
+  );
+};
+
 // const dateValue = new Date(value);
 // const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
@@ -75,17 +128,17 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 //   </select>
 // );
 
-export function CreateGenForm() {
+export function CreateFacForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white-80">
-          <FiPlus className="mr-2 h-4 w-4" /> Add Generation
+        <Button className="text-white-80 bg-white border">
+          <FiPlus className="mr-2 h-4 w-4" /> Add Faculty
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+      <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add Generation</DialogTitle>
+          <DialogTitle>Add Faculty</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -120,89 +173,55 @@ export function CreateGenForm() {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
-            // create generation post
-            const GenerationPost: GenerationType = {
-              alias: values.alias,
-              generation: values.generation,
-              startYear: values.startYear,
-              endYear: values.endYear,
+            // create faculty post
+            const FacultyPost: FacultyType = {
+              id: values.id,
+              name: values.name,
+              description: values.description,
+              logo: values.logo,
               status: values.status,
             };
 
             // post product
-            handleSubmit(GenerationPost);
+            handleSubmit(FacultyPost);
           }}
         >
           {({ setFieldValue }) => (
             <Form className="py-4 rounded-lg w-full ">
-              <div className="flex flex-row flex-wrap gap-4">
-                {/* Generation title*/}
-                <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="generation">
+              <div className="flex flex-col gap-4">
+                {/* faculty title*/}
+                <div className={` ${style.inputContainer}`}>
+                  <label className={`${style.label}`} htmlFor="name">
                     Title
                   </label>
                   <Field
                     type="text"
-                    name="generation"
-                    id="generation"
-                    className={`${style.input}`}
+                    placeholder="Faculty of Engineering"
+                    name="name"
+                    id="name"
+                    className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="generation"
+                    name="name"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* Alias */}
+                {/* Faculty Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="alias">
-                    Alias
+                  <label className={`${style.label}`} htmlFor="faculty">
+                    Description
                   </label>
                   <Field
                     type="text"
-                    name="alias"
-                    id="alias"
+                    placeholder="This is main faculty of our academic"
+                    name="faculty"
+                    id="faculty"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="alias"
-                    component="div"
-                    className={`${style.error}`}
-                  />
-                </div>
-
-                {/* start year */}
-                <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="startYear">
-                    Start Year
-                  </label>
-                  <Field
-                    type="date"
-                    name="startYear"
-                    id="startYear"
-                    className={`${style.input}`}
-                  />
-                  <ErrorMessage
-                    name="startYear"
-                    component="div"
-                    className={`${style.error}`}
-                  />
-                </div>
-
-                {/* End year */}
-                <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="endYear">
-                    End Year
-                  </label>
-                  <Field
-                    type="date"
-                    name="endYear"
-                    id="endYear"
-                    className={`${style.input}`}
-                  />
-                  <ErrorMessage
-                    name="endYear"
+                    name="faculty"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -248,11 +267,37 @@ export function CreateGenForm() {
                     className={`${style.error}`}
                   />
                 </div>
+
+                {/* Product Image*/}
+                <div className="mb-4">
+                  <label
+                    htmlFor="logo"
+                    className="block text-sm font-medium text-gray-700 my-2"
+                  >
+                    Faculty Logo
+                  </label>
+                  <Field
+                    type="file"
+                    name="logo"
+                    id="logo"
+                    component={CustomInput}
+                    setFieldValue={setFieldValue}
+                    className="mt-1"
+                  />
+                  <ErrorMessage
+                    name="logo"
+                    component="div"
+                    className="text-red-500 mt-1 text-sm"
+                  />
+                </div>
               </div>
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">
+                <Button
+                  type="submit"
+                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                >
                   Add
                 </Button>
               </DialogFooter>

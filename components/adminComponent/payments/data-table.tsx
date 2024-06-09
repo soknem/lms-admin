@@ -51,6 +51,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { number } from "yup";
+import { CreatePayForm } from "./CreatePayForm";
 
 //custom component import
 
@@ -155,12 +156,47 @@ export function PaymentTable<TData, TValue>({
 
   return (
     <>
+      <section className="w-full h-[192px] bg-white rounded flex items-center gap-9 p-6">
+        <div className="w-[330px] h-[136px] bg-[#ABC3FF] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+          <p className="text-2xl font-medium text-lms-black-90">
+            Earnings this semester
+          </p>
+          <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
+        </div>
+
+        <div className="w-[330px] h-[136px] bg-[#FFD338] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+          <p className="text-2xl font-medium text-lms-black-90">To be paid</p>
+          <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
+        </div>
+
+        <div className="w-[330px] h-[136px] bg-[#18C964] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+          <p className="text-2xl font-medium text-lms-black-90">
+            Earnings this semester
+          </p>
+          <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
+        </div>
+
+        <div className="w-[330px] h-[136px] bg-[#ABC3FF] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+          <p className="text-2xl font-medium text-lms-black-90">
+            Total students
+          </p>
+          <p className="text-4xl font-bold text-lms-primary">150 people</p>
+        </div>
+
+        <div className="w-[330px] h-[136px] bg-[#FFD338] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+          <p className="text-2xl font-medium text-lms-black-90">
+            Students to be paid:
+          </p>
+          <p className="text-4xl font-bold text-[#F5A524]">20 people</p>
+        </div>
+      </section>
+
       {/* Search */}
       <div className="flex items-center justify-between gap-4 ">
         <div className="flex items-center py-4 w-full">
           <div className="flex items-center w-full relative">
             <Input
-              placeholder="Search Student"
+              placeholder="Search Payment"
               value={
                 (table.getColumn("name")?.getFilterValue() as string) ?? ""
               }
@@ -207,6 +243,7 @@ export function PaymentTable<TData, TValue>({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -220,7 +257,7 @@ export function PaymentTable<TData, TValue>({
           <DropdownMenuContent align="end" className="bg-white">
             {table
               .getAllColumns()
-              .filter((column) => column.getCanHide() && column.id !== "generation")
+              .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
                   <DropdownMenuCheckboxItem
@@ -228,7 +265,7 @@ export function PaymentTable<TData, TValue>({
                     className="capitalize focus:bg-background"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
+                      column.toggleVisibility(!!value) 
                     }
                   >
                     {column.id}
@@ -237,10 +274,11 @@ export function PaymentTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <CreatePayForm />
       </div>
 
-      <div className="flex items-center justify-between gap-4 pb-4">
-        {" "}
+      <div className="flex items-center justify-between gap-4">
         {/* filter generation */}
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>
@@ -284,6 +322,90 @@ export function PaymentTable<TData, TValue>({
               </Button>
             )}
           </PopoverContent>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Year
+            </Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Academic Year
+            </Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Degree
+            </Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Faculty
+            </Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Major
+            </Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Class
+            </Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[200px] justify-center bg-white text-gray-30"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
+              Filter By Shift
+            </Button>
+          </PopoverTrigger>
         </Popover>
       </div>
 

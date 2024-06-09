@@ -38,6 +38,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CommandInput } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
+import { CreateAmsForm } from "./CreateAmsForm";
 
 //custom component import
 
@@ -210,6 +211,8 @@ export function AdmissionTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <CreateAmsForm/>
       </div>
 
       {/* Table */}

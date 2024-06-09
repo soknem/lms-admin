@@ -1,22 +1,18 @@
 "use client";
-// import { CardCourseComponent } from "@/components/studentComponent/courses/card/CardCourseComponent";
-import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSubTrigger,
-} from "@/components/ui/dropdown-menu";
+import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { TbFilter } from "react-icons/tb";
 
 export default function Course() {
   const [isFocused, setIsFocused] = useState(false);
   return (
-    <div className="flex flex-col  h-full w-full p-9 gap-4">
-      {/* <h2 className="text-4xl text-primary font-bold">Course</h2> */}
+    <div className="flex flex-col h-full w-full p-9 gap-4">
+      {/* <h2 className="text-4xl text-lms-primary-color font-bold">Course</h2> */}
       {/* student profile banner */}
       <section className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
         <div className="flex flex-col gap-4">
@@ -69,8 +65,8 @@ export default function Course() {
       </section>
 
       {/* search course */}
-      <section className="mt-24 flex items-center justify-center flex-col gap-4">
-        <div className="flex items-start py-4 w-[500px]">
+      <section className="mt-24 flex items-center  flex-col gap-4 justify-between ">
+        <div className="flex items-start py-4 w-[65%] gap-4">
           <div className="flex items-start w-full relative">
             <Input
               placeholder="Search Student"
@@ -84,12 +80,22 @@ export default function Course() {
               </div>
             )}
           </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-[200px] justify-center bg-white text-gray-30"
+              >
+                <TbFilter className="mr-2 h-4 w-4" />
+                Filter By Semester
+              </Button>
+            </PopoverTrigger>
+          </Popover>
         </div>
-        <div className="flex items-center gap-4">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4">
           <CardCourseComponent />
           <CardCourseComponent />
-        </div>
-        <div className="flex items-center gap-4">
           <CardCourseComponent />
           <CardCourseComponent />
         </div>

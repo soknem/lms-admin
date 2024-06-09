@@ -7,33 +7,54 @@ import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { GenerationType } from "@/lib/types/admin/academics";
+import { DegreeType } from "@/lib/types/admin/faculty";
+import { useState } from "react";
+import Image from "next/image";
+import { create } from "domain";
+import { PaymentType } from "@/lib/types/admin/payments";
 
 const initialValues = {
-  alias: "",
-  generation: "",
-  startYear: "",
-  endYear: "",
+  id: 0,
+  receipt_id: 0,
+  student: {
+    name: "",
+    profile_image: "",
+  },
+  gender: "",
+  date: "",
+  discount: 0,
+  total_payment: 0,
+  balance_due: 0,
+  academic_fee: 0,
+  payment_method: "",
   status: "",
+  remark: "",
+  generation: "",
+  year: "",
+  academic: "",
+  degree: "",
+  faculty: "",
+  major: "",
+  class: "",
+  shift: "",
 };
 
 const validationSchema = Yup.object().shape({
-  alias: Yup.string().required("Required"),
-  generation: Yup.string().required("Required"),
-  startYear: Yup.string().required("Required"),
-  EndYear: Yup.number().required("Required"),
+  id: Yup.number(),
+  level: Yup.string(),
+  description: Yup.string(),
+  create_by: Yup.string(),
   status: Yup.string().required("A selection is required"),
 });
 
-const handleSubmit = async (value: GenerationType) => {
-  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
+const handleSubmit = async (value: PaymentType) => {
+  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
   //   method: "POST",
   //   headers: {
   //     "Content-Type": "application/json",
@@ -41,7 +62,7 @@ const handleSubmit = async (value: GenerationType) => {
   //   body: JSON.stringify(value),
   // });
   // const data = await res.json()
-  // console.log("generation upload: ", data)
+  // console.log("degree upload: ", data)
 };
 
 const RadioButton = ({ field, value, label }: any) => {
@@ -61,6 +82,27 @@ const RadioButton = ({ field, value, label }: any) => {
   );
 };
 
+const CustomInput = ({ field, setFieldValue }: any) => {
+  const [imagePreview, setImagePreview] = useState("");
+
+  const handleUploadFile = (e: any) => {
+    const file = e.target.files[0];
+    const localUrl = URL.createObjectURL(file);
+    console.log(localUrl);
+    setImagePreview(localUrl);
+
+    setFieldValue(field.name, file);
+  };
+  return (
+    <div>
+      <input onChange={(e) => handleUploadFile(e)} type="file" />
+      {imagePreview && (
+        <Image src={imagePreview} alt="preview" width={200} height={200} />
+      )}
+    </div>
+  );
+};
+
 // const dateValue = new Date(value);
 // const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
@@ -75,17 +117,12 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 //   </select>
 // );
 
-export function CreateGenForm() {
+export function EditPayForm() {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="text-white-80">
-          <FiPlus className="mr-2 h-4 w-4" /> Add Generation
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+    <Dialog open>
+      <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add Generation</DialogTitle>
+          <DialogTitle>Add Payment</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -120,131 +157,126 @@ export function CreateGenForm() {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
-            // create generation post
-            const GenerationPost: GenerationType = {
-              alias: values.alias,
-              generation: values.generation,
-              startYear: values.startYear,
-              endYear: values.endYear,
+            // create degree post
+            const paymentPost: PaymentType = {
+              receipt_id: values.receipt_id,
+              student: {
+                name: values.student.name,
+                profile_image: values.student.profile_image,
+              },
+              gender: values.gender,
+              date: values.date,
+              discount: values.discount,
+              total_payment: values.total_payment,
+              balance_due: values.balance_due,
+              academic_fee: values.academic_fee,
+              payment_method: values.payment_method,
               status: values.status,
+              remark: values.remark,
+              generation: values.gender,
+              year: values.year,
+              academic: values.academic,
+              degree: values.degree,
+              faculty: values.faculty,
+              major: values.major,
+              class: values.class,
+              shift: values.shift,
+              id: values.id,
             };
 
             // post product
-            handleSubmit(GenerationPost);
+            handleSubmit(paymentPost);
           }}
         >
           {({ setFieldValue }) => (
             <Form className="py-4 rounded-lg w-full ">
-              <div className="flex flex-row flex-wrap gap-4">
-                {/* Generation title*/}
+              <div className="flex flex-col gap-4">
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="generation">
-                    Title
+                  <label className={`${style.label}`} htmlFor="degree">
+                    Academic Fee
                   </label>
                   <Field
                     type="text"
-                    name="generation"
-                    id="generation"
+                    placeholder="$ 700"
+                    name="degree"
+                    id="degree"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="generation"
+                    name="degree"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* Alias */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="alias">
-                    Alias
+                  <label className={`${style.label}`} htmlFor="degree">
+                    Paid Amount
                   </label>
                   <Field
                     type="text"
-                    name="alias"
-                    id="alias"
+                    placeholder="$ 500"
+                    name="degree"
+                    id="degree"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="alias"
+                    name="degree"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* start year */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="startYear">
-                    Start Year
+                  <label className={`${style.label}`} htmlFor="degree">
+                    Paid Date
                   </label>
                   <Field
-                    type="date"
-                    name="startYear"
-                    id="startYear"
+                    type="text"
+                    placeholder="Feb 25, 2023"
+                    name="degree"
+                    id="degree"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="startYear"
+                    name="degree"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* End year */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="endYear">
-                    End Year
+                  <label className={`${style.label}`} htmlFor="degree">
+                    Payment Method
                   </label>
                   <Field
-                    type="date"
-                    name="endYear"
-                    id="endYear"
+                    type="text"
+                    placeholder="Cash Payment"
+                    name="degree"
+                    id="degree"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="endYear"
+                    name="degree"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* status */}
-                <div className={`${style.inputContainer}  `}>
-                  <label className={`${style.label}`} htmlFor="status">
-                    Visibility
+                <div className={`${style.inputContainer}`}>
+                  <label className={`${style.label}`} htmlFor="degree">
+                    Remark
                   </label>
-                  {/* <Field
-                    type="number"
-                    name="status"
-                    id="status"
+                  <Field
+                    type="text"
+                    placeholder="About to be fully paid"
+                    name="degree"
+                    id="degree"
                     className={`${style.input}`}
                   />
-                  */}
-
-                  <div className="flex gap-4 h-[40px] items-center">
-                    <Field
-                      name="status"
-                      component={RadioButton}
-                      value="1"
-                      label="Public"
-                    />
-                    <Field
-                      name="status"
-                      component={RadioButton}
-                      value="2"
-                      label="Draft"
-                    />
-                    <Field
-                      name="status"
-                      component={RadioButton}
-                      value="3"
-                      label="Disable"
-                    />
-                  </div>
-
                   <ErrorMessage
-                    name="status"
-                    component={RadioButton}
+                    name="degree"
+                    component="div"
                     className={`${style.error}`}
                   />
                 </div>
@@ -252,8 +284,11 @@ export function CreateGenForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">
-                  Add
+                <Button
+                  type="submit"
+                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                >
+                  Save Change
                 </Button>
               </DialogFooter>
             </Form>

@@ -37,6 +37,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CommandInput } from "@/components/ui/command";
+import { CreateFacForm } from "./CreateFacForm";
+import { EditFacForm } from "./EditFacForm";
 
 //custom component import
 
@@ -206,6 +208,9 @@ export function FacultyTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Add Faculty */}
+        <CreateFacForm />
       </div>
 
       {/* Table */}

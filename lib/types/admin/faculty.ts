@@ -24,6 +24,8 @@ export type StudyProgramType = {
   degree: string;
   faculty: string;
   status: string;
+  description: string;
+  link: string;
 };
 
 export type SetupStudyProgramType = {
@@ -47,7 +49,7 @@ export type SubjectType = {
   practice: number;
   internship: number;
   description: string;
-  status: boolean;
+  status: string;
 };
 
 export type StatusOption = {

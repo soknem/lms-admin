@@ -36,6 +36,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaSearch } from "react-icons/fa";
+import { CreateSetStuProForm } from "./CreateDeForm";
 
 //custom component import
 
@@ -145,7 +146,6 @@ export function SetupStudyProgramTable<TData, TValue>({
             )}
           </div>
         </div>
-
         {/* Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -174,7 +174,6 @@ export function SetupStudyProgramTable<TData, TValue>({
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -205,6 +204,7 @@ export function SetupStudyProgramTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <CreateSetStuProForm />
       </div>
 
       {/* Table */}

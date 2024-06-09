@@ -35,6 +35,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CreateDeForm } from "./CreateDeForm";
 
 //custom component import
 
@@ -205,6 +206,8 @@ export function DegreeTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
+        {/* Add Degree */}
+        <CreateDeForm />
       </div>
 
       {/* Table */}
