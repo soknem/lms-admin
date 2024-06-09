@@ -5,7 +5,7 @@ export type GenerationType = {
   generation: string;
   startYear: string;
   endYear: string;
-  status: boolean;
+  status: string;
   alias: string;
 };
 
