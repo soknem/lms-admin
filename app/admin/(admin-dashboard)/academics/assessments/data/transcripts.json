@@ -1,0 +1,73 @@
+[
+    {
+      "cardId": "istad-1000",
+      "nameEn": "Alice Johnson",
+      "gender": "Female",
+      "dob": "2001-03-15",
+      "class": "FY2025 - M1",
+      "studyProgram": "Software Engineer",
+      "year": 2025,
+      "semester1": 90,
+      "semester2": 89,
+      "gpa": 3.85,
+      "total": 88,
+      "status": 1
+    },
+    {
+      "cardId": "istad-1001",
+      "nameEn": "Bob Smith",
+      "gender": "Male",
+      "dob": "2000-08-22",
+      "class": "FY2025 - M1",
+      "studyProgram": "Computer Science",
+      "year": 2025,
+      "semester1": 67,
+      "semester2": 50,
+      "gpa": 2.50,
+      "total": 66.50,
+      "status": 1
+    },
+    {
+      "cardId": "istad-1002",
+      "nameEn": "Charlie Brown",
+      "gender": "Male",
+      "dob": "1999-12-05",
+      "class": "FY2024 - A1",
+      "studyProgram": "Software Engineer",
+      "year": 2024,
+      "semester1": 45,
+      "semester2": 60,
+      "gpa": 2.30,
+      "total": 59.80,
+      "status": 2
+    },
+    {
+      "cardId": "istad-1003",
+      "nameEn": "Diana Prince",
+      "gender": "Female",
+      "dob": "2002-05-30",
+      "class": "FY2024 - E1",
+      "studyProgram": "Computer Science",
+      "year": 2024,
+      "semester1": 78,
+      "semester2": 40,
+      "gpa": 2.80,
+      "total": 60,
+      "status": 3
+    },
+    {
+      "cardId": "istad-1004",
+      "nameEn": "Eve Adams",
+      "gender": "Female",
+      "dob": "2003-07-11",
+      "class": "FY2025 - A1",
+      "studyProgram": "Software Engineer",
+      "year": 2025,
+      "semester1": 45,
+      "semester2": 30,
+      "gpa": 1.90,
+      "total": 38.90,
+      "status": 4
+    }
+  ]
+  

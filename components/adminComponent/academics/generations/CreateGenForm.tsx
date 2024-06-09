@@ -81,7 +81,7 @@ export function CreateGenForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='text-lms-white80 bg-lms-primary hover:bg-lms-primary/90'>
+        <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
           <FiPlus className="mr-2 h-4 w-4 " /> Add Generation
         </Button>
       </DialogTrigger>
@@ -268,7 +268,7 @@ export function CreateGenForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
+                <Button type="submit" className="text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
               </DialogFooter>
             </Form>
           )}

@@ -1,6 +1,7 @@
 'use client'
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
+import { MdEdit } from "react-icons/md";
 
 
 import { ColumnDef } from '@tanstack/react-table'
@@ -22,7 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType , TranscriptType } from "@/lib/types/admin/academics";
+import { OptionType , courseAssessmentType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -107,9 +108,49 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
 };
 
+// Dynamic Edit on cell
+const EditCell = ({ row, table }: any) => {
+    const meta = table.options.meta;
+
+    const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
+        const action = e.currentTarget.name;
+
+        meta?.setEditedRows((old: any) => ({
+            ...old,
+            [row.id]: action === "edit" ? true : false,
+        }));
+
+        if (action === "cancel") {
+            meta?.revertData(row.index, true);
+        }
+    };
+
+    return (
+        <div>
+            {meta?.editedRows[row.id] ? (
+                <div className="flex flex-row">
+
+                    <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel" >
+                        <RxCross2 size={20}  className="text-red-500"/>
+                    </button>
+
+                    <button onClick={setEditedRows} name="done"className="bg-green-100 rounded-full p-1" >
+                        <IoCheckmarkSharp size={20} className="text-green-500" />
+                    </button>
+
+                </div>
+            ) : (
+
+                <button onClick={setEditedRows} name="edit">
+                    <MdEdit size={18} className="text-gray-30" />
+                </button>
+            )}
+        </div>
+    );
+};
 
 
-export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
+export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
     {
         accessorKey: 'cardId',
         header: ({ column }) => {
@@ -196,13 +237,13 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'year',
+        accessorKey: 'course',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                 >
-                    YEAR
+                    COURSE
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -211,13 +252,13 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'semester1',
+        accessorKey: 'mitTerm',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                 >
-                    SEMESTER I
+                    MITTERM
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -226,13 +267,13 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'semester2',
+        accessorKey: 'final',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                 >
-                    SEMESTER II
+                    FINAL
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -241,7 +282,67 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'gpa',
+        accessorKey: 'att',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    ATT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'assgmt',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    ASSGT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'mp',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    MP
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'act',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    ACT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'grade',
         header: ({ column }) => {
             return (
                 <Button
@@ -286,6 +387,10 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
         },
         cell: TableCell
 
+    },
+    {
+        id: "edit",
+        cell: EditCell,
     },
 
 ]

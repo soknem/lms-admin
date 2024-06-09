@@ -5,7 +5,7 @@ export type GenerationType = {
   generation: string;
   startYear: string;
   endYear: string;
-  status: string;
+  status: boolean;
   alias: string;
 };
 
@@ -91,4 +91,52 @@ export type LectureType = {
 
 }
 
+export type TranscriptType = {
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  studyProgram: string,
+  year: number,
+  semester1: number,
+  semester2: number,
+  gpa: number,
+  total: number,
+  status: number
+}
 
+export type semesterAssessementType = {
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  subjects: SubjectType[],
+  grade: string,
+  total: number,
+  status: number
+}
+
+export type SubjectType = {
+  subjectName: string,
+  score: number
+};
+
+export type courseAssessmentType = {
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  course: string,
+  mitTerm: number,
+  final: number,
+  att: number,
+  assgmt: number,
+  mp: number,
+  act: number,
+  grade: string,
+  total: number,
+  status: number
+}

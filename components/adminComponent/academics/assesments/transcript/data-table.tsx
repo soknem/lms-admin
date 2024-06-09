@@ -84,7 +84,15 @@ export function TranscriptDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  // const [isFocused, setIsFocused] = useState(false);
+  // filters
+  const [openProgram, setOpenProgram] = useState(false);
+  const [selectedProgram, setSelectedProgram] = React.useState<any>(null);
+
+  const [openYear, setOpenYear] = useState(false);
+  const [selectedYear, setSelectedYear] = React.useState<any>(null);
+
+  const [openSemester, setOpenSemester] = useState(false);
+  const [selectedSemester, setSelectedSemester] = React.useState<any>(null);
 
 
   const router = useRouter();
@@ -99,8 +107,6 @@ export function TranscriptDataTable<TData, TValue>({
       columnFilters,
       columnVisibility
     },
-
-
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -140,6 +146,46 @@ export function TranscriptDataTable<TData, TValue>({
     },
   })
 
+  //reset filter popup
+  const handleReset = (columnId: string) => {
+    if (columnId === 'studyProgram') {
+      setSelectedProgram(null);
+    }
+    if (columnId === 'year') {
+      setSelectedYear(null);
+    }
+    if (columnId === 'semester') {
+      setSelectedSemester(null);
+    }
+    table.getColumn(columnId)?.setFilterValue('');
+    setData([...originalData]);
+  };
+
+  // filter data of study program
+  const FilteredProgram = data.reduce((studyProgram: string[], item: any) => {
+    if (!studyProgram.includes(item.studyProgram)) {
+      studyProgram.push(item.studyProgram);
+    }
+    return studyProgram;
+  }, []);
+
+  // filter data of year
+  const FilteredYear = data.reduce((year: string[], item: any) => {
+    if (!year.includes(item.year)) {
+      year.push(item.year);
+    }
+    return year;
+  }, []);
+
+
+  //filter data of semester
+  const FilteredSemester = data.reduce((semester: string[], item: any) => {
+    if (!semester.includes(item.semester)) {
+      semester.push(item.semester);
+    }
+    return semester;
+  }, []);
+
   return (
     <>
 
@@ -165,10 +211,126 @@ export function TranscriptDataTable<TData, TValue>({
 
         </div>
 
+
+        {/* filter study program */}
+        <Popover open={openProgram} onOpenChange={setOpenProgram}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedProgram ? <>{selectedProgram}</> : <> Filter by Study Program</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Study Program..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredProgram.map((program, index) => (
+                    <CommandItem
+                      key={index}
+                      value={program}
+                      onSelect={(value) => {
+                        setSelectedProgram(value);
+                        table.getColumn('studyProgram')?.setFilterValue(value);
+                        setOpenProgram(false);
+                      }}
+                    >
+                      {program}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedProgram && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgram')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        {/* filter study year */}
+        <Popover open={openYear} onOpenChange={setOpenYear}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedYear ? <>{selectedYear}</> : <> Filter by Year</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Year..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredYear.map((year, index) => (
+                    <CommandItem
+                      key={index}
+                      value={year}
+                      onSelect={(value) => {
+                        setSelectedYear(value);
+                        table.getColumn('year')?.setFilterValue(value);
+                        setOpenYear(false);
+                      }}
+                    >
+                      {year}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedYear && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('year')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        {/* filter semester */}
+        <Popover open={openSemester} onOpenChange={setOpenSemester}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedSemester ? <>{selectedSemester}</> : <> Filter by Semester</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Semester..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredSemester.map((semester, index) => (
+                    <CommandItem
+                      key={index}
+                      value={semester}
+                      onSelect={(value) => {
+                        setSelectedSemester(value);
+                        table.getColumn('semester')?.setFilterValue(value);
+                        setOpenSemester(false);
+                      }}
+                    >
+                      {semester}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedSemester && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('semester')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -192,8 +354,6 @@ export function TranscriptDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* add enrolled student form */}
-        <AddEnrolledStuForm />
 
       </div>
 
@@ -203,47 +363,36 @@ export function TranscriptDataTable<TData, TValue>({
         {/* class detail information */}
         <div className='flex justify-between p-4'>
           <div>
-            <Label className='text-gray-30'>Generation</Label>
+            <Label className='text-lms-gray-30'>Generation</Label>
             <p className='flex font-medium text-black'>Generation 1</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Year</Label>
+            <Label className='text-lms-gray-30'>Year</Label>
             <p className='flex font-medium text-black'>Foundation Year</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Academic Year</Label>
+            <Label className='text-lms-gray-30'>Academic Year</Label>
             <p className='flex font-medium text-black'>2024-2025</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Degree</Label>
+            <Label className='text-lms-gray-30'>Degree</Label>
             <p className='flex font-medium text-black'>Bachelor</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Study Program</Label>
+            <Label className='text-lms-gray-30'>Study Program</Label>
             <p className='flex font-medium text-black'>Software Engineer</p>
           </div>
 
-          <div>
-            <Label className='text-gray-30'>Enrolled Student</Label>
-            <div className='flex gap-2'>
-              <p className='flex text-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-              <p className='flex text-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-              <p className='flex text-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
-            </div>
-
-
-          </div>
+          
         </div>
-
-
 
         <Table>
 
-          <TableHeader className='text-gray-30'>
+          <TableHeader className='text-lms-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
@@ -297,19 +446,34 @@ export function TranscriptDataTable<TData, TValue>({
         </Table>
 
 
-
-
       </div>
 
-      <div className='px-4 w-full flex justify-between items-center'>
+      {/* status Remark */}
+      <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
+          <p className='text-lms-success font-bold '>Status :</p>
+          <div className='flex gap-2 text-gray-500 '>
+            <p className='font-semibold text-lms-success'>Active</p>
+            <p className='khmer-font'>សិស្សកំពុងសិក្សា</p>
+          </div>
+          
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-accent '>Hiatus</p>
+            <p className='khmer-font'>សិស្សព្យួរការសិក្សា</p>
+          </div>
 
-        <div className="text-base text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
-          students
-        </div>
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Drop</p>
+            <p className='khmer-font'>សិស្សបោះបង់ការសិក្សា</p>
+          </div>
+          
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Disable</p>
+            <p className='khmer-font'>សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</p>
+          </div>
+      </div>
 
-        {/* Pagination */}
-        <div className='flex items-center justify-end space-x-2 py-4'>
+      {/* Pagination */}
+      <div className='flex items-center justify-end space-x-2 py-4'>
           <Button
             className='border-gray-30'
             variant='outline'
@@ -329,10 +493,10 @@ export function TranscriptDataTable<TData, TValue>({
             Next
           </Button>
         </div>
-      </div>
-
 
     </>
   )
 }
+
+
 

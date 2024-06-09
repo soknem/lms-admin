@@ -21,6 +21,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow
@@ -35,14 +36,14 @@ import {
 
 import { Input } from '@/components/ui/input'
 
+//custom component import
+import { FaSearch } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button"
 
 import { TbSearch } from "react-icons/tb";
 
 import { useMediaQuery } from "usehooks-ts"
-
-import { FaSearch } from "react-icons/fa";
 import {
   Command,
   CommandEmpty,
@@ -62,9 +63,8 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { CreateLectureForm } from './form/CreateLectureForm'
-import { inspect } from 'util'
-import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
+import { Label } from '@radix-ui/react-dropdown-menu'
+import { AddEnrolledStuForm } from '@/components/adminComponent/academics/classes/enrolledStudents/AddEnrolledStuForm'
 
 
 
@@ -73,7 +73,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function LectureDataTable<TData, TValue>({
+export function CourseAssesmentDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -85,17 +85,17 @@ export function LectureDataTable<TData, TValue>({
   const [editedRows, setEditedRows] = useState({});
 
   // filters
-  const [openIns, setopenIns] = useState(false);
-  const [selectedIns, setselectedIns] = React.useState<any>(null);
-
   const [openClass, setOpenClass] = useState(false);
-  const [selectedClass, setSelectedClass] = React.useState<any>(null);
+  const [selectedClass, setselectedClass] = React.useState<any>(null);
 
   const [openCourse, setOpenCourse] = useState(false);
-  const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
+  const [selectedCourse, setselectedCourse] = React.useState<any>(null);
+
 
 
   const router = useRouter();
+
+
 
   const table = useReactTable({
     data,
@@ -144,48 +144,27 @@ export function LectureDataTable<TData, TValue>({
     },
   })
 
-  // const handleReset = (columnId: string) => {
-  //   setSelectedStatus(null);
-  //   setOpen(false);
-
-  //   table.getColumn(columnId)?.setFilterValue('');
-  //   setData([...originalData]);
-  // };
-
-  //reset popup
+  //reset filter popup
   const handleReset = (columnId: string) => {
-    if (columnId === 'instructor') {
-      setselectedIns(null);
-    }
     if (columnId === 'class') {
-      setSelectedClass(null);
+      setselectedClass(null);
     }
     if (columnId === 'course') {
-      setSelectedCourse(null);
+      setselectedCourse(null);
     }
     table.getColumn(columnId)?.setFilterValue('');
     setData([...originalData]);
   };
 
-
-  // filter data of instructor
-  const FilteredIns = data.reduce((instructor: string[], item: any) => {
-    if (!instructor.includes(item.instructor)) {
-      instructor.push(item.instructor);
+  // filter data of class
+  const FilteredClass = data.reduce((cls: string[], item: any) => {
+    if (!cls.includes(item.class)) {
+      cls.push(item.class);
     }
-    return instructor;
+    return cls;
   }, []);
 
-
-  //filter data of class
-  const FilteredClass = data.reduce((cs: string[], item: any) => {
-    if (!cs.includes(item.class)) {
-      cs.push(item.class);
-    }
-    return cs;
-  }, []);
-
-  //filter data of course
+  // filter data of course
   const FilteredCourse = data.reduce((course: string[], item: any) => {
     if (!course.includes(item.course)) {
       course.push(item.course);
@@ -198,17 +177,17 @@ export function LectureDataTable<TData, TValue>({
   return (
     <>
 
-      <div className='flex items-center justify-between gap-4 '>
+      <div className='flex items-center justify-between gap-4 my-4'>
 
-        {/* Search */}
-        {/* <div className="flex items-center w-full relative">
+        {/* search */}
+        <div className="flex items-center w-full relative">
           <Input
-            placeholder="Search by class...."
+            placeholder="Search Student Fullname(EN)"
             value={
-              (table.getColumn("className")?.getFilterValue() as string) ?? ""
+              (table.getColumn("nameEn")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("className")?.setFilterValue(event.target.value)
+              table.getColumn("nameEn")?.setFilterValue(event.target.value)
             }
 
             className="border-[#E6E6E6] bg-white pl-10 "
@@ -218,75 +197,36 @@ export function LectureDataTable<TData, TValue>({
             <FaSearch className="text-gray-400" />
           </div>
 
-        </div> */}
+        </div>
 
-        <DatePickerWithRange/>
 
-        {/* filter Instructor */}
-        <Popover open={openIns} onOpenChange={setopenIns}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
-              <TbFilter className='mr-2 h-4 w-4' />
-              {selectedIns ? <>{selectedIns}</> : <> Filter Instructor</>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
-            <Command>
-              <CommandInput
-                placeholder="Filter Instructor..." />
-
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup>
-                  {FilteredIns.map((ins, index) => (
-                    <CommandItem
-                      key={index}
-                      value={ins}
-                      onSelect={(value) => {
-                        setselectedIns(value);
-                        table.getColumn('instructor')?.setFilterValue(value);
-                        setopenIns(false);
-                      }}
-                    >
-                      {ins}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-            {selectedIns && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructor')}>Reset</Button>
-            )}
-          </PopoverContent>
-        </Popover>
-
-        {/* filter class */}
+        {/* filter Class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
+              {selectedClass ? <>{selectedClass}</> : <> Filter by Class</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter class..." />
+                placeholder="Filter Class..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {FilteredClass.map((cs, index) => (
+                  {FilteredClass.map((cls, index) => (
                     <CommandItem
                       key={index}
-                      value={cs}
+                      value={cls}
                       onSelect={(value) => {
-                        setSelectedClass(value);
+                        setselectedClass(value);
                         table.getColumn('class')?.setFilterValue(value);
                         setOpenClass(false);
                       }}
                     >
-                      {cs}
+                      {cls}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -298,18 +238,18 @@ export function LectureDataTable<TData, TValue>({
           </PopoverContent>
         </Popover>
 
-        {/* filter course */}
+        {/* filter study course */}
         <Popover open={openCourse} onOpenChange={setOpenCourse}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
+              {selectedCourse ? <>{selectedCourse}</> : <> Filter by course</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter Course..." />
+                placeholder="Filter course..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -319,8 +259,8 @@ export function LectureDataTable<TData, TValue>({
                       key={index}
                       value={course}
                       onSelect={(value) => {
-                        setSelectedCourse(value);
-                        table.getColumn('class')?.setFilterValue(value);
+                        setselectedCourse(value);
+                        table.getColumn('course')?.setFilterValue(value);
                         setOpenCourse(false);
                       }}
                     >
@@ -331,15 +271,18 @@ export function LectureDataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedCourse && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset('course')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('course')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
 
+        
+
+
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -363,14 +306,54 @@ export function LectureDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Create class form */}
-        <CreateLectureForm />
 
       </div>
 
       {/* Table */}
       <div className='rounded-md p-4 bg-white'>
+
+        {/* class detail information */}
+        <div className='flex justify-between p-4'>
+          <div>
+            <Label className='text-lms-gray-30'>Generation</Label>
+            <p className='flex font-medium text-black'>Generation 1</p>
+          </div>
+
+          <div>
+            <Label className='text-lms-gray-30'>Year</Label>
+            <p className='flex font-medium text-black'>Foundation Year</p>
+          </div>
+
+          <div>
+            <Label className='text-lms-gray-30'>Academic Year</Label>
+            <p className='flex font-medium text-black'>2024-2025</p>
+          </div>
+
+          <div>
+            <Label className='text-lms-gray-30'>Degree</Label>
+            <p className='flex font-medium text-black'>Bachelor</p>
+          </div>
+
+          <div>
+            <Label className='text-lms-gray-30'>Study Program</Label>
+            <p className='flex font-medium text-black'>Software Engineer</p>
+          </div>
+
+          <div>
+            <Label className='text-lms-gray-30'>Class</Label>
+            <p className='flex font-medium text-black'>FY2025 - A3</p>
+          </div>
+
+          <div>
+            <Label className='text-lms-gray-30'>Course</Label>
+            <p className='flex font-medium text-black'>Introduction To IT</p>
+          </div>
+
+          
+        </div>
+
         <Table>
+
           <TableHeader className='text-lms-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
@@ -394,9 +377,9 @@ export function LectureDataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
-                
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -420,34 +403,61 @@ export function LectureDataTable<TData, TValue>({
             )}
           </TableBody>
 
+
+
         </Table>
+
+
+      </div>
+
+      {/* status Remark */}
+      <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
+          <p className='text-lms-success font-bold '>Status :</p>
+          <div className='flex gap-2 text-gray-500 '>
+            <p className='font-semibold text-lms-success'>Active</p>
+            <p className='khmer-font'>សិស្សកំពុងសិក្សា</p>
+          </div>
+          
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-accent '>Hiatus</p>
+            <p className='khmer-font'>សិស្សព្យួរការសិក្សា</p>
+          </div>
+
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Drop</p>
+            <p className='khmer-font'>សិស្សបោះបង់ការសិក្សា</p>
+          </div>
+          
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Disable</p>
+            <p className='khmer-font'>សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</p>
+          </div>
       </div>
 
       {/* Pagination */}
       <div className='flex items-center justify-end space-x-2 py-4'>
-
-        <Button
-          className='border-gray-30'
-          variant='outline'
-          size='sm'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          className='border-gray-30 '
-          variant='outline'
-          size='sm'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
-
+          <Button
+            className='border-gray-30'
+            variant='outline'
+            size='sm'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            className='border-gray-30 '
+            variant='outline'
+            size='sm'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
 
     </>
   )
 }
+
 

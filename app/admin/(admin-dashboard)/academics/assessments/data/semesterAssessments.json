@@ -1,0 +1,88 @@
+[
+    {
+      "cardId": "istad-1000",
+      "nameEn": "Alice Johnson",
+      "gender": "Female",
+      "dob": "2001-03-15",
+      "class": "FY2025 - M1",
+      "subjects": [
+        {"subjectName": "Introduction to IT", "score": 85},
+        {"subjectName": "Programming Fundamental", "score": 92},
+        {"subjectName": "Intensive English Program I", "score": 88},
+        {"subjectName": "Academic Skill Development", "score": 90},
+        {"subjectName": "Mathematics I", "score": 95}
+      ],
+      "grade": "A",
+      "total": 450,
+      "status": 1
+    },
+    {
+      "cardId": "istad-1001",
+      "nameEn": "Bob Smith",
+      "gender": "Male",
+      "dob": "2000-08-22",
+      "class": "FY2025 - M1",
+      "subjects": [
+        {"subjectName": "Introduction to IT", "score": 70},
+        {"subjectName": "Programming Fundamental", "score": 65},
+        {"subjectName": "Intensive English Program I", "score": 75},
+        {"subjectName": "Academic Skill Development", "score": 60},
+        {"subjectName": "Mathematics I", "score": 68}
+      ],
+      "grade": "C",
+      "total": 338,
+      "status": 1
+    },
+    {
+      "cardId": "istad-1002",
+      "nameEn": "Charlie Brown",
+      "gender": "Male",
+      "dob": "1999-12-05",
+      "class": "FY2024 - A1",
+      "subjects": [
+        {"subjectName": "Introduction to IT", "score": 50},
+        {"subjectName": "Programming Fundamental", "score": 55},
+        {"subjectName": "Intensive English Program I", "score": 60},
+        {"subjectName": "Academic Skill Development", "score": 58},
+        {"subjectName": "Mathematics I", "score": 62}
+      ],
+      "grade": "D",
+      "total": 285,
+      "status": 2
+    },
+    {
+      "cardId": "istad-1003",
+      "nameEn": "Diana Prince",
+      "gender": "Female",
+      "dob": "2002-05-30",
+      "class": "FY2024 - E1",
+      "subjects": [
+        {"subjectName": "Introduction to IT", "score": 80},
+        {"subjectName": "Programming Fundamental", "score": 75},
+        {"subjectName": "Intensive English Program I", "score": 85},
+        {"subjectName": "Academic Skill Development", "score": 70},
+        {"subjectName": "Mathematics I", "score": 78}
+      ],
+      "grade": "B",
+      "total": 388,
+      "status": 3
+    },
+    {
+      "cardId": "istad-1004",
+      "nameEn": "Eve Adams",
+      "gender": "Female",
+      "dob": "2003-07-11",
+      "class": "FY2025 - A1",
+      "subjects": [
+        {"subjectName": "Introduction to IT", "score": 45},
+        {"subjectName": "Programming Fundamental", "score": 55},
+        {"subjectName": "Intensive English Program I", "score": 50},
+        {"subjectName": "Academic Skill Development", "score": 48},
+        {"subjectName": "Mathematics I", "score": 52}
+      ],
+      "grade": "F",
+      "total": 250,
+      "status": 4
+    }
+  ]
+  
