@@ -1,8 +1,6 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getSetupStudyProgram } from "@/lib/endpoints/MokApi";
-import { SetupStudyProgramTable } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/data-table";
-import { setupStudyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/columns";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,6 +9,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { SetupStudyProgramTable } from "@/components/adminComponent/faculties/studygrogram/setup-studyprogram/data-table";
+import { setupStudyProgramColumns } from "@/components/adminComponent/faculties/studygrogram/setup-studyprogram/columns";
 
 export default async function page() {
   const setStudy = await getSetupStudyProgram();

@@ -1,4 +1,4 @@
-import AchievementTable from "@/components/studentcomponent/achievements/AchievementComponent";
+import AchievementTable from "@/components/studentComponent/achievements/AchievementComponent";
 import React from "react";
 import { FaBook } from "react-icons/fa6";
 const labelsTitle = [

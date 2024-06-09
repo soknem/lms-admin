@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
+import { CardCourseComponent } from "@/components/studentComponent/courses/card/CardCourseComponent";
 import {
   DropdownMenu,
   DropdownMenuContent,

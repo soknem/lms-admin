@@ -1,7 +1,7 @@
 import ClassComponent from "@/components/instructorComponent/reports/attendence/ClassComponent";
 import CourseComponent from "@/components/instructorComponent/reports/attendence/CourseComponent";
 import { DateComponent } from "@/components/instructorComponent/reports/attendence/DateComponent";
-import { DateEndComponent } from "@/components/instructorComponent/reports/attendence/DateEndComponent copy";
+import { DateEndComponent } from "@/components/instructorComponent/reports/attendence/DateEndComponent";
 import SemesterComponent from "@/components/instructorComponent/reports/attendence/SemesterComponent";
 import React from "react";
 import { AttendenceTable,  } from "@/components/instructorComponent/reports/attendence/data-table";
