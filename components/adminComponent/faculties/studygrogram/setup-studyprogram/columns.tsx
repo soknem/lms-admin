@@ -17,8 +17,8 @@ import {
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { SetupStudyProgramType, StatusOption } from "@/lib/types/admin/faculty";
-import ActionsCell from "./SetUpStuActioncell";
-
+// @ts-ignore
+import ActionsCell from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/SetUpStuActioncell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();

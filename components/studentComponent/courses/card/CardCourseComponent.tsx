@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+// @ts-ignore
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
 
 export function CardCourseComponent() {

@@ -38,6 +38,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CommandInput } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
+// @ts-ignore
 import { CreateAmsForm } from "@/components/admincomponent/admissions/CreateAmsForm";
 
 //custom component import

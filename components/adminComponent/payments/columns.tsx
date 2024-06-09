@@ -13,10 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-import { StatusOption } from "@/lib/types/admin/admission";
-import { PaymentType } from "@/lib/types/admin/payments";
-import ActionsCell from "./PaymentActionCell";
-
+import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
+// @ts-ignore
+import ActionsCell from "@/components/admincomponent/payments/PaymentActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();

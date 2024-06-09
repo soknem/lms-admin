@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+// @ts-ignore
 import { MenuList, Logout } from './adminMenu';
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";

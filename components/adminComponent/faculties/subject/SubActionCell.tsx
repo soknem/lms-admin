@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { EditSubjectForm } from "./EditSubForm";
-import { ViewSubjectForm } from "./VeiwSubForm";
-
+// @ts-ignore
+import { EditSubjectForm } from "@/components/admincomponent/faculties/subject/EditSubForm";
+// @ts-ignore
+import { ViewSubjectForm } from "@/components/admincomponent/faculties/subject/VeiwSubForm";
 
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);

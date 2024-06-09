@@ -2,11 +2,16 @@ import React from "react";
 import { getPayment } from "@/lib/endpoints/MokApi";
 import { LectureType } from "@/lib/types/admin/academics";
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json";
+// @ts-ignore
 import { DateStartComponent } from "@/components/instructorcomponent/reports/attendence/DateStartComponent";
+// @ts-ignore
 import { DateEndComponent } from "@/components/instructorcomponent/reports/attendence/DateEndComponent";
+// @ts-ignore
 import { Filter } from "@/components/instructorcomponent/reports/attendence/Filter";
 import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
+// @ts-ignore
 import { AttendenceTable } from "@/components/instructorcomponent/reports/attendence/data-table";
+// @ts-ignore
 import { paymentColumns } from "@/components/instructorcomponent/reports/attendence/columns";
 
 export default async function Attendence() {

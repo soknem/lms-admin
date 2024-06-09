@@ -6,18 +6,12 @@ import { MdEdit } from "react-icons/md";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
-import ActionsCell from "./SubActionCell";
+//. @ts-ignore
+import ActionsCell from "@/components/adminComponent/faculties/subject/SubActionCell";
+
+
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();

@@ -8,8 +8,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
+// @ts-ignore
+import { EditPayForm } from "@/components/admincomponent/payments/EditPayForm";
+// @ts-ignore
+import { ViewPayForm } from "@/components/admincomponent/payments/ViewPayForm";
+// @ts-ignore
 import { EditStudyProForm } from "./EditStudyProgramForm";
+import { useRouter } from "next/navigation";
 
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);

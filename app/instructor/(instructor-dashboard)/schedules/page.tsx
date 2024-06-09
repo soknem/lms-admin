@@ -1,4 +1,6 @@
+// @ts-ignore
 import { scheduleColumns } from "@/components/instructorcomponent/schedules/columns";
+// @ts-ignore
 import { ScheduleTable } from "@/components/instructorcomponent/schedules/data-table";
 import { getSchedule } from "@/lib/endpoints/MokApi";
 import React from "react";

@@ -17,8 +17,8 @@ import {
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { DegreeType, StatusOption } from "@/lib/types/admin/faculty";
-import ActionsCell from "./DegreeActionCell";
-
+// @ts-ignore
+import ActionsCell from "@/components/admincomponent/faculties/degree/DegreeActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();

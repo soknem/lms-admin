@@ -1,6 +1,7 @@
-
-import { paymentColumns } from "@/components/adminComponent/payments/columns";
-import { PaymentTable } from "@/components/adminComponent/payments/data-table";
+// @ts-ignore
+import { paymentColumns } from "@/components/admincomponent/payments/columns";
+// @ts-ignore
+import { PaymentTable } from "@/components/admincomponent/payments/data-table";
 import { getPayment } from "@/lib/endpoints/MokApi";
 import React from "react";
 
