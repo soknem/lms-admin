@@ -239,7 +239,7 @@ export function AdmissionTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="hover:bg-background cursor-pointer"
+                  className="hover:bg-lms-background cursor-pointer"
                   onClick={() => router.push(`/admin/admissions/student-admission`)}
                 >
                   {row.getVisibleCells().map((cell) => (

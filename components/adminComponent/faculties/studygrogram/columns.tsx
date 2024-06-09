@@ -4,7 +4,7 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,6 +21,7 @@ import {
   StatusOption,
   StudyProgramType,
 } from "@/lib/types/admin/faculty";
+import { useRouter } from "next/navigation";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -224,7 +225,11 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const faculty = row.original;
+      const study_program = row.original;
+      // const handleClick = (event: MouseEvent<HTMLDivElement>, path: string) => {
+      //   event.stopPropagation();
+      //   router.push(path);
+      // };
 
       return (
         <DropdownMenu>
@@ -238,7 +243,7 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               className="focus:bg-background"
-              onClick={() => navigator.clipboard.writeText(faculty.id)}
+              onClick={() => navigator.clipboard.writeText(study_program.id)}
             >
               Copy ID
             </DropdownMenuItem>
@@ -246,9 +251,19 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
             <DropdownMenuItem className="focus:bg-background">
               Sort
             </DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-background">
-              View
-            </DropdownMenuItem>
+            {/* <Link href={`/admin/faculties/studyprogram-detail`}> */}
+              <DropdownMenuItem
+                className="focus:bg-background"
+                // onClick={(event) =>
+                //   handleClick(event, `/admin/faculties/studyprogram-detail`)
+                // }
+                onClick={(event: MouseEvent<HTMLDivElement>) => {
+                  event.stopPropagation();
+                }}
+              >
+                View
+              </DropdownMenuItem>
+            {/* </Link> */}
             <DropdownMenuItem className="focus:bg-background">
               Edit
             </DropdownMenuItem>

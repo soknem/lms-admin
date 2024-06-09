@@ -1,9 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
-
-//import from shad cn
 import {
   ColumnDef,
   flexRender,
@@ -15,7 +13,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable
-} from '@tanstack/react-table'
+} from '@tanstack/react-table';
 
 import {
   Table,
@@ -24,18 +22,17 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@/components/ui/table'
+} from '@/components/ui/table';
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu';
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { CreateGenForm } from '@/components/admincomponent/academics/CreateGenForm'
 
 //custom component import
 
@@ -45,15 +42,13 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
+  
   columns,
   data
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [allData, setData] = useState(() => [...data]);
-  const [originalData, setOriginalData] = useState(() => [...data]);
-  const [editedRows, setEditedRows] = useState({});
 
   const table = useReactTable({
     data,
@@ -69,63 +64,32 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    meta: {
-      editedRows,
-      setEditedRows,
-      revertData: (rowIndex: number, revert: boolean) => {
-        if (revert) {
-          setData((old) =>
-            old.map((row, index) =>
-              index === rowIndex ? originalData[rowIndex] : row
-            )
-          );
-        } else {
-          setOriginalData((old) =>
-            old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
-          );
-        }
-      },
-      updateData: (rowIndex: number, columnId: string, value: string) => {
-        setData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex],
-                [columnId]: value,
-              };
-            }
-            return row;
-          })
-        );
-      },
-    },
-  })
+    getPaginationRowModel: getPaginationRowModel()
+  });
 
   return (
     <>
-      {/* Search */}
-      <div className='flex items-center justify-between gap-4 '>
-        <div className='flex items-center py-4 w-full'>
+      {/* Filters */}
+      <div className='flex items-center justify-between'>
+        {/* <div className='flex items-center py-4'>
           <Input
-            placeholder='Search by generation...'
-            value={(table.getColumn('generation')?.getFilterValue() as string) ?? ''}
+            placeholder='Search by name...'
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={event =>
-              table.getColumn('generation')?.setFilterValue(event.target.value)
+              table.getColumn('name')?.setFilterValue(event.target.value)
             }
-            className='border-[#E6E6E6] bg-white '
+            className='max-w-sm'
           />
-        </div>
-
+        </div> */}
 
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto'>
+            {/* <Button variant='outline' className='ml-auto'>
               Columns
-            </Button>
+            </Button> */}
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='bg-white'>
+          <DropdownMenuContent align='end'>
             {table
               .getAllColumns()
               .filter(column => column.getCanHide())
@@ -133,39 +97,35 @@ export function DataTable<TData, TValue>({
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className='capitalize focus:bg-background'
+                    className='capitalize'
                     checked={column.getIsVisible()}
                     onCheckedChange={value => column.toggleVisibility(!!value)}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-
-     
-
-        <CreateGenForm/>
       </div>
 
       {/* Table */}
-      <div className='w-full rounded-md p-4 bg-white'>
+      <div className='p-5  mx-[20px]'>
         <Table>
-          <TableHeader className='text-gray-30'>
+          <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className=" px-4 py-4">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -178,7 +138,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id} >
+                    <TableCell key={cell.id} className=" px-4 py-4">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -191,7 +151,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center '
+                  className='h-24 text-center'
                 >
                   No results.
                 </TableCell>
@@ -201,27 +161,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Pagination */}
-      <div className='flex items-center justify-end space-x-2 py-4'>
-        <Button
-          className='border-gray-30'
-          variant='outline'
-          size='sm'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          className='border-gray-30 '
-          variant='outline'
-          size='sm'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
+      
     </>
-  )
+  );
 }

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
 import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
 import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
+import ReportSidebar from "@/components/instructorComponent/reports/timesheet/sidebar/ReportSidebarComponent";
 import { ThemeProvider } from "@/components/ui/themeProvider";
 
 

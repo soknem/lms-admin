@@ -24,7 +24,7 @@ export function CustomErrorMessageEmail({ errors, touched, fieldName }: CustomEr
 
 
             toast({
-                variant: "red",
+                variant: "default",
                 title: "Validation Email Error",
                 description: errorMessage,
             });

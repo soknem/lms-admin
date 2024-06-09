@@ -22,6 +22,7 @@ export default async function Materials() {
         </TabsList>
         <TabsContent value="curriculum">
           <CurriculumTable columns={curriculumColumns} data={curData} />
+
         </TabsContent>
         <TabsContent value="slide">
           <CurriculumTable columns={slideColumns} data={slideData} />

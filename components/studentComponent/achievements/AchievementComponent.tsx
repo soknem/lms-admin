@@ -33,49 +33,49 @@ const data: Transcript[] = [
     grade: "A",
   },
   {
-    courseId: "001",
-    courseTitle: "Web Design",
+    courseId: "002",
+    courseTitle: "C++ Programming",
     score: 100,
     credit: 4,
     grade: "A",
   },
   {
-    courseId: "001",
-    courseTitle: "Web Design",
+    courseId: "003",
+    courseTitle: "Spring Framework",
     score: 100,
     credit: 4,
     grade: "A",
   },
   {
-    courseId: "001",
-    courseTitle: "Web Design",
+    courseId: "004",
+    courseTitle: "Java Programming",
     score: 100,
     credit: 4,
     grade: "A",
   },
   {
-    courseId: "001",
-    courseTitle: "Web Design",
+    courseId: "005",
+    courseTitle: "Java Programming",
     score: 100,
     credit: 4,
     grade: "A",
   },
   {
-    courseId: "001",
-    courseTitle: "Web Design",
+    courseId: "006",
+    courseTitle: "Java Programming",
     score: 100,
     credit: 4,
     grade: "A",
   },
   {
-    courseId: "001",
-    courseTitle: "Web Design",
+    courseId: "007",
+    courseTitle: "Java Programming",
     score: 100,
     credit: 4,
     grade: "A",
   },
   {
-    courseId: "001",
+    courseId: "008",
     courseTitle: "Web Design",
     score: 100,
     credit: 4,
@@ -98,7 +98,9 @@ export const columns: ColumnDef<Transcript>[] = [
     accessorKey: "courseId",
     header: "Course ID",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("courseId")}</div>
+      <div className="capitalize text-[#7828C8]">
+        {row.getValue("courseId")}
+      </div>
     ),
   },
 
@@ -126,13 +128,15 @@ export const columns: ColumnDef<Transcript>[] = [
     cell: ({ row }) => (
       <div className="capitalize">{parseFloat(row.getValue("credit"))}</div>
     ),
-    },
-  
+  },
+
   {
     accessorKey: "grade",
     header: "Grade",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("grade")}</div>
+      <div className="capitalize text-red-500 font-bold">
+        {row.getValue("grade")}
+      </div>
     ),
   },
 ];
@@ -166,58 +170,286 @@ export default function AchievementTable() {
   });
 
   return (
-    <div>
-      <div className="rounded-md">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+    <div className="grid grid-cols-2 gap-x-6 gap-y-9">
+      <section className="flex flex-col gap-6">
+        <div className="flex gap-8 ">
+          <h1 className="text-xl font-semibold">First Year</h1>
+          <h1 className="text-xl font-semibold">Semester 1</h1>
+        </div>
+        <div className="rounded-[10px] border-2 border-[#D4D4D8] p-8">
+          <Table>
+            <TableHeader className="bg-lms-transcript-header rounded-[10px]">
+              {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  key={headerGroup.id}
+                  className="bg-lms-transcript-header border-none"
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className="border-none text-center"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    className="border-none text-center"
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="py-3 px-10">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex gap-6 ">
+          <h1 className="text-sm text-lms-primary font-medium">Total Course : 8</h1>
+          <h1 className="text-sm text-lms-primary font-medium">GPA : 4.0 </h1>
+          <h1 className="text-sm text-lms-primary font-medium">Credit:32</h1>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <div className="flex gap-8 ">
+          <h1 className="text-xl font-semibold">First Year</h1>
+          <h1 className="text-xl font-semibold">Semester 1</h1>
+        </div>
+        <div className="rounded-[10px] border-2 border-[#D4D4D8] p-8">
+          <Table>
+            <TableHeader className="bg-lms-transcript-header rounded-[10px]">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="bg-lms-transcript-header border-none"
                 >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className="border-none text-center"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    className="border-none text-center"
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="py-3 px-10">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex gap-6 ">
+          <h1 className="text-sm text-lms-primary font-medium">Total Course : 8</h1>
+          <h1 className="text-sm text-lms-primary font-medium">GPA : 4.0 </h1>
+          <h1 className="text-sm text-lms-primary font-medium">Credit:32</h1>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <div className="flex gap-8 ">
+          <h1 className="text-xl font-semibold">First Year</h1>
+          <h1 className="text-xl font-semibold">Semester 1</h1>
+        </div>
+        <div className="rounded-[10px] border-2 border-[#D4D4D8] p-8">
+          <Table>
+            <TableHeader className="bg-lms-transcript-header rounded-[10px]">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="bg-lms-transcript-header border-none"
+                >
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className="border-none text-center"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    className="border-none text-center"
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="py-3 px-10">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex gap-6 ">
+          <h1 className="text-sm text-lms-primary font-medium">Total Course : 8</h1>
+          <h1 className="text-sm text-lms-primary font-medium">GPA : 4.0 </h1>
+          <h1 className="text-sm text-lms-primary font-medium">Credit:32</h1>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <div className="flex gap-8 ">
+          <h1 className="text-xl font-semibold">First Year</h1>
+          <h1 className="text-xl font-semibold">Semester 1</h1>
+        </div>
+        <div className="rounded-[10px] border-2 border-[#D4D4D8] p-8">
+          <Table>
+            <TableHeader className="bg-lms-transcript-header rounded-[10px]">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="bg-lms-transcript-header border-none"
+                >
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className="border-none text-center"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    className="border-none text-center"
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="py-3 px-10">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex gap-6 ">
+          <h1 className="text-sm text-lms-primary font-medium">Total Course : 8</h1>
+          <h1 className="text-sm text-lms-primary font-medium">GPA : 4.0 </h1>
+          <h1 className="text-sm text-lms-primary font-medium">Credit:32</h1>
+        </div>
+      </section>
     </div>
   );
 }

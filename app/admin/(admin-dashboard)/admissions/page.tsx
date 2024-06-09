@@ -1,5 +1,5 @@
-import { admissionColumns } from "@/components/admincomponent/admissions/columns";
-import { AdmissionTable } from "@/components/admincomponent/admissions/data-table";
+import { admissionColumns } from "@/components/adminComponent/admissions/columns";
+import { AdmissionTable } from "@/components/adminComponent/admissions/data-table";
 import { getAdmission } from "@/lib/endpoints/MokApi";
 import React from "react";
 

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-
+import "@/app/globals.css";
 
 //import from shad cn
 import {
@@ -62,7 +62,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { CreateClassForm } from '../CreateClassForm'
+import { CreateClassForm } from '@/components/adminComponent/academics/classes/CreateClassForm'
 
 
 

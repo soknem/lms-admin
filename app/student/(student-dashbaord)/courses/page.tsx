@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
+import { CardCourseComponent } from "@/components/studentComponent/courses/card/CardCourseComponent";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -84,11 +84,10 @@ export default function Course() {
             )}
           </div>
         </div>
-        <div className="flex items-center gap-4">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4">
           <CardCourseComponent />
           <CardCourseComponent />
-        </div>
-        <div className="flex items-center gap-4">
           <CardCourseComponent />
           <CardCourseComponent />
         </div>
