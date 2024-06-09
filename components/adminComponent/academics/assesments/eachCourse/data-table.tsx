@@ -378,7 +378,7 @@ export function CourseAssesmentDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-
+                  className='hover:bg-gray-50'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >

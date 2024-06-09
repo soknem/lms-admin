@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import "@/app/globals.css";
 
 //import from shad cn
@@ -14,8 +14,8 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+  useReactTable
+} from '@tanstack/react-table'
 
 import {
   Table,
@@ -23,23 +23,24 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  TableRow
+} from '@/components/ui/table'
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input'
 
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@/components/ui/button"
 
 import { TbSearch } from "react-icons/tb";
 
-import { useMediaQuery } from "usehooks-ts";
+import { useMediaQuery } from "usehooks-ts"
 
 import { FaSearch } from "react-icons/fa";
 import {
@@ -49,33 +50,35 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 
 import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
-import { useRouter } from "next/navigation";
-import { CreateClassForm } from "./CreateClassForm";
+import { useRouter } from 'next/navigation'
+import { CreateClassForm } from '@/components/adminComponent/academics/classes/CreateClassForm'
+
+
 
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  data
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
@@ -91,6 +94,7 @@ export function DataTable<TData, TValue>({
   //   null
   // )
 
+
   const router = useRouter();
 
   const table = useReactTable({
@@ -99,8 +103,9 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      columnVisibility,
+      columnVisibility
     },
+
 
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -139,7 +144,7 @@ export function DataTable<TData, TValue>({
         );
       },
     },
-  });
+  })
 
   // const handleReset = (columnId: string) => {
   //   setSelectedStatus(null);
@@ -151,15 +156,16 @@ export function DataTable<TData, TValue>({
 
   //reset popup
   const handleReset = (columnId: string) => {
-    if (columnId === "generationAlias") {
+    if (columnId === 'generationAlias') {
       setSelectedGen(null);
     }
-    if (columnId === "studyProgramAlias") {
+    if (columnId === 'studyProgramAlias') {
       setSelectedClass(null);
     }
-    table.getColumn(columnId)?.setFilterValue("");
+    table.getColumn(columnId)?.setFilterValue('');
     setData([...originalData]);
   };
+
 
   // filter data of generation
   const FilteredGen = data.reduce((generationAlias: string[], item: any) => {
@@ -169,20 +175,21 @@ export function DataTable<TData, TValue>({
     return generationAlias;
   }, []);
 
+
   // filter data of study program
-  const FilteredProgram = data.reduce(
-    (studyProgramAlias: string[], item: any) => {
-      if (!studyProgramAlias.includes(item.studyProgramAlias)) {
-        studyProgramAlias.push(item.studyProgramAlias);
-      }
-      return studyProgramAlias;
-    },
-    []
-  );
+  const FilteredProgram = data.reduce((studyProgramAlias: string[], item: any) => {
+    if (!studyProgramAlias.includes(item.studyProgramAlias)) {
+      studyProgramAlias.push(item.studyProgramAlias);
+    }
+    return studyProgramAlias;
+  }, []);
+
 
   return (
     <>
-      <div className="flex items-center justify-between gap-4 ">
+
+      <div className='flex items-center justify-between gap-4 my-2 '>
+
         {/* Search */}
         <div className="flex items-center w-full relative">
           <Input
@@ -193,28 +200,29 @@ export function DataTable<TData, TValue>({
             onChange={(event) =>
               table.getColumn("className")?.setFilterValue(event.target.value)
             }
+
             className="border-[#E6E6E6] bg-white pl-10 "
           />
 
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FaSearch className="text-gray-400" />
           </div>
+
         </div>
+
 
         {/* filter generation */}
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
               {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
-              <CommandInput placeholder="Filter Generation..." />
+              <CommandInput
+                placeholder="Filter Generation..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -225,9 +233,7 @@ export function DataTable<TData, TValue>({
                       value={generation}
                       onSelect={(value) => {
                         setSelectedGen(value);
-                        table
-                          .getColumn("generationAlias")
-                          ?.setFilterValue(value);
+                        table.getColumn('generationAlias')?.setFilterValue(value);
                         setOpenGeneration(false);
                       }}
                     >
@@ -238,12 +244,7 @@ export function DataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedGen && (
-              <Button
-                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
-                onClick={() => handleReset("generationAlias")}
-              >
-                Reset
-              </Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generationAlias')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -251,21 +252,15 @@ export function DataTable<TData, TValue>({
         {/* filter study program */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
-              {selectedClass ? (
-                <>{selectedClass}</>
-              ) : (
-                <> Filter by study program</>
-              )}
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedClass ? <>{selectedClass}</> : <> Filter by study program</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
-              <CommandInput placeholder="Filter Study Program..." />
+              <CommandInput
+                placeholder="Filter Study Program..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -276,9 +271,7 @@ export function DataTable<TData, TValue>({
                       value={program}
                       onSelect={(value) => {
                         setSelectedClass(value);
-                        table
-                          .getColumn("studyProgramAlias")
-                          ?.setFilterValue(value);
+                        table.getColumn('studyProgramAlias')?.setFilterValue(value);
                         setOpenClass(false);
                       }}
                     >
@@ -289,12 +282,7 @@ export function DataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedClass && (
-              <Button
-                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
-                onClick={() => handleReset("studyProgramAlias")}
-              >
-                Reset
-              </Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgramAlias')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -302,56 +290,52 @@ export function DataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto text-lms-gray-30 hover:bg-white/60 "
-            >
-              <TbAdjustmentsHorizontal className="mr-2 h-4 w-4" />
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30 hover:bg-white/60 '>
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white ">
+          <DropdownMenuContent align='end' className='bg-white '>
             {table
               .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
+              .filter(column => column.getCanHide())
+              .map(column => {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize focus:bg-background"
+                    className='capitalize focus:bg-background'
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                );
+                )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
 
         {/* Create class form */}
         <CreateClassForm />
+
       </div>
 
       {/* Table */}
-      <div className="rounded-md p-4 bg-white">
+      <div className='rounded-md p-4 bg-white'>
         <Table>
-          <TableHeader className="text-lms-gray-30">
-            {table.getHeaderGroups().map((headerGroup) => (
+          <TableHeader className='text-lms-gray-30'>
+            {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map(header => {
                   return (
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -359,16 +343,17 @@ export function DataTable<TData, TValue>({
 
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
+
                   //on click go to class detail
                   onClick={() => router.push(`classes/${row.id}`)}
-                  className="cursor-pointer"
+                  className='cursor-pointer'
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id} >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -381,58 +366,64 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center "
+                  className='h-24 text-center '
                 >
                   No results.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
+
         </Table>
       </div>
 
+
       {/* Class Remark */}
-      <div className="rounded-lg p-4 bg-white flex flex-row justify-between">
-        <p className="text-lms-success font-semibold">Class Code:</p>
-        <div className="flex gap-2 text-gray-500 ">
-          <p className="font-semibold">FY2025</p>
-          <p className="khmer-font">ថ្នាក់សិក្សាឆ្នាំមូលដ្ឋានឆ្នាំ​២០២៥</p>
-        </div>
-        <div className="flex gap-2 text-gray-500">
-          <p className="font-semibold">M1</p>
-          <p className="khmer-font">ក្រុមទី ១ វេនព្រឹក</p>
-        </div>
-        <div className="flex gap-2 text-gray-500">
-          <p className="font-semibold">A1</p>
-          <p className="khmer-font">ក្រុមទី ១ វេនរសៀល</p>
-        </div>
-        <div className="flex gap-2 text-gray-500">
-          <p className="font-semibold">E1</p>
-          <p className="khmer-font">ក្រុមទី ១ វេនយប់</p>
-        </div>
+      <div className='rounded-lg p-4 bg-white flex flex-row justify-between mt-2'>
+          <p className='text-lms-success font-semibold'>Class Code:</p>
+          <div className='flex gap-2 text-gray-500 '>
+            <p className='font-semibold'>FY2025</p>
+            <p className='khmer-font'>ថ្នាក់សិក្សាឆ្នាំមូលដ្ឋានឆ្នាំ​២០២៥</p>
+          </div>
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold'>M1</p>
+            <p className='khmer-font'>ក្រុមទី ១ វេនព្រឹក</p>
+          </div>
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold'>A1</p>
+            <p className='khmer-font'>ក្រុមទី ១ វេនរសៀល</p>
+          </div>
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold'>E1</p>
+            <p className='khmer-font'>ក្រុមទី ១ វេនយប់</p>
+          </div>
       </div>
 
       {/* table footer */}
-      <div className="px-4 w-full flex justify-between items-center">
+      <div className='px-4 w-full flex justify-between items-center'>
+
         <div className="text-base text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>10</strong> classes
+          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
+          classes
         </div>
 
+
         {/* Pagination */}
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className='flex items-center justify-end space-x-2 py-4'>
+
           <Button
-            className="border-gray-30"
-            variant="outline"
-            size="sm"
+            className='border-gray-30'
+            variant='outline'
+            size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            className="border-gray-30 "
-            variant="outline"
-            size="sm"
+            className='border-gray-30 '
+            variant='outline'
+            size='sm'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -440,6 +431,7 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
       </div>
-    </>
-  );
+        
+      </>
+      )
 }
