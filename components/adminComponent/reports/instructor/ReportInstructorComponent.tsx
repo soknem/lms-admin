@@ -93,7 +93,7 @@ const ReportInstructorComponent: React.FC = () => {
             },
             title: {
               display: "top",
-              text: "Total Staff",
+              text: "Total Inatructor",
             },
             tooltip: {
               callbacks: {
@@ -130,7 +130,7 @@ const ReportInstructorComponent: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-lms-white80 p-5 h-full flex justify-between rounded-xl">
+    <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
       <div className="chart-container w-full h-96 md:w-1/2 mx-10">
         <canvas ref={chartContainer}></canvas>
       </div>

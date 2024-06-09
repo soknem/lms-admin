@@ -26,6 +26,7 @@ import { OptionType, ClassType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -74,9 +75,9 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         } else {
 
             if (DisplayValue === 'false') {
-                return <div className="text-success font-medium" >Public</div>;
+                return <StatusBadge type="success" status="Pubic" />
             } else {
-                return <div className="text-error font-medium" >Draft</div>;
+                return <StatusBadge type="default" status="Draft" />
             }
 
 

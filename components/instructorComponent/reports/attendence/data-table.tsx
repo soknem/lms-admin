@@ -194,12 +194,26 @@ export function AttendenceTable<TData, TValue>({
             <Label className="text-lms-gray30">Class</Label>
             <p className="flex font-medium text-black">FY2025 - A1</p>
           </div>
-
           <div>
             <Label className="text-lms-gray30">Duration</Label>
             <p className="flex font-medium text-black">01/02/2022-03/05/2023</p>
           </div>
         </div>
+        {/* score point */}
+        <div className=" mx-auto my-4 p-4 bg-gray-100 rounded-lg">
+        <div className="font-bold mx-6 text-lms-gray-30">Score Point</div>
+        <div className="flex gap-6 mx-6">
+        <div>
+          Present <span className="font-bold">P</span>
+        </div>
+        <div>
+          Excused Absent <span className="font-bold">EA = -0.5pt</span>
+        </div>
+        <div>
+          Unexcused Absent <span className="font-bold">UA = -1pt</span>
+        </div>
+        </div>
+    </div>
 
         <Table>
           <TableHeader className="text-lms-gray30">

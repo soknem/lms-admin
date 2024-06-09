@@ -1,10 +1,21 @@
-import TabComponent from "@/components/adminComponent/reports/TabComponent";
+import { getPayment } from "@/lib/endpoints/MokApi";
+import { LectureType } from "@/lib/types/admin/academics";
 import React from "react";
+import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json";
+import { FilterAdmin } from "@/components/admincomponent/reports/Filter";
+import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
+import TabComponent from "@/components/admincomponent/reports/TabComponent";
 
-export default function Report() {
+export default async function Report() {
+  const payData = await getPayment();
+  const data: LectureType[] = lectures;
   return (
     <main className="p-9">
       <h2 className="text-4xl text-lms-primary font-bold">Reports</h2>
+      <div className="ml-[900px] ">
+        <FilterAdmin columns={LectureColumns} data={data} />
+      </div>
+
       <TabComponent />
     </main>
   );

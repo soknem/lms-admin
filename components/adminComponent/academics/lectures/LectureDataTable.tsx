@@ -225,7 +225,7 @@ export function LectureDataTable<TData, TValue>({
         {/* filter Instructor */}
         <Popover open={openIns} onOpenChange={setopenIns}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedIns ? <>{selectedIns}</> : <> Filter Instructor</>}
             </Button>
@@ -263,7 +263,7 @@ export function LectureDataTable<TData, TValue>({
         {/* filter class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
             </Button>
@@ -301,7 +301,7 @@ export function LectureDataTable<TData, TValue>({
         {/* filter course */}
         <Popover open={openCourse} onOpenChange={setOpenCourse}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
             </Button>
@@ -339,7 +339,7 @@ export function LectureDataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -371,7 +371,7 @@ export function LectureDataTable<TData, TValue>({
       {/* Table */}
       <div className='rounded-md p-4 bg-white'>
         <Table>
-          <TableHeader className='text-gray-30'>
+          <TableHeader className='text-lms-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {

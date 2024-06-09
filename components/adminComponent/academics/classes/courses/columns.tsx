@@ -145,6 +145,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     }
    
 
+    
 
     if (tableMeta?.editedRows[row.id]) {
 

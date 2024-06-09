@@ -15,6 +15,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuRadioGroup,
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
@@ -22,6 +23,11 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
 import { OptionType , GenerationType } from "@/lib/types/admin/academics";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import StatusBadge from "@/components/common/StatusBadge";
+
+
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -77,6 +83,36 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         } else {
 
             return <div >{formattedDate}</div>;
+
+        }
+    }
+
+    // Custom rendering for specific columns 
+    if (accessorKey === 'status') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="false" id="started" />
+                        <Label htmlFor="public">Public</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="pending" />
+                        <Label htmlFor="draft">Draft</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'true') {
+                return <StatusBadge type="success" status="Public" />
+            } else {
+                return <StatusBadge type="default" status="Draft" />
+            }
+
 
         }
     }

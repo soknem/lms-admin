@@ -69,20 +69,12 @@ const RadioButton = ({ field, value, label }: any) => {
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
 
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function CreateLectureForm() {
   return (
     <Dialog >
       <DialogTrigger asChild>
-        <Button className='text-lms-white80 bg-lms-primary hover:bg-lms-primary/90'>
+        <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
           <FiPlus className="mr-2 h-4 w-4" /> Add Lecture
         </Button>
       </DialogTrigger>
@@ -269,7 +261,7 @@ export function CreateLectureForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-lms-white80 bg-lms-primary hover:bg-lms-primary/90">Add</Button>
+                <Button type="submit" className="text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90">Add</Button>
               </DialogFooter>
             </Form>
           )}
