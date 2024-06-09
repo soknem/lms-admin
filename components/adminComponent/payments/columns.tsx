@@ -2,7 +2,6 @@
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,8 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
-import { EditPayForm } from "./EditPayForm";
-import { ViewPayForm } from "./ViewPayForm";
+import ActionsCell from "@/components/admincomponent/payments/PaymentActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -367,62 +365,6 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const [isEditFormVisible, setEditFormVisible] = useState(false);
-      const [isViewFormVisible, setViewFormVisible] = useState(false);
-      const payment = row.original;
-      const handleEditClick = () => {
-        setEditFormVisible(true);
-        setViewFormVisible(false); // Close view form if open
-      };
-
-      const handleViewClick = () => {
-        setViewFormVisible(true);
-        setEditFormVisible(false); // Close edit form if open
-      };
-
-      return (
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                className="focus:bg-background"
-                onClick={() =>
-                  navigator.clipboard.writeText(payment.student.name)
-                }
-              >
-                Copy ID
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="focus:bg-background"
-                onClick={handleViewClick}
-              >
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="focus:bg-background"
-                onClick={handleEditClick}
-              >
-                Edit
-              </DropdownMenuItem>
-              {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-              {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-              <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-                Disable
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          {isEditFormVisible && <EditPayForm/>}
-          {isViewFormVisible && <ViewPayForm />}
-        </div>
-      );
-    },
+    cell: ActionsCell,
   },
 ];

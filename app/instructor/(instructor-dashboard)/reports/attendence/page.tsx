@@ -1,13 +1,13 @@
-import { DateEndComponent } from "@/components/instructorComponent/reports/attendence/DateEndComponent";
 import React from "react";
-import { AttendenceTable } from "@/components/instructorComponent/reports/attendence/data-table";
-import { paymentColumns } from "@/components/instructorComponent/reports/attendence/columns";
 import { getPayment } from "@/lib/endpoints/MokApi";
-import { DateStartComponent } from "@/components/instructorComponent/reports/attendence/DateStartComponent";
-import { Filter } from "@/components/instructorComponent/reports/attendence/Filter";
-import { LectureColumns } from "@/components/adminComponent/academics/lectures/LectureColumns";
 import { LectureType } from "@/lib/types/admin/academics";
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json";
+import { DateStartComponent } from "@/components/instructorcomponent/reports/attendence/DateStartComponent";
+import { DateEndComponent } from "@/components/instructorcomponent/reports/attendence/DateEndComponent";
+import { Filter } from "@/components/instructorcomponent/reports/attendence/Filter";
+import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
+import { AttendenceTable } from "@/components/instructorcomponent/reports/attendence/data-table";
+import { paymentColumns } from "@/components/instructorcomponent/reports/attendence/columns";
 
 export default async function Attendence() {
   const payData = await getPayment();
@@ -20,12 +20,13 @@ export default async function Attendence() {
       </h2>
       <div className="flex gap-4">
         <div className="flex gap-5">
-        <DateStartComponent />
-        <DateEndComponent />
+          <DateStartComponent />
+          <DateEndComponent />
+        </div>
+        {/* <DataTable columns={columns} data={data} /> */}
+        <Filter columns={LectureColumns} data={data} />
       </div>
-      {/* <DataTable columns={columns} data={data} /> */}
-      <Filter columns={LectureColumns} data={data} /></div>
-      
+
       <AttendenceTable columns={paymentColumns} data={payData} />
     </main>
   );

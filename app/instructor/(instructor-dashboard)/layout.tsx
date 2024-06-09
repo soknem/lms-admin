@@ -3,10 +3,9 @@ import "@/app/globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
-import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
-import ReportSidebar from "@/components/instructorComponent/reports/timesheet/sidebar/ReportSidebarComponent";
 import { ThemeProvider } from "@/components/ui/themeProvider";
+import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
+import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 
 
 

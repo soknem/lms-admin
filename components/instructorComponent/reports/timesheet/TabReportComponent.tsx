@@ -1,10 +1,14 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HeaderComponent from "./payment/HeaderComponent";
+import Tabledata from "./payment/Tabledata";
+import HeaderComponent1 from "./teaching/HeaderComponent";
+import Tabledata1 from "./teaching/Tabledata1";
 
-import HeaderComponent1 from "@/components/instructorComponent/reports/timesheet/teaching/HeaderComponent";
-import HeaderComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
-import Tabledata from "@/components/instructorComponent/reports/timesheet/payment/Tabledata";
-import Tabledata1 from "@/components/instructorComponent/reports/timesheet/teaching/Tabledata1";
+// import HeaderComponent1 from "@/components/instructorComponent/reports/timesheet/teaching/HeaderComponent";
+// import HeaderComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
+// import Tabledata from "@/components/instructorComponent/reports/timesheet/payment/Tabledata";
+// import Tabledata1 from "@/components/instructorComponent/reports/timesheet/teaching/Tabledata1";
 
 export default function TabReportComponent() {
   return (

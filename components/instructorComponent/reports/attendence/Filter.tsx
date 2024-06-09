@@ -1,7 +1,6 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-
+import React, { useState } from "react";
 
 //import from shad cn
 import {
@@ -14,8 +13,8 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  useReactTable
-} from '@tanstack/react-table'
+  useReactTable,
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -23,24 +22,23 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from '@/components/ui/table'
+  TableRow,
+} from "@/components/ui/table";
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import { Input } from '@/components/ui/input'
+import { Input } from "@/components/ui/input";
 
-
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 import { TbSearch } from "react-icons/tb";
 
-import { useMediaQuery } from "usehooks-ts"
+import { useMediaQuery } from "usehooks-ts";
 
 import { FaSearch } from "react-icons/fa";
 import {
@@ -50,36 +48,30 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 import { TbFilter } from "react-icons/tb";
 
-import { TbAdjustmentsHorizontal } from "react-icons/tb";
-import { useRouter } from 'next/navigation'
-import { inspect } from 'util'
-import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
-import { CreateLectureForm } from '@/components/adminComponent/academics/lectures/form/CreateLectureForm'
-
-
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function Filter<TData, TValue>({
   columns,
-  data
+  data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
@@ -94,7 +86,6 @@ export function Filter<TData, TValue>({
   const [openCourse, setOpenCourse] = useState(false);
   const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
 
-
   const router = useRouter();
 
   const table = useReactTable({
@@ -103,7 +94,7 @@ export function Filter<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      columnVisibility
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -142,7 +133,7 @@ export function Filter<TData, TValue>({
         );
       },
     },
-  })
+  });
 
   // const handleReset = (columnId: string) => {
   //   setSelectedStatus(null);
@@ -154,19 +145,18 @@ export function Filter<TData, TValue>({
 
   //reset popup
   const handleReset = (columnId: string) => {
-    if (columnId === 'instructor') {
+    if (columnId === "instructor") {
       setselectedIns(null);
     }
-    if (columnId === 'class') {
+    if (columnId === "class") {
       setSelectedClass(null);
     }
-    if (columnId === 'course') {
+    if (columnId === "course") {
       setSelectedCourse(null);
     }
-    table.getColumn(columnId)?.setFilterValue('');
+    table.getColumn(columnId)?.setFilterValue("");
     setData([...originalData]);
   };
-
 
   // filter data of instructor
   const FilteredIns = data.reduce((instructor: string[], item: any) => {
@@ -175,7 +165,6 @@ export function Filter<TData, TValue>({
     }
     return instructor;
   }, []);
-
 
   //filter data of class
   const FilteredClass = data.reduce((cs: string[], item: any) => {
@@ -193,13 +182,9 @@ export function Filter<TData, TValue>({
     return course;
   }, []);
 
-
-
   return (
     <>
-
-      <div className='flex items-center gap-4'>
-
+      <div className="flex items-center gap-4">
         {/* Search */}
         {/* <div className="flex items-center w-full relative">
           <Input
@@ -220,19 +205,20 @@ export function Filter<TData, TValue>({
 
         </div> */}
 
-
         {/* filter Instructor */}
         <Popover open={openIns} onOpenChange={setopenIns}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
-              <TbFilter className='mr-2 h-4 w-4' />
+            <Button
+              variant="outline"
+              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
               {selectedIns ? <>{selectedIns}</> : <> Filter Semester</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
-              <CommandInput
-                placeholder="Filter Instructor..." />
+              <CommandInput placeholder="Filter Instructor..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -243,7 +229,7 @@ export function Filter<TData, TValue>({
                       value={ins}
                       onSelect={(value) => {
                         setselectedIns(value);
-                        table.getColumn('instructor')?.setFilterValue(value);
+                        table.getColumn("instructor")?.setFilterValue(value);
                         setopenIns(false);
                       }}
                     >
@@ -254,7 +240,12 @@ export function Filter<TData, TValue>({
               </CommandList>
             </Command>
             {selectedIns && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructor')}>Reset</Button>
+              <Button
+                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                onClick={() => handleReset("instructor")}
+              >
+                Reset
+              </Button>
             )}
           </PopoverContent>
         </Popover>
@@ -262,15 +253,17 @@ export function Filter<TData, TValue>({
         {/* filter class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
-              <TbFilter className='mr-2 h-4 w-4' />
+            <Button
+              variant="outline"
+              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
               {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
-              <CommandInput
-                placeholder="Filter class..." />
+              <CommandInput placeholder="Filter class..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -281,7 +274,7 @@ export function Filter<TData, TValue>({
                       value={cs}
                       onSelect={(value) => {
                         setSelectedClass(value);
-                        table.getColumn('class')?.setFilterValue(value);
+                        table.getColumn("class")?.setFilterValue(value);
                         setOpenClass(false);
                       }}
                     >
@@ -292,7 +285,12 @@ export function Filter<TData, TValue>({
               </CommandList>
             </Command>
             {selectedClass && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('class')}>Reset</Button>
+              <Button
+                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                onClick={() => handleReset("class")}
+              >
+                Reset
+              </Button>
             )}
           </PopoverContent>
         </Popover>
@@ -300,15 +298,17 @@ export function Filter<TData, TValue>({
         {/* filter course */}
         <Popover open={openCourse} onOpenChange={setOpenCourse}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
-              <TbFilter className='mr-2 h-4 w-4' />
+            <Button
+              variant="outline"
+              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+            >
+              <TbFilter className="mr-2 h-4 w-4" />
               {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
-              <CommandInput
-                placeholder="Filter Course..." />
+              <CommandInput placeholder="Filter Course..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -319,7 +319,7 @@ export function Filter<TData, TValue>({
                       value={course}
                       onSelect={(value) => {
                         setSelectedCourse(value);
-                        table.getColumn('class')?.setFilterValue(value);
+                        table.getColumn("class")?.setFilterValue(value);
                         setOpenCourse(false);
                       }}
                     >
@@ -330,7 +330,12 @@ export function Filter<TData, TValue>({
               </CommandList>
             </Command>
             {selectedCourse && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset('course')}>Reset</Button>
+              <Button
+                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none"
+                onClick={() => handleReset("course")}
+              >
+                Reset
+              </Button>
             )}
           </PopoverContent>
         </Popover>
@@ -363,7 +368,6 @@ export function Filter<TData, TValue>({
         </DropdownMenu> */}
 
         {/* Create class form */}
-
       </div>
 
       {/* Table */}
@@ -420,12 +424,6 @@ export function Filter<TData, TValue>({
 
         </Table>
       </div> */}
-
-     
-     
-
-
     </>
-  )
+  );
 }
-

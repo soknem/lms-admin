@@ -1,11 +1,6 @@
+import { DateComponent } from "@/components/instructorcomponent/reports/timesheet/DateComponent";
+import TabReportComponent from "@/components/instructorcomponent/reports/timesheet/TabReportComponent";
 import React from "react";
-import ReportsComponent from "@/components/adminComponent/reports/student/ReportComponent";
-import ReportComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
-import { columns, invoices } from "./timesheet/payment/columns";
-import { DataTable } from "@/components/instructorComponent/reports/timesheet/payment/TableComponent";
-import { Table } from "@/components/ui/table";
-import { DateComponent } from "@/components/instructorComponent/reports/timesheet/DateComponent";
-import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
 
 export default function Timesheet() {
   return (

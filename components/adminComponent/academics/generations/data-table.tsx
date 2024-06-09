@@ -34,7 +34,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CreateGenForm } from "../CreateGenForm";
+import {CreateGenForm} from "@/components/admincomponent/academics/generations/CreateGenForm";
 
 //custom component import
 
@@ -149,7 +149,7 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <CreateGenForm />
+        <CreateGenForm/>
       </div>
 
       {/* Table */}
