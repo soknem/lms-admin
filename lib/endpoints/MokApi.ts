@@ -8,6 +8,7 @@ import {
 } from "../types/admin/faculty";
 import { CurriculumType, SlideType, VideoType } from "../types/admin/materials";
 import { PaymentType } from "../types/admin/payments";
+import { ScheduleType } from "../types/instructor/schedule";
 
 export async function getFaculties(): Promise<FacultyType[]> {
   const res = await fetch(
@@ -103,6 +104,16 @@ export async function getSlide(): Promise<SlideType[]> {
 export async function getVideo(): Promise<VideoType[]> {
   const res = await fetch(
     "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/videos"
+  );
+  const data = await res.json();
+  // console.log("data from page: ",data);
+  return data;
+}
+
+// Instructor Schedule
+export async function getSchedule(): Promise<ScheduleType[]> {
+  const res = await fetch(
+    "https://6665da37d122c2868e41f992.mockapi.io/api/v1/schedules"
   );
   const data = await res.json();
   // console.log("data from page: ",data);
