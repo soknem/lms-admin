@@ -4,7 +4,7 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown, Link } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,12 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
-import {
-  FacultyType,
-  StatusOption,
-  StudyProgramType,
-} from "@/lib/types/admin/faculty";
-import { useRouter } from "next/navigation";
+import { SetupStudyProgramType, StatusOption } from "@/lib/types/admin/faculty";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -82,8 +77,24 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   // Check if the column is the status column
   if (column.id === "status") {
     return (
-      <span className={value ? "text-green-500" : "text-red-500"}>
-        {value ? "Public" : "Draft"}
+      <span
+        className={
+          value === "true"
+            ? "Public text-green-500"
+            : value === "false"
+            ? "Disable text-red-500"
+            : value === "draft"
+            ? "Draft text-gray-400"
+            : ""
+        }
+      >
+        {value === "true"
+          ? "Public"
+          : value === "false"
+          ? "Disable"
+          : value === "draft"
+          ? "Draft"
+          : ""}
       </span>
     );
   }
@@ -137,16 +148,16 @@ const EditCell = ({ row, table }: any) => {
   );
 };
 
-export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
+export const setupStudyProgramColumns: ColumnDef<SetupStudyProgramType>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "subject",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          ID
+          SUBJECT
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -154,14 +165,14 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "name",
+    accessorKey: "study_program",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          NAME
+          STUDY PROGRAM
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -169,30 +180,77 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "description",
-    header: () => {
-      return <div>DESCRIPTION</div>;
+    accessorKey: "semester",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          SEMESTER
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "logo",
-    header: () => {
-      return <div>LOGO</div>;
+    accessorKey: "hour",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          HOUR
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "degree",
-    header: () => {
-      return <div>DEGREE</div>;
+    accessorKey: "theory",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          THEORY
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "faculty",
-    header: () => {
-      return <div>FACULTY</div>;
+    accessorKey: "practice",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          PRACTICE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
+    accessorKey: "internship",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          INTERNSHIP
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
     },
     cell: TableCell,
   },
@@ -214,7 +272,8 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
       type: "select",
       options: [
         { value: "true", label: "Public" },
-        { value: "false", label: "Draft" },
+        { value: "false", label: "Disable" },
+        { value: "draft", label: "Draft" },
       ],
     },
   },
@@ -226,10 +285,6 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
     id: "actions",
     cell: ({ row }) => {
       const study_program = row.original;
-      // const handleClick = (event: MouseEvent<HTMLDivElement>, path: string) => {
-      //   event.stopPropagation();
-      //   router.push(path);
-      // };
 
       return (
         <DropdownMenu>
@@ -243,7 +298,9 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               className="focus:bg-background"
-              onClick={() => navigator.clipboard.writeText(study_program.id)}
+              onClick={() =>
+                navigator.clipboard.writeText(study_program.subject)
+              }
             >
               Copy ID
             </DropdownMenuItem>
@@ -251,19 +308,9 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
             <DropdownMenuItem className="focus:bg-background">
               Sort
             </DropdownMenuItem>
-            {/* <Link href={`/admin/faculties/studyprogram-detail`}> */}
-              <DropdownMenuItem
-                className="focus:bg-background"
-                // onClick={(event) =>
-                //   handleClick(event, `/admin/faculties/studyprogram-detail`)
-                // }
-                onClick={(event: MouseEvent<HTMLDivElement>) => {
-                  event.stopPropagation();
-                }}
-              >
-                View
-              </DropdownMenuItem>
-            {/* </Link> */}
+            <DropdownMenuItem className="focus:bg-background">
+              View
+            </DropdownMenuItem>
             <DropdownMenuItem className="focus:bg-background">
               Edit
             </DropdownMenuItem>

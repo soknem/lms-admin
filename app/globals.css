@@ -9,3 +9,13 @@ body {
 .khmer-font {
   font-family: var(--font-suwannaphum);
 }
+
+
+
+.auth-image {
+    background-image: url('/FormImage.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
