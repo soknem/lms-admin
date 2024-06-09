@@ -1,5 +1,5 @@
 import React from "react";
-import ReportsComponent from "@/components/adminComponent/reports/ReportComponent";
+import ReportsComponent from "@/components/adminComponent/reports/student/ReportComponent";
 import ReportComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
 import {
   columns,

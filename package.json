@@ -21,6 +21,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@tanstack/react-table": "^8.17.3",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -40,6 +41,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.41",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
