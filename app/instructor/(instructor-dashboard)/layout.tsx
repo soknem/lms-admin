@@ -6,6 +6,8 @@ import { ReactNode, useState } from "react";
 import NavbarComponent from "@/components/instructorComponent/navbar/NavbarComponent";
 import InstructorSidebarComponent from "@/components/instructorComponent/sidebar/InstructorSidebarComponents";
 import ReportSidebar from "@/components/instructorComponent/reports/timesheet/sidebar/ReportSidebarComponent";
+import { ThemeProvider } from "@/components/ui/themeProvider";
+
 
 
 
@@ -27,15 +29,20 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <nav className="w-full h-[72px]">
-          <NavbarComponent />
-        </nav>
-        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-          <aside className="flex">
-          <InstructorSidebarComponent/>
-          </aside>
-          <section className="w-full">{children}</section>
-        </section>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+        >
+          <nav className="w-full h-[72px]">
+            <NavbarComponent />
+          </nav>
+          <section className="flex flex-grow min-h-[calc(100vh-72px)]">
+            <aside>
+              <InstructorSidebarComponent />
+            </aside>
+            <section className="w-full">{children}</section>
+          </section>
+        </ThemeProvider>
       </body>
     </html>
   );

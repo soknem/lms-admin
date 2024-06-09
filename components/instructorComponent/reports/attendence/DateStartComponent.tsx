@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DateComponent() {
+export function DateStartComponent() {
   const [date, setDate] = React.useState<Date>()
 
   return (
@@ -27,7 +27,7 @@ export function DateComponent() {
           )}
         >
           <CalendarIcon className="mr-2 h-5 w-5" />
-          {date ? format(date, "PPP") : <span>Pick a start date</span>}
+          {date ? format(date, "PPP") : <span>Pick a end date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

@@ -1,4 +1,5 @@
 import { CardLogin } from '@/components/card/cartAuth/CardLogin'
+import { ModeToggle } from '@/components/theme/ModeToggle'
 import React from 'react'
 
 export default function page() {

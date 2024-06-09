@@ -13,7 +13,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Formik, Form, Field, ErrorMessage, FormikErrors, FormikTouched } from 'formik';
+import { Formik, Form, Field, FormikErrors, FormikTouched } from 'formik';
 import * as Yup from 'yup';
 import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
 
@@ -36,9 +36,9 @@ const validationSchema = Yup.object({
 
 // Define function to get field class name based on validation status
 const getFieldClassName = (errors: FormikErrors<InitialValues>, touched: FormikTouched<InitialValues>, fieldName: keyof InitialValues) => {
-    const baseClass = "bg-gray-50 border text-gray-900 text-[15px] rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5";
-    const errorClass = "border-red-500";
-    const validClass = "border-gray-300";
+    const baseClass = "bg-gray-100 dark:bg-gray-100 border text-gray-900 dark:text-gray-900 text-[15px] rounded-xl focus:ring-blue-500 block w-full p-2.5";
+    const errorClass = "border-red-500 dark:border-red-500 focus:border-red-500";
+    const validClass = "border-gray-300 dark:border-gray-300";
 
     return touched[fieldName] && errors[fieldName] ? `${baseClass} ${errorClass}` : `${baseClass} ${validClass}`;
 };
@@ -68,7 +68,7 @@ export function CardReset() {
 
     // Render the component
     return (
-        <Card className="w-[550px] bg-white p-[24px]">
+        <Card className="w-[550px] bg-white dark:bg-white p-[24px] border border-gray-300 dark:border-white">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -78,14 +78,14 @@ export function CardReset() {
             >
                 {({ errors, touched }) => (
                     <section>
-                        <CardHeader className="items-center">
+                        <CardHeader className="items-center dark:border-black">
                             <section className="mb-5">
                                 <Image src="/logo.png" alt="logo" width={200} height={200} />
                             </section>
-                            <CardTitle className="text-[36px] font-bold text-[#253C95] ">
+                            <CardTitle className="text-[36px] font-bold text-[#253C95] dark:text-[#253C95]">
                                 Reset your password
                             </CardTitle>
-                            <CardDescription className="text-[20px] text-[#808897] ">
+                            <CardDescription className="text-[20px] text-[#808897] dark:text-[#808897]">
                                 Enter new password for your account
                             </CardDescription>
                         </CardHeader>
@@ -93,7 +93,7 @@ export function CardReset() {
                             <Form>
                                 <section className="grid w-full items-center gap-4">
                                     <section className="space-y-2">
-                                        <label className="text-[15px]" htmlFor="password">
+                                        <label className="text-[15px] text-gray-500 " htmlFor="password">
                                             Password
                                         </label>
                                         <div className="relative">
@@ -104,14 +104,14 @@ export function CardReset() {
                                                 placeholder="Password"
                                                 className={getFieldClassName(errors, touched, 'password')}
                                             />
-                                            {!showPassword ? <BsFillEyeFill className="absolute w-8 right-2 top-4 text-gray-500 cursor-pointer" onClick={handleShowPassword} /> : <HiEyeOff className="absolute w-8 right-2 top-4 text-gray-500 cursor-pointer" onClick={handleShowPassword} />}
+                                            {!showPassword ? <BsFillEyeFill className="absolute w-8 right-2 top-4 text-gray-500 dark:text-gray-400 cursor-pointer" onClick={handleShowPassword} /> : <HiEyeOff className="absolute w-8 right-2 top-4 text-gray-500 dark:text-gray-400 cursor-pointer" onClick={handleShowPassword} />}
                                         </div>
-                                        
+
                                         {/* Render CustomErrorMessagePass for password field */}
                                         <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password" />
                                     </section>
                                     <section className="space-y-2">
-                                        <label className="text-[15px]" htmlFor="confirmPassword">
+                                        <label className="text-[15px] text-gray-500" htmlFor="confirmPassword">
                                             Confirm Password
                                         </label>
                                         <div className="relative">
@@ -122,9 +122,9 @@ export function CardReset() {
                                                 placeholder="Confirm Password"
                                                 className={getFieldClassName(errors, touched, 'confirmPassword')}
                                             />
-                                            {!showConfirmPassword ? <BsFillEyeFill className="absolute w-8 right-2 top-4 text-gray-500 cursor-pointer" onClick={handleShowConfirmPassword} /> : <HiEyeOff className="absolute w-8 right-2 top-4 text-gray-500 cursor-pointer" onClick={handleShowConfirmPassword} />}
+                                            {!showConfirmPassword ? <BsFillEyeFill className="absolute w-8 right-2 top-4 text-gray-500 dark:text-gray-400 cursor-pointer" onClick={handleShowConfirmPassword} /> : <HiEyeOff className="absolute w-8 right-2 top-4 text-gray-500 dark:text-gray-400 cursor-pointer" onClick={handleShowConfirmPassword} />}
                                         </div>
-                                    
+
                                         {/* Render CustomErrorMessagePass for confirmPassword field */}
                                         <CustomErrorMessagePass errors={errors} touched={touched} fieldName="confirmPassword" />
                                     </section>
