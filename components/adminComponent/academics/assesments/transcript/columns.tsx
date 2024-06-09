@@ -22,10 +22,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType , StudentType } from "@/lib/types/admin/academics";
+import { OptionType , TranscriptType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -52,9 +53,21 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     // custom render on cell
     const accessorKey = column.columnDef.accessorKey;
 
-    //add font style to khmer name columns 
-    if(accessorKey === 'nameKh'){
-        return <div className="khmer-font" >{value}</div>;
+    // Custom rendering for specific columns 
+    if (accessorKey === 'status') {
+        
+        switch (value) {
+            case 1:
+                return <StatusBadge type="success" status="Active" />
+            case 2:
+                return <StatusBadge type="warning" status="Hiatus" />
+            case 3:
+                return <StatusBadge type="error" status="Drop" />
+            case 4:
+                return <StatusBadge type="error" status="Disable" />
+            default:
+              return 'bg-gray-200 text-gray-500';
+          }
     }
 
 
@@ -96,7 +109,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const StuColumns: ColumnDef<StudentType>[] = [
+export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
     {
         accessorKey: 'cardId',
         header: ({ column }) => {
@@ -131,23 +144,6 @@ export const StuColumns: ColumnDef<StudentType>[] = [
     },
 
     {
-        accessorKey: 'nameKh',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    FULLNAME(KH)
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
-
-    },
-
-    {
         accessorKey: 'gender',
         header: ({ column }) => {
             return (
@@ -164,13 +160,16 @@ export const StuColumns: ColumnDef<StudentType>[] = [
 
     },
     {
-        accessorKey: 'phoneNumber',
+        accessorKey: 'dob',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    //to  customize the size of each column
+                    className="w-[130px] flex justify-start items-start"
                 >
-                    PERSONAL NUMBER
+                    DOB
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -179,16 +178,91 @@ export const StuColumns: ColumnDef<StudentType>[] = [
 
     },
     {
-        accessorKey: 'email',
+        accessorKey: 'class',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                     //to  customize the size of each column
-                    className="w-[200px] flex justify-start items-start"
+                    className="w-[130px] flex justify-start items-start"
                 >
-                    EMAIL
+                    CLASS
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'year',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    YEAR
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'semester1',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    SEMESTER I
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'semester2',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    SEMESTER II
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'gpa',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    GPA
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'total',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    TOTAL
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -212,17 +286,6 @@ export const StuColumns: ColumnDef<StudentType>[] = [
         },
         cell: TableCell
 
-    },
-
-
-    {
-        id: 'actions',
-        cell: ({ row }) => {
-
-            return (
-                <div className="text-red-600 focus:text-red-600 font-medium focus:bg-background"><TbTrash  size={24} className="text-red-600 mr-2 "/></div>
-            )
-        }
     },
 
 ]

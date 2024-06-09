@@ -3,6 +3,7 @@ import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
+
 import { ColumnDef } from '@tanstack/react-table'
 
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
@@ -22,11 +23,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType , CourseType } from "@/lib/types/admin/academics";
+import { OptionType , courseAssessmentType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/common/StatusBadge";
 
 
@@ -54,98 +54,23 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     // custom render on cell
     const accessorKey = column.columnDef.accessorKey;
 
-    // Custom rendering for specific columns : customize date which can take pick date time
-    if (accessorKey === 'startDate' || accessorKey === 'endDate') {
-        const dateValue = new Date(value);
-        const formattedDate = format(dateValue, 'dd/mm/yyyy');
-        
-
-        if (tableMeta?.editedRows[row.id]) {
-            return (
-                //custom year selector only
-                <select
-                    className="border-1 border-gray-30 rounded-md focus:to-primary"
-                    value={new Date(value).getDate()}
-                    onChange={(e) => {
-                        const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
-                        setValue(newValue);
-                        tableMeta?.updateData(row.index, column.id, newValue);
-                    }}
-                >
-                
-                </select>
-            );
-        } else {
-
-            return <div >{formattedDate}</div>;
-
-        }
-    }
-
-
     // Custom rendering for specific columns 
-    if (accessorKey === 'visibility') {
-        const DisplayValue = value.toString();
-
-        if (tableMeta?.editedRows[row.id]) {
-            return (
-                //custom year selector only
-                <RadioGroup defaultValue="comfortable" className="flex">
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="false" id="public" />
-                        <Label htmlFor="public">Public</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="true" id="draft" />
-                        <Label htmlFor="draft">Draft</Label>
-                    </div>
-                </RadioGroup>
-            );
-        } else {
-
-            if (DisplayValue === 'false') {
-                return <StatusBadge type="success" status="Public" />
-            } else {
-                return <StatusBadge type="default" status="Draft" />
-            }
-
-
-        }
+    if (accessorKey === 'status') {
+        
+        switch (value) {
+            case 1:
+                return <StatusBadge type="success" status="Active" />
+            case 2:
+                return <StatusBadge type="warning" status="Hiatus" />
+            case 3:
+                return <StatusBadge type="error" status="Drop" />
+            case 4:
+                return <StatusBadge type="error" status="Disable" />
+            default:
+              return 'bg-gray-200 text-gray-500';
+          }
     }
 
-
-     // Custom rendering for specific columns 
-     if (accessorKey === 'status') {
-        const DisplayValue = value.toString();
-
-        if (tableMeta?.editedRows[row.id]) {
-            return (
-                //custom year selector only
-                <RadioGroup defaultValue="comfortable" className="flex">
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="false" id="started" />
-                        <Label htmlFor="started">Started</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="true" id="pending" />
-                        <Label htmlFor="pending">Pending</Label>
-                    </div>
-                </RadioGroup>
-            );
-        } else {
-
-            if (DisplayValue === 'false') {
-                return <StatusBadge type="success" status="Started" />
-            } else {
-                return <StatusBadge type="warning" status="Pending" />
-            }
-
-
-        }
-    }
-   
-
-    
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -170,8 +95,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         ) : (
 
             //custom on normal input text
-            <Input
-                className="w-full p-2 rounded-md"
+            <input
+                className="w-full p-2 border-1 border-gray-30 rounded-md"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -182,7 +107,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     }
     return <span>{value}</span>;
 };
-
 
 // Dynamic Edit on cell
 const EditCell = ({ row, table }: any) => {
@@ -226,18 +150,17 @@ const EditCell = ({ row, table }: any) => {
 };
 
 
-export const CourseColumns: ColumnDef<CourseType>[] = [
+export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
     {
-        accessorKey: 'subject',
+        accessorKey: 'cardId',
         header: ({ column }) => {
             return (
                 <Button
-                    //to  customize the size of each column
-                    className="w-[200px] flex justify-start items-start"
+                    
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                   SUBJECT
+                   CARD ID
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -246,14 +169,14 @@ export const CourseColumns: ColumnDef<CourseType>[] = [
 
     },
     {
-        accessorKey: 'startDate',
+        accessorKey: 'nameEn',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    START DATE
+                    FULLNAME(EN)
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -262,14 +185,14 @@ export const CourseColumns: ColumnDef<CourseType>[] = [
     },
 
     {
-        accessorKey: 'endDate',
+        accessorKey: 'gender',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    END DATE
+                    GENDER
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -277,16 +200,17 @@ export const CourseColumns: ColumnDef<CourseType>[] = [
         cell: TableCell
 
     },
-
     {
-        accessorKey: 'instructor',
+        accessorKey: 'dob',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    //to  customize the size of each column
+                    className="w-[130px] flex justify-start items-start"
                 >
-                    INSTRUCTOR
+                    DOB
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -294,7 +218,159 @@ export const CourseColumns: ColumnDef<CourseType>[] = [
         cell: TableCell
 
     },
+    {
+        accessorKey: 'class',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    //to  customize the size of each column
+                    className="w-[130px] flex justify-start items-start"
+                >
+                    CLASS
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
 
+    },
+    {
+        accessorKey: 'course',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    COURSE
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'mitTerm',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    MITTERM
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'final',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    FINAL
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'att',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    ATT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'assgmt',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    ASSGT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'mp',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    MP
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'act',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    ACT
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'grade',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    GPA
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'total',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                >
+                    TOTAL
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
 
     {
         accessorKey: 'status',
@@ -312,34 +388,9 @@ export const CourseColumns: ColumnDef<CourseType>[] = [
         cell: TableCell
 
     },
-
-
     {
         id: "edit",
         cell: EditCell,
-    },
-    {
-        id: 'actions',
-        cell: ({ row }) => {
-            const gen = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end' className="bg-white">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                       {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                        {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">Disable</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
     },
 
 ]
