@@ -7,7 +7,7 @@ import { Table } from "@/components/ui/table";
 import { DateComponent } from "@/components/instructorComponent/reports/timesheet/DateComponent";
 import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
 
-export default function page() {
+export default function Timesheet() {
   return (
     <main className="flex flex-col h-full w-full p-9">
       <h2 className="text-4xl text-lms-primary font-bold">Timesheet</h2>

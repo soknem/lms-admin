@@ -33,8 +33,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <section className="flex flex-grow min-h-[calc(100vh-72px)]">
           <aside className="flex">
           <InstructorSidebarComponent/>
+          {ReportSidebar && <ReportSidebar />}
           </aside>
-          <section className="w-full">{children}</section>
+          <section  className="flex-grow overflow-auto">{children}</section>
         </section>
       </body>
     </html>

@@ -21,16 +21,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const genders = [
+const payments = [
   {
-    gender: "Female",
-    percent: "70%",
-    totalAmount: "250",
+    status: "Paid",
+    total: "200",
+    percent: "80%",
   },
   {
-    gender: "Male",
-    percent: "30%",
-    totalAmount: "150",
+    status: "Unpaid",
+    total: "50",
+    percent: "20%",
   },
 ];
 
@@ -44,7 +44,7 @@ Chart.register(
   Legend
 );
 
-const ReportInstructorComponent: React.FC = () => {
+const StudentpayComponent: React.FC = () => {
   const chartContainer = useRef<HTMLCanvasElement | null>(null);
   const myChart = useRef<Chart | null>(null);
 
@@ -55,16 +55,16 @@ const ReportInstructorComponent: React.FC = () => {
         labels: labels,
         datasets: [
           {
-            label: "Female",
-            data: [70, 55], // Percentages for Female students
-            borderColor: "red",
-            backgroundColor: "red",
+            label: "Paid",
+            data: [40, 60], // Percentages for Paid payments
+            borderColor: "green",
+            backgroundColor: "green",
           },
           {
-            label: "Male",
-            data: [30, 45], // Percentages for Male students
-            borderColor: "blue",
-            backgroundColor: "blue",
+            label: "Unpaid",
+            data: [20, 40], // Percentages for Unpaid payments
+            borderColor: "red",
+            backgroundColor: "red",
           },
         ],
       };
@@ -86,14 +86,14 @@ const ReportInstructorComponent: React.FC = () => {
           },
           plugins: {
             legend: {
-              position: "top",
+              position: "right",
               labels: {
                 boxWidth: 20,
               },
             },
             title: {
-              display: "top",
-              text: "Total Inatructor",
+              display: true,
+              text: "Total Student's Payment",
             },
             tooltip: {
               callbacks: {
@@ -130,41 +130,42 @@ const ReportInstructorComponent: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
-      <div className="chart-container w-full h-96 md:w-1/2 mx-10">
+    <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl border">
+      <div className="w-1/2 p-5">
+        <div className="mb-4 bg-lms-primary text-lms-white-80  rounded w-[150px] text-center h-[35px] p-1">
+          Generation 1
+        </div>
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead>STUDENT'S PAYMENT</TableHead>
+              <TableHead>TOTAL</TableHead>
+              <TableHead>PERCENT</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {payments.map((payment) => (
+              <TableRow key={payment.status}>
+                <TableCell className="font-medium">{payment.status}</TableCell>
+                <TableCell>{payment.total}</TableCell>
+                <TableCell>{payment.percent}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow className="bg-lms-background">
+              <TableCell className="font-medium">TOTAL</TableCell>
+              <TableCell>250</TableCell>
+              <TableCell>100%</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
+      <div className="chart-container w-1/2 p-5">
         <canvas ref={chartContainer}></canvas>
       </div>
-      <div className="mt-9 mx-10">
-        <Table className="w-[500px]">
-        <TableHeader>
-          <TableRow>
-            <TableHead>INSTRUCTOR</TableHead>
-            <TableHead>TOTAL</TableHead>
-            <TableHead>PERCENT</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {genders.map((gender) => (
-            <TableRow key={gender.gender}>
-              <TableCell className="font-medium">{gender.gender}</TableCell>
-              <TableCell>{gender.totalAmount}</TableCell>
-              <TableCell>{gender.percent}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow className="bg-lms-background">
-            <TableCell>TOTAL</TableCell>
-            <TableCell>200</TableCell>
-            <TableCell>100%</TableCell>
-
-          </TableRow>
-        </TableFooter>
-      </Table>
-      </div>
-      
     </div>
   );
 };
 
-export default ReportInstructorComponent;
+export default StudentpayComponent;

@@ -8,7 +8,7 @@ import { AttendenceTable,  } from "@/components/instructorComponent/reports/atte
 import { paymentColumns } from "@/components/instructorComponent/reports/attendence/columns";
 import { getPayment } from "@/lib/endpoints/MokApi";
 
-export default async function page() {
+export default async function Attendence() {
   const payData = await getPayment();
   return (
     <main className="flex flex-col h-full w-full p-9">

@@ -44,7 +44,7 @@ Chart.register(
   Legend
 );
 
-const ReportInstructorComponent: React.FC = () => {
+const ReportAdmissionComponent: React.FC = () => {
   const chartContainer = useRef<HTMLCanvasElement | null>(null);
   const myChart = useRef<Chart | null>(null);
 
@@ -93,7 +93,7 @@ const ReportInstructorComponent: React.FC = () => {
             },
             title: {
               display: "top",
-              text: "Total Inatructor",
+              text: "Total Admission",
             },
             tooltip: {
               callbacks: {
@@ -167,4 +167,4 @@ const ReportInstructorComponent: React.FC = () => {
   );
 };
 
-export default ReportInstructorComponent;
+export default ReportAdmissionComponent;
