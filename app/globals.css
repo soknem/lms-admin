@@ -3,19 +3,9 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-inter);
+  @apply bg-white text-black dark:bg-black dark:border-black dark:text-white ;
 }
 
 .khmer-font {
   font-family: var(--font-suwannaphum);
 }
-
-
-
-.auth-image {
-    background-image: url('/FormImage.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  

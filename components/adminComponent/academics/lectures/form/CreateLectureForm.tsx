@@ -1,8 +1,9 @@
-"use client";
+'use client'
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Button } from "@/components/ui/button";
-import style from "../style.module.css";
+import { Button } from "@/components/ui/button"
+// import style from "../style.module.css";
+import style from "@/components/adminComponent/style.module.css"
 import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
@@ -12,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 
 import { GenerationType } from "@/lib/types/admin/academics";
 
@@ -29,19 +30,23 @@ const validationSchema = Yup.object().shape({
   generation: Yup.string().required("Required"),
   startYear: Yup.string().required("Required"),
   EndYear: Yup.number().required("Required"),
-  status: Yup.string().required("A selection is required"),
-});
+  status: Yup.string().required('A selection is required'),
+})
 
+
+//handle submit here
 const handleSubmit = async (value: GenerationType) => {
-  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(value),
-  // });
-  // const data = await res.json()
-  // console.log("generation upload: ", data)
+//   const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(value),
+//   });
+
+//   const data = await res.json()
+
+//   console.log("generation upload: ", data)
 };
 
 const RadioButton = ({ field, value, label }: any) => {
@@ -54,9 +59,7 @@ const RadioButton = ({ field, value, label }: any) => {
         value={value}
         checked={field.value === value}
       />
-      <label className="pl-2" htmlFor={value}>
-        {label}
-      </label>
+      <label className="pl-2" htmlFor={value}>{label}</label>
     </div>
   );
 };
@@ -66,26 +69,18 @@ const RadioButton = ({ field, value, label }: any) => {
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
 
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
-export function CreateGenForm() {
+export function CreateLectureForm() {
   return (
-    <Dialog>
+    <Dialog >
       <DialogTrigger asChild>
-        <Button className="text-white-80">
-          <FiPlus className="mr-2 h-4 w-4" /> Add Generation
+        <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
+          <FiPlus className="mr-2 h-4 w-4" /> Add Lecture
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+      <DialogContent className="w-[1024px] bg-white">
         <DialogHeader>
-          <DialogTitle>Add Generation</DialogTitle>
+          <DialogTitle>Add Lecture</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -120,24 +115,27 @@ export function CreateGenForm() {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
+
             // create generation post
             const GenerationPost: GenerationType = {
               alias: values.alias,
               generation: values.generation,
               startYear: values.startYear,
               endYear: values.endYear,
-              status: values.status,
-            };
+              status: values.status
+
+            }
 
             // post product
-            handleSubmit(GenerationPost);
+            handleSubmit(GenerationPost)
           }}
         >
           {({ setFieldValue }) => (
             <Form className="py-4 rounded-lg w-full ">
               <div className="flex flex-row flex-wrap gap-4">
+
                 {/* Generation title*/}
-                <div className={`${style.inputContainer}`}>
+                <div className={`${style.inputContainer}`} >
                   <label className={`${style.label}`} htmlFor="generation">
                     Title
                   </label>
@@ -190,6 +188,7 @@ export function CreateGenForm() {
                   />
                 </div>
 
+
                 {/* End year */}
                 <div className={`${style.inputContainer}`}>
                   <label className={`${style.label}`} htmlFor="endYear">
@@ -207,6 +206,8 @@ export function CreateGenForm() {
                     className={`${style.error}`}
                   />
                 </div>
+
+                   
 
                 {/* status */}
                 <div className={`${style.inputContainer}  `}>
@@ -242,24 +243,30 @@ export function CreateGenForm() {
                     />
                   </div>
 
+
+
+
                   <ErrorMessage
                     name="status"
                     component={RadioButton}
                     className={`${style.error}`}
                   />
                 </div>
+
+
+
               </div>
+
+
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">
-                  Add
-                </Button>
+                <Button type="submit" className="text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90">Add</Button>
               </DialogFooter>
             </Form>
           )}
         </Formik>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

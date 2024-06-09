@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -30,6 +30,8 @@ const config = {
           "gray-80": "#808897", //(for gray text)
           success: "#008000",
           error: "#F73030",
+          black90: "#000000",
+          grayBorder: "#E6E6E6",
           "black-90": "#000000",
         },
         border: "hsl(var(--border))",
@@ -69,11 +71,6 @@ const config = {
       inset: {
         "1/5": "10%",
         "1/6": "5%",
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {

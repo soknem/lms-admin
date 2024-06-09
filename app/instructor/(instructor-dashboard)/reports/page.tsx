@@ -1,27 +1,22 @@
 import React from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
-import { GenerationType } from "@/lib/types/admin/academics";
+import ReportsComponent from "@/components/adminComponent/reports/student/ReportComponent";
+import ReportComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
+import { columns, invoices } from "./timesheet/payment/columns";
+import { DataTable } from "@/components/instructorComponent/reports/timesheet/payment/TableComponent";
+import { Table } from "@/components/ui/table";
+import { DateComponent } from "@/components/instructorComponent/reports/timesheet/DateComponent";
+import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
 
-async function getGenerations(): Promise<GenerationType[]> {
-  const res = await fetch(
-    "https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations"
-  );
-  const data = await res.json();
-
-  // console.log("data from page: ",data);
-  return data;
-}
-
-export default async function page() {
-  const data = await getGenerations();
-
+export default function Timesheet() {
   return (
-    <section className="flex flex-col gap-4 h-full w-full p-9">
-      <div>
-        <h1 className="mb-6 text-3xl font-bold text-primary">Payment History</h1>
-        <DataTable columns={columns} data={data} />
+    <main className="flex flex-col h-full w-full p-9">
+      <h2 className="text-4xl text-lms-primary font-bold">Timesheet</h2>
+      <div className="ml-[1220px]">
+        <DateComponent />
       </div>
-    </section>
+      <div className="">
+        <TabReportComponent />
+      </div>
+    </main>
   );
 }

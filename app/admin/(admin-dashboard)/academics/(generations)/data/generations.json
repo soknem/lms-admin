@@ -1,0 +1,24 @@
+[
+    {
+        "generation": "Generation 1",
+        "startYear": "2024",
+        "endYear": "2028",
+        "status": "true",
+        "alias": "Gen 1"
+    },
+    {
+        "generation": "Generation 2",
+        "startYear": "2028",
+        "endYear": "2032",
+        "status": "false",
+        "alias": "Gen 2"
+    },
+    {
+        "generation": "Generation 3",
+        "startYear": "2032",
+        "endYear": "2036",
+        "status": "false",
+        "alias": "Gen 3"
+    }
+ 
+]

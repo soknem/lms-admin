@@ -73,3 +73,70 @@ export type CourseType = {
     year: number,
     visibility: boolean
 }
+
+export type LectureType = {
+  // alias: string,
+  startTime: string,
+  endTime: string,
+  description: string,
+  lectureDate: string,
+  status: number,
+  // courseAlias: string,
+  // additional on not have in api
+  teachingType: string,
+  isDelete: boolean,
+  class: string,
+  instructor: string,
+  course: string
+
+}
+
+export type TranscriptType = {
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  studyProgram: string,
+  year: number,
+  semester1: number,
+  semester2: number,
+  gpa: number,
+  total: number,
+  status: number
+}
+
+export type semesterAssessementType = {
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  subjects: SubjectType[],
+  grade: string,
+  total: number,
+  status: number
+}
+
+export type SubjectType = {
+  subjectName: string,
+  score: number
+};
+
+export type courseAssessmentType = {
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  course: string,
+  mitTerm: number,
+  final: number,
+  att: number,
+  assgmt: number,
+  mp: number,
+  act: number,
+  grade: string,
+  total: number,
+  status: number
+}

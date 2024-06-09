@@ -64,7 +64,7 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@radix-ui/react-dropdown-menu'
-import { AddEnrolledStuForm } from '../../AddEnrolledStuForm'
+import { AddEnrolledStuForm } from '@/components/adminComponent/academics/classes/enrolledStudents/AddEnrolledStuForm'
 
 
 
@@ -168,7 +168,7 @@ export function StudentDataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30 hover:bg-white/60 '>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -202,48 +202,48 @@ export function StudentDataTable<TData, TValue>({
 
         {/* class detail information */}
         <div className='flex justify-between p-4'>
-          <div>
-            <Label className='text-gray-30'>Generation</Label>
-            <p className='flex font-medium text-black'>Generation 1</p>
-          </div>
+                <div>
+                  <Label className='text-lms-gray-30'>Generation</Label>
+                  <p className='flex font-medium text-black'>Generation 1</p>
+                </div>
 
-          <div>
-            <Label className='text-gray-30'>Year</Label>
-            <p className='flex font-medium text-black'>Foundation Year</p>
-          </div>
+                <div>
+                  <Label className='text-lms-gray-30'>Year</Label>
+                  <p className='flex font-medium text-black'>Foundation Year</p>
+                </div>
 
-          <div>
-            <Label className='text-gray-30'>Academic Year</Label>
-            <p className='flex font-medium text-black'>2024-2025</p>
-          </div>
+                <div>
+                  <Label className='text-lms-gray-30'>Academic Year</Label>
+                  <p className='flex font-medium text-black'>2024-2025</p>
+                </div>
 
-          <div>
-            <Label className='text-gray-30'>Degree</Label>
-            <p className='flex font-medium text-black'>Bachelor</p>
-          </div>
+                <div>
+                  <Label className='text-lms-gray-30'>Degree</Label>
+                  <p className='flex font-medium text-black'>Bachelor</p>
+                </div>
 
-          <div>
-            <Label className='text-gray-30'>Study Program</Label>
-            <p className='flex font-medium text-black'>Software Engineer</p>
-          </div>
+                <div>
+                  <Label className='text-lms-gray-30'>Study Program</Label>
+                  <p className='flex font-medium text-black'>Software Engineer</p>
+                </div>
 
-          <div>
-            <Label className='text-gray-30'>Enrolled Student</Label>
-            <div className='flex gap-2'>
-              <p className='flex text-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-              <p className='flex text-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-              <p className='flex text-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
-            </div>
+                <div>
+                  <Label className='text-lms-gray-30'>Enrolled Student</Label>
+                  <div className='flex gap-2'>
+                    <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
+                    <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
+                    <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
+                  </div>
 
 
-          </div>
-        </div>
+                </div>
+              </div>
 
 
 
         <Table>
 
-          <TableHeader className='text-gray-30'>
+          <TableHeader className='text-lms-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {

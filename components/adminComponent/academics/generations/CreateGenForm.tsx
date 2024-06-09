@@ -2,7 +2,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button"
-import style from "../style.module.css";
+import style from "@/components/adminComponent/style.module.css"
 import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
@@ -33,19 +33,19 @@ const validationSchema = Yup.object().shape({
 })
 
 
-//handle submit here
+
 const handleSubmit = async (value: GenerationType) => {
-//   const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(value),
-//   });
+  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(value),
+  // });
 
-//   const data = await res.json()
+  // const data = await res.json()
 
-//   console.log("generation upload: ", data)
+  // console.log("generation upload: ", data)
 };
 
 const RadioButton = ({ field, value, label }: any) => {
@@ -77,17 +77,17 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 //   </select>
 // );
 
-export function CreateClassForm() {
+export function CreateGenForm() {
   return (
-    <Dialog >
+    <Dialog>
       <DialogTrigger asChild>
-        <Button className='text-white-80'>
-          <FiPlus className="mr-2 h-4 w-4" /> Add Class
+        <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
+          <FiPlus className="mr-2 h-4 w-4 " /> Add Generation
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[1024px] ">
+      <DialogContent className="bg-white w-[1024px] ">
         <DialogHeader>
-          <DialogTitle>Add Class</DialogTitle>
+          <DialogTitle>Add Generation</DialogTitle>
           {/* <DialogDescription>
             Make changes to your profile here. Click save when you're done.
           </DialogDescription> */}
@@ -268,7 +268,7 @@ export function CreateClassForm() {
 
               {/* button submit */}
               <DialogFooter>
-                <Button type="submit" className="text-white">Add</Button>
+                <Button type="submit" className="text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
               </DialogFooter>
             </Form>
           )}

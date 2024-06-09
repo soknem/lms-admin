@@ -1,15 +1,17 @@
 'use client'
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+
 
 import { ColumnDef } from '@tanstack/react-table'
 
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
-
-import { format } from "date-fns";
+import { TbArchive } from "react-icons/tb";
+import { TbFileIsr } from "react-icons/tb";
+import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button'
+import { TbPencil } from "react-icons/tb";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,7 +22,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType , GenerationType } from "@/lib/types/admin/academics";
+import { OptionType, LectureType } from "@/lib/types/admin/academics";
+
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -43,41 +49,29 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         tableMeta?.updateData(row.index, column.id, e.target.value);
     };
 
+
     // custom render on cell
     const accessorKey = column.columnDef.accessorKey;
 
 
-    // Custom rendering for specific columns : customize date which can take pick date time
-    if (accessorKey === 'startYear' || accessorKey === 'endYear') {
-        const dateValue = new Date(value);
-        const formattedDate = format(dateValue, 'yyyy');
-        const currentYear = new Date().getFullYear();
-        const years = Array.from(new Array(40), (val, index) => currentYear - index);
+    // Custom status
+    if (accessorKey === 'status') {
 
-        if (tableMeta?.editedRows[row.id]) {
-            return (
-                //custom year selector only
-                <select
-                    className="border-1 border-gray-30 rounded-md focus:to-primary"
-                    value={new Date(value).getFullYear()}
-                    onChange={(e) => {
-                        const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
-                        setValue(newValue);
-                        tableMeta?.updateData(row.index, column.id, newValue);
-                    }}
-                >
-                    {years.map((year) => (
-                        <option key={year} value={year}>
-                            {year}
-                        </option>
-                    ))}
-                </select>
-            );
-        } else {
+        switch (value) {
+            case 1:
+              return <StatusBadge type="success" status="Started" />
+            case 2:
+              return <StatusBadge type="warning" status="Pending" />
+            case 3:
+              return <StatusBadge type="error" status="Ended" />
+          }
+    }
 
-            return <div >{formattedDate}</div>;
-
-        }
+    //data in session is a combination of starttime and end time
+    if (accessorKey === 'session') {
+        const startTime = row.original.startTime;
+        const endTime = row.original.endTime;
+        return <span>{`${startTime} - ${endTime}`}</span>;
     }
 
 
@@ -92,8 +86,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
                 value={initialValue}
             >
                 {columnMeta?.options?.map((option: OptionType) => (
-                    <option 
-                        key={option.value} 
+                    <option
+                        key={option.value}
                         value={option.value}
                     >
                         {option.label}
@@ -118,53 +112,14 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 };
 
 
-// Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
-    const meta = table.options.meta;
 
-    const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-        const action = e.currentTarget.name;
-
-        meta?.setEditedRows((old: any) => ({
-            ...old,
-            [row.id]: action === "edit" ? true : false,
-        }));
-
-        if (action === "cancel") {
-            meta?.revertData(row.index, true);
-        }
-    };
-
-    return (
-        <div>
-            {meta?.editedRows[row.id] ? (
-                <div>
-
-                    <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel" >
-                        <RxCross2 size={20}  className="text-red-500"/>
-                    </button>
-
-                    <button onClick={setEditedRows} name="done"className="bg-green-100 rounded-full p-1" >
-                        <IoCheckmarkSharp size={20} className="text-green-500" />
-                    </button>
-
-                </div>
-            ) : (
-
-                <button onClick={setEditedRows} name="edit">
-                    <MdEdit size={18} className="text-gray-30" />
-                </button>
-            )}
-        </div>
-    );
-};
-
-export const columns: ColumnDef<GenerationType>[] = [
+export const LectureColumns: ColumnDef<LectureType>[] = [
     {
-        accessorKey: 'data  ',
+        accessorKey: 'lectureDate',
         header: ({ column }) => {
             return (
                 <Button
+                    className="text-start"
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
@@ -173,32 +128,85 @@ export const columns: ColumnDef<GenerationType>[] = [
                 </Button>
             )
         },
-        cell: TableCell
+        cell: TableCell,
+
     },
     {
-        accessorKey: 'startYear',
+        accessorKey: 'session',
         header: ({ column }) => {
             return (
                 <Button
+                    //to  customize the size of each column
+                    // className="w-[200px] flex justify-start items-start"
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    START YEAR
+                    SESSION
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
         },
         cell: TableCell
     },
+
     {
-        accessorKey: 'endYear',
+        accessorKey: 'class',
         header: ({ column }) => {
             return (
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    END YEAR
+                    CLASS
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+
+    {
+        accessorKey: 'instructor',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    INSTRUCTOR
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'course',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    COURSE
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'teachingType',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    TEACHING TYPE
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -219,26 +227,14 @@ export const columns: ColumnDef<GenerationType>[] = [
                 </Button>
             )
         },
-        cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                { value: "Select", label: "Select Status" },
-                { value: "Public", label: "Public" },
-                { value: "Draft", label: "Draft" },
-                { value: "Disable", label: "Disable" },
-            ],
-        },
+        cell: TableCell
 
     },
-    {
-        id: "edit",
-        cell: EditCell,
-    },
+
     {
         id: 'actions',
         cell: ({ row }) => {
-            const gen = row.original
+            const classes = row.original;
 
             return (
                 <DropdownMenu>
@@ -249,21 +245,14 @@ export const columns: ColumnDef<GenerationType>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='end' className="bg-white">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            className="focus:bg-background"
-                            onClick={() => navigator.clipboard.writeText(gen.alias)}
-                        >
-                            Copy ID
-                        </DropdownMenuItem>
-                       {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                        {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">Disable</DropdownMenuItem>
+                        <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"><TbPencil size={20} className="text-gray-30 mr-2" /> Edit</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600 focus:text-red-600 font-medium focus:bg-background"><TbArchive size={20} className="text-red-600 mr-2 "/>Disable</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
         }
     },
+    
 
 ]
 
