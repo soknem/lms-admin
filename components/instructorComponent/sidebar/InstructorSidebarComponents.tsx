@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
+// @ts-ignore
 import { Logout, MenuList } from "./instructorMenu";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";

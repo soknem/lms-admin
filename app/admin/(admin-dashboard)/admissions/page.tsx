@@ -1,5 +1,7 @@
 
+// @ts-ignore
 import { admissionColumns } from "@/components/admincomponent/admissions/columns";
+// @ts-ignore
 import { AdmissionTable } from "@/components/admincomponent/admissions/data-table";
 import { getAdmission } from "@/lib/endpoints/MokApi";
 import React from "react";

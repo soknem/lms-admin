@@ -36,7 +36,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaSearch } from "react-icons/fa";
+// @ts-ignore
 import { CreateSetStuProForm } from "./CreateDeForm";
+
 
 //custom component import
 

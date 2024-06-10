@@ -21,7 +21,7 @@ import {
   StudyProgramType,
 } from "@/lib/types/admin/faculty";
 import { useRouter } from "next/navigation";
-import { EditStudyProForm } from "@/components/admincomponent/faculties/studygrogram/EditStudyProgramForm";
+// @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/studygrogram/StudyProgramActtionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {

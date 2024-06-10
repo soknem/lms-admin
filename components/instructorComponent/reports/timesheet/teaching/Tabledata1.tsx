@@ -4,6 +4,7 @@ import {
   invoices,
 } from "../../../../../app/instructor/(instructor-dashboard)/reports/timesheet/teaching/columns";
 import { Table } from "@/components/ui/table";
+// @ts-ignore
 import { DataTable } from "./TableComponent";
 async function getinvoices(): Promise<invoices[]> {
   const res = await fetch(

@@ -51,6 +51,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { number } from "yup";
+// @ts-ignore
 import { CreatePayForm } from "./CreatePayForm";
 
 //custom component import

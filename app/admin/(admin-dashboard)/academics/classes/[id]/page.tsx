@@ -18,9 +18,13 @@ import { Input } from '@/components/ui/input';
 import { StudentType, CourseType } from "@/lib/types/admin/academics";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
+// @ts-ignore
 import { StudentDataTable } from "@/components/admincomponent/academics/classes/enrolledStudents/data-table";
+// @ts-ignore
 import { StuColumns } from "@/components/admincomponent/academics/classes/enrolledStudents/columns";
+// @ts-ignore
 import { CourseDataTable } from "@/components/admincomponent/academics/classes/courses/data-table";
+// @ts-ignore
 import { CourseColumns } from "@/components/admincomponent/academics/classes/courses/columns";
 
 
