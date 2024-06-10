@@ -19,9 +19,6 @@ export default async function Report() {
       </div>
 
       <TabComponent />
-      <div className="mt-2">
-        <ReportComponent />
-      </div>
     </main>
   );
 }
