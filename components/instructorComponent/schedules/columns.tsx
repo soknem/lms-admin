@@ -62,20 +62,20 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return (
       <span
         className={
-          value === "true"
+          value === "active"
             ? "Public text-green-500"
-            : value === "false"
+            : value === "inactive"
             ? "Disable text-red-500"
-            : value === "draft"
+            : value === "disable"
             ? "Draft text-gray-400"
             : ""
         }
       >
-        {value === "true"
+        {value === "active"
           ? "Public"
-          : value === "false"
+          : value === "inactive"
           ? "Disable"
-          : value === "draft"
+          : value === "disable"
           ? "Draft"
           : ""}
       </span>
@@ -197,9 +197,9 @@ export const scheduleColumns: ColumnDef<ScheduleType>[] = [
     meta: {
       type: "select",
       options: [
-        { value: "true", label: "Public" },
-        { value: "false", label: "Disable" },
-        { value: "draft", label: "Draft" },
+        { value: "active", label: "Public" },
+        { value: "inactive", label: "Disable" },
+        { value: "disable", label: "Draft" },
       ],
     },
   },
