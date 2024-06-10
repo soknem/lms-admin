@@ -1,11 +1,9 @@
 import { AiOutlineLogout } from "react-icons/ai";
 import { BiSolidComponent } from "react-icons/bi";
-import { BsMoonStarsFill, BsSunFill } from 'react-icons/bs';
+import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
 import { FaBuilding, FaCashRegister, FaUser } from "react-icons/fa6";
 import { HiDocumentReport } from "react-icons/hi";
 import { HiCurrencyDollar, HiMiniAcademicCap } from "react-icons/hi2";
-
-
 
 // set value of MenuList to display the sidebar menu
 export const MenuList = [
@@ -43,10 +41,8 @@ export const MenuList = [
     path: "/admin/reports",
     icon: HiDocumentReport,
     active: false,
-  }
+  },
 ];
-
-
 
 export const Logout = [
   {

@@ -22,7 +22,9 @@ export default function ReportSidebar() {
             <Button
               // group hover:bg-background to make it affect to inner element
               className={` text-lg text-lms-gray80 font-medium  flex items-center justify-start px-9 w-[240px] bg-white hover:bg-lms-background" ${
-                pathname === item.path ? "bg-lms-background text-lms-primary rounded-[10px]" : ""
+                pathname === item.path
+                  ? "bg-lms-background text-lms-primary rounded-[10px]"
+                  : ""
               }`}
             >
               {item.name}
