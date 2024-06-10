@@ -34,6 +34,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+// @ts-ignore
+import { CreateSubjectForm } from "./CreateFacForm";
 
 //custom component import
 
@@ -147,6 +149,8 @@ export function SubjectTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <CreateSubjectForm />
       </div>
 
       {/* Table */}

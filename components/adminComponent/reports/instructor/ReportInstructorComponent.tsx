@@ -136,31 +136,33 @@ const ReportInstructorComponent: React.FC = () => {
       </div>
       <div className="mt-9 mx-10">
         <Table className="w-[500px]">
-          <TableHeader>
-            <TableRow>
-              <TableHead>INSTRUCTOR</TableHead>
-              <TableHead>TOTAL</TableHead>
-              <TableHead>PERCENT</TableHead>
+        <TableHeader>
+          <TableRow>
+            <TableHead>INSTRUCTOR</TableHead>
+            <TableHead>TOTAL</TableHead>
+            <TableHead>PERCENT</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {genders.map((gender) => (
+            <TableRow key={gender.gender}>
+              <TableCell className="font-medium">{gender.gender}</TableCell>
+              <TableCell>{gender.totalAmount}</TableCell>
+              <TableCell>{gender.percent}</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {genders.map((gender) => (
-              <TableRow key={gender.gender}>
-                <TableCell className="font-medium">{gender.gender}</TableCell>
-                <TableCell>{gender.totalAmount}</TableCell>
-                <TableCell>{gender.percent}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow className="bg-lms-background">
-              <TableCell>TOTAL</TableCell>
-              <TableCell>200</TableCell>
-              <TableCell>100%</TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow className="bg-lms-background">
+            <TableCell>TOTAL</TableCell>
+            <TableCell>200</TableCell>
+            <TableCell>100%</TableCell>
+
+          </TableRow>
+        </TableFooter>
+      </Table>
       </div>
+      
     </div>
   );
 };

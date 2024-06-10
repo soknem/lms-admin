@@ -37,6 +37,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CommandInput } from "@/components/ui/command";
+// @ts-ignore
+import { CreateFacForm } from "./CreateFacForm";
 
 //custom component import
 
@@ -127,7 +129,7 @@ export function FacultyTable<TData, TValue>({
       <div className="flex items-center justify-between gap-4 ">
         <div className="flex items-center py-4 w-full">
           <div className="flex items-center w-full relative">
-            <Input
+            <Input  
               placeholder="Search Faculty"
               value={
                 (table.getColumn("name")?.getFilterValue() as string) ?? ""
@@ -137,7 +139,7 @@ export function FacultyTable<TData, TValue>({
               }
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              className="border-[#E6E6E6] bg-white focus:pl-8 "
+              className="border-[#E6E6E6] bg-white rounded-[10px] focus:pl-8 "
             />
             {isFocused && (
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -152,14 +154,14 @@ export function FacultyTable<TData, TValue>({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+              className="border-[#E6E6E6] bg-white rounded-[10px] ml-auto"
             >
               {selectedFilter}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="border-[#E6E6E6] bg-white"
+            className="border-[#E6E6E6] bg-white "
           >
             {filterOptions.map((option) => (
               <DropdownMenuItem
@@ -181,7 +183,7 @@ export function FacultyTable<TData, TValue>({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+              className="border-[#E6E6E6] rounded-[10px] bg-white ml-auto"
             >
               Columns
             </Button>
@@ -206,10 +208,13 @@ export function FacultyTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Add Faculty */}
+        <CreateFacForm />
       </div>
 
       {/* Table */}
-      <div className="w-full rounded-md p-4 bg-white">
+      <div className="w-full p-4 bg-white rounded-[10px] ">
         <Table>
           <TableHeader className="text-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (

@@ -2,7 +2,6 @@
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
+// @ts-ignore
+import ActionsCell from "@/components/admincomponent/payments/PaymentActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -365,32 +366,6 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      const payment = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              className="focus:bg-background"
-              onClick={() => navigator.clipboard.writeText(payment.student.name)}
-            >
-              Copy ID
-            </DropdownMenuItem>
-            {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-            {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-            <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-              Disable
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ActionsCell,
   },
 ];

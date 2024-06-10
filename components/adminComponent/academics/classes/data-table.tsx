@@ -62,7 +62,8 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-import { CreateClassForm } from '@/components/adminComponent/academics/classes/CreateClassForm'
+import { CreateClassForm } from './CreateClassForm';
+
 
 
 
@@ -187,7 +188,7 @@ export function DataTable<TData, TValue>({
   return (
     <>
 
-      <div className='flex items-center justify-between gap-4 '>
+      <div className='flex items-center justify-between gap-4 my-2 '>
 
         {/* Search */}
         <div className="flex items-center w-full relative">
@@ -378,7 +379,7 @@ export function DataTable<TData, TValue>({
 
 
       {/* Class Remark */}
-      <div className='rounded-lg p-4 bg-white flex flex-row justify-between'>
+      <div className='rounded-lg p-4 bg-white flex flex-row justify-between mt-2'>
           <p className='text-lms-success font-semibold'>Class Code:</p>
           <div className='flex gap-2 text-gray-500 '>
             <p className='font-semibold'>FY2025</p>

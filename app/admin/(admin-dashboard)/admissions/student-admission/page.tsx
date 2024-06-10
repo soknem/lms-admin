@@ -1,5 +1,7 @@
-import { StudentAdmissionColumns } from "@/components/adminComponent/admissions/student-admission/columns";
-import { StudentAdmissionTable } from "@/components/adminComponent/admissions/student-admission/data-table";
+// @ts-ignore
+import { StudentAdmissionColumns } from "@/components/admincomponent/admissions/student-admission/columns";
+// @ts-ignore
+import { StudentAdmissionTable } from "@/components/admincomponent/admissions/student-admission/data-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,7 +22,7 @@ export default async function Admissions() {
           <BreadcrumbItem>
             <BreadcrumbLink>
               <Link href="/admin/admissions" legacyBehavior>
-              <a>ADMISSION</a>
+                <a>ADMISSION</a>
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>

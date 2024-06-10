@@ -4,13 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiEyeOff } from "react-icons/hi";
-import { useRouter } from "next/navigation"; // Import the useRouter hook from next/router
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { Formik, Form, Field, FormikErrors, FormikTouched } from "formik";
 import * as Yup from "yup";
-import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail'
+import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail';
 import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
 
 // Define initial values for the form fields
@@ -31,54 +30,54 @@ const validationSchema = Yup.object({
 });
 
 // Define function to get field class name based on validation status
-const getFieldClassName = (errors: FormikErrors<InitialValues>, touched: FormikTouched<InitialValues>, fieldName: keyof InitialValues) => {
+const getFieldClassName = (
+  errors: FormikErrors<InitialValues>,
+  touched: FormikTouched<InitialValues>,
+  fieldName: keyof InitialValues
+) => {
   const baseClass = "bg-gray-100 dark:bg-gray-100 border text-gray-900 dark:text-gray-700 text-[15px] rounded-xl focus:ring-blue-500 block w-full p-2.5";
   const errorClass = "border-red-500 dark:border-red-500 focus:border-red-500";
-  const validClass = "border-gray-300 dark:border-gray-300 ";
+  const validClass = "border-gray-300 dark:border-gray-300";
 
-  return touched[fieldName] && errors[fieldName] ? `${baseClass} ${errorClass}` : `${baseClass} ${validClass}`;
+  return touched[fieldName] && errors[fieldName]
+    ? `${baseClass} ${errorClass}`
+    : `${baseClass} ${validClass}`;
+};
+
+// Define static users
+interface User {
+  password: string;
+  redirect: string;
+}
+
+const users: Record<string, User> = {
+  "admin@gmail.com": { password: "admin123", redirect: "/admin/faculties" },
+  "instructor@gmail.com": { password: "instructor123", redirect: "/instructor/courses" },
+  "student@gmail.com": { password: "student123", redirect: "/student/courses" },
 };
 
 // Define CardLogin component
 export function CardLogin() {
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter(); // Instantiate the router
+  const router = useRouter();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const handleSubmit = (values: InitialValues, actions: any) => {
-    fetch(`http://localhost:3000/api/signIn`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          // Show toast for successful login
-          alert("Login Successful");
-
-          // Redirect to a specific page after successful login
-          router.push("/dashboard");
-        } else {
-          // Show toast for failed login
-          alert("Login Failed");
-          actions.setSubmitting(false);
-        }
-      })
-      .catch((error) => {
-        // Show toast for unexpected error
-        alert("An unexpected error occurred");
-        actions.setSubmitting(false);
-      });
+    const user = users[values.email];
+    if (user && user.password === values.password) {
+      alert("Login Successful");
+      router.push(user.redirect);
+    } else {
+      alert("Login Failed");
+      actions.setSubmitting(false);
+    }
   };
 
   return (
-    <Card className="w-[550px] bg-white dark:bg-white p-[24px] border border-gray-300 dark:border-white ">
+    <Card className="w-[550px] bg-white dark:bg-white p-[24px] border border-gray-300 dark:border-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

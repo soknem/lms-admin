@@ -5,7 +5,6 @@ export type PaymentType = {
     name: string;
     profile_image: string;
   };
-
   gender: string;
   date: string;
   discount: number;

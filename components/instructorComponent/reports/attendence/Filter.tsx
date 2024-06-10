@@ -243,6 +243,7 @@ export function Filter<TData, TValue>({
               <CommandInput
                 placeholder="Filter Course..." />
 
+
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>

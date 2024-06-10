@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+// @ts-ignore
 import { Logout, MenuList } from "./studentMenu";
 import { BsMoonStarsFill, BsSunFill } from 'react-icons/bs';
 import { useTheme } from "next-themes";

@@ -1,6 +1,12 @@
-import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
-import { BreadcrumbWithCustomSeparator } from "@/components/studentComponent/coursedetail/BreadcrumbComponent";
-import CourseDetailHeader from "@/components/studentComponent/coursedetail/CourseDetailHeader";
+// import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
+// import { BreadcrumbWithCustomSeparator } from "@/components/studentComponent/coursedetail/BreadcrumbComponent";
+// import CourseDetailHeader from "@/components/studentComponent/coursedetail/CourseDetailHeader";
+// @ts-ignore
+import TabReportComponent from "@/components/instructorcomponent/reports/timesheet/TabReportComponent";
+// @ts-ignore
+import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
+// @ts-ignore
+import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
 
 export default function coursedetail() {
@@ -13,7 +19,7 @@ export default function coursedetail() {
         <BreadcrumbWithCustomSeparator />
       </div>
       <div className=" mx-[100px] ">
-        <TabReportComponent />
+        <TabReportComponent/>
       </div>
     </main>
   );

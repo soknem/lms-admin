@@ -1,7 +1,10 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// @ts-ignore
 import CurriculumComponent from "./CurriculumComponent";
+// @ts-ignore
 import SlideComponent from "./SlideComponent";
+// @ts-ignore
 import VideoComponent from "./VideoComponent";
 
 

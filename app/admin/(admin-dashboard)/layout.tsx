@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
-
-import { ThemeProvider } from "@/components/ui/themeProvider";
-import NavbarComponent from "@/components/adminComponent/navbar/NavbarComponent";
-import AdminSidebarComponent from "@/components/adminComponent/sidebar/AdminSidebarComponent";
-import AcademicSidebar from "@/components/adminComponent/academics/sidebar/AcademicSidebarComponent";
+// @ts-ignore
+import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+// @ts-ignore
+import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+// @ts-ignore
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],

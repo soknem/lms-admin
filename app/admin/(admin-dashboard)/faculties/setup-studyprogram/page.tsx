@@ -9,8 +9,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import { SetupStudyProgramTable } from "@/components/adminComponent/faculties/studygrogram/setup-studyprogram/data-table";
-import { setupStudyProgramColumns } from "@/components/adminComponent/faculties/studygrogram/setup-studyprogram/columns";
+// @ts-ignore
+import { SetupStudyProgramTable } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/data-table";
+// @ts-ignore
+import { setupStudyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/columns";
+
 
 export default async function page() {
   const setStudy = await getSetupStudyProgram();

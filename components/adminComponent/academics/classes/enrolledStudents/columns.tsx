@@ -26,6 +26,7 @@ import { OptionType , StudentType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -51,6 +52,24 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
     // custom render on cell
     const accessorKey = column.columnDef.accessorKey;
+
+
+    // Custom rendering for specific columns 
+    if (accessorKey === 'status') {
+        
+        switch (value) {
+            case 1:
+                return <StatusBadge type="success" status="Active" />
+            case 2:
+                return <StatusBadge type="warning" status="Hiatus" />
+            case 3:
+                return <StatusBadge type="error" status="Drop" />
+            case 4:
+                return <StatusBadge type="error" status="Disable" />
+            default:
+                return <StatusBadge type="warning" status="Hiatus" />
+          }
+    }
 
     //add font style to khmer name columns 
     if(accessorKey === 'nameKh'){

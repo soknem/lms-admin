@@ -64,7 +64,8 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@radix-ui/react-dropdown-menu'
-import { AddEnrolledStuForm } from '@/components/adminComponent/academics/classes/enrolledStudents/AddEnrolledStuForm'
+import { AddEnrolledStuForm } from './AddEnrolledStuForm'
+
 
 
 
@@ -299,6 +300,30 @@ export function StudentDataTable<TData, TValue>({
 
 
 
+      </div>
+
+      {/* status Remark */}
+      <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
+          <p className='text-lms-success font-bold '>Status :</p>
+          <div className='flex gap-2 text-gray-500 '>
+            <p className='font-semibold text-lms-success'>Active</p>
+            <p className='khmer-font'>សិស្សកំពុងសិក្សា</p>
+          </div>
+          
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-accent '>Hiatus</p>
+            <p className='khmer-font'>សិស្សព្យួរការសិក្សា</p>
+          </div>
+
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Drop</p>
+            <p className='khmer-font'>សិស្សបោះបង់ការសិក្សា</p>
+          </div>
+          
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Disable</p>
+            <p className='khmer-font'>សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</p>
+          </div>
       </div>
 
       <div className='px-4 w-full flex justify-between items-center'>

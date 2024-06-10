@@ -1,6 +1,7 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
+
 
 //import from shad cn
 import {
@@ -13,33 +14,68 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+  useReactTable
+} from '@tanstack/react-table'
 
-import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+
+import { Input } from '@/components/ui/input'
+
+
+import { Button } from "@/components/ui/button"
+
+import { TbSearch } from "react-icons/tb";
+
+import { useMediaQuery } from "usehooks-ts"
+
+import { FaSearch } from "react-icons/fa";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 
 import { TbFilter } from "react-icons/tb";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
+
+
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
 }
 
 export function FilterAdmin<TData, TValue>({
   columns,
-  data,
+  data
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
@@ -54,6 +90,7 @@ export function FilterAdmin<TData, TValue>({
   const [openCourse, setOpenCourse] = useState(false);
   const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
 
+
   const router = useRouter();
 
   const table = useReactTable({
@@ -62,7 +99,7 @@ export function FilterAdmin<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      columnVisibility,
+      columnVisibility
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -101,61 +138,94 @@ export function FilterAdmin<TData, TValue>({
         );
       },
     },
-  });
+  })
 
-  //reset popup
   // const handleReset = (columnId: string) => {
-  //   if (columnId === "instructor") {
-  //     setselectedIns(null);
-  //   }
-  //   if (columnId === "class") {
-  //     setSelectedClass(null);
-  //   }
-  //   if (columnId === "course") {
-  //     setSelectedCourse(null);
-  //   }
-  //   table.getColumn(columnId)?.setFilterValue("");
+  //   setSelectedStatus(null);
+  //   setOpen(false);
+
+  //   table.getColumn(columnId)?.setFilterValue('');
   //   setData([...originalData]);
   // };
 
-  // filter data of generation
-  // const FilteredIns = data.reduce((instructor: string[], item: any) => {
-  //   if (!instructor.includes(item.instructor)) {
-  //     instructor.push(item.instructor);
-  //   }
-  //   return instructor;
-  // }, []);
+  //reset popup
+  const handleReset = (columnId: string) => {
+    if (columnId === 'instructor') {
+      setselectedIns(null);
+    }
+    if (columnId === 'class') {
+      setSelectedClass(null);
+    }
+    if (columnId === 'course') {
+      setSelectedCourse(null);
+    }
+    table.getColumn(columnId)?.setFilterValue('');
+    setData([...originalData]);
+  };
 
-  //filter data of academic
-  // const FilteredClass = data.reduce((cs: string[], item: any) => {
-  //   if (!cs.includes(item.class)) {
-  //     cs.push(item.class);
-  //   }
-  //   return cs;
-  // }, []);
 
-  //filter data of major
-  // const FilteredCourse = data.reduce((course: string[], item: any) => {
-  //   if (!course.includes(item.course)) {
-  //     course.push(item.course);
-  //   }
-  //   return course;
-  // }, []);
+  // filter data of instructor
+  const FilteredIns = data.reduce((instructor: string[], item: any) => {
+    if (!instructor.includes(item.instructor)) {
+      instructor.push(item.instructor);
+    }
+    return instructor;
+  }, []);
+
+
+  //filter data of class
+  const FilteredClass = data.reduce((cs: string[], item: any) => {
+    if (!cs.includes(item.class)) {
+      cs.push(item.class);
+    }
+    return cs;
+  }, []);
+
+  //filter data of course
+  const FilteredCourse = data.reduce((course: string[], item: any) => {
+    if (!course.includes(item.course)) {
+      course.push(item.course);
+    }
+    return course;
+  }, []);
+
+
 
   return (
     <>
-      <div className="flex items-center gap-4">
-        {/* filter generation*/}
+
+      <div className='flex items-center gap-4'>
+
+        {/* Search */}
+        {/* <div className="flex items-center w-full relative">
+          <Input
+            placeholder="Search by class...."
+            value={
+              (table.getColumn("className")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("className")?.setFilterValue(event.target.value)
+            }
+
+            className="border-[#E6E6E6] bg-white pl-10 "
+          />
+
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FaSearch className="text-gray-400" />
+          </div>
+
+        </div> */}
+
+
+        {/* filter Instructor */}
         <Popover open={openIns} onOpenChange={setopenIns}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" /> <> Filter Generation</>
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedIns ? <>{selectedIns}</> : <> Filter Generation</>}
             </Button>
           </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
                 placeholder="Filter Instructor..." />
@@ -182,21 +252,18 @@ export function FilterAdmin<TData, TValue>({
             {selectedIns && (
               <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructor')}>Reset</Button>
             )}
-          </PopoverContent> */}
+          </PopoverContent>
         </Popover>
 
-        {/* filter academic */}
+        {/* filter class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
-              <> Filter Academic</>
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedClass ? <>{selectedClass}</> : <> Filter Academic</>}
             </Button>
           </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
                 placeholder="Filter class..." />
@@ -223,20 +290,18 @@ export function FilterAdmin<TData, TValue>({
             {selectedClass && (
               <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('class')}>Reset</Button>
             )}
-          </PopoverContent> */}
+          </PopoverContent>
         </Popover>
 
-        {/* filter major */}
+        {/* filter course */}
         <Popover open={openCourse} onOpenChange={setOpenCourse}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" /> <> Filter Major</>
+            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedCourse ? <>{selectedCourse}</> : <> Filter Major</>}
             </Button>
           </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
                 placeholder="Filter Course..." />
@@ -263,9 +328,100 @@ export function FilterAdmin<TData, TValue>({
             {selectedCourse && (
               <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset('course')}>Reset</Button>
             )}
-          </PopoverContent> */}
+          </PopoverContent>
         </Popover>
+
+        {/* Column visibility */}
+        {/* <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
+              View
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end' className='bg-white '>
+            {table
+              .getAllColumns()
+              .filter(column => column.getCanHide())
+              .map(column => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className='capitalize focus:bg-background'
+                    checked={column.getIsVisible()}
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu> */}
+
+        {/* Create class form */}
+
       </div>
+
+      {/* Table */}
+      {/* <div className='rounded-md p-4 bg-white'>
+        <Table>
+          <TableHeader className='text-gray-30'>
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    </TableHead>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id} >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className='h-24 text-center '
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+
+        </Table>
+      </div> */}
+
+     
+     
+
+
     </>
-  );
+  )
 }
+
