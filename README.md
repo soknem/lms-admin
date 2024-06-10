@@ -92,5 +92,8 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
 10. admin users : /admin/users (not complete yet)
 11. admin payment: /admin/payments
 12. admin report: /admin/reports
+13. admin setup study program : /admin/faculties/setup-studyprogram
+14. admin view study program detail : /admin/faculties/studyprogram-detail
+15. admin course detail : /instructor/courses/coursedetail 
 
 
