@@ -1,7 +1,7 @@
 import React from "react";
 import { ClassType } from "@/lib/types/admin/academics";
-import { DataTable } from "@/components/instructorcomponent/reports/timesheet/payment/TableComponent";
-import { columns } from "@/components/admincomponent/academics/classes/columns";
+import { DataTable } from "@/components/adminComponent/academics/classes/data-table";
+import { columns } from "@/components/adminComponent/academics/classes/columns";
 
 
 async function getClasses(): Promise<ClassType[]> {

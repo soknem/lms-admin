@@ -50,8 +50,8 @@ const EarningsReportComponent: React.FC = () => {
           {
             label: "Earning",
             data: earningsData.map((data) => data.earning),
-            backgroundColor: "rgba(0, 0, 128, 0.7)", // Adjust color as needed
-            borderColor: "rgba(0, 0, 128, 1)", // Adjust color as needed
+            backgroundColor: "rgba(0, 0, 128, 0.7)",
+            borderColor: "rgba(0, 0, 128, 1)", 
           },
         ],
       };
@@ -98,14 +98,14 @@ const EarningsReportComponent: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white p-5 h-full flex justify-between rounded-xl">
+    <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
       <div className="chart-container w-full h-96 md:w-1/2 mx-10">
         <canvas ref={chartContainer}></canvas>
       </div>
-      <div className="mr-9">
+      <div className="mr-[100px]">
         <Table className="w-[300px]">
           <TableHead>
-            <TableRow>
+            <TableRow className="mx-12">
               <TableCell>YEAR</TableCell>
               <TableCell>EARNING</TableCell>
             </TableRow>

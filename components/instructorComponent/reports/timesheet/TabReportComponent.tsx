@@ -9,7 +9,6 @@ import HeaderComponent1 from "./teaching/HeaderComponent";
 // @ts-ignore
 import Tabledata1 from "./teaching/Tabledata1";
 
-
 // import HeaderComponent1 from "@/components/instructorComponent/reports/timesheet/teaching/HeaderComponent";
 // import HeaderComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
 // import Tabledata from "@/components/instructorComponent/reports/timesheet/payment/Tabledata";
@@ -18,7 +17,7 @@ import Tabledata1 from "./teaching/Tabledata1";
 export default function TabReportComponent() {
   return (
     <div>
-      <Tabs defaultValue="  ">
+      <Tabs defaultValue="payment history">
         <TabsList>
           <TabsTrigger value="payment history">Payment History</TabsTrigger>
           <TabsTrigger value="teaching history">Teaching History</TabsTrigger>

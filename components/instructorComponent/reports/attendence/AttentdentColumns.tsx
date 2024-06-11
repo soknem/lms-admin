@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
+import { AttentType } from "@/lib/types/instructor/report";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -146,7 +147,7 @@ const EditCell = ({ row, table }: any) => {
   );
 };
 
-export const paymentColumns: ColumnDef<PaymentType>[] = [
+export const attentdentColumns: ColumnDef<AttentType>[] = [
   {
     accessorKey: "card_id",
     header: ({ column }) => {

@@ -14,7 +14,7 @@ export default async function Report() {
   return (
     <main className="p-9">
       <h2 className="text-4xl text-lms-primary font-bold">Reports</h2>
-      <div className="ml-[900px] ">
+      <div className="flex justify-end">
         <FilterAdmin columns={LectureColumns} data={data} />
       </div>
 
