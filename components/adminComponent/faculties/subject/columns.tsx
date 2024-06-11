@@ -11,8 +11,6 @@ import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
 import ActionsCell from "./SubActionCell";
 //. @ts-ignore
 
-
-
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;

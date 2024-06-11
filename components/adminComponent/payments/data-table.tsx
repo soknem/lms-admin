@@ -158,33 +158,33 @@ export function PaymentTable<TData, TValue>({
   return (
     <>
       <section className="w-full h-[192px] bg-white rounded flex items-center gap-9 p-6">
-        <div className="w-[330px] h-[136px] bg-[#ABC3FF] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Earnings this semester
           </p>
           <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#FFD338] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">To be paid</p>
           <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#18C964] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Earnings this semester
           </p>
           <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#ABC3FF] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Total students
           </p>
           <p className="text-4xl font-bold text-lms-primary">150 people</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#FFD338] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Students to be paid:
           </p>
@@ -266,7 +266,7 @@ export function PaymentTable<TData, TValue>({
                     className="capitalize focus:bg-background"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value) 
+                      column.toggleVisibility(!!value)
                     }
                   >
                     {column.id}
