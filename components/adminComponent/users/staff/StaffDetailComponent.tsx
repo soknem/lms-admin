@@ -14,10 +14,10 @@ import { FaGraduationCap } from "react-icons/fa";
 import { MdSmartphone } from "react-icons/md";
 import { BiSolidBookOpen } from "react-icons/bi";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import CourseCardComponent from "@/components/adminComponent/users/staff/CourseCardComponent";
 //components
-import MoreInfo from "@/components/adminComponent/users/students/StuMoreInfo";
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
+import MoreInfo from "./StaffMoreInfoComponent";
+import CourseCardComponent from "./CourseCardComponent";
 
 type cardProps = {
     id: string,

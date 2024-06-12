@@ -9,7 +9,7 @@ import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarCompo
 // @ts-ignore
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 import { usePathname } from "next/navigation";
-import ReportSidebar from "@/components/instructorComponent/reports/sidebar/ReportSidebarComponent";
+import ReportSidebar from "@/components/instructorcomponent/reports/sidebar/ReportSidebarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],

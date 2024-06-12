@@ -1,8 +1,8 @@
 import { TeachingType} from "@/lib/types/instructor/teachingtype";
 import teaching from "@/app/instructor/(instructor-dashboard)/reports/timesheet/teaching/data/teaching.json";
-import { PaymentColumns } from "@/components/instructorComponent/reports/timesheet/payment/columns";
-import { TeachingDataTable } from "@/components/instructorComponent/reports/timesheet/teaching/data-table";
-import { TeachingColumns } from "@/components/instructorComponent/reports/timesheet/teaching/columns";
+import { TeachingDataTable } from "@/components/instructorcomponent/reports/timesheet/teaching/data-table";
+import { TeachingColumns } from "@/components/instructorcomponent/reports/timesheet/teaching/columns";
+
 export default function Teaching() {
   const teachingData: TeachingType[] = teaching;
   return (

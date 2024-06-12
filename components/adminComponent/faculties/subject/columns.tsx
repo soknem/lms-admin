@@ -8,7 +8,7 @@ import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
-import ActionsCell from "@/components/adminComponent/faculties/subject/SubActionCell";
+import ActionsCell from "./SubActionCell";
 //. @ts-ignore
 
 const TableCell = ({ getValue, row, column, table }: any) => {

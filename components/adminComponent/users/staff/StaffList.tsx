@@ -4,10 +4,10 @@ import {FaSearch} from "react-icons/fa";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import {FiPlus} from "react-icons/fi";
-import InstructorCardComponent from "@/components/adminComponent/users/staff/InstructorCardComponent";
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import {InsData} from "@/app/admin/(admin-dashboard)/users/data/StaffData";
+import InstructorCardComponent from "./InstructorCardComponent";
 
 export default function StaffList() {
     const router = useRouter();
