@@ -45,7 +45,6 @@ export default function StaffDetail() {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-
                 <StaffDetailComponent
                     key={insData.id}
                     id={insData.id}
