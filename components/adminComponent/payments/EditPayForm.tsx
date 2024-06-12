@@ -122,36 +122,8 @@ export function EditPayForm() {
     <Dialog open>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add Payment</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Edit Payment</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -192,90 +164,90 @@ export function EditPayForm() {
             <Form className="py-4 rounded-lg w-full ">
               <div className="flex flex-col gap-4">
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="academic_year">
                     Academic Fee
                   </label>
                   <Field
                     type="text"
                     placeholder="$ 700"
-                    name="degree"
-                    id="degree"
+                    name="academic_year"
+                    id="academic_year"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="academic_year"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="total_payment">
                     Paid Amount
                   </label>
                   <Field
                     type="text"
                     placeholder="$ 500"
-                    name="degree"
-                    id="degree"
+                    name="total_payment"
+                    id="total_payment"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="total_payment"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="date">
                     Paid Date
                   </label>
                   <Field
-                    type="text"
+                    type="date"
                     placeholder="Feb 25, 2023"
-                    name="degree"
-                    id="degree"
+                    name="date"
+                    id="date"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="date"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="payment_method">
                     Payment Method
                   </label>
                   <Field
                     type="text"
                     placeholder="Cash Payment"
-                    name="degree"
-                    id="degree"
+                    name="payment_method"
+                    id="payment_method"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="payment_method"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="remark">
                     Remark
                   </label>
                   <Field
                     type="text"
                     placeholder="About to be fully paid"
-                    name="degree"
-                    id="degree"
+                    name="remark"
+                    id="remark"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="remark"
                     component="div"
                     className={`${style.error}`}
                   />

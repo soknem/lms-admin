@@ -29,5 +29,5 @@
 }
 
 .imageContainer{
-	@apply w-[100px] h-[100px] rounded-full 
+	@apply w-[100px] h-[100px] rounded-full
 }

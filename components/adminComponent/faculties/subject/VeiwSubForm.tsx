@@ -97,31 +97,9 @@ export function ViewSubjectForm() {
   return (
     <Dialog open>
       <DialogContent className="w-[540px] bg-white ">
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
+        <DialogHeader>
+          <DialogTitle>Subject Information</DialogTitle>
+        </DialogHeader>
 
         <Formik
           initialValues={initialValues}
@@ -146,7 +124,7 @@ export function ViewSubjectForm() {
             <Form className="py-4 rounded-lg w-full ">
               <div className="flex flex-col items-center gap-4">
                 <div
-                  className={`flex items-center justify-center relative ${style.imageContainer}`}
+                  className={`flex items-center justify-center  ${style.imageContainer}`}
                 >
                   <img
                     src="https://api.istad.co/media/image/a3c4f87e-7a85-44c3-a568-6c5abef76cfe.png"
@@ -155,17 +133,21 @@ export function ViewSubjectForm() {
                   />
                 </div>
 
-                {/* faculty title*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="subject">
                     Subject
                   </label>
                   <Field
                     type="text"
                     placeholder="Introduction to IT"
-                    name="name"
-                    id="name"
+                    name="subject"
+                    id="subject"
                     className={` ${style.input}`}
+                  />
+                  <ErrorMessage
+                    name="subject"
+                    component="div"
+                    className={`${style.error}`}
                   />
                 </div>
 
@@ -173,42 +155,50 @@ export function ViewSubjectForm() {
                   className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}
                 >
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="hour">
                       Hour
                     </label>
                     <Field name="hour" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="theory">
                       Theory
                     </label>
-                    <Field name="hour" className={` ${style.input}`} />
+                    <Field name="theory" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="practice">
                       Practice
                     </label>
-                    <Field name="hour" className={` ${style.input}`} />
+                    <Field name="practice" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="internship">
                       Interniship
                     </label>
-                    <Field name="hour" className={` ${style.input}`} />
+                    <Field name="internship" className={` ${style.input}`} />
                   </div>
                 </div>
 
                 {/* Faculty Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
                     placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
+                  />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className={`${style.error}`}
                   />
                 </div>
 
@@ -245,8 +235,24 @@ export function ViewSubjectForm() {
                       label="Disable"
                     />
                   </div>
+
+                  <ErrorMessage
+                    name="status"
+                    component={RadioButton}
+                    className={`${style.error}`}
+                  />
                 </div>
               </div>
+
+              {/* button submit */}
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                >
+                  Save Change
+                </Button>
+              </DialogFooter>
             </Form>
           )}
         </Formik>

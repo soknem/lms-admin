@@ -13,15 +13,12 @@ import { EditFacForm } from "./EditFacForm";
 // @ts-ignore
 import { ViewFacForm } from "./ViewFacForm";
 import { useRouter } from "next/navigation";
+import { EditUserStuForm } from "./EditUserStu";
 
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const student = row.original;
   const router = useRouter();
-
-  const handleEditClick = () => {
-    setEditFormVisible(true);
-  };
 
   return (
     <div>
@@ -49,7 +46,7 @@ const ActionsCell = ({ row }: any) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="focus:bg-background"
-            onClick={handleEditClick}
+            onClick={() => router.push("/admin/users/edit-student")}
           >
             Edit
           </DropdownMenuItem>
@@ -60,7 +57,7 @@ const ActionsCell = ({ row }: any) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* {isEditFormVisible && <EditFacForm />} */}
+      {isEditFormVisible && <EditUserStuForm />}
       {/* {isViewFormVisible && <ViewFacForm />} */}
     </div>
   );

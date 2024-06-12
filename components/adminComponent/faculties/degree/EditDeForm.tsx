@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import style from "../../style.module.css";
-import { FiPlus } from "react-icons/fi";
+
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,6 @@ import {
 import { DegreeType } from "@/lib/types/admin/faculty";
 import { useState } from "react";
 import Image from "next/image";
-import { create } from "domain";
 
 const initialValues = {
   id: "",
@@ -103,36 +102,8 @@ export function EditDeForm() {
     <Dialog open>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add degree</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Edit degree</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -175,36 +146,36 @@ export function EditDeForm() {
 
                 {/* Degree Description*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
-                    name="degree"
+                    name="description"
                     placeholder="This is main degree of Engineering faculty"
-                    id="degree"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="create_by">
                     Creaate By
                   </label>
                   <Field
                     type="text"
                     placeholder="Chan Tola"
-                    name="degree"
-                    id="degree"
+                    name="create_by"
+                    id="create_by"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="create_by"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -215,13 +186,6 @@ export function EditDeForm() {
                   <label className={`${style.label}`} htmlFor="status">
                     Visibility
                   </label>
-                  {/* <Field
-                    type="number"
-                    name="status"
-                    id="status"
-                    className={`${style.input}`}
-                  />
-                  */}
 
                   <div className="flex gap-4 h-[40px] items-center">
                     <Field

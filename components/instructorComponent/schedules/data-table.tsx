@@ -112,10 +112,10 @@ export function ScheduleTable<TData, TValue>({
       value === "All"
         ? ""
         : value === "Public"
-        ? "true"
+        ? "active"
         : value === "Disable"
-        ? "false"
-        : "draft";
+        ? "inactive"
+        : "disable";
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 

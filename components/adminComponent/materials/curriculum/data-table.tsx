@@ -37,6 +37,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CommandInput } from "@/components/ui/command";
+import { CreateMaterialForm } from "../addMaterialForm";
 
 //custom component import
 
@@ -207,6 +208,8 @@ export function CurriculumTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <CreateMaterialForm />
       </div>
 
       {/* Table */}
