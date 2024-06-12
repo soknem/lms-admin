@@ -6,7 +6,7 @@ export type TimesheetType={
   pwRate: number;
   theoryHour: number;
   pwHour: number;
-  total: number;
+  total: string;
   
   };
   

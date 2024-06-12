@@ -16,7 +16,6 @@ import {
   TableHead,
   TableCell,
   TableRow,
-  TableFooter,
 } from "@/components/ui/table"; // Adjust import path according to your project structure
 
 const earningsData = [
@@ -105,7 +104,7 @@ const EarningsReportComponent: React.FC = () => {
       <div className="mr-[100px]">
         <Table className="w-[300px]">
           <TableHead>
-            <TableRow className="mx-12">
+            <TableRow className="">
               <TableCell>YEAR</TableCell>
               <TableCell>EARNING</TableCell>
             </TableRow>
@@ -118,12 +117,6 @@ const EarningsReportComponent: React.FC = () => {
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell>TOTAL</TableCell>
-              <TableCell>{earningsData.reduce((acc, data) => acc + data.earning, 0)}</TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
       </div>
     </div>

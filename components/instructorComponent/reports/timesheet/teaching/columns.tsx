@@ -46,7 +46,9 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   // custom render on cell
   const accessorKey = column.columnDef.accessorKey;
-
+  if (column.id === "status") {
+    return <span className="text-lms-success font-medium">{value}</span>;
+  }
 
   return <span>{value}</span>;
 };

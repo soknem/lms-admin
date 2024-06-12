@@ -24,8 +24,6 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { OptionType, TranscriptType } from "@/lib/types/admin/academics";
 import { TimesheetType } from "@/lib/types/instructor/timesheet";
 
-
-
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
@@ -45,13 +43,15 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     tableMeta?.updateData(row.index, column.id, e.target.value);
   };
 
-  // custom render on cell
+  // Custom render on cell
   const accessorKey = column.columnDef.accessorKey;
-
+  if (column.id === "total") {
+    return <span className="text-lms-success font-medium">{value}</span>;
+  }
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
-      //custom on only normal dropdown
+      // Custom on only normal dropdown
       <select
         className="border-1 border-gray-30 rounded-md focus:to-primary"
         onChange={onSelectChange}
@@ -64,7 +64,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         ))}
       </select>
     ) : (
-      //custom on normal input text
+      // Custom on normal input text
       <input
         className="w-full p-2 border-1 border-gray-30 rounded-md"
         value={value}
@@ -74,6 +74,12 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       />
     );
   }
+
+  // Apply specific color for total value 22.5
+  if (accessorKey === "total" && value === 22.5) {
+    return <span style={{ color: 'red' }}>{value}$</span>;
+  }
+
   return <span>{value}</span>;
 };
 
@@ -106,7 +112,6 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     },
     cell: TableCell,
   },
-
   {
     accessorKey: "theoryRate",
     header: ({ column }) => {
@@ -128,7 +133,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          //to  customize the size of each column
+          // To customize the size of each column
           className="w-[130px] flex justify-start items-start"
         >
           PW RATE
@@ -144,7 +149,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          //to  customize the size of each column
+          // To customize the size of each column
           className="w-[130px] flex justify-start items-start"
         >
           THEORYHOUR
@@ -164,7 +169,6 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     },
     cell: TableCell,
   },
-
   {
     accessorKey: "total",
     header: ({ column }) => {
@@ -176,6 +180,4 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     },
     cell: TableCell,
   },
-
-  
 ];

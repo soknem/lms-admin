@@ -42,19 +42,19 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
   }
 
-  if (column.id === "student") {
-    const studentData = row.original;
-    return (
-      <div className="flex items-center">
-        <img
-          src={studentData.profile_image}
-          alt={studentData.name}
-          className="w-8 h-8 rounded-full mr-2"
-        />
-        <span>{studentData.name}</span>
-      </div>
-    );
-  }
+  // if (column.id === "student") {
+  //   const studentData = row.original;
+  //   return (
+  //     <div className="flex items-center">
+  //       <img
+  //         src={studentData.profile_image}
+  //         alt={studentData.name}
+  //         className="w-8 h-8 rounded-full mr-2"
+  //       />
+  //       <span>{studentData.name}</span>
+  //     </div>
+  //   );
+  // }
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (

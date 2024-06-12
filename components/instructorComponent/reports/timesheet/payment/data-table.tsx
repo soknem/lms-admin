@@ -140,36 +140,36 @@ export function PaymentDataTable<TData, TValue>({
         </p>
         <div className="flex justify-between p-4">
           <div>
-            <Label className="text-lms-gray30">Generation</Label>
-            <p className="flex font-medium text-black">Generation 1</p>
+            <Label className="text-lms-gray-80">Generation</Label>
+            <p className="flex font-medium text-lms-black90">Generation 1</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Year</Label>
-            <p className="flex font-medium text-black">Foundation Year</p>
+            <Label className="text-lms-gray-80">Year</Label>
+            <p className="flex font-medium text-lms-black90">Foundation Year</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Academic Year</Label>
-            <p className="flex font-medium text-black">2024-2025</p>
+            <Label className="text-lms-gray-80">Academic Year</Label>
+            <p className="flex font-medium text-lms-black90">2024-2025</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Degree</Label>
-            <p className="flex font-medium text-black">Bachelor</p>
+            <Label className="text-lms-gray-80">Degree</Label>
+            <p className="flex font-medium text-lms-black90">Bachelor</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Department</Label>
-            <p className="flex font-medium text-black">IT</p>
+            <Label className="text-lms-gray-80">Department</Label>
+            <p className="flex font-medium text-lms-black90">IT</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Major</Label>
+            <Label className="text-lms-gray-80">Major</Label>
             <div className="flex gap-2">
-              <p className="flex text-black font-medium">
+              <p className="flextext-lms-black90 font-medium">
                 Information Techology
               </p>
             </div>
           </div>
         </div>
 
-        <Table>
+        <Table >
           <TableHeader className="text-lms-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
