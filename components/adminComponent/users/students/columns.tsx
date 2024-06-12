@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 // @ts-ignore
 import { StatusOption, UserStudentType } from "@/lib/types/admin/user";
+// @ts-ignore
 import ActionsCell from "./StudentActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
