@@ -1,5 +1,6 @@
 // @ts-ignore
 import StudyDetailtTable from "@/components/admincomponent/faculties/studygrogram/studyprogram-detail/studydetail";
+// @ts-ignore
 import MoreInfo from "@/components/admincomponent/users/students/StuMoreInfo";
 import {
   Breadcrumb,

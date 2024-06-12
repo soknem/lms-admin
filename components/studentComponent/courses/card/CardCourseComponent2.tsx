@@ -10,9 +10,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 // @ts-ignore
-import courseCardData from "./CourseCardData"; // Adjust the path as needed
 
-export function CardCourseComponent() {
+const courseCardData = {
+  title: "Docker",
+  description: "Docker is a containerized tool that designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package...",
+  year: 1,
+  semester: 2,
+  credit: 45,
+  progress: 75, // This can be a percentage for the progress bar
+  images: [
+    { src: "/docker.png", alt: "Flutter Logo" },
+    { src: "/intructor.jpg", alt: "Student Photo" },
+  ],
+};
+export function CardCourseComponent2() {
   return (
     <a href="/student/courses/coursedetail">
     <Card className="w-[566px] h-[299px] bg-white">

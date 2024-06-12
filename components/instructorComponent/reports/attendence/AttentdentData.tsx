@@ -16,8 +16,31 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Input } from "@/components/ui/input";
+
 import { Button } from "@/components/ui/button";
 
+import { TbSearch } from "react-icons/tb";
+
+import { useMediaQuery } from "usehooks-ts";
+
+import { FaSearch } from "react-icons/fa";
 import {
   Command,
   CommandEmpty,
@@ -35,14 +58,18 @@ import {
 
 import { TbFilter } from "react-icons/tb";
 
+import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from "next/navigation";
+// @ts-ignore
+import { inspect } from "util";
+import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function FilterAdmin<TData, TValue>({
+export function AttentdentData<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -54,8 +81,8 @@ export function FilterAdmin<TData, TValue>({
   const [editedRows, setEditedRows] = useState({});
 
   // filters
-  const [openIns, setopenIns] = useState(false);
-  const [selectedIns, setselectedIns] = React.useState<any>(null);
+  const [openAtt, setopenAtt] = useState(false);
+  const [selectedAtt, setselectedAtt] = React.useState<any>(null);
 
   const [openClass, setOpenClass] = useState(false);
   const [selectedClass, setSelectedClass] = React.useState<any>(null);
@@ -114,8 +141,8 @@ export function FilterAdmin<TData, TValue>({
 
   //reset popup
   const handleReset = (columnId: string) => {
-    if (columnId === "instructor") {
-      setselectedIns(null);
+    if (columnId === "semester") {
+      setselectedAtt(null);
     }
     if (columnId === "class") {
       setSelectedClass(null);
@@ -128,11 +155,11 @@ export function FilterAdmin<TData, TValue>({
   };
 
   // filter data of instructor
-  const FilteredIns = data.reduce((instructor: string[], item: any) => {
-    if (!instructor.includes(item.instructor)) {
-      instructor.push(item.instructor);
+  const FilteredIns = data.reduce((semester: string[], item: any) => {
+    if (!semester.includes(item.semester)) {
+      semester.push(item.semester);
     }
-    return instructor;
+    return semester;
   }, []);
 
   //filter data of class
@@ -153,21 +180,21 @@ export function FilterAdmin<TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center gap-4">
-       
+      <div className="flex items-center gap-4 ">
+        <DatePickerWithRange />
 
-        {/* filter Instructor */}
-        <Popover open={openIns} onOpenChange={setopenIns}>
+        {/* filter Isemester */}
+        <Popover open={openAtt} onOpenChange={setopenAtt}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+              className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
             >
               <TbFilter className="mr-2 h-4 w-4" />
-              {selectedIns ? <>{selectedIns}</> : <> Filter Generation</>}
+              {selectedAtt ? <>{selectedAtt}</> : <> Filter semester</>}
             </Button>
           </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput placeholder="Filter Instructor..." />
 
@@ -179,9 +206,9 @@ export function FilterAdmin<TData, TValue>({
                       key={index}
                       value={ins}
                       onSelect={(value) => {
-                        setselectedIns(value);
+                        setselectedAtt(value);
                         table.getColumn("instructor")?.setFilterValue(value);
-                        setopenIns(false);
+                        setopenAtt(false);
                       }}
                     >
                       {ins}
@@ -190,15 +217,15 @@ export function FilterAdmin<TData, TValue>({
                 </CommandGroup>
               </CommandList>
             </Command>
-            {selectedIns && (
+            {selectedAtt && (
               <Button
                 className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
-                onClick={() => handleReset("instructor")}
+                onClick={() => handleReset("semester")}
               >
                 Reset
               </Button>
             )}
-          </PopoverContent> */}
+          </PopoverContent>
         </Popover>
 
         {/* filter class */}
@@ -206,13 +233,13 @@ export function FilterAdmin<TData, TValue>({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+              className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
             >
               <TbFilter className="mr-2 h-4 w-4" />
-              {selectedClass ? <>{selectedClass}</> : <> Filter Academic</>}
+              {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
             </Button>
           </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput placeholder="Filter class..." />
 
@@ -243,7 +270,7 @@ export function FilterAdmin<TData, TValue>({
                 Reset
               </Button>
             )}
-          </PopoverContent> */}
+          </PopoverContent>
         </Popover>
 
         {/* filter course */}
@@ -251,13 +278,13 @@ export function FilterAdmin<TData, TValue>({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+              className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
             >
               <TbFilter className="mr-2 h-4 w-4" />
-              {selectedCourse ? <>{selectedCourse}</> : <> Filter Major</>}
+              {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
             </Button>
           </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput placeholder="Filter Course..." />
 
@@ -288,13 +315,89 @@ export function FilterAdmin<TData, TValue>({
                 Reset
               </Button>
             )}
-          </PopoverContent> */}
+          </PopoverContent>
         </Popover>
 
-        
+        {/* Column visibility */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+           
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white ">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize focus:bg-background"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
       </div>
 
-     
+      {/* Table */}
+      <div className="rounded-md p-4 bg-white">
+        <Table>
+          <TableHeader className="text-lms-gray-30">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center "
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 }

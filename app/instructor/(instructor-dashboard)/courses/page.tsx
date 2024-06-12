@@ -8,6 +8,8 @@ import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
+import { CardCourseComponent1 } from "@/components/studentComponent/courses/card/CardCourseComponent1";
+import { CardCourseComponent2 } from "@/components/studentComponent/courses/card/CardCourseComponent2";
 
 export default function Course() {
   const [isFocused, setIsFocused] = useState(false);
@@ -96,8 +98,8 @@ export default function Course() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4">
           <CardCourseComponent />
-          <CardCourseComponent />
-          <CardCourseComponent />
+          <CardCourseComponent1 />
+          <CardCourseComponent2 />
           <CardCourseComponent />
         </div>
       </section>

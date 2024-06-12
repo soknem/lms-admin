@@ -1,6 +1,8 @@
 import React from "react";
 import { ClassType } from "@/lib/types/admin/academics";
+// @ts-ignore
 import { columns } from "@/components/admincomponent/academics/classes/columns";
+// @ts-ignore
 import { DataTable } from "@/components/admincomponent/academics/classes/data-table";
 
 

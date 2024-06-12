@@ -44,7 +44,7 @@ Chart.register(
   Legend
 );
 
-const StudentpayComponent: React.FC = () => {
+const StudentpayComponent2: React.FC = () => {
   const chartContainer = useRef<HTMLCanvasElement | null>(null);
   const myChart = useRef<Chart | null>(null);
 
@@ -133,7 +133,7 @@ const StudentpayComponent: React.FC = () => {
     <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl border">
       <div className="w-1/2 p-5">
         <div className="mb-4 bg-lms-primary text-lms-white-80  rounded w-[150px] text-center h-[35px] p-1">
-          Generation 1
+          Generation 2
         </div>
         <Table className="w-full">
           <TableHeader>
@@ -168,4 +168,4 @@ const StudentpayComponent: React.FC = () => {
   );
 };
 
-export default StudentpayComponent;
+export default StudentpayComponent2;
