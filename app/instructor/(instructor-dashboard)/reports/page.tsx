@@ -7,12 +7,10 @@ export default function Report() {
   return (
     <main className="flex flex-col h-full w-full p-9">
       <h2 className="text-4xl text-lms-primary font-bold">Timesheet</h2>
-      <div className="ml-[1220px]">
+      <div className="flex justify-end">
         <DateComponent />
       </div>
-      <div className="">
         <TabReportComponent />
-      </div>
     </main>
   );
 }

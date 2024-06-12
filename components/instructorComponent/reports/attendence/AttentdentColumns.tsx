@@ -149,7 +149,7 @@ const EditCell = ({ row, table }: any) => {
 
 export const attentdentColumns: ColumnDef<AttentType>[] = [
   {
-    accessorKey: "card_id",
+    accessorKey: "cardId",
     header: ({ column }) => {
       return (
         <Button
@@ -164,7 +164,7 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "fullname_en",
+    accessorKey: "fullName",
     header: ({ column }) => {
       return (
         <Button
@@ -239,7 +239,7 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "total_score",
+    accessorKey: "total",
     header: ({ column }) => {
       return (
         <Button

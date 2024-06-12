@@ -1,12 +1,13 @@
 
 export type TimesheetType={
-    date: string;
-    session: string;
-    theoryRate: string;
-    pwRate: string;
-    theoryHour: number;
-    pwHour: number;
-    total: string;
+  date: string;
+  session: string;
+  theoryRate: number;
+  pwRate: number;
+  theoryHour: number;
+  pwHour: number;
+  total: number;
   
   };
+  
   
