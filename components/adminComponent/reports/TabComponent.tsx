@@ -10,13 +10,13 @@ import ReportStaffComponent from "./staff/ReportStaffComponent";
 import ReportAdmissionComponent from "./admission/ReportAdmissionComponent";
 // @ts-ignore
 import StudentpayComponent from "./student's pay/Student'spayComponent";
-
-
+import StudentpayComponent2 from "./student's pay/Student'spayComponent copy";
+import EarningsReportComponent from "./earning/EarningComponent";
 
 export default function TabComponent() {
   return (
     <div>
-      <Tabs defaultValue="">
+      <Tabs defaultValue="student">
         <TabsList>
           <TabsTrigger value="student">Student</TabsTrigger>
           <TabsTrigger value="instructor">Instructor</TabsTrigger>
@@ -29,16 +29,22 @@ export default function TabComponent() {
           <ReportComponent />
         </TabsContent>
         <TabsContent value="instructor">
-          <ReportInstructorComponent/>
+          <ReportInstructorComponent />
         </TabsContent>
         <TabsContent value="staff">
-          <ReportStaffComponent/>
+          <ReportStaffComponent />
         </TabsContent>
         <TabsContent value="admission">
-          <ReportAdmissionComponent/>
+          <ReportAdmissionComponent />
         </TabsContent>
         <TabsContent value="payment">
-          <StudentpayComponent/>
+          <StudentpayComponent />
+          <div className="mt-4">
+            <StudentpayComponent2 />
+          </div>
+        </TabsContent>
+        <TabsContent value="earning">
+          <EarningsReportComponent />
         </TabsContent>
       </Tabs>
     </div>

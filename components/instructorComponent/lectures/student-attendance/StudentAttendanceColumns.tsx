@@ -1,35 +1,16 @@
 'use client'
-import { RxCross2 } from "react-icons/rx";
-import { IoCheckmarkSharp } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
-
+// system
 import { ColumnDef } from '@tanstack/react-table'
-
-import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
-import { TbArchive } from "react-icons/tb";
-import { TbFileIsr } from "react-icons/tb";
-import { format } from 'date-fns';
-
 import { Button } from '@/components/ui/button'
-import { TbPencil } from "react-icons/tb";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
-
-import { OptionType } from "@/lib/types/admin/academics";
-
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import StatusBadge from "@/components/common/StatusBadge";
-import {studentAttendanceType} from "@/lib/types/admin/studentAttendance";
+import { useState, useEffect, ChangeEvent } from 'react'
 import {Input} from "@/components/ui/input";
 
+//type
+import { OptionType } from "@/lib/types/admin/academics";
+import {studentAttendanceType} from "@/lib/types/admin/studentAttendance";
+
+// icon
+import { ArrowUpDown } from 'lucide-react'
 
 const TableCell = ({ getValue, row, column, table }: any) => {
 
@@ -124,46 +105,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 // Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
-    const meta = table.options.meta;
-
-    const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-        const action = e.currentTarget.name;
-
-        meta?.setEditedRows((old: any) => ({
-            ...old,
-            [row.id]: action === "edit" ? true : false,
-        }));
-
-        if (action === "cancel") {
-            meta?.revertData(row.index, true);
-        }
-    };
-
-    return (
-        <div>
-            {meta?.editedRows[row.id] ? (
-                <div className="flex flex-row">
-
-                    <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel" >
-                        <RxCross2 size={20}  className="text-red-500"/>
-                    </button>
-
-                    <button onClick={setEditedRows} name="done"className="bg-green-100 rounded-full p-1" >
-                        <IoCheckmarkSharp size={20} className="text-green-500" />
-                    </button>
-
-                </div>
-            ) : (
-
-                <button onClick={setEditedRows} name="edit">
-                    <MdEdit size={18} className="text-gray-30" />
-                </button>
-            )}
-        </div>
-    );
-};
-
 export const StudentAttendanceColumns: ColumnDef<studentAttendanceType>[] = [
     {
         accessorKey: 'cardId',
@@ -233,7 +174,7 @@ export const StudentAttendanceColumns: ColumnDef<studentAttendanceType>[] = [
     },
     {
         accessorKey: 'P',
-        header: ({ column }) => {
+        header: () => {
             return (
                 <Button
                     variant='ghost'
@@ -247,7 +188,7 @@ export const StudentAttendanceColumns: ColumnDef<studentAttendanceType>[] = [
     },
     {
         accessorKey: 'EA',
-        header: ({ column }) => {
+        header: () => {
             return (
                 <Button
                     variant='ghost'
@@ -261,7 +202,7 @@ export const StudentAttendanceColumns: ColumnDef<studentAttendanceType>[] = [
     },
     {
         accessorKey: 'UA',
-        header: ({ column }) => {
+        header: () => {
             return (
                 <Button
                     variant='ghost'

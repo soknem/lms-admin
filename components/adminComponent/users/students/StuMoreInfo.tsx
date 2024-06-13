@@ -9,24 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-// @ts-ignore
-import { EditFacForm } from "./EditFacForm";
-// @ts-ignore
-import { ViewFacForm } from "./ViewFacForm";
+import { useRouter } from "next/navigation";
 
 const MoreInfo = () => {
-  const [isEditFormVisible, setEditFormVisible] = useState(false);
-  const [isViewFormVisible, setViewFormVisible] = useState(false);
-
-  const handleEditClick = () => {
-    setEditFormVisible(true);
-    setViewFormVisible(false); // Close view form if open
-  };
-
-  const handleViewClick = () => {
-    setViewFormVisible(true);
-    setEditFormVisible(false); // Close edit form if open
-  };
+  const router = useRouter();
 
   return (
     <div>
@@ -42,7 +28,7 @@ const MoreInfo = () => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             className="focus:bg-background"
-            onClick={handleEditClick}
+            onClick={() => router.push("/admin/users/edit-student")}
           >
             Edit
           </DropdownMenuItem>
@@ -53,8 +39,6 @@ const MoreInfo = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* {isEditFormVisible && <EditFacForm />} */}
-      {/* {isViewFormVisible && <ViewFacForm />} */}
     </div>
   );
 };

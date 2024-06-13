@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import style from "../../style.module.css";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiUploadCloud } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   faculty: Yup.string().required("Required"),
   degree: Yup.string().required("Required"),
-  description: Yup.string().required("Required"),
+  description: Yup.string(),
   logo: Yup.mixed()
     .test("fileFormat", "Unsupported Format", (value: any) => {
       if (!value) {
@@ -89,21 +89,47 @@ const CustomInput = ({ field, setFieldValue }: any) => {
   const handleUploadFile = (e: any) => {
     const file = e.target.files[0];
     const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
     setImagePreview(localUrl);
 
     setFieldValue(field.name, file);
   };
+
   return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
+    <div className="w-full">
+      <input
+        type="file"
+        onChange={handleUploadFile}
+        className="hidden "
+        id="file"
+      />
+      <label
+        htmlFor="file"
+        className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+      >
+        {!imagePreview ? (
+          <div className="flex  items-center justify-center gap-8">
+            <FiUploadCloud className="text-lms-primary text-[34px]" />
+            <div className="flex flex-col items-start justify-start gap-1">
+              <p className="text-center text-md text-black">
+                Select a file or drag and drop here
+              </p>
+              <p className="text-center text-md text-lms-gray-30">
+                JPG, PNG or PDF, file size no more than 10MB
+              </p>
+            </div>
+          </div>
+        ) : (
+          <Image
+            src={imagePreview}
+            alt="preview"
+            layout="fill"
+            objectFit="cover"
+          />
+        )}
+      </label>
     </div>
   );
 };
-
 // const dateValue = new Date(value);
 // const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
@@ -126,38 +152,10 @@ export function CreateStudyProForm() {
           <FiPlus className="mr-2 h-4 w-4" /> Add Study Program
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[480px] bg-white ">
+      <DialogContent className="w-[480px] h-[80%] overflow-y-auto bg-white ">
         <DialogHeader>
           <DialogTitle>Add Study Program</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -184,18 +182,18 @@ export function CreateStudyProForm() {
               <div className="flex flex-col gap-2">
                 {/* study program title*/}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="title">
                     Title
                   </label>
                   <Field
                     type="text"
                     placeholder="Information Technology"
-                    name="name"
-                    id="name"
+                    name="title"
+                    id="title"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="title"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -203,18 +201,18 @@ export function CreateStudyProForm() {
 
                 {/* study program fac */}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="faculty">
                     Faculty
                   </label>
                   <Field
                     type="text"
                     placeholder="Technology"
-                    name="name"
-                    id="name"
+                    name="faculty"
+                    id="faculty"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="faculty"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -222,18 +220,18 @@ export function CreateStudyProForm() {
 
                 {/* study program degree */}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="degree">
                     Degree
                   </label>
                   <Field
                     type="text"
                     placeholder="Bachelor"
-                    name="name"
-                    id="name"
+                    name="degree"
+                    id="degree"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="degree"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -241,79 +239,79 @@ export function CreateStudyProForm() {
 
                 {/* study program Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
                     placeholder="This software engineering major prepares students for careers in software engineering by teaching the complete process and methods, including gathering business requirements, designing software architecture, developing software, testing, and managing projects. The curriculum focuses on essential skills like algorithm problem solving and system design. Through project-based learning, students gain industry-level experience early on by working in teams and using the latest tools and technologies. This hands-on approach develops skills in communication, problem-solving, and teamwork. Additionally, a one-year industry placement provides real-world experience. Graduates are ready for roles such as software developer, full-stack developer, DevOps engineer, software architect, and more, with opportunities in various sectors like healthcare, finance, technology, and government."
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Learning Outcome
                   </label>
                   <Field
                     type="text"
                     placeholder="Upon completion of this program, the students will be able toWork effectively in small groups on medium-scale computing projectsUnderstand the social and ethical implications of working as a professional in the field of computer science"
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Career Expectation
                   </label>
                   <Field
                     type="text"
                     placeholder="Digital InnovatorIT 
 Project ManagerData AnalystSoftware Developer (Web, Mobile, Java, API…)"
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="link">
                     Video Link{" "}
                   </label>
                   <Field
                     type="text"
                     placeholder="https://www.youtube.com/watch?v=7_7g5IHu0rs&list=PL_V2z3lwuCDf3_po8kU0tJBydjOIOzk6U&index=1&t=1s"
-                    name="faculty"
-                    id="faculty"
+                    name="link"
+                    id="link"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="link"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
-                {/* Product Image*/}
+                {/* Faculty Image*/}
                 <div className="mb-4">
                   <label
                     htmlFor="logo"

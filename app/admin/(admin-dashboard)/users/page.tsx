@@ -6,7 +6,7 @@ import { UserStudentTable } from "@/components/admincomponent/users/students/dat
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { getStudent } from "@/lib/endpoints/MokApi";
-import StaffList from "@/components/adminComponent/users/staff/StaffList";
+import StaffList from "@/components/admincomponent/users/staff/StaffList";
 
 
 export default async function Users() {

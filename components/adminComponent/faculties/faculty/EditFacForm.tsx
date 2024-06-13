@@ -39,29 +39,15 @@ const validationSchema = Yup.object().shape({
       if (!value) {
         return true;
       }
-      return SUPPORTED_FORMATS.includes(value.type);
+      // return SUPPORTED_FORMATS.includes(value.type);
     })
     .test("fileSize", "File Size is too large", (value: any) => {
       if (!value) {
         true;
       }
-      return value.size <= FILE_SIZE;
+      // return value.size <= FILE_SIZE;
     }),
-  fileProduct: Yup.mixed()
-    .test("fileFormat", "Unsupported Format", (value: any) => {
-      if (!value) {
-        return true;
-      }
-      return SUPPORTED_FORMATS.includes(value.type);
-    })
-    .test("fileSize", "File Size is too large", (value: any) => {
-      if (!value) {
-        true;
-      }
-      return value.size <= FILE_SIZE;
-    })
 
-    .required("Required"),
   status: Yup.string().required("A selection is required"),
 });
 
@@ -94,72 +80,17 @@ const RadioButton = ({ field, value, label }: any) => {
   );
 };
 
-const CustomInput = ({ field, setFieldValue }: any) => {
-  const [imagePreview, setImagePreview] = useState("");
-
-  const handleUploadFile = (e: any) => {
-    const file = e.target.files[0];
-    const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
-    setImagePreview(localUrl);
-
-    setFieldValue(field.name, file);
-  };
-  return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
-    </div>
-  );
-};
-
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function EditFacForm() {
   const router = useRouter();
   return (
     <Dialog open>
       <DialogContent className="w-[480px] bg-white ">
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
-
+      <DialogHeader>
+          <DialogTitle>Edit Faculty</DialogTitle>
+        </DialogHeader>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -214,18 +145,18 @@ export function EditFacForm() {
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
                     placeholder="This is main faculty of our academic"
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -271,29 +202,6 @@ export function EditFacForm() {
                     className={`${style.error}`}
                   />
                 </div>
-
-                {/* Product Image
-                <div className="mb-4">
-                  <label
-                    htmlFor="logo"
-                    className="block text-sm font-medium text-gray-700 my-2"
-                  >
-                    Faculty Logo
-                  </label>
-                  <Field
-                    type="file"
-                    name="logo"
-                    id="logo"
-                    component={CustomInput}
-                    setFieldValue={setFieldValue}
-                    className="mt-1"
-                  />
-                  <ErrorMessage
-                    name="logo"
-                    component="div"
-                    className="text-red-500 mt-1 text-sm"
-                  />
-                </div> */}
               </div>
 
               {/* button submit */}

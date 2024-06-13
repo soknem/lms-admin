@@ -114,36 +114,8 @@ export function ViewPayForm() {
     <Dialog open>
       <DialogContent className="w-[1350px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add Payment</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Payment Information</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -190,118 +162,118 @@ export function ViewPayForm() {
               </div>
               <div className="flex flex-wrap gap-4">
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="level">
+                  <label className={`${style.label}`} htmlFor="receipt_id">
                     Receipt ID
                   </label>
                   <Field
                     type="text"
                     placeholder="Chan Tola"
-                    name="level"
-                    id="level"
+                    name="receipt_id"
+                    id="receipt_id"
                     className={` ${style.input}`}
                   />
                 </div>
 
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="level">
+                  <label className={`${style.label}`} htmlFor="name">
                     Student Name
                   </label>
                   <Field
                     type="text"
                     placeholder="Chan Tola"
-                    name="level"
-                    id="level"
+                    name="name"
+                    id="name"
                     className={` ${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="gender">
                     Gender
                   </label>
                   <Field
                     type="text"
-                    name="degree"
+                    name="gender"
                     placeholder="Female"
-                    id="degree"
+                    id="gender"
                     className={`${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="academic_fee">
                     Academic Fee
                   </label>
                   <Field
                     type="text"
                     placeholder="$ 700"
-                    name="degree"
-                    id="degree"
+                    name="academic_fee"
+                    id="academic_fee"
                     className={`${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="discount">
                     Discount
                   </label>
                   <Field
                     type="text"
                     placeholder="30 %"
-                    name="degree"
-                    id="degree"
+                    name="discount"
+                    id="discount"
                     className={`${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="total_payment">
                     Paid Amount
                   </label>
                   <Field
                     type="text"
                     placeholder="$ 500"
-                    name="degree"
-                    id="degree"
+                    name="total_payment"
+                    id="total_payment"
                     className={`${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="balance_due">
                     Balance Due
                   </label>
                   <Field
                     type="text"
                     placeholder="Feb 25, 2023"
-                    name="degree"
-                    id="degree"
+                    name="balance_due"
+                    id="balance_due"
                     className={`${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="date">
                     Paid Date
                   </label>
                   <Field
                     type="text"
                     placeholder="Feb 25, 2023"
-                    name="degree"
-                    id="degree"
+                    name="date"
+                    id="date"
                     className={`${style.input}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="payment_method">
                     Payment Method
                   </label>
                   <Field
                     type="text"
                     placeholder="Cash Payment"
-                    name="degree"
-                    id="degree"
+                    name="payment_method"
+                    id="payment_method"
                     className={`${style.input}`}
                   />
                 </div>
@@ -336,14 +308,14 @@ export function ViewPayForm() {
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="remark">
                     Remark
                   </label>
                   <Field
                     type="text"
                     placeholder="About to be fully paid"
-                    name="degree"
-                    id="degree"
+                    name="remark"
+                    id="remark"
                     className={`${style.input}`}
                   />
                 </div>

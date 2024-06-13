@@ -14,6 +14,7 @@ import courseCardData from "./CourseCardData"; // Adjust the path as needed
 
 export function CardCourseComponent() {
   return (
+    <a href="/student/courses/coursedetail">
     <Card className="w-[566px] h-[299px] bg-white">
       <CardHeader className="mx-[40px]">
         <CardTitle className="text-primary font-bold text-[24px] mb-[15px]">
@@ -49,7 +50,7 @@ export function CardCourseComponent() {
             <div className="overflow-hidden h-2 w-[85px] mb-2 text-xs flex rounded bg-gray-200">
               <div
                 style={{ width: `${courseCardData.progress}%` }}
-                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-success"
+                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lms-success"
               ></div>
             </div>
           </div>
@@ -57,5 +58,6 @@ export function CardCourseComponent() {
       </div>
       </CardContent> 
     </Card>
+    </a>
   );
 }

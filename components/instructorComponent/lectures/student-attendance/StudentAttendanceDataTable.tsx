@@ -26,46 +26,16 @@ import {
   TableRow
 } from '@/components/ui/table'
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-
 import { Input } from '@/components/ui/input'
 
 
 import { Button } from "@/components/ui/button"
 
-import { TbSearch } from "react-icons/tb";
-
-import { useMediaQuery } from "usehooks-ts"
-
 import { FaSearch } from "react-icons/fa";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-
-import { TbFilter } from "react-icons/tb";
-
-import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 // @ts-ignore
-import { CreateLectureForm } from '@/components/adminComponent/academics/lectures/form/CreateLectureForm'
-import { inspect } from 'util'
-import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
+import {CalendarIcon} from "lucide-react";
 
 
 
@@ -84,17 +54,7 @@ export function StudentAttendanceDataTable<TData, TValue>({
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
-
-  // filters
-  const [openClass, setOpenClass] = useState(false);
-  const [selectedClass, setSelectedClass] = React.useState<any>(null);
-
-  const [openCourse, setOpenCourse] = useState(false);
-  const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
-
-
-  const router = useRouter();
-
+  useRouter();
   const table = useReactTable({
     data,
     columns,
@@ -149,7 +109,12 @@ export function StudentAttendanceDataTable<TData, TValue>({
     <>
 
       <div className='flex items-center justify-between gap-4 '>
-        <DatePickerWithRange/>
+        <div
+            className="px-3 py-1.5 bg-white rounded-lg w-[280px] flex justify-start items-center text-left font-normal border-2"
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          12/02/2023
+        </div>
 
            {/* search */}
            <div className="flex items-center w-full relative">

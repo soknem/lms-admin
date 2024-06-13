@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { TbFilter } from "react-icons/tb";
+import React, { useState } from "react";
+
 //import from shad cn
 import {
   ColumnDef,
@@ -20,6 +20,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -30,11 +31,18 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+//custom component import
+import { FaSearch } from "react-icons/fa";
+
+import { Button } from "@/components/ui/button";
+
+import { TbSearch } from "react-icons/tb";
+
+import { useMediaQuery } from "usehooks-ts";
 import {
   Command,
   CommandEmpty,
@@ -43,45 +51,45 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Label } from "@/components/ui/label";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { number } from "yup";
 
-//custom component import
+import { TbFilter } from "react-icons/tb";
+
+import { TbAdjustmentsHorizontal } from "react-icons/tb";
+import { useRouter } from "next/navigation";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function AttendenceTable<TData, TValue>({
+export function TeachingDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
-  const [selectedFilter, setSelectedFilter] = useState("All");
-  // filters
-  const [openGeneration, setOpenGeneration] = useState(false);
-  const [selectedGen, setSelectedGen] = useState<any>(null);
+
+  
+
+  const router = useRouter();
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
     },
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
@@ -120,103 +128,49 @@ export function AttendenceTable<TData, TValue>({
     },
   });
 
-  console.log("data from page: ", data);
-
-  const handleReset = (columnId: string) => {
-    if (columnId === "generation") {
-      setSelectedGen(null);
-    }
-    table.getColumn(columnId)?.setFilterValue("");
-    setData([...originalData]);
-  };
-
-  const FilteredGen = data.reduce((generation: string[], item: any) => {
-    if (!generation.includes(item.generation)) {
-      generation.push(item.generation);
-    }
-    return generation;
-  }, []);
-
-  const [isFocused, setIsFocused] = useState(false);
-  const filterOptions = ["All", "Public", "Disable", "Draft"];
-  const handleFilterChange = (value: string) => {
-    setSelectedFilter(value);
-    const filterValue =
-      value === "All"
-        ? ""
-        : value === "Public"
-        ? "true"
-        : value === "Disable"
-        ? "false"
-        : "draft";
-    table.getColumn("status")?.setFilterValue(filterValue);
-  };
 
   return (
     <>
-      
-
       {/* Table */}
-      <div className="w-full rounded-lg p-4 bg-white mt-9">
-        
-        {/* class detail information */}
-        <div className="flex gap-16 p-4 ">
+     
+
+      <div className="rounded-[10px] p-4 bg-lms-white-80">
+        <p className="text-black_80 font-bold ml-4 mb-4">
+          FY2025 - A1 Introduction to IT
+        </p>
+        <div className="flex justify-between p-4">
           <div>
             <Label className="text-lms-gray30">Generation</Label>
-            <p className="flex font-medium text-black "> Generation 1{selectedGen}</p>
+            <p className="flex font-medium text-black">Generation 1</p>
           </div>
-
           <div>
             <Label className="text-lms-gray30">Year</Label>
-            <p className="flex font-medium text-black"> Year 1</p>
+            <p className="flex font-medium text-black">Foundation Year</p>
           </div>
-
           <div>
             <Label className="text-lms-gray30">Academic Year</Label>
             <p className="flex font-medium text-black">2024-2025</p>
           </div>
-
           <div>
             <Label className="text-lms-gray30">Degree</Label>
             <p className="flex font-medium text-black">Bachelor</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Study Program</Label>
-            <p className="flex font-medium text-black">Information Techology</p>
-          </div>
-
-          <div>
-            <Label className="text-lms-gray30">Course</Label>
-            <p className="flex font-medium text-black">Web Design</p>
-          </div>
-
-          <div>
-            <Label className="text-lms-gray30">Class</Label>
-            <p className="flex font-medium text-black">FY2025 - A1</p>
+            <Label className="text-lms-gray30">Department</Label>
+            <p className="flex font-medium text-black">IT</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Duration</Label>
-            <p className="flex font-medium text-black">01/02/2022-03/05/2023</p>
+            <Label className="text-lms-gray30">Major</Label>
+            <div className="flex gap-2">
+              <p className="flex text-black font-medium">
+                Information Techology
+              </p>
+            </div>
           </div>
         </div>
-        {/* score point */}
-        <div className=" mx-auto my-4 p-4 bg-gray-100 rounded-lg">
-        <div className="font-bold mx-6 text-lms-gray-30">Score Point</div>
-        <div className="flex gap-6 mx-6">
-        <div>
-          Present <span className="font-bold">P</span>
-        </div>
-        <div>
-          Excused Absent <span className="font-bold">EA = -0.5pt</span>
-        </div>
-        <div>
-          Unexcused Absent <span className="font-bold">UA = -1pt</span>
-        </div>
-        </div>
-    </div>
 
         <Table>
-          <TableHeader className="text-lms-gray30">
+          <TableHeader className="text-lms-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -234,6 +188,7 @@ export function AttendenceTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -264,8 +219,6 @@ export function AttendenceTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-
-    
     </>
   );
 }

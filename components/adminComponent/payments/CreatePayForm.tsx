@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import style from "../style.module.css";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiUploadCloud } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -88,17 +88,44 @@ const CustomInput = ({ field, setFieldValue }: any) => {
   const handleUploadFile = (e: any) => {
     const file = e.target.files[0];
     const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
     setImagePreview(localUrl);
 
     setFieldValue(field.name, file);
   };
+
   return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
+    <div className="w-[420px]">
+      <input
+        type="file"
+        onChange={handleUploadFile}
+        className="hidden"
+        id="file"
+      />
+      <label
+        htmlFor="file"
+        className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+      >
+        {!imagePreview ? (
+          <div className="flex  items-center justify-center gap-8">
+            <FiUploadCloud className="text-lms-primary text-[34px]" />
+            <div className="flex flex-col items-start justify-start gap-1">
+              <p className="text-center text-md text-black">
+                Select a file or drag and drop here
+              </p>
+              <p className="text-center text-md text-lms-gray-30">
+                JPG, PNG or PDF, file size no more than 10MB
+              </p>
+            </div>
+          </div>
+        ) : (
+          <Image
+            src={imagePreview}
+            alt="preview"
+            layout="fill"
+            objectFit="cover"
+          />
+        )}
+      </label>
     </div>
   );
 };
@@ -128,35 +155,7 @@ export function CreatePayForm() {
       <DialogContent className="w-[910px] bg-white ">
         <DialogHeader>
           <DialogTitle>Add Payment</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -197,144 +196,144 @@ export function CreatePayForm() {
             <Form className="py-4 rounded-lg w-full ">
               <div className="flex flex-wrap gap-4">
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="level">
+                  <label className={`${style.label}`} htmlFor="name">
                     Student Name
                   </label>
                   <Field
                     type="text"
                     placeholder="Chan Tola"
-                    name="level"
-                    id="level"
+                    name="name"
+                    id="name"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="level"
+                    name="name"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="gender">
                     Gender
                   </label>
                   <Field
                     type="text"
-                    name="degree"
+                    name="gender"
                     placeholder="Female"
-                    id="degree"
+                    id="gender"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="gender"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="academic_fee">
                     Academic Fee
                   </label>
                   <Field
                     type="text"
                     placeholder="$ 700"
-                    name="degree"
-                    id="degree"
+                    name="academic_fee"
+                    id="academic_fee"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="academic_fee"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="discount">
                     Discount
                   </label>
                   <Field
                     type="text"
                     placeholder="30 %"
-                    name="degree"
-                    id="degree"
+                    name="discount"
+                    id="discount"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="discount"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="total_payment">
                     Paid Amount
                   </label>
                   <Field
                     type="text"
                     placeholder="$ 500"
-                    name="degree"
-                    id="degree"
+                    name="total_payment"
+                    id="total_payment"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="total_payment"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="date">
                     Paid Date
                   </label>
                   <Field
-                    type="text"
+                    type="date"
                     placeholder="Feb 25, 2023"
-                    name="degree"
-                    id="degree"
+                    name="date"
+                    id="date"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="date"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="payment_method">
                     Payment Method
                   </label>
                   <Field
                     type="text"
                     placeholder="Cash Payment"
-                    name="degree"
-                    id="degree"
+                    name="payment_method"
+                    id="payment_method"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="payment_method"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="remark">
                     Remark
                   </label>
                   <Field
                     type="text"
                     placeholder="About to be fully paid"
-                    name="degree"
-                    id="degree"
+                    name="remark"
+                    id="remark"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="remark"
                     component="div"
                     className={`${style.error}`}
                   />

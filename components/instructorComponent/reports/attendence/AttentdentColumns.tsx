@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
+import { AttentType } from "@/lib/types/instructor/report";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -41,19 +42,19 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
   }
 
-  if (column.id === "student") {
-    const studentData = row.original;
-    return (
-      <div className="flex items-center">
-        <img
-          src={studentData.profile_image}
-          alt={studentData.name}
-          className="w-8 h-8 rounded-full mr-2"
-        />
-        <span>{studentData.name}</span>
-      </div>
-    );
-  }
+  // if (column.id === "student") {
+  //   const studentData = row.original;
+  //   return (
+  //     <div className="flex items-center">
+  //       <img
+  //         src={studentData.profile_image}
+  //         alt={studentData.name}
+  //         className="w-8 h-8 rounded-full mr-2"
+  //       />
+  //       <span>{studentData.name}</span>
+  //     </div>
+  //   );
+  // }
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
@@ -146,9 +147,9 @@ const EditCell = ({ row, table }: any) => {
   );
 };
 
-export const paymentColumns: ColumnDef<PaymentType>[] = [
+export const attentdentColumns: ColumnDef<AttentType>[] = [
   {
-    accessorKey: "card_id",
+    accessorKey: "cardId",
     header: ({ column }) => {
       return (
         <Button
@@ -163,7 +164,7 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "fullname_en",
+    accessorKey: "fullName",
     header: ({ column }) => {
       return (
         <Button
@@ -238,7 +239,7 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "total_score",
+    accessorKey: "total",
     header: ({ column }) => {
       return (
         <Button

@@ -18,19 +18,13 @@ import { useRouter } from "next/navigation";
 
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
+  const [isViewFormVisible, setViewFormVisible] = useState(false);
   const study_program = row.original;
   const router = useRouter();
 
   const handleEditClick = () => {
     setEditFormVisible(true);
-  };
-
-  const handleClick = (
-    event: React.MouseEvent<HTMLDivElement>,
-    path: string
-  ) => {
-    event.stopPropagation();
-    router.push(path);
+    setViewFormVisible(false); // Close view form if open
   };
 
   return (
@@ -57,16 +51,21 @@ const ActionsCell = ({ row }: any) => {
           {/* <Link href={`/admin/faculties/studyprogram-detail`}> */}
           <DropdownMenuItem
             className="focus:bg-background"
-            onClick={(event) =>
-              handleClick(event, `/admin/faculties/studyprogram-detail`)
-            }
+            onClick={(e) => {
+              // e.preventDefault();
+              e.stopPropagation();
+              router.push("/admin/faculties/studyprogram-detail");
+            }}
           >
             View
           </DropdownMenuItem>
-          {/* </Link> */}
           <DropdownMenuItem
             className="focus:bg-background"
-            onClick={() => handleEditClick}
+            onClick={(e) => {
+              // e.preventDefault();
+              e.stopPropagation();
+              handleEditClick();
+            }}
           >
             Edit
           </DropdownMenuItem>
