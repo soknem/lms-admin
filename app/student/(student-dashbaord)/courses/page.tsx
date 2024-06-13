@@ -7,9 +7,9 @@ import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
-import { CardCourseComponent1 } from "@/components/studentComponent/courses/card/CardCourseComponent1";
-import { CardCourseComponent2 } from "@/components/studentComponent/courses/card/CardCourseComponent2";
+import { CardCourseComponent1 } from "@/components/studentcomponent/courses/card/CardCourseComponent1";
 
+import { CardCourseComponent2 } from "@/components/studentcomponent/courses/card/CardCourseComponent2";
 
 export default function Course() {
   const [isFocused, setIsFocused] = useState(false);

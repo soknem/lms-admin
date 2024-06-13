@@ -8,6 +8,7 @@ import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/cou
 // @ts-ignore
 import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
+import TabComponent from "@/components/studentComponent/coursedetail/TabComponent";
 
 export default function coursedetail() {
   return (
@@ -19,7 +20,7 @@ export default function coursedetail() {
         <BreadcrumbWithCustomSeparator />
       </div>
       <div className=" mx-[100px] ">
-        <TabReportComponent/>
+        <TabComponent/>
       </div>
     </main>
   );

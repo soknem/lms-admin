@@ -1,9 +1,4 @@
 
-
-// type Props = {
-//     params: { code: string }
-//     searchParams: { [key: string]: string | string[] | undefined }
-// } 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Breadcrumb,
@@ -124,8 +119,8 @@ export default async function ClassDetail() {
 
                 </div>
               </div>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
+              <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+                <AccordionItem value="item-1"  >
                   <AccordionTrigger>SEMESTER I</AccordionTrigger>
                   <AccordionContent>
 

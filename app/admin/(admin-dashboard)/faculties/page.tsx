@@ -36,29 +36,33 @@ export default async function Page() {
           Faculty Management
         </h1>
 
-
         <Tabs defaultValue="faculty" className="w-full">
-
           <TabsList className="dark:bg-gray-800">
-
-            <TabsTrigger value="faculty" className="dark:text-gray-300 dark:hover:text-white">
+            <TabsTrigger
+              value="faculty"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Faculty
-              </TabsTrigger>
-            <TabsTrigger value="degree" className="dark:text-gray-300 dark:hover:text-white">
+            </TabsTrigger>
+            <TabsTrigger
+              value="degree"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Degree
-              </TabsTrigger>
-            <TabsTrigger value="study-program" className="dark:text-gray-300 dark:hover:text-white">
+            </TabsTrigger>
+            <TabsTrigger
+              value="study-program"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Study Program
-              </TabsTrigger>
-            <TabsTrigger value="subject" className="dark:text-gray-300 dark:hover:text-white">
+            </TabsTrigger>
+            <TabsTrigger
+              value="subject"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Subject
-              </TabsTrigger>
-
-
+            </TabsTrigger>
           </TabsList>
-
-
-
 
           <TabsContent value="faculty">
             <FacultyTable columns={facultyColumns} data={facData} />
@@ -75,11 +79,7 @@ export default async function Page() {
           <TabsContent value="subject">
             <SubjectTable columns={subjectColumns} data={subData} />
           </TabsContent>
-
-
         </Tabs>
-        
-
       </section>
     </section>
   );
