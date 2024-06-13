@@ -7,6 +7,7 @@ import {FiPlus} from "react-icons/fi";
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import {InsData} from "@/app/admin/(admin-dashboard)/users/data/StaffData";
+// @ts-ignore
 import InstructorCardComponent from "./InstructorCardComponent";
 
 export default function StaffList() {

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import instructorProfile from "@/public/intructor.jpg";
+// @ts-ignore
 import StaffDetailComponent from "@/components/admincomponent/users/staff/StaffDetailComponent";
 // import InstructorDetail from "@/components/adminComponent/users/staff/InstructorDetail";
 

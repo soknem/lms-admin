@@ -13,12 +13,15 @@ import { MoreHorizontal } from "lucide-react";
 import { EditFacForm } from "./EditFacForm";
 // @ts-ignore
 import { ViewFacForm } from "./ViewFacForm";
+import {useRouter} from "next/navigation";
 
 const MoreInfo = () => {
+    const router = useRouter();
     const [isEditFormVisible, setEditFormVisible] = useState(false);
     const [isViewFormVisible, setViewFormVisible] = useState(false);
 
     const handleEditClick = () => {
+        router.push("/admin/users/staff/edit-staff");
         setEditFormVisible(true);
         setViewFormVisible(false); // Close view form if open
     };

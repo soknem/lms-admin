@@ -13,6 +13,7 @@ import { EditFacForm } from "./EditFacForm";
 // @ts-ignore
 import { ViewFacForm } from "./ViewFacForm";
 import { useRouter } from "next/navigation";
+// @ts-ignore
 import { EditUserStuForm } from "./EditUserStu";
 
 const ActionsCell = ({ row }: any) => {

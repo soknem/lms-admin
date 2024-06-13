@@ -8,7 +8,9 @@ import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
+// @ts-ignore
 import { CardCourseComponent1 } from "@/components/studentcomponent/courses/card/CardCourseComponent1";
+// @ts-ignore
 import { CardCourseComponent2 } from "@/components/studentcomponent/courses/card/CardCourseComponent2";
 
 export default function Course() {

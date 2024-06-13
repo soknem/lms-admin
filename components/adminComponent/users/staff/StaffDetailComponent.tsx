@@ -16,7 +16,9 @@ import { BiSolidBookOpen } from "react-icons/bi";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 //components
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
+// @ts-ignore
 import MoreInfo from "./StaffMoreInfoComponent";
+// @ts-ignore
 import CourseCardComponent from "./CourseCardComponent";
 
 type cardProps = {
@@ -183,7 +185,7 @@ export default function StaffDetailComponent ({ imageSrc, name, education, posit
                             {/* CV */}
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <div className="border-1 bg-gray-100 rounded-[8px] flex items-center p-2">
+                                    <div className="border rounded-[8px] flex items-center p-2">
                                         <div className="p-1 mr-4 rounded-[8px]">
                                             <Image className="w-12 h-12 rounded-[8px]" width={100} height={100} src={CV}
                                                    alt="cv"/>
@@ -199,7 +201,7 @@ export default function StaffDetailComponent ({ imageSrc, name, education, posit
                             </Dialog>
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <div className="border-1 bg-gray-100 rounded-[8px] flex items-center p-2">
+                                    <div className="border rounded-[8px] flex items-center p-2">
                                         <div className="p-1 mr-4 rounded-[8px]">
                                             <Image className="w-12 h-12 rounded-[8px]" width={100} height={100} src={IdCard}
                                                    alt="cv"/>
@@ -214,6 +216,7 @@ export default function StaffDetailComponent ({ imageSrc, name, education, posit
                                 </DialogContent>
                             </Dialog>
                         </div>
+
                     </div>
                     {/* tabs */}
                     <div className="rounded-[8px]">

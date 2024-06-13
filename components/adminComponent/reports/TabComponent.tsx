@@ -10,7 +10,9 @@ import ReportStaffComponent from "./staff/ReportStaffComponent";
 import ReportAdmissionComponent from "./admission/ReportAdmissionComponent";
 // @ts-ignore
 import StudentpayComponent from "./student's pay/Student'spayComponent";
+// @ts-ignore
 import StudentpayComponent2 from "./student's pay/Student'spayComponent copy";
+// @ts-ignore
 import EarningsReportComponent from "./earning/EarningComponent";
 
 export default function TabComponent() {

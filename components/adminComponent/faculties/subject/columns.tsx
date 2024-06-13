@@ -8,6 +8,7 @@ import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
+// @ts-ignore
 import ActionsCell from "./SubActionCell";
 //. @ts-ignore
 
