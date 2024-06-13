@@ -8,13 +8,10 @@ import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
-<<<<<<< HEAD
-import ActionsCell from "./SubActionCell";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
-=======
-import ActionsCell from "@/components/adminComponent/faculties/subject/SubActionCell";
->>>>>>> e723df9dd461ebf12fbc06cfe8f1f6a26dee2e52
+
 //. @ts-ignore
+import ActionsCell from "@/components/admincomponent/faculties/subject/SubActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
