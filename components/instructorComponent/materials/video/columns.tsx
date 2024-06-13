@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, VideoType } from "@/lib/types/admin/materials";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -75,24 +76,24 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   }
   if (column.id === "status") {
     return (
-      <span
-        className={
-          value == 1
-            ? "Public text-green-500"
-            : value == 2
-            ? "Disable text-red-500"
-            : value == 3
-            ? "Draft text-gray-400"
-            : ""
-        }
-      >
+        <span
+            className={
+              value === 1
+                  ? "Public text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+                  : value === 2
+                      ? "Disable text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                      : value === 3
+                          ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+                          : ""
+            }
+        >
         {value == 1
-          ? "Public"
-          : value == 2
-          ? "Disable"
-          : value == 3
-          ? "Draft"
-          : ""}
+            ? "Public"
+            : value == 2
+                ? "Disable"
+                : value == 3
+                    ? "Draft"
+                    : ""}
       </span>
     );
   }
@@ -118,31 +119,31 @@ const EditCell = ({ row, table }: any) => {
   };
 
   return (
-    <div>
-      {meta?.editedRows[row.id] ? (
-        <div>
-          <button
-            className="mr-3 bg-red-100 rounded-full p-1"
-            onClick={setEditedRows}
-            name="cancel"
-          >
-            <RxCross2 size={20} className="text-red-500" />
-          </button>
+      <div>
+        {meta?.editedRows[row.id] ? (
+            <div>
+              <button
+                  className="mr-3 bg-red-100 rounded-full p-1"
+                  onClick={setEditedRows}
+                  name="cancel"
+              >
+                <RxCross2 size={20} className="text-red-500" />
+              </button>
 
-          <button
-            onClick={setEditedRows}
-            name="done"
-            className="bg-green-100 rounded-full p-1"
-          >
-            <IoCheckmarkSharp size={20} className="text-green-500" />
-          </button>
-        </div>
-      ) : (
-        <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
-        </button>
-      )}
-    </div>
+              <button
+                  onClick={setEditedRows}
+                  name="done"
+                  className="bg-green-100 rounded-full p-1"
+              >
+                <IoCheckmarkSharp size={20} className="text-green-500" />
+              </button>
+            </div>
+        ) : (
+            <button onClick={setEditedRows} name="edit">
+              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+            </button>
+        )}
+      </div>
   );
 };
 

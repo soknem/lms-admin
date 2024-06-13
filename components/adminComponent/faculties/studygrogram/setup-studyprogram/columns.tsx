@@ -19,6 +19,7 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { SetupStudyProgramType, StatusOption } from "@/lib/types/admin/faculty";
 // @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/SetUpStuActioncell";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -143,7 +144,7 @@ const EditCell = ({ row, table }: any) => {
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
         </button>
       )}
     </div>

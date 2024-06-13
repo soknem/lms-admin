@@ -141,17 +141,11 @@ export function PaymentTable<TData, TValue>({
   }, []);
 
   const [isFocused, setIsFocused] = useState(false);
-  const filterOptions = ["All", "Public", "Disable", "Draft"];
+  const filterOptions = ["All", "Paid", "Unpaid"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     const filterValue =
-      value === "All"
-        ? ""
-        : value === "Public"
-        ? "true"
-        : value === "Disable"
-        ? "false"
-        : "draft";
+        value === "All" ? "" : value === "Paid" ? "paid" : "unpaid";
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 

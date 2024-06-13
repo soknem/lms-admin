@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
 import ActionsCell from "./SubActionCell";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 //. @ts-ignore
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -118,7 +119,7 @@ const EditCell = ({ row, table }: any) => {
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
         </button>
       )}
     </div>
