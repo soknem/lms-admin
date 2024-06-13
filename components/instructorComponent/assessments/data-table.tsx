@@ -64,8 +64,7 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@radix-ui/react-dropdown-menu'
-import { AddEnrolledStuForm } from '@/components/adminComponent/academics/classes/enrolledStudents/AddEnrolledStuForm'
-
+import {InstructorCourseAssessmentColumns} from "@/components/instructorComponent/assessments/columns";
 
 
 
@@ -74,7 +73,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function StudentDataTable<TData, TValue>({
+export function InstructorCourseAssesmentDataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -85,7 +84,13 @@ export function StudentDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  // const [isFocused, setIsFocused] = useState(false);
+  // filters
+  const [openClass, setOpenClass] = useState(false);
+  const [selectedClass, setselectedClass] = React.useState<any>(null);
+
+  const [openCourse, setOpenCourse] = useState(false);
+  const [selectedCourse, setselectedCourse] = React.useState<any>(null);
+
 
 
   const router = useRouter();
@@ -100,8 +105,6 @@ export function StudentDataTable<TData, TValue>({
       columnFilters,
       columnVisibility
     },
-
-
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -141,10 +144,40 @@ export function StudentDataTable<TData, TValue>({
     },
   })
 
+  //reset filter popup
+  const handleReset = (columnId: string) => {
+    if (columnId === 'class') {
+      setselectedClass(null);
+    }
+    if (columnId === 'course') {
+      setselectedCourse(null);
+    }
+    table.getColumn(columnId)?.setFilterValue('');
+    setData([...originalData]);
+  };
+
+  // filter data of class
+  const FilteredClass = data.reduce((cls: string[], item: any) => {
+    if (!cls.includes(item.class)) {
+      cls.push(item.class);
+    }
+    return cls;
+  }, []);
+
+  // filter data of course
+  const FilteredCourse = data.reduce((course: string[], item: any) => {
+    if (!course.includes(item.course)) {
+      course.push(item.course);
+    }
+    return course;
+  }, []);
+
+
+
   return (
     <>
 
-      <div className='flex items-center justify-between gap-4 my-4'>
+      <div className='flex items-center justify-between gap-4 my-4 '>
 
         {/* search */}
         <div className="flex items-center w-full relative">
@@ -166,10 +199,90 @@ export function StudentDataTable<TData, TValue>({
 
         </div>
 
+
+        {/* filter Class */}
+        <Popover open={openClass} onOpenChange={setOpenClass}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedClass ? <>{selectedClass}</> : <> Filter by Class</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Class..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredClass.map((cls, index) => (
+                    <CommandItem
+                      key={index}
+                      value={cls}
+                      onSelect={(value) => {
+                        setselectedClass(value);
+                        table.getColumn('class')?.setFilterValue(value);
+                        setOpenClass(false);
+                      }}
+                    >
+                      {cls}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedClass && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('class')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        {/* filter study course */}
+        <Popover open={openCourse} onOpenChange={setOpenCourse}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+              <TbFilter className='mr-2 h-4 w-4' />
+              {selectedCourse ? <>{selectedCourse}</> : <> Filter by Course</>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+            <Command>
+              <CommandInput
+                placeholder="Filter Course..." />
+
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {FilteredCourse.map((course, index) => (
+                    <CommandItem
+                      key={index}
+                      value={course}
+                      onSelect={(value) => {
+                        setselectedCourse(value);
+                        table.getColumn('course')?.setFilterValue(value);
+                        setOpenCourse(false);
+                      }}
+                    >
+                      {course}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+            {selectedCourse && (
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('course')}>Reset</Button>
+            )}
+          </PopoverContent>
+        </Popover>
+
+        
+
+
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30 hover:bg-white/60 '>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -193,8 +306,6 @@ export function StudentDataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* add enrolled student form */}
-        <AddEnrolledStuForm />
 
       </div>
 
@@ -203,44 +314,43 @@ export function StudentDataTable<TData, TValue>({
 
         {/* class detail information */}
         <div className='flex justify-between p-4'>
-                <div>
-                  <Label className='text-lms-gray-30'>Generation</Label>
-                  <p className='flex font-medium text-black'>Generation 1</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Generation</Label>
+            <p className='flex font-medium text-black'>Generation 1</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Year</Label>
-                  <p className='flex font-medium text-black'>Foundation Year</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Year</Label>
+            <p className='flex font-medium text-black'>Foundation Year</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Academic Year</Label>
-                  <p className='flex font-medium text-black'>2024-2025</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Academic Year</Label>
+            <p className='flex font-medium text-black'>2024-2025</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Degree</Label>
-                  <p className='flex font-medium text-black'>Bachelor</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Degree</Label>
+            <p className='flex font-medium text-black'>Bachelor</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Study Program</Label>
-                  <p className='flex font-medium text-black'>Software Engineer</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Study Program</Label>
+            <p className='flex font-medium text-black'>Software Engineer</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Enrolled Student</Label>
-                  <div className='flex gap-2'>
-                    <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-                    <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-                    <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
-                  </div>
+          <div>
+            <Label className='text-lms-gray-30'>Class</Label>
+            <p className='flex font-medium text-black'>FY2025 - A3</p>
+          </div>
 
+          <div>
+            <Label className='text-lms-gray-30'>Course</Label>
+            <p className='flex font-medium text-black'>Introduction To IT</p>
+          </div>
 
-                </div>
-              </div>
-
-
+          
+        </div>
 
         <Table>
 
@@ -269,7 +379,7 @@ export function StudentDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-
+                  className='hover:bg-gray-50'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -298,8 +408,6 @@ export function StudentDataTable<TData, TValue>({
         </Table>
 
 
-
-
       </div>
 
       {/* status Remark */}
@@ -326,15 +434,8 @@ export function StudentDataTable<TData, TValue>({
           </div>
       </div>
 
-      <div className='px-4 w-full flex justify-between items-center'>
-
-        <div className="text-base text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
-          students
-        </div>
-
-        {/* Pagination */}
-        <div className='flex items-center justify-end space-x-2 py-4'>
+      {/* Pagination */}
+      <div className='flex items-center justify-end space-x-2 py-4'>
           <Button
             className='border-gray-30'
             variant='outline'
@@ -354,10 +455,9 @@ export function StudentDataTable<TData, TValue>({
             Next
           </Button>
         </div>
-      </div>
-
 
     </>
   )
 }
+
 
