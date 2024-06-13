@@ -12,6 +12,15 @@ export type UserStudentType = {
   address: string;
   bio: string;
   status: string;
+  high_school: string;
+  guaedian_rel: string;
+  know_istad: string;
+  class_stu: string;
+  diploma: string;
+  grade: string;
+  shift: string;
+  degree: string;
+  study_pro: string;
 };
 
 export type StatusOption = {
