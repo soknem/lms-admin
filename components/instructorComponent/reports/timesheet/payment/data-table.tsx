@@ -79,8 +79,6 @@ export function PaymentDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  
-
   const router = useRouter();
 
   const table = useReactTable({
@@ -128,7 +126,6 @@ export function PaymentDataTable<TData, TValue>({
     },
   });
 
-
   return (
     <>
       {/* Table */}
@@ -169,7 +166,7 @@ export function PaymentDataTable<TData, TValue>({
           </div>
         </div>
 
-        <Table >
+        <Table>
           <TableHeader className="text-lms-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -216,6 +213,20 @@ export function PaymentDataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="h-15  text-[18px] text-lms-black90 bg-lms-grayBorder "
+              >
+                Total
+              </TableCell>
+              <TableCell
+                colSpan={columns.length}
+                className="font-normal text-[18px] text-lms-black90 bg-lms-grayBorder  "
+              >
+                $1200.00
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>

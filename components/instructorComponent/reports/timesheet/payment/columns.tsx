@@ -77,7 +77,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   // Apply specific color for total value 22.5
   if (accessorKey === "total" && value === 22.5) {
-    return <span style={{ color: 'red' }}>{value}$</span>;
+    return <span style={{ color: "red" }}>{value}$</span>;
   }
 
   return <span>{value}</span>;
@@ -161,23 +161,16 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
   {
     accessorKey: "pwHour",
     header: ({ column }) => {
-      return (
-        <Button variant="ghost">
-          PW HOUR
-        </Button>
-      );
+      return <Button variant="ghost">PW HOUR</Button>;
     },
     cell: TableCell,
   },
   {
     accessorKey: "total",
     header: ({ column }) => {
-      return (
-        <Button variant="ghost">
-          TOTAL
-        </Button>
-      );
+      return <Button variant="ghost">TOTAL</Button>;
     },
     cell: TableCell,
   },
+ 
 ];

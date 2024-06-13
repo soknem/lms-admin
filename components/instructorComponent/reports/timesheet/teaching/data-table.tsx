@@ -79,8 +79,6 @@ export function TeachingDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  
-
   const router = useRouter();
 
   const table = useReactTable({
@@ -128,11 +126,9 @@ export function TeachingDataTable<TData, TValue>({
     },
   });
 
-
   return (
     <>
       {/* Table */}
-     
 
       <div className="rounded-[10px] p-4 bg-lms-white-80">
         <p className="text-black_80 font-bold ml-4 mb-4">
@@ -216,6 +212,20 @@ export function TeachingDataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            <TableRow className="bg-lms-grayBorder">
+              <TableCell
+                colSpan={columns.length}
+                className="h-15  text-[18px] text-lms-black90 "
+              >
+                Total
+                
+              </TableCell>
+              <TableCell
+                className="font-normal text-[18px] text-lms-black90"
+              >
+               $1200.00
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>

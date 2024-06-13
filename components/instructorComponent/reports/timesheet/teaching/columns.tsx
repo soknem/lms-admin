@@ -129,9 +129,5 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
     },
     cell: TableCell,
   },
- 
-
- 
-
   
 ];
