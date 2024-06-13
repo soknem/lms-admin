@@ -4,9 +4,9 @@ import React from "react";
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json";
 // @ts-ignore
 import { FilterAdmin } from "@/components/admincomponent/reports/Filter";
-import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
 // @ts-ignore
 import TabComponent from "@/components/admincomponent/reports/TabComponent";
+import {LectureColumns} from "@/components/adminComponent/academics/lectures/LectureColumns";
 
 export default async function Report() {
   const data: LectureType[] = lectures;
