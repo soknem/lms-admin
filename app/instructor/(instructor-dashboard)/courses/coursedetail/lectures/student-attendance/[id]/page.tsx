@@ -30,12 +30,19 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+
 import {
     StudentAttendanceDataTable
-} from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceDataTable";
+}
+// @ts-ignore
+
+from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceDataTable";
 import {
     StudentAttendanceColumns
-} from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceColumns";
+}
+// @ts-ignore
+
+from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceColumns";
 import Attendences from "@/app/instructor/(instructor-dashboard)/courses/coursedetail/lectures/data/Attendances.json"
 
 export default function StudentAttendance() {

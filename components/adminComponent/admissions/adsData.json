@@ -1,0 +1,26 @@
+[
+  {
+    "academic_year": "2022-2023",
+    "start_date": "May 12, 2023",
+    "end_date": "May 12, 2024",
+    "telegram_group": "string_telegram_link",
+    "remark": "This is main admission",
+    "status" : "opening"
+  },
+  {
+    "academic_year": "2022-2023",
+    "start_date": "May 12, 2023",
+    "end_date": "May 12, 2024",
+    "telegram_group": "string_telegram_link",
+    "remark": "This is main admission",
+    "status" : "ended"
+  },
+  {
+    "academic_year": "2022-2023",
+    "start_date": "May 12, 2023",
+    "end_date": "May 12, 2024",
+    "telegram_group": "string_telegram_link",
+    "remark": "This is main admission",
+    "status" : "achieved"
+  }
+]

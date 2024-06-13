@@ -1,0 +1,24 @@
+[
+  {
+    "id": "de_01",
+    "level": "Bachelor Degree",
+    "description": "This is main degree",
+    "create_by": "Chan Tola",
+    "status": "true"
+  },
+  {
+    "id": "de_01",
+    "level": "Bachelor Degree",
+    "description": "This is main degree",
+    "create_by": "Chan Tola",
+    "status": "false"
+  },
+
+  {
+    "id": "de_01",
+    "level": "Bachelor Degree",
+    "description": "This is main degree",
+    "create_by": "Chan Tola",
+    "status": "draft"
+  }
+]

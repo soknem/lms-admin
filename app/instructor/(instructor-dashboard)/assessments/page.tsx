@@ -6,7 +6,7 @@ import {CourseAssesmentDataTable} from "@/components/adminComponent/academics/as
 import {courseAssessmentType} from "@/lib/types/admin/academics";
 import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments/data/courseAssesment.json";
 import {InstructorCourseAssesmentDataTable} from "@/components/instructorcomponent/assessments/data-table";
-import {InstructorCourseAssessmentColumns} from "@/components/instructorComponent/assessments/columns";
+import {InstructorCourseAssessmentColumns} from "@/components/instructorcomponent/assessments/columns";
 
 export default function Academics() {
   const courseData : courseAssessmentType[] = courseAssesment;

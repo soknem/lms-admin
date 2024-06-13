@@ -84,14 +84,14 @@ export async function getStudentAdmission(): Promise<StudentAdmissionType[]> {
   return data;
 }
 
-export async function getCurriculum(): Promise<CurriculumType[]> {
-  const res = await fetch(
-    "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/curriculumns"
-  );
-  const data = await res.json();
-  // console.log("data from page: ",data);
-  return data;
-}
+// export async function getCurriculum(): Promise<CurriculumType[]> {
+//   const res = await fetch(
+//     "https://6661345863e6a0189fe8dba0.mockapi.io/api/v1/curriculumns"
+//   );
+//   const data = await res.json();
+//   // console.log("data from page: ",data);
+//   return data;
+// }
 
 export async function getSlide(): Promise<SlideType[]> {
   const res = await fetch(

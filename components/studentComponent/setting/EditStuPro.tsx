@@ -19,16 +19,25 @@ const initialValues = {
   card_id: 0,
   email: "NounSovanthorn@istad.com",
   name_en: "Noun Sovanthorn",
-  name_kh: "នួន​ សុវណ្ណថន",
+  name_kh: "នួន សុវណ្ណថន",
   gender: "Male" || "Female" || "Other",
   dob: format(new Date(2000, 11, 5), "yyyy-MM-dd"),
   ph_number: "098456723",
   fam_ph_number: "098456723",
   pob: "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
   address:
-    "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
+      "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
   bio: "Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private blushes removed an in equally totally if. Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do.",
   status: "Active" || "Drop" || "Disable" || "Hiatus",
+  high_school: "",
+  guaedian_rel: "",
+  know_istad: "",
+  class_stu: "",
+  diploma:"",
+  grade:"",
+  shift:"",
+  degree:"",
+  study_pro:""
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -142,6 +151,15 @@ export function EditStuProForm() {
             bio: values.bio,
             gender: values.gender,
             status: values.status,
+            high_school: values.high_school,
+            guaedian_rel:values.guaedian_rel,
+            know_istad:values.know_istad,
+            class_stu:values.class_stu,
+            diploma: values.diploma,
+            grade: values.grade,
+            shift: values.shift,
+            degree: values.degree,
+            study_pro: values.study_pro
           };
 
           // post product
