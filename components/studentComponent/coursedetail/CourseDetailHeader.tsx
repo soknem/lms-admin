@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 // Data structure for course details
 const courseData = {
@@ -35,6 +37,11 @@ const courseData = {
  */
 
 export default function CourseDetailHeader() {
+  const router = useRouter();
+  const handleNavigate = () => {
+    router.push("/admin/users/staff/1");
+  };
+
   return (
     <main>
       {/* Course Overview Section */}
@@ -74,12 +81,13 @@ export default function CourseDetailHeader() {
             height={215}
             className="w-[215px] h-[215px]"
           />
-        </div> 
+        </div>
       </section>
       {/* Instructor and Students Section */}
       <div className="flex items-center -[20px]  mx-[90px]">
         <Image
           className="w-[60px] h-[60px] rounded-full  mr-4"
+          onClick={handleNavigate}
           src={courseData.instructor.image}
           alt="Instructor"
           width={60}

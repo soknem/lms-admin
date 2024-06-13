@@ -30,7 +30,9 @@ export default async function Admissions() {
           <h3 className="font-semibold text-lms-primary">2022-2023</h3>
         </BreadcrumbList>
       </Breadcrumb>
-      <h2 className="text-4xl text-primary font-bold">Admissions</h2>
+      <h2 className="text-4xl text-primary font-bold text-lms-primary">
+        Admissions
+      </h2>
       <StudentAdmissionTable
         columns={StudentAdmissionColumns}
         data={stuAdmData}

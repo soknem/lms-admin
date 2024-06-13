@@ -11,11 +11,13 @@ import {
 } from "@/components/ui/card";
 // @ts-ignore
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
+import { useRouter } from "next/navigation";
 
 export function CardCourseComponent() {
+  const router = useRouter();
   return (
     <a href="/student/courses/coursedetail">
-    <Card className="w-[566px] h-[299px] bg-white">
+    <Card className="w-[566px] h-[299px] bg-white" >
       <CardHeader className="mx-[40px]">
         <CardTitle className="text-primary font-bold text-[24px] mb-[15px]">
           {courseCardData.title}
@@ -28,6 +30,7 @@ export function CardCourseComponent() {
       <div className="flex items-center -space-x-4 ">
         {courseCardData.images.map((image, index) => (
           <Image
+          onClick={() => router.push("admin/users/staff/1")}
             key={index}
             src={image.src}
             alt={image.alt}

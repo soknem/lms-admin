@@ -108,7 +108,6 @@ export function FacultyTable<TData, TValue>({
 
   console.log("data from page: ", data);
 
-  const [isFocused, setIsFocused] = useState(false);
   const filterOptions = ["All", "Public", "Disable", "Draft"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
@@ -129,7 +128,7 @@ export function FacultyTable<TData, TValue>({
       <div className="flex items-center justify-between gap-4 ">
         <div className="flex items-center py-4 w-full">
           <div className="flex items-center w-full relative">
-            <Input  
+            <Input
               placeholder="Search Faculty"
               value={
                 (table.getColumn("name")?.getFilterValue() as string) ?? ""
@@ -137,15 +136,12 @@ export function FacultyTable<TData, TValue>({
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
               }
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              className="border-[#E6E6E6] bg-white rounded-[10px] focus:pl-8 "
+              className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 "
             />
-            {isFocused && (
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
-              </div>
-            )}
+
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaSearch className="text-gray-400" />
+            </div>
           </div>
         </div>
 
