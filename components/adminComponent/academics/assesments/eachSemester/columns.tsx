@@ -1,17 +1,11 @@
-
 'use client'
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
-
-import { ColumnDef } from '@tanstack/react-table'
-
-import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
-import { TbArchive } from "react-icons/tb";
-import { TbFileIsr } from "react-icons/tb";
+import { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
+import { TbArchive, TbFileIsr, TbTrash } from "react-icons/tb";
 import { format } from 'date-fns';
-
-import { Button } from '@/components/ui/button'
-import { TbTrash } from "react-icons/tb";
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,18 +13,26 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
-
+} from '@/components/ui/dropdown-menu';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { OptionType, SubjectType, semesterAssessementType } from "@/lib/types/admin/academics";
-
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import StatusBadge from "@/components/common/StatusBadge";
+import {className} from "postcss-selector-parser";
 
+// Helper function to get unique subjects from the data
+const getUniqueSubjects = (data: semesterAssessementType[]) => {
+    const subjectsSet = new Set<string>();
+    data.forEach((item) => {
+        item.subjects.forEach((subject) => {
+            subjectsSet.add(subject.subjectName);
+        });
+    });
+    return Array.from(subjectsSet);
+};
 
 const TableCell = ({ getValue, row, column, table }: any) => {
-
     const initialValue = getValue();
     const columnMeta = column.columnDef.meta;
     const tableMeta = table.options.meta;
@@ -54,15 +56,15 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     if (accessorKey === 'status') {
         switch (value) {
             case 1:
-                return <StatusBadge type="success" status="Active" />
+                return <StatusBadge type="success" status="Active" />;
             case 2:
-                return <StatusBadge type="warning" status="Hiatus" />
+                return <StatusBadge type="warning" status="Hiatus" />;
             case 3:
-                return <StatusBadge type="error" status="Drop" />
+                return <StatusBadge type="error" status="Drop" />;
             case 4:
-                return <StatusBadge type="error" status="Disable" />
+                return <StatusBadge type="error" status="Disable" />;
             default:
-                return 'bg-gray-200 text-gray-500';
+                return <span className='bg-gray-200 text-gray-500'>Unknown</span>;
         }
     }
 
@@ -71,7 +73,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
             <select
                 className="border-1 border-gray-30 rounded-md focus:to-primary"
                 onChange={onSelectChange}
-                value={initialValue}
+                value={value}
             >
                 {columnMeta?.options?.map((option: OptionType) => (
                     <option
@@ -95,24 +97,49 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
 };
 
-const generateSubjectColumns = (subjects: SubjectType[]): ColumnDef<semesterAssessementType>[] => {
-    return subjects.map((subject, index) => ({
-        accessorKey: `subjects[${index}].score`,
-        header: ({ column }) => (
-            <Button
-                variant='ghost'
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                className="w-[130px] flex justify-start items-start"
-            >
-                {subject.subjectName.toUpperCase()}
-                <ArrowUpDown className='ml-2 h-4 w-4' />
-            </Button>
-        ),
-        cell: TableCell,
-    }));
-};
 
-const commonColumns: ColumnDef<semesterAssessementType>[] = [
+const initialData: semesterAssessementType[] = [
+    {
+        cardId: "istad-1000",
+        nameEn: "Alice Johnson",
+        gender: "Female",
+        dob: "2001-03-15",
+        class: "FY2025 - M1",
+        subjects: [
+            { subjectName: "Introduction to IT", score: 85 },
+            { subjectName: "Programming Fundamental", score: 92 },
+            { subjectName: "Intensive English Program I", score: 88 },
+            { subjectName: "Academic Skill Development", score: 90 },
+            { subjectName: "Mathematics I", score: 95 }
+        ],
+        grade: "A",
+        total: 450,
+        status: 1
+    }
+];
+
+// Dynamically generate subject columns
+const uniqueSubjects = getUniqueSubjects(initialData);
+const subjectColumns = uniqueSubjects.map((subject) => ({
+    accessorKey: subject.replace(/\s+/g, ''),
+    header: ({ column } : any) => (
+        <Button
+            variant='ghost'
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+            {subject.toUpperCase()}
+            <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+    ),
+    cell: ({ row }: any) => {
+        const subjectScore = row.original.subjects.find(
+            (sub: SubjectType) => sub.subjectName === subject
+        )?.score;
+        return subjectScore ?? '-';
+    }
+}));
+
+export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     {
         accessorKey: 'cardId',
         header: ({ column }) => (
@@ -180,6 +207,7 @@ const commonColumns: ColumnDef<semesterAssessementType>[] = [
         ),
         cell: TableCell,
     },
+    ...subjectColumns,
     {
         accessorKey: 'grade',
         header: ({ column }) => (
@@ -218,11 +246,3 @@ const commonColumns: ColumnDef<semesterAssessementType>[] = [
         cell: TableCell,
     },
 ];
-
-const SemesterColumns = (data: semesterAssessementType[]): ColumnDef<semesterAssessementType>[] => {
-    const subjects = data.length > 0 ? data[0].subjects : [];
-    const subjectColumns = generateSubjectColumns(subjects);
-    return [...commonColumns, ...subjectColumns];
-};
-
-export default SemesterColumns;

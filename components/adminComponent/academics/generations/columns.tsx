@@ -1,7 +1,7 @@
 'use client'
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 import { ColumnDef } from '@tanstack/react-table'
 
@@ -189,7 +189,7 @@ const EditCell = ({ row, table }: any) => {
             ) : (
 
                 <button onClick={setEditedRows} name="edit">
-                    <MdEdit size={18} className="text-gray-30" />
+                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
                 </button>
             )}
         </div>

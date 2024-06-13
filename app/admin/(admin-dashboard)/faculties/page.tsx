@@ -22,10 +22,13 @@ import { studyProgramColumns } from "@/components/admincomponent/faculties/study
 import { SubjectTable } from "@/components/admincomponent/faculties/subject/data-table";
 // @ts-ignore
 import { subjectColumns } from "@/components/admincomponent/faculties/subject/columns";
+import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
+import facData from "@/components/admincomponent/faculties/faculty/facData.json";
+import degreeData from "@/components/admincomponent/faculties/degree/degreeData.json";
 
 export default async function Page() {
-  const facData = await getFaculties();
-  const deData = await getDegree();
+  const facultyData : FacultyType[] = facData;
+  const deData : DegreeType[] = degreeData;
   const stuData = await getStudyProgram();
   const subData = await getSubject();
 
@@ -36,32 +39,36 @@ export default async function Page() {
           Faculty Management
         </h1>
 
-
         <Tabs defaultValue="faculty" className="w-full">
-
           <TabsList className="dark:bg-gray-800">
-
-            <TabsTrigger value="faculty" className="dark:text-gray-300 dark:hover:text-white">
+            <TabsTrigger
+              value="faculty"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Faculty
-              </TabsTrigger>
-            <TabsTrigger value="degree" className="dark:text-gray-300 dark:hover:text-white">
+            </TabsTrigger>
+            <TabsTrigger
+              value="degree"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Degree
-              </TabsTrigger>
-            <TabsTrigger value="study-program" className="dark:text-gray-300 dark:hover:text-white">
+            </TabsTrigger>
+            <TabsTrigger
+              value="study-program"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Study Program
-              </TabsTrigger>
-            <TabsTrigger value="subject" className="dark:text-gray-300 dark:hover:text-white">
+            </TabsTrigger>
+            <TabsTrigger
+              value="subject"
+              className="dark:text-gray-300 dark:hover:text-white"
+            >
               Subject
-              </TabsTrigger>
-
-
+            </TabsTrigger>
           </TabsList>
 
-
-
-
           <TabsContent value="faculty">
-            <FacultyTable columns={facultyColumns} data={facData} />
+            <FacultyTable columns={facultyColumns} data={facultyData} />
           </TabsContent>
 
           <TabsContent value="degree">
@@ -75,10 +82,7 @@ export default async function Page() {
           <TabsContent value="subject">
             <SubjectTable columns={subjectColumns} data={subData} />
           </TabsContent>
-
-
         </Tabs>
-
       </section>
     </section>
   );

@@ -102,42 +102,14 @@ export function CreateDeForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white-80 bg-white border">
+        <Button className="bg-lms-primary text-white hover:bg-lms-primary">
           <FiPlus className="mr-2 h-4 w-4" /> Add degree
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add degree</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Add Degree</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -180,36 +152,36 @@ export function CreateDeForm() {
 
                 {/* Degree Description*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
-                    name="degree"
+                    name="description"
                     placeholder="This is main degree of Engineering faculty"
-                    id="degree"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
-                    Creaate By
+                  <label className={`${style.label}`} htmlFor="create_by">
+                    Create By
                   </label>
                   <Field
                     type="text"
                     placeholder="Chan Tola"
-                    name="degree"
-                    id="degree"
+                    name="create_by"
+                    id="create_by"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="create_by"
                     component="div"
                     className={`${style.error}`}
                   />

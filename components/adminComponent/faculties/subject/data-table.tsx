@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 //import from shad cn
 import {
@@ -36,6 +36,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 // @ts-ignore
 import { CreateSubjectForm } from "./CreateFacForm";
+import {TbAdjustmentsHorizontal} from "react-icons/tb";
+import {FaSearch} from "react-icons/fa";
 
 //custom component import
 
@@ -109,48 +111,56 @@ export function SubjectTable<TData, TValue>({
       {/* Search */}
       <div className="flex items-center justify-between gap-4 ">
         <div className="flex items-center py-4 w-full">
-          <Input
-            placeholder="Search Study Program"
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="border-[#E6E6E6] bg-white "
-          />
+          <div className="flex items-center w-full relative">
+            <Input
+                placeholder="Search Subject"
+                value={
+                    (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                }
+                onChange={(event) =>
+                    table.getColumn("name")?.setFilterValue(event.target.value)
+                }
+                className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30 "
+            />
+
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaSearch className="text-gray-400"/>
+            </div>
+          </div>
         </div>
 
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+                variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
             >
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
               Columns
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white">
             {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize focus:bg-background"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                      <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize focus:bg-background"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) =>
+                              column.toggleVisibility(!!value)
+                          }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                  );
+                })}
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <CreateSubjectForm />
+        <CreateSubjectForm/>
       </div>
 
       {/* Table */}
@@ -158,27 +168,27 @@ export function SubjectTable<TData, TValue>({
         <Table>
           <TableHeader className="text-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                              )}
+                        </TableHead>
+                    );
+                  })}
+                </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
+                table.getRowModel().rows.map((row) => (
+                    <TableRow
+                        key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (

@@ -10,35 +10,45 @@ import ReportStaffComponent from "./staff/ReportStaffComponent";
 import ReportAdmissionComponent from "./admission/ReportAdmissionComponent";
 // @ts-ignore
 import StudentpayComponent from "./student's pay/Student'spayComponent";
+// @ts-ignore
+import StudentpayComponent2 from "@/components/adminComponent/reports/student's pay/Student'spayComponent copy";
+// @ts-ignore
+import EarningsReportComponent from "@/components/adminComponent/reports/earning/EarningComponent";
 
 export default function TabComponent() {
   return (
     <div>
-      <Tabs defaultValue="">
+      <Tabs defaultValue="student">
         <TabsList>
-          <TabsTrigger value="student">Student</TabsTrigger>
-          <TabsTrigger value="instructor">Instructor</TabsTrigger>
-          <TabsTrigger value="staff">Staff</TabsTrigger>
-          <TabsTrigger value="admission">Admission</TabsTrigger>
-          <TabsTrigger value="payment">Student payment</TabsTrigger>
-          <TabsTrigger value="earning">Earning</TabsTrigger>
-
-
+          <div className="w-full flex items-end justify-end">
+            <TabsTrigger value="student">Student</TabsTrigger>
+            <TabsTrigger value="instructor">Instructor</TabsTrigger>
+            <TabsTrigger value="staff">Staff</TabsTrigger>
+            <TabsTrigger value="admission">Admission</TabsTrigger>
+            <TabsTrigger value="payment">Student payment</TabsTrigger>
+            <TabsTrigger value="earning">Earning</TabsTrigger>{" "}
+          </div>
         </TabsList>
         <TabsContent value="student">
           <ReportComponent />
         </TabsContent>
         <TabsContent value="instructor">
-          <ReportInstructorComponent/>
+          <ReportInstructorComponent />
         </TabsContent>
         <TabsContent value="staff">
-          <ReportStaffComponent/>
+          <ReportStaffComponent />
         </TabsContent>
         <TabsContent value="admission">
-          <ReportAdmissionComponent/>
+          <ReportAdmissionComponent />
         </TabsContent>
         <TabsContent value="payment">
-          <StudentpayComponent/>
+          <StudentpayComponent />
+          <div className="mt-4">
+            <StudentpayComponent2 />
+          </div>
+        </TabsContent>
+        <TabsContent value="earning">
+          <EarningsReportComponent />
         </TabsContent>
       </Tabs>
     </div>

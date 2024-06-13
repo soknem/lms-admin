@@ -50,7 +50,7 @@ const validationSchema = Yup.object().shape({
       if (!value) {
         true;
       }
-      return value.size <= FILE_SIZE;
+      // return value.size <= FILE_SIZE;
     }),
   status: Yup.string().required("A selection is required"),
 });
@@ -124,36 +124,8 @@ export function EditSubjectForm() {
     <Dialog open>
       <DialogContent className="w-[540px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add Subject</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Edit Subject</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -191,20 +163,19 @@ export function EditSubjectForm() {
                   </div>
                 </div>
 
-                {/* faculty title*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="subject">
                     Subject
                   </label>
                   <Field
                     type="text"
                     placeholder="Introduction to IT"
-                    name="name"
-                    id="name"
+                    name="subject"
+                    id="subject"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="subject"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -214,45 +185,48 @@ export function EditSubjectForm() {
                   className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}
                 >
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="hour">
                       Hour
                     </label>
                     <Field name="hour" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="theory">
                       Theory
                     </label>
-                    <Field name="hour" className={` ${style.input}`} />
+                    <Field name="theory" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="practice">
                       Practice
                     </label>
-                    <Field name="hour" className={` ${style.input}`} />
+                    <Field name="practice" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="internship">
                       Interniship
                     </label>
-                    <Field name="hour" className={` ${style.input}`} />
+                    <Field name="internship" className={` ${style.input}`} />
                   </div>
                 </div>
 
                 {/* Faculty Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
                     placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />

@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import style from "../../style.module.css";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiUploadCloud } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -90,17 +90,44 @@ const CustomInput = ({ field, setFieldValue }: any) => {
   const handleUploadFile = (e: any) => {
     const file = e.target.files[0];
     const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
     setImagePreview(localUrl);
 
     setFieldValue(field.name, file);
   };
+
   return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
+    <div className="w-full">
+      <input
+        type="file"
+        onChange={handleUploadFile}
+        className="hidden "
+        id="file"
+      />
+      <label
+        htmlFor="file"
+        className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+      >
+        {!imagePreview ? (
+          <div className="flex  items-center justify-center gap-8">
+            <FiUploadCloud className="text-lms-primary text-[34px]" />
+            <div className="flex flex-col items-start justify-start gap-1">
+              <p className="text-center text-md text-black">
+                Select a file or drag and drop here
+              </p>
+              <p className="text-center text-md text-lms-gray-30">
+                JPG, PNG or PDF, file size no more than 10MB
+              </p>
+            </div>
+          </div>
+        ) : (
+          <Image
+            src={imagePreview}
+            alt="preview"
+            layout="fill"
+            objectFit="cover"
+          />
+        )}
+      </label>
     </div>
   );
 };
@@ -123,42 +150,14 @@ export function CreateSubjectForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white-80 bg-white border">
+        <Button className="bg-lms-primary text-white hover:bg-lms-primary">
           <FiPlus className="mr-2 h-4 w-4" /> Add Subject
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[540px] bg-white ">
         <DialogHeader>
           <DialogTitle>Add Subject</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -185,18 +184,18 @@ export function CreateSubjectForm() {
               <div className="flex flex-col items-center gap-4">
                 {/* faculty title*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="subject">
                     Subject
                   </label>
                   <Field
                     type="text"
                     placeholder="Introduction to IT"
-                    name="name"
-                    id="name"
+                    name="subject"
+                    id="subject"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="subject"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -206,57 +205,48 @@ export function CreateSubjectForm() {
                   className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}
                 >
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="hour">
                       Hour
                     </label>
-                    <Field
-                      name="hour"
-                      className={` ${style.input}`}
-                    />
+                    <Field name="hour" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="theory">
                       Theory
                     </label>
-                    <Field
-                      name="hour"
-                      className={` ${style.input}`}
-                    />
+                    <Field name="theory" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="practice">
                       Practice
                     </label>
-                    <Field
-                      name="hour"
-                      className={` ${style.input}`}
-                    />
+                    <Field name="practice" className={` ${style.input}`} />
                   </div>
+
                   <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="name">
+                    <label className={`${style.label}`} htmlFor="internship">
                       Interniship
                     </label>
-                    <Field
-                      name="hour"
-                      className={` ${style.input}`}
-                    />
+                    <Field name="internship" className={` ${style.input}`} />
                   </div>
                 </div>
 
                 {/* Faculty Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
                     placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -303,7 +293,7 @@ export function CreateSubjectForm() {
                   />
                 </div>
 
-                {/* Product Image*/}
+                {/* Subjeect Image*/}
                 <div className={`${style.inputContainer}  `}>
                   <label
                     htmlFor="logo"

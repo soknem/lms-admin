@@ -95,36 +95,8 @@ export function ViewDeForm() {
     <Dialog open>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add degree</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Degree Information</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -160,27 +132,27 @@ export function ViewDeForm() {
 
                   {/* Degree Description*/}
                   <div className={`${style.inputContainer}`}>
-                    <label className={`${style.label}`} htmlFor="degree">
+                    <label className={`${style.label}`} htmlFor="description">
                       Description
                     </label>
                     <Field
                       type="text"
-                      name="degree"
+                      name="description"
                       placeholder="This is main degree of Engineering faculty"
-                      id="degree"
+                      id="description"
                       className={`${style.input}`}
                     />
                   </div>
 
                   <div className={`${style.inputContainer}`}>
-                    <label className={`${style.label}`} htmlFor="degree">
+                    <label className={`${style.label}`} htmlFor="create_by">
                       Creaate By
                     </label>
                     <Field
                       type="text"
-                      name="degree"
+                      name="create_by"
                       placeholder="Chan Tola"
-                      id="degree"
+                      id="create_by"
                       className={`${style.input}`}
                     />
                   </div>

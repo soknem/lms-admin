@@ -16,6 +16,7 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
 // @ts-ignore
 import ActionsCell from "@/components/admincomponent/payments/PaymentActionCell";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -90,24 +91,17 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   }
   if (column.id === "status") {
     return (
-      <span
-        className={
-          value === "true"
-            ? "Public text-green-500"
-            : value === "false"
-            ? "Disable text-red-500"
-            : value === "draft"
-            ? "Draft text-gray-400"
-            : ""
-        }
-      >
-        {value === "true"
-          ? "Public"
-          : value === "false"
-          ? "Disable"
-          : value === "draft"
-          ? "Draft"
-          : ""}
+        <span
+            className={
+              value === "paid"
+                  ? "Paid text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+                  : value === "unpaid"
+                      ? "Unpaid text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                      : ""
+
+            }
+        >
+        {value === "paid" ? "Paid" : value === "unpaid" ? "Unpaid" : ""}
       </span>
     );
   }
@@ -133,31 +127,31 @@ const EditCell = ({ row, table }: any) => {
   };
 
   return (
-    <div>
-      {meta?.editedRows[row.id] ? (
-        <div>
-          <button
-            className="mr-3 bg-red-100 rounded-full p-1"
-            onClick={setEditedRows}
-            name="cancel"
-          >
-            <RxCross2 size={20} className="text-red-500" />
-          </button>
+      <div>
+        {meta?.editedRows[row.id] ? (
+            <div>
+              <button
+                  className="mr-3 bg-red-100 rounded-full p-1"
+                  onClick={setEditedRows}
+                  name="cancel"
+              >
+                <RxCross2 size={20} className="text-red-500" />
+              </button>
 
-          <button
-            onClick={setEditedRows}
-            name="done"
-            className="bg-green-100 rounded-full p-1"
-          >
-            <IoCheckmarkSharp size={20} className="text-green-500" />
-          </button>
-        </div>
-      ) : (
-        <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
-        </button>
-      )}
-    </div>
+              <button
+                  onClick={setEditedRows}
+                  name="done"
+                  className="bg-green-100 rounded-full p-1"
+              >
+                <IoCheckmarkSharp size={20} className="text-green-500" />
+              </button>
+            </div>
+        ) : (
+            <button onClick={setEditedRows} name="edit">
+              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+            </button>
+        )}
+      </div>
   );
 };
 
@@ -354,9 +348,8 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
     meta: {
       type: "select",
       options: [
-        { value: "true", label: "Public" },
-        { value: "false", label: "Disable" },
-        { value: "draft", label: "Draft" },
+        { value: "paid", label: "Paid" },
+        { value: "unpaid", label: "Unpaid" },
       ],
     },
   },

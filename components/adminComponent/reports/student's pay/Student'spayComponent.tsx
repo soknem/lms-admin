@@ -86,7 +86,7 @@ const StudentpayComponent: React.FC = () => {
           },
           plugins: {
             legend: {
-              position: "right",
+              position: "top",
               labels: {
                 boxWidth: 20,
               },
