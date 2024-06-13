@@ -64,7 +64,6 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@radix-ui/react-dropdown-menu'
-import {InstructorCourseAssessmentColumns} from "@/components/instructorComponent/assessments/columns";
 
 
 
