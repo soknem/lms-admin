@@ -186,4 +186,6 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
   }
 );
 
+VerticalStep.displayName = "VerticalStep";
+
 export { VerticalStep };

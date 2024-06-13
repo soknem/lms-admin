@@ -12,9 +12,9 @@ import { videoColumns } from "@/components/admincomponent/materials/video/column
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {  getSlide, getVideo } from "@/lib/endpoints/MokApi";
 import React from "react";
-import {SlideTable} from "@/components/admincomponent/materials/slide/data-table";
-import {VideoTable} from "@/components/admincomponent/materials/video/data-table";
 import {CurriculumType} from "@/lib/types/admin/materials";
+import { VideoTable } from "@/components/adminComponent/materials/video/data-table";
+import { SlideTable } from "@/components/adminComponent/materials/slide/data-table";
 
 export default async function Materials() {
   const curData : CurriculumType[] = curriculum;

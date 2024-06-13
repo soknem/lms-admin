@@ -22,7 +22,7 @@ export function BreadcrumbWithCustomSeparator() {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink className="font-semibold text-primary">
+          <BreadcrumbLink className="font-semibold text-lms-primary">
             <Link href="">C++ Programming</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>

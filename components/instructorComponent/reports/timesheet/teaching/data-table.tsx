@@ -64,9 +64,12 @@ import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
+
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+
 }
 
 export function TeachingDataTable<TData, TValue>({
@@ -78,8 +81,6 @@ export function TeachingDataTable<TData, TValue>({
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
-
-  
 
   const router = useRouter();
 
@@ -128,42 +129,40 @@ export function TeachingDataTable<TData, TValue>({
     },
   });
 
-
+ 
   return (
     <>
       {/* Table */}
-     
-
-      <div className="rounded-[10px] p-4 bg-lms-white-80">
+      <div className="rounded-[10px] bg-lms-white-80">
         <p className="text-black_80 font-bold ml-4 mb-4">
           FY2025 - A1 Introduction to IT
         </p>
         <div className="flex justify-between p-4">
           <div>
-            <Label className="text-lms-gray30">Generation</Label>
+            <Label className="text-lms-gray-80">Generation</Label>
             <p className="flex font-medium text-black">Generation 1</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Year</Label>
+            <Label className="text-lms-gray-80">Year</Label>
             <p className="flex font-medium text-black">Foundation Year</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Academic Year</Label>
+            <Label className="text-lms-gray-80">Academic Year</Label>
             <p className="flex font-medium text-black">2024-2025</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Degree</Label>
+            <Label className="text-lms-gray-80">Degree</Label>
             <p className="flex font-medium text-black">Bachelor</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Department</Label>
+            <Label className="text-lms-gray-80">Department</Label>
             <p className="flex font-medium text-black">IT</p>
           </div>
           <div>
-            <Label className="text-lms-gray30">Major</Label>
+            <Label className="text-lms-gray-80">Major</Label>
             <div className="flex gap-2">
               <p className="flex text-black font-medium">
-                Information Techology
+                Information Technology
               </p>
             </div>
           </div>
@@ -216,6 +215,19 @@ export function TeachingDataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            <TableRow className="bg-lms-grayBorder">
+              <TableCell
+                colSpan={columns.length - 1}
+                className="h-15  text-[18px] text-lms-black90 "
+              >
+                Total
+              </TableCell>
+              <TableCell
+                className="font-normal text-[18px] text-lms-black90"
+              >
+                $1200.00
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>

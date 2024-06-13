@@ -79,8 +79,6 @@ export function PaymentDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  
-
   const router = useRouter();
 
   const table = useReactTable({
@@ -128,19 +126,19 @@ export function PaymentDataTable<TData, TValue>({
     },
   });
 
-
   return (
     <>
       {/* Table */}
 
-      <div className="rounded-[10px] p-4 bg-lms-white-80">
+      <div className="rounded-[10px] bg-lms-white-80">
         <p className="text-black_80 font-bold ml-4 mb-4">
           FY2025 - A1 Introduction to IT
           <span className="text-lms-success">( Paid )</span>
         </p>
-        <div className="flex justify-between p-4">
+        <div className="flex justify-between p-4 ">
           <div>
-            <Label className="text-lms-gray-80">Generation</Label>
+            <Label className="text-lms-gray-80 ">Generation</Label>
+            
             <p className="flex font-medium text-lms-black90">Generation 1</p>
           </div>
           <div>
@@ -169,7 +167,7 @@ export function PaymentDataTable<TData, TValue>({
           </div>
         </div>
 
-        <Table >
+        <Table>
           <TableHeader className="text-lms-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -216,6 +214,20 @@ export function PaymentDataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="h-15  text-[18px] text-lms-black90 bg-lms-grayBorder "
+              >
+                Total
+              </TableCell>
+              <TableCell
+                colSpan={columns.length}
+                className="font-normal text-[18px] text-lms-black90 bg-lms-grayBorder  "
+              >
+                $1200.00
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>

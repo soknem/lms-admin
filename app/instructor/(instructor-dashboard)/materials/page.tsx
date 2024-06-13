@@ -8,12 +8,13 @@ import {  getSlide, getVideo } from "@/lib/endpoints/MokApi";
 import React from "react";
 
 import {CurriculumType} from "@/lib/types/admin/materials";
-import {CurriculumTable} from "@/components/instructorcomponent/materials/curriculum/data-table";
-import {curriculumColumns} from "@/components/instructorcomponent/materials/curriculum/columns";
-import {SlideTable} from "@/components/instructorcomponent/materials/slide/data-table";
-import {VideoTable} from "@/components/instructorcomponent/materials/video/data-table";
-import {videoColumns} from "@/components/instructorcomponent/materials/video/columns";
-import {slideColumns} from "@/components/instructorcomponent/materials/slide/columns";
+import { CurriculumTable } from "@/components/instructorComponent/materials/curriculum/data-table";
+import { curriculumColumns } from "@/components/instructorComponent/materials/curriculum/columns";
+import { SlideTable } from "@/components/instructorComponent/materials/slide/data-table";
+import { slideColumns } from "@/components/instructorComponent/materials/slide/columns";
+import { VideoTable } from "@/components/instructorComponent/materials/video/data-table";
+import { videoColumns } from "@/components/instructorComponent/materials/video/columns";
+
 
 export default async function Materials() {
   const curData : CurriculumType[] = curriculum;

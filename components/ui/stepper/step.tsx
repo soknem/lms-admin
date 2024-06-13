@@ -4,12 +4,12 @@ import type { StepProps } from "./types";
 import { useStepper } from "./use-stepper";
 import { VerticalStep } from "./vertical-step";
 
-// Props which shouldn't be passed to to the Step component from the user
+// Props which shouldn't be passed to the Step component from the user
 interface StepInternalConfig {
-	index: number;
-	isCompletedStep?: boolean;
-	isCurrentStep?: boolean;
-	isLastStep?: boolean;
+  index: number;
+  isCompletedStep?: boolean;
+  isCurrentStep?: boolean;
+  isLastStep?: boolean;
 }
 
 interface FullStepProps extends StepProps, StepInternalConfig {}
@@ -33,44 +33,45 @@ const Step = React.forwardRef<HTMLLIElement, StepProps>(
 			onClickStep,
 		} = props as FullStepProps;
 
-		const { isVertical, isError, isLoading, clickable } = useStepper();
+  const { isVertical, isError, isLoading, clickable } = useStepper();
 
-		const hasVisited = isCurrentStep || isCompletedStep;
+  const hasVisited = isCurrentStep || isCompletedStep;
 
-		const sharedProps = {
-			isLastStep,
-			isCompletedStep,
-			isCurrentStep,
-			index,
-			isError,
-			isLoading,
-			clickable,
-			label,
-			description,
-			hasVisited,
-			icon,
-			isKeepError,
-			checkIcon,
-			state,
-			errorIcon,
-			onClickStep,
-		};
+  const sharedProps = {
+    isLastStep,
+    isCompletedStep,
+    isCurrentStep,
+    index,
+    isError,
+    isLoading,
+    clickable,
+    label,
+    description,
+    hasVisited,
+    icon,
+    isKeepError,
+    checkIcon,
+    state,
+    errorIcon,
+    onClickStep,
+  };
 
-		const renderStep = () => {
-			switch (isVertical) {
-				case true:
-					return (
-						<VerticalStep ref={ref} {...sharedProps}>
-							{children}
-						</VerticalStep>
-					);
-				default:
-					return <HorizontalStep ref={ref} {...sharedProps} />;
-			}
-		};
+  const renderStep = () => {
+    switch (isVertical) {
+      case true:
+        return (
+          <VerticalStep ref={ref} {...sharedProps}>
+            {children}
+          </VerticalStep>
+        );
+      default:
+        return <HorizontalStep ref={ref} {...sharedProps} />;
+    }
+  };
 
-		return renderStep();
-	},
-);
+  return renderStep();
+});
+
+Step.displayName = "Step";
 
 export { Step };

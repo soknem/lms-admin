@@ -23,8 +23,6 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { TeachingType } from "@/lib/types/instructor/teachingtype";
 
-
-
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
@@ -63,6 +61,7 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           DATE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -77,6 +76,7 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           SESSION
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -92,6 +92,7 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           SCHEDULE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -105,9 +106,10 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           //to  customize the size of each column
-          className="w-[130px] flex justify-start items-start"
+          className="w-[160px] flex justify-start items-start"
         >
           TEACHING TYPE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -129,9 +131,4 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
     },
     cell: TableCell,
   },
- 
-
- 
-
-  
 ];
