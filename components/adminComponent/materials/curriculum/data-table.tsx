@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { TbFilter } from "react-icons/tb";
 //import from shad cn
 import {
   ColumnDef,
@@ -36,7 +35,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CommandInput } from "@/components/ui/command";
 // @ts-ignore
 import { CreateMaterialForm } from "../addMaterialForm";
 

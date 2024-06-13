@@ -1,7 +1,3 @@
-// @ts-ignore
-import StudyDetailtTable from "@/components/adminComponent/faculties/studygrogram/studyprogram-detail/studydetail";
-// @ts-ignore
-import { EditUserStuForm } from "@/components/adminComponent/users/students/EditUserStu";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -9,14 +5,9 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaCamera } from "react-icons/fa6";
-import { IoCameraOutline } from "react-icons/io5";
-import { PiCertificateFill } from "react-icons/pi";
+// @ts-ignore
 import {EditUserStaffForm} from "@/components/adminComponent/users/staff/EditUserStaffForm";
 
 

@@ -1,26 +1,5 @@
 import React from "react";
-
-//import component
-
-//import type
 import {studentAttendanceType} from "@/lib/types/admin/studentAttendance";
-import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
-// @ts-ignore
-import { LectureDataTable } from "@/components/admincomponent/academics/lectures/LectureDataTable";
-// @ts-ignore
-import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {InstructorEndedLectureDatatable} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureDatatable";
-
-import {
-    InstructorCurrentLectureDataTable
-} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
-import {
-    InstructorCurrentLectureColumns
-} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureColumns";
-import {
-    InstructorEndedLectureColumns
-} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureColumns";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -30,20 +9,13 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-
+import Attendences from "@/app/instructor/(instructor-dashboard)/courses/coursedetail/lectures/data/Attendances.json"
 import {
     StudentAttendanceDataTable
-}
-// @ts-ignore
-
-from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceDataTable";
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceDataTable";
 import {
     StudentAttendanceColumns
-}
-// @ts-ignore
-
-from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceColumns";
-import Attendences from "@/app/instructor/(instructor-dashboard)/courses/coursedetail/lectures/data/Attendances.json"
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns";
 
 export default function StudentAttendance() {
     const data : studentAttendanceType[] = Attendences

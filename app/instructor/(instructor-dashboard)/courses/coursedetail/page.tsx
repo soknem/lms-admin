@@ -1,8 +1,3 @@
-// import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
-// import { BreadcrumbWithCustomSeparator } from "@/components/studentComponent/coursedetail/BreadcrumbComponent";
-// import CourseDetailHeader from "@/components/studentComponent/coursedetail/CourseDetailHeader";
-// @ts-ignore
-import TabReportComponent from "@/components/instructorcomponent/reports/timesheet/TabReportComponent";
 // @ts-ignore
 import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
 // @ts-ignore

@@ -72,27 +72,29 @@ Welcome to the official documentation for ISTAD LMS. This documentation provides
 
 1.  student courses : /student/courses
 2.  student achivement: /student/achivements
-3.  student profile setting: /student/settings (not started)
+3.  student profile setting: /student/settings
 
 ### Instructor Dashboard
 
 1.  instructor course : /instructor/courses
-2.  instructor schedule: /instructor/schedules (not started)
-3.  instructor material: /instructor/materials (not started)
-4.  instructor assessment: /instructor/assessments (not started)
+2.  instructor schedule: /instructor/schedules
+3.  instructor material: /instructor/materials
+4.  instructor assessment: /instructor/assessments
 5.  instructor report : /instructor/reports
+6.  instructor  profile setting : /instructor/settings
 
 ### Admin Dashboard
 
 1.  admin faculty : /admin/faculties
-2.  admin academic : /admin/academics
-3.  admin academic class: /admin/academics/classes
-4.  admin academic class detail: /admin/academics/classes/0
-5.  admin academic assessment: admin/academics/assessments
-6.  admin academic lecture: /admin/academics/lectures
-7.  admin material: /admin/materials
-8.  admin admission: /admin/admissions
-9.  admin admission detail: /admin/admissions/student-admission
-10. admin users : /admin/users (not complete yet)
-11. admin payment: /admin/payments
-12. admin report: /admin/reports
+2.  admin faculty setup studyprogram: /admin/faculties/setup-studyprogram
+3.  admin academic : /admin/academics
+4.  admin academic class: /admin/academics/classes
+5.  admin academic class detail: /admin/academics/classes/0
+6.  admin academic assessment: admin/academics/assessments
+7.  admin academic lecture: /admin/academics/lectures
+8.  admin material: /admin/materials
+9.  admin admission: /admin/admissions
+10. admin admission detail: /admin/admissions/student-admission
+11. admin users : /admin/users
+12. admin payment: /admin/payments
+13. admin report: /admin/reports

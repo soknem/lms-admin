@@ -3,9 +3,6 @@ import { EditInsProForm } from "@/components/instructorcomponent/setting/EditIns
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { PiCertificateFill } from "react-icons/pi";
-// @ts-ignore
-import {EditInsProForm} from "@/components/instructorcomponent/setting/EditInsPro";
-
 export default function Setting() {
   return (
     <main className="flex flex-col h-full w-full gap-9 p-9">

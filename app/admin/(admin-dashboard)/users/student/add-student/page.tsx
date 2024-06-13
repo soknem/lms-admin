@@ -1,5 +1,3 @@
-// @ts-ignore
-import { AddUserStudentForm } from "@/components/admincomponent/users/students/addStudentForm";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,6 +7,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
+import {AddUserStudentForm} from "@/components/admincomponent/users/students/addStudentForm";
 
 export default function Users() {
   return (
@@ -27,7 +26,7 @@ export default function Users() {
         </BreadcrumbList>
       </Breadcrumb>
       <section className="flex w-full justify-center items-center">
-        <AddUserStudentForm />
+        <AddUserStudentForm/>
       </section>
     </main>
   );

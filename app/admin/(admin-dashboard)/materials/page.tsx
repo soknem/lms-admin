@@ -15,7 +15,7 @@ import { VideoTable } from "@/components/adminComponent/materials/video/data-tab
 // @ts-ignore
 import { SlideTable } from "@/components/adminComponent/materials/slide/data-table";
 import {CurriculumType} from "@/lib/types/admin/materials";
-import {CurriculumTable} from "@/components/instructorcomponent/materials/curriculum/data-table";
+import {CurriculumTable} from "@/components/admincomponent/materials/curriculum/data-table";
 
 export default async function Materials() {
   const curData : CurriculumType[] = curriculum;
