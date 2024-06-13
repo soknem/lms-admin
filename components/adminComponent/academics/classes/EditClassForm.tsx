@@ -39,6 +39,20 @@ import { Check, ChevronsUpDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+const students = [
+    {
+        value: "Noun Sovannthorn",
+        label: "Noun Sovannthorn",
+    },
+    {
+        value: "Pov Soknem",
+        label: "Pov Soknem",
+    },
+    {
+        value: "Sanh Panha",
+        label: "Sanh Panha",
+    },
+]
 
 const instructors = [
     {
@@ -56,32 +70,7 @@ const instructors = [
 
 ]
 
-const courses = [
-    {
-        value: "Intro",
-        label: "Introduction to IT",
-    },
-    {
-        value: "Intensive English",
-        label: "Intensive English I",
-    },
-
-
-]
-
-const classes = [
-    {
-        value: "m1",
-        label: "FY2025-M1",
-    },
-    {
-        value: "a1",
-        label: "FY2025-A1",
-    },
-
-]
-
-export default function CreateLectureForm() {
+export default function EditClassForm() {
 
     // dropdown
     const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
@@ -95,29 +84,24 @@ export default function CreateLectureForm() {
     const [openIns, setOpenIns] = React.useState(false)
     const [valueIns, setValueIns] = React.useState("")
 
-    const [openCls, setOpenCls] = React.useState(false)
-    const [valueCls, setValueCls] = React.useState("")
-
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const formik = useFormik({
         initialValues: {
-            startTime: "",
-            endTime: "",
-            instructor: "",
-            teachingType: "",
-            date: "",
-            course: "",
-            class: "FY2025-M1",
-            status:""
+            className: "",
+            studyProgramAlias: "",
+            shiftAlias: "",
+            generationAlias: "",
+            academicYear: "",
+            visibility:""
         },
         validationSchema: Yup.object({
-            startTime: Yup.string()
+            className: Yup.string()
                 .required("Required"),
-            endTime: Yup.string()
+            studyProgramAlias: Yup.string()
                 .required("Required"),
-            teachingType: Yup.string()
+            shiftAlias: Yup.string()
                 .required("Required"),
-            date: Yup.string()
+            generationAlias: Yup.string()
                 .required("Required"),
         }),
         onSubmit: values => {
@@ -140,40 +124,143 @@ export default function CreateLectureForm() {
                     onSubmit={formik.handleSubmit}
                 >
                     <div>
-                        <RequiredFieldLabelComponent labelText="Start Time"
+                        <RequiredFieldLabelComponent labelText="Class Code"
                                                      labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
                         <input
                             type="text"
                             name="className"
                             onChange={formik.handleChange}
-                            value={formik.values.startTime}
+                            value={formik.values.className}
                             className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-                            placeholder="8:30AM"
+                            placeholder="FY2025 - M1"
 
                         />
                         {
-                            formik.errors.startTime ? <p className="text-red-700">{formik.errors.startTime}</p> : null
+                            formik.errors.className ? <p className="text-red-700">{formik.errors.className}</p> : null
                         }
                     </div>
                     <div>
-                        <RequiredFieldLabelComponent labelText="End Time"
+                        <RequiredFieldLabelComponent labelText="Study Program"
                                                      labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <input
-                            type="text"
-                            name="className"
-                            onChange={formik.handleChange}
-                            value={formik.values.endTime}
-                            className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-                            placeholder="10:00AM"
-
-                        />
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="w-full border bg-gray-50 flex justify-between items-center">
+                                    Software Engineering
+                                    <IoIosArrowDown size={18}/>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-white w-[450px]">
+                                <DropdownMenuCheckboxItem
+                                    checked={showStatusBar}
+                                    onCheckedChange={setShowStatusBar}
+                                >
+                                    Computer Science
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem
+                                    checked={showPanel}
+                                    onCheckedChange={setShowPanel}
+                                >
+                                    Data Analytic
+                                </DropdownMenuCheckboxItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         {
-                            formik.errors.endTime ? <p className="text-red-700">{formik.errors.endTime}</p> : null
+                            formik.errors.studyProgramAlias ?
+                                <p className="text-red-700">{formik.errors.studyProgramAlias}</p> : null
                         }
                     </div>
-
                     <div>
-                        <RequiredFieldLabelComponent labelText="Course"
+                        <RequiredFieldLabelComponent labelText="Generation"
+                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="w-full border bg-gray-50 flex justify-between items-center">
+                                    Generation 1
+                                    <IoIosArrowDown size={18}/>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-white w-[450px]">
+                                <DropdownMenuCheckboxItem
+                                    checked={showStatusBar}
+                                    onCheckedChange={setShowStatusBar}
+                                >
+                                    Generation 2
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem
+                                    checked={showPanel}
+                                    onCheckedChange={setShowPanel}
+                                >
+                                    Generation 3
+                                </DropdownMenuCheckboxItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        {
+                            formik.errors.generationAlias ?
+                                <p className="text-red-700">{formik.errors.generationAlias}</p> : null
+                        }
+                    </div>
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Shift"
+                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="w-full border bg-gray-50 flex justify-between items-center">
+                                    Morning
+                                    <IoIosArrowDown size={18}/>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-white w-[450px]">
+                                <DropdownMenuCheckboxItem
+                                    checked={showStatusBar}
+                                    onCheckedChange={setShowStatusBar}
+                                >
+                                    Afternoon
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem
+                                    checked={showPanel}
+                                    onCheckedChange={setShowPanel}
+                                >
+                                    Evening
+                                </DropdownMenuCheckboxItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        {
+                            formik.errors.shiftAlias ?
+                                <p className="text-red-700">{formik.errors.shiftAlias}</p> : null
+                        }
+                    </div>
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Academic Year"
+                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="w-full border bg-gray-50 flex justify-between items-center">
+                                    2025 - 2026
+                                    <IoIosArrowDown size={18}/>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-white w-[450px]">
+                                <DropdownMenuCheckboxItem
+                                    checked={showStatusBar}
+                                    onCheckedChange={setShowStatusBar}
+                                >
+                                    2027 - 2028
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem
+                                    checked={showPanel}
+                                    onCheckedChange={setShowPanel}
+                                >
+                                    2028 - 2029
+                                </DropdownMenuCheckboxItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        {
+                            formik.errors.academicYear ?
+                                <p className="text-red-700">{formik.errors.academicYear}</p> : null
+                        }
+                    </div>
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Students"
                                                      labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
                         <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
@@ -184,18 +271,69 @@ export default function CreateLectureForm() {
                                     className="w-full bg-white justify-between"
                                 >
                                     {value
-                                        ? courses.find((ins) => ins.value === value)?.label
-                                        : "Select Course..."}
+                                        ? students.find((stu) => stu.value === value)?.label
+                                        : "Select Student..."}
                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-[450px] bg-white p-0">
                                 <Command>
-                                    <CommandInput placeholder="Search Course..."/>
+                                    <CommandInput placeholder="Search Student..."/>
                                     <CommandList>
-                                        <CommandEmpty>No course found.</CommandEmpty>
+                                        <CommandEmpty>No student found.</CommandEmpty>
                                         <CommandGroup>
-                                            {courses.map((ins) => (
+                                            {students.map((stu) => (
+                                                <CommandItem
+                                                    key={stu.value}
+                                                    value={stu.value}
+                                                    onSelect={(currentValue) => {
+                                                        setValue(currentValue === value ? "" : currentValue)
+                                                        setOpen(false)
+                                                    }}
+                                                >
+                                                    <Check
+                                                        className={cn(
+                                                            "mr-2 h-4 w-4",
+                                                            value === stu.value ? "opacity-100" : "opacity-0"
+                                                        )}
+                                                    />
+                                                    {stu.label}
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
+                        {
+                            formik.errors.academicYear ?
+                                <p className="text-red-700">{formik.errors.academicYear}</p> : null
+                        }
+                    </div>
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Instructors"
+                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                        <Popover open={openIns} onOpenChange={setOpenIns}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className="w-full bg-white justify-between"
+                                >
+                                    {value
+                                        ? instructors.find((ins) => ins.value === value)?.label
+                                        : "Select Instructor..."}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[450px] bg-white p-0">
+                                <Command>
+                                    <CommandInput placeholder="Search Instructor..."/>
+                                    <CommandList>
+                                        <CommandEmpty>No student found.</CommandEmpty>
+                                        <CommandGroup>
+                                            {instructors.map((ins) => (
                                                 <CommandItem
                                                     key={ins.value}
                                                     value={ins.value}
@@ -219,142 +357,34 @@ export default function CreateLectureForm() {
                             </PopoverContent>
                         </Popover>
                         {
-                            formik.errors.instructor ?
-                                <p className="text-red-700">{formik.errors.instructor}</p> : null
-                        }
-                    </div>
-
-
-                    <div>
-                        <RequiredFieldLabelComponent labelText="Instructors"
-                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <Popover open={openIns} onOpenChange={setOpenIns}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="w-full bg-white justify-between"
-                                >
-                                    {value
-                                        ? instructors.find((ins) => ins.value === value)?.label
-                                        : "Select Instructor..."}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[450px] bg-white p-0">
-                                <Command>
-                                    <CommandInput placeholder="Search Instructor..."/>
-                                    <CommandList>
-                                        <CommandEmpty>No instructor found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {instructors.map((ins) => (
-                                                <CommandItem
-                                                    key={ins.value}
-                                                    value={ins.value}
-                                                    onSelect={(currentValue) => {
-                                                        setValueIns(currentValue === value ? "" : currentValue)
-                                                        setOpenIns(false)
-                                                    }}
-                                                >
-                                                    <Check
-                                                        className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            value === ins.value ? "opacity-100" : "opacity-0"
-                                                        )}
-                                                    />
-                                                    {ins.label}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        {
-                            formik.errors.instructor ?
-                                <p className="text-red-700">{formik.errors.instructor}</p> : null
+                            formik.errors.academicYear ?
+                                <p className="text-red-700">{formik.errors.academicYear}</p> : null
                         }
                     </div>
                     <div>
-                        <RequiredFieldLabelComponent labelText="Class"
-                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <Popover open={openCls} onOpenChange={setOpenCls}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="w-full bg-white justify-between"
-                                >
-                                    {value
-                                        ? classes.find((ins) => ins.value === value)?.label
-                                        : "Select Class..."}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[450px] bg-white p-0">
-                                <Command>
-                                    <CommandInput placeholder="Search Class..."/>
-                                    <CommandList>
-                                        <CommandEmpty>No course found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {classes.map((ins) => (
-                                                <CommandItem
-                                                    key={ins.value}
-                                                    value={ins.value}
-                                                    onSelect={(currentValue) => {
-                                                        setValueCls(currentValue === value ? "" : currentValue)
-                                                        setOpenCls(false)
-                                                    }}
-                                                >
-                                                    <Check
-                                                        className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            value === ins.value ? "opacity-100" : "opacity-0"
-                                                        )}
-                                                    />
-                                                    {ins.label}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        {
-                            formik.errors.class ?
-                                <p className="text-red-700">{formik.errors.class}</p> : null
-                        }
-                    </div>
-                    <div>
-                        <RequiredFieldLabelComponent labelText="Status"
+                        <RequiredFieldLabelComponent labelText="Visibility"
                                                      labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
 
                         <RadioGroup defaultValue="default" className="flex gap-2">
                             <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="default" id="r1"/>
-                                <Label htmlFor="r1">Started</Label>
+                                <Label htmlFor="r1">Public</Label>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="comfortable" id="r2"/>
-                                <Label htmlFor="r2">Pending</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="ended" id="r3"/>
-                                <Label htmlFor="r3">Ended</Label>
+                                <Label htmlFor="r2">Draft</Label>
                             </div>
 
                         </RadioGroup>
 
                         {
-                            formik.errors.status ? <p className="text-red-700">{formik.errors.status}</p> : null
+                            formik.errors.visibility ? <p className="text-red-700">{formik.errors.visibility}</p> : null
                         }
                     </div>
 
                     <div className="flex justify-end">
                         <Button type="submit"
-                                className=" text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
+                                className=" text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]">Update</Button>
                     </div>
 
                 </form>

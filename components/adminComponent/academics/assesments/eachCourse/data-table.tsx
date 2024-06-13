@@ -202,7 +202,7 @@ export function CourseAssesmentDataTable<TData, TValue>({
         {/* filter Class */}
         <Popover open={openClass} onOpenChange={setOpenClass}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedClass ? <>{selectedClass}</> : <> Filter by Class</>}
             </Button>
@@ -240,7 +240,7 @@ export function CourseAssesmentDataTable<TData, TValue>({
         {/* filter study course */}
         <Popover open={openCourse} onOpenChange={setOpenCourse}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedCourse ? <>{selectedCourse}</> : <> Filter by course</>}
             </Button>
@@ -281,7 +281,7 @@ export function CourseAssesmentDataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -315,37 +315,37 @@ export function CourseAssesmentDataTable<TData, TValue>({
         <div className='flex justify-between p-4'>
           <div>
             <Label className='text-lms-gray-30'>Generation</Label>
-            <p className='flex font-medium text-black'>Generation 1</p>
+            <p className='flex font-medium text-lms-black-90'>Generation 1</p>
           </div>
 
           <div>
             <Label className='text-lms-gray-30'>Year</Label>
-            <p className='flex font-medium text-black'>Foundation Year</p>
+            <p className='flex font-medium text-lms-black-90'>Foundation Year</p>
           </div>
 
           <div>
             <Label className='text-lms-gray-30'>Academic Year</Label>
-            <p className='flex font-medium text-black'>2024-2025</p>
+            <p className='flex font-medium text-lms-black-90'>2024-2025</p>
           </div>
 
           <div>
             <Label className='text-lms-gray-30'>Degree</Label>
-            <p className='flex font-medium text-black'>Bachelor</p>
+            <p className='flex font-medium text-lms-black-90'>Bachelor</p>
           </div>
 
           <div>
             <Label className='text-lms-gray-30'>Study Program</Label>
-            <p className='flex font-medium text-black'>Software Engineer</p>
+            <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
           </div>
 
           <div>
             <Label className='text-lms-gray-30'>Class</Label>
-            <p className='flex font-medium text-black'>FY2025 - A3</p>
+            <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>
           </div>
 
           <div>
             <Label className='text-lms-gray-30'>Course</Label>
-            <p className='flex font-medium text-black'>Introduction To IT</p>
+            <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>
           </div>
 
           

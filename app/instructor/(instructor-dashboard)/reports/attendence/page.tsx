@@ -8,9 +8,9 @@ import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lect
 import { AttentType } from "@/lib/types/instructor/report";
 import attendence from "@/app/instructor/(instructor-dashboard)/reports/attendence/data/attentdent.json";
 // @ts-ignore
-import { attentdentColumns } from "@/components/instructorComponent/reports/attendence/AttentdentColumns";
+import { AttentdentData } from "@/components/instructorcomponent/reports/attendence/AttentdentData";
 // @ts-ignore
-import { AttentdentData } from "@/components/instructorComponent/reports/attendence/AttentdentData";
+import { attentdentColumns } from "@/components/instructorcomponent/reports/attendence/AttentdentColumns";
 
 
 export default function Attentdence() {

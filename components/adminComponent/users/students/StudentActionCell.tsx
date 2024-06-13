@@ -13,6 +13,12 @@ import { EditFacForm } from "./EditFacForm";
 // @ts-ignore
 import { ViewFacForm } from "./ViewFacForm";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
+=======
+// @ts-ignore
+import { EditUserStuForm } from "./EditUserStu";
+
+>>>>>>> 8ed6760684dea815ad0b47cd027c6d131deabf9e
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const student = row.original;

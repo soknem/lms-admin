@@ -248,12 +248,11 @@ export const columns: ColumnDef<ClassType>[] = [
           <DropdownMenuContent align="end" className="bg-white">
             {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
             {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-            <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
-              <TbFileIsr size={20} className="text-gray-30 mr-2" />
-              View
+            <DropdownMenuItem className="text-lms-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+
             </DropdownMenuItem>
             <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
-              <TbPencil size={20} className="text-gray-30 mr-2" /> Edit
+              <TbPencil size={20} className="text-lms-gray-30 mr-2"  /> Edit
             </DropdownMenuItem>
             <DropdownMenuItem className="text-red-600 focus:text-red-600 font-medium focus:bg-background">
               <TbArchive size={20} className="text-red-600 mr-2 " />

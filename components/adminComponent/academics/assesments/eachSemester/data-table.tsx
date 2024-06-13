@@ -188,7 +188,7 @@ export function SemesterDataTable<TData, TValue>({
   return (
     <>
 
-      <div className='flex items-center justify-between gap-4 my-4'>
+      <div className='flex items-center justify-between gap-4 my-4 '>
 
         {/* search */}
         <div className="flex items-center w-full relative">
@@ -214,7 +214,7 @@ export function SemesterDataTable<TData, TValue>({
         {/* filter study program */}
         <Popover open={openProgram} onOpenChange={setOpenProgram}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedProgram ? <>{selectedProgram}</> : <> Filter by Study Program</>}
             </Button>
@@ -252,7 +252,7 @@ export function SemesterDataTable<TData, TValue>({
         {/* filter study year */}
         <Popover open={openYear} onOpenChange={setOpenYear}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedYear ? <>{selectedYear}</> : <> Filter by Year</>}
             </Button>
@@ -290,7 +290,7 @@ export function SemesterDataTable<TData, TValue>({
         {/* filter semester */}
         <Popover open={openSemester} onOpenChange={setOpenSemester}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className=" justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60">
+            <Button variant="outline" className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60 ">
               <TbFilter className='mr-2 h-4 w-4' />
               {selectedSemester ? <>{selectedSemester}</> : <> Filter by Semester</>}
             </Button>
@@ -329,7 +329,7 @@ export function SemesterDataTable<TData, TValue>({
         {/* Column visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-gray-30'>
+            <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
               View
             </Button>
@@ -362,28 +362,28 @@ export function SemesterDataTable<TData, TValue>({
         {/* class detail information */}
         <div className='flex justify-between p-4'>
           <div>
-            <Label className='text-gray-30'>program</Label>
-            <p className='flex font-medium text-black'>program 1</p>
+            <Label className='text-lms-gray-30'>Generation</Label>
+            <p className='flex font-medium '>Generation 1</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Year</Label>
-            <p className='flex font-medium text-black'>Foundation Year</p>
+            <Label className='text-lms-gray-30'>Year</Label>
+            <p className='flex font-medium '>Foundation Year</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Academic Year</Label>
-            <p className='flex font-medium text-black'>2024-2025</p>
+            <Label className='text-lms-gray-30'>Academic Year</Label>
+            <p className='flex font-medium text-lms-black-90'>2024-2025</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Degree</Label>
-            <p className='flex font-medium text-black'>Bachelor</p>
+            <Label className='text-lms-gray-30'>Degree</Label>
+            <p className='flex font-medium text-lms-black-90'>Bachelor</p>
           </div>
 
           <div>
-            <Label className='text-gray-30'>Study Program</Label>
-            <p className='flex font-medium text-black'>Software Engineer</p>
+            <Label className='text-lms-gray-30'>Study Program</Label>
+            <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
           </div>
 
           
@@ -391,7 +391,7 @@ export function SemesterDataTable<TData, TValue>({
 
         <Table>
 
-          <TableHeader className='text-gray-30'>
+          <TableHeader className='text-lms-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {

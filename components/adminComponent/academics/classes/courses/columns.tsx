@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/common/StatusBadge";
+import {DatePicker} from "@/components/ui/DatePicker";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -58,27 +59,20 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     if (accessorKey === 'startDate' || accessorKey === 'endDate') {
         const dateValue = new Date(value);
         const formattedDate = format(dateValue, 'dd/mm/yyyy');
-        
 
         if (tableMeta?.editedRows[row.id]) {
             return (
-                //custom year selector only
-                <select
-                    className="border-1 border-gray-30 rounded-md focus:to-primary"
-                    value={new Date(value).getDate()}
-                    onChange={(e) => {
-                        const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
+                // Custom date picker for startDate and endDate
+                <DatePicker
+                    date={value}
+                    setDate={(newValue) => {
                         setValue(newValue);
                         tableMeta?.updateData(row.index, column.id, newValue);
                     }}
-                >
-                
-                </select>
+                />
             );
         } else {
-
-            return <div >{formattedDate}</div>;
-
+            return <div>{formattedDate}</div>;
         }
     }
 
@@ -153,7 +147,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
             //custom on only normal dropdown 
             <select
-                className="border-1 border-gray-30 rounded-md focus:to-primary"
+                className=" rounded-md focus:to-primary"
                 onChange={onSelectChange}
                 value={initialValue}
             >
@@ -171,7 +165,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
             //custom on normal input text
             <Input
-                className="w-full p-2 rounded-md"
+                className="w-full p-2 border-1 rounded-md bg-gray-100 "
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}

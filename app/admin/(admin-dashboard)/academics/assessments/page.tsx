@@ -23,6 +23,12 @@ import { TranscriptColumns } from "@/components/admincomponent/academics/assesme
 import { CourseAssesmentDataTable } from "@/components/admincomponent/academics/assesments/eachCourse/data-table";
 // @ts-ignore
 import { CourseAssessmentColumns } from "@/components/admincomponent/academics/assesments/eachCourse/columns";
+import {SemesterDataTable} from "@/components/adminComponent/academics/assesments/eachSemester/data-table";
+import {
+  eachSemesterColumn,
+} from "@/components/adminComponent/academics/assesments/eachSemester/columns";
+// @ts-ignore
+import { useTable } from '@tanstack/react-table';
 
 export default function Assessment() {
 
@@ -30,11 +36,10 @@ export default function Assessment() {
 
   const semesterData : semesterAssessementType[] = semesterAssessments;
 
-  // const semesterColumns = SemesterColumns(semesterData);
-
   const courseData : courseAssessmentType[] = courseAssesment;
 
 
+  // @ts-ignore
   return (
     <main className="flex flex-col gap-4 h-full w-full p-9">
       <h2 className="text-3xl text-lms-primary font-bold">Assesments</h2>
@@ -50,8 +55,8 @@ export default function Assessment() {
           <TranscriptDataTable columns={TranscriptColumns} data={transcriptData} />
         </TabsContent>
 
-        <TabsContent value="semester" className="bg-white p-6 space-y-4 rounded-lg">
-          {/* <SemesterDataTable columns={semesterColumns} data={semesterData} /> */}
+        <TabsContent value="semester" >
+           <SemesterDataTable columns={eachSemesterColumn} data={semesterData} />
         </TabsContent>
 
         <TabsContent value="course" >

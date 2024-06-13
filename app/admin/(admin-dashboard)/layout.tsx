@@ -45,7 +45,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
             {showAcademicSidebar && <AcademicSidebar />}
           </aside>
 
-          <section className="flex-grow overflow-auto">{children}</section>
+          <section className="flex-grow overflow-auto text-lms-black-90  ">{children}</section>
         </section>
       </body>
     </html>

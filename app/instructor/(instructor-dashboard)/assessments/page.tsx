@@ -9,6 +9,7 @@ import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments
 import { InstructorCourseAssessmentColumns } from "@/components/instructorComponent/assessments/columns";
 // @ts-ignore
 import { InstructorCourseAssesmentDataTable } from "@/components/instructorComponent/assessments/data-table";
+// @ts-ignore
 
 export default function Academics() {
   const courseData : courseAssessmentType[] = courseAssesment;
