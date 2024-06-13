@@ -32,7 +32,7 @@ const config = {
           error: "#F73030",
           black90: "#000000",
           grayBorder: "#E6E6E6",
-          "black-90": "#000000",
+          "black-90": "#403F3F",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -67,7 +67,7 @@ const validationSchema = Yup.object().shape({
     status: Yup.string().required("A selection is required"),
 });
 
-const handleSubmit = async (value: UserStudentType) => {
+const handleSubmit = async (value: UserStaffType) => {
     // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
     //   method: "POST",
     //   headers: {

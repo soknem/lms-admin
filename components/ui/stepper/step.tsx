@@ -14,6 +14,7 @@ interface StepInternalConfig {
 
 interface FullStepProps extends StepProps, StepInternalConfig {}
 
+// eslint-disable-next-line react/display-name
 const Step = React.forwardRef<HTMLLIElement, StepProps>(
 	(props, ref: React.Ref<any>) => {
 		const {

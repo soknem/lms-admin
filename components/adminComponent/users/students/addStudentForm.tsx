@@ -23,6 +23,7 @@ import {
 import {IoIosArrowDown} from "react-icons/io";
 import {MdAddToPhotos} from "react-icons/md";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+// @ts-ignore
 import StepperDemo from "./addStuAdm";
 import {UserStudentType} from "@/lib/types/admin/user";
 
