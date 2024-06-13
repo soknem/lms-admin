@@ -1,0 +1,82 @@
+[
+  {
+    "nameEn": "John Doe",
+    "nameKh": "ជុន ដូ",
+    "gender": "Male",
+    "alias": "Johnny",
+    "status": 1,
+    "cardId": "ISTAD001"
+  },
+  {
+    "nameEn": "Jane Smith",
+    "nameKh": "ជេន ស្មីត",
+    "gender": "Female",
+    "alias": "Janie",
+    "status": 2,
+    "cardId": "ISTAD002"
+  },
+  {
+    "nameEn": "Sam Oun",
+    "nameKh": "សំ អូន",
+    "gender": "Male",
+    "alias": "Sammy",
+    "status": 3,
+    "cardId": "ISTAD003"
+  },
+  {
+    "nameEn": "Sokha Chann",
+    "nameKh": "សុខា ចាន់",
+    "gender": "Female",
+    "alias": "Sok",
+    "status": 1,
+    "cardId": "ISTAD004"
+  },
+  {
+    "nameEn": "Piseth Sok",
+    "nameKh": "ពិសិដ្ឋ សុក",
+    "gender": "Male",
+    "alias": "Pete",
+    "status": 2,
+    "cardId": "ISTAD005"
+  },
+  {
+    "nameEn": "Nita Sok",
+    "nameKh": "នីតា សុក",
+    "gender": "Female",
+    "alias": "Niti",
+    "status": 3,
+    "cardId": "ISTAD006"
+  },
+  {
+    "nameEn": "Ratanak Chhim",
+    "nameKh": "រតនៈ ឈឹម",
+    "gender": "Male",
+    "alias": "Ratana",
+    "status": 1,
+    "cardId": "ISTAD007"
+  },
+  {
+    "nameEn": "Sothy Sen",
+    "nameKh": "សុទ្ធី សែន",
+    "gender": "Female",
+    "alias": "Soth",
+    "status": 2,
+    "cardId": "ISTAD008"
+  },
+  {
+    "nameEn": "Dara Pich",
+    "nameKh": "ដារ៉ា ពេជ្រ",
+    "gender": "Male",
+    "alias": "Dara",
+    "status": 3,
+    "cardId": "ISTAD009"
+  },
+  {
+    "nameEn": "Kanha Phan",
+    "nameKh": "កញ្ញា ផាន់",
+    "gender": "Female",
+    "alias": "Kanny",
+    "status": 1,
+    "cardId": "ISTAD010"
+  }
+]

@@ -41,6 +41,12 @@ const ActionsCell = ({ row }: any) => {
           {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
           <DropdownMenuItem
             className="focus:bg-background"
+            onClick={() => router.push("/admin/faculties/studyprogram-detail")}
+          >
+            View
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="focus:bg-background"
             onClick={handleEditClick}
           >
             Edit

@@ -9,16 +9,19 @@ import { LectureColumns } from "@/components/admincomponent/academics/lectures/L
 import TabComponent from "@/components/admincomponent/reports/TabComponent";
 
 export default async function Report() {
-  const payData = await getPayment();
   const data: LectureType[] = lectures;
   return (
     <main className="p-9">
       <h2 className="text-4xl text-lms-primary font-bold">Reports</h2>
-      <div className="ml-[900px] ">
+      <div>
+        <div className="flex justify-end">
         <FilterAdmin columns={LectureColumns} data={data} />
       </div>
-
-      <TabComponent />
+      <div className="mb-4">
+        <TabComponent />
+      </div>
+      </div>
+      
     </main>
   );
 }

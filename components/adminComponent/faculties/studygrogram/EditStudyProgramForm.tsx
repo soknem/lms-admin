@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import style from "../../style.module.css";
-import { FiPlus } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -49,7 +48,7 @@ const validationSchema = Yup.object().shape({
       if (!value) {
         true;
       }
-      return value.size <= FILE_SIZE;
+      // return value.size <= FILE_SIZE;
     }),
   status: Yup.string(),
 });
@@ -121,38 +120,10 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 export function EditStudyProForm() {
   return (
     <Dialog open>
-      <DialogContent className="w-[480px] bg-white ">
+      <DialogContent className="w-[480px] h-[80%] overflow-y-auto bg-white ">
         <DialogHeader>
-          <DialogTitle>Add Study Program</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Edit Study Program</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -176,9 +147,9 @@ export function EditStudyProForm() {
         >
           {({ setFieldValue }) => (
             <Form className="py-4 rounded-lg w-full ">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col items-center justify-center gap-2">
                 <div
-                  className={`flex items-center justify-center relative ${style.imageContainer}`}
+                  className={` flex items-center justify-center relative ${style.imageContainer}`}
                 >
                   <img
                     src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQV_WWDdA49GHHDYEEbBNohG2RLibKg905IAPMJ_ERnSLfWd5j4"
@@ -192,18 +163,18 @@ export function EditStudyProForm() {
 
                 {/* study program title*/}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="title">
                     Title
                   </label>
                   <Field
                     type="text"
                     placeholder="Information Technology"
-                    name="name"
-                    id="name"
+                    name="title"
+                    id="title"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="title"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -211,18 +182,18 @@ export function EditStudyProForm() {
 
                 {/* study program fac */}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="faculty">
                     Faculty
                   </label>
                   <Field
                     type="text"
                     placeholder="Technology"
-                    name="name"
-                    id="name"
+                    name="faculty"
+                    id="faculty"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="faculty"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -230,18 +201,18 @@ export function EditStudyProForm() {
 
                 {/* study program degree */}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
+                  <label className={`${style.label}`} htmlFor="degree">
                     Degree
                   </label>
                   <Field
                     type="text"
                     placeholder="Bachelor"
-                    name="name"
-                    id="name"
+                    name="degree"
+                    id="degree"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="name"
+                    name="degree"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -249,73 +220,73 @@ export function EditStudyProForm() {
 
                 {/* study program Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
                     placeholder="This software engineering major prepares students for careers in software engineering by teaching the complete process and methods, including gathering business requirements, designing software architecture, developing software, testing, and managing projects. The curriculum focuses on essential skills like algorithm problem solving and system design. Through project-based learning, students gain industry-level experience early on by working in teams and using the latest tools and technologies. This hands-on approach develops skills in communication, problem-solving, and teamwork. Additionally, a one-year industry placement provides real-world experience. Graduates are ready for roles such as software developer, full-stack developer, DevOps engineer, software architect, and more, with opportunities in various sectors like healthcare, finance, technology, and government."
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Learning Outcome
                   </label>
                   <Field
                     type="text"
                     placeholder="Upon completion of this program, the students will be able toWork effectively in small groups on medium-scale computing projectsUnderstand the social and ethical implications of working as a professional in the field of computer science"
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Career Expectation
                   </label>
                   <Field
                     type="text"
                     placeholder="Digital InnovatorIT 
 Project ManagerData AnalystSoftware Developer (Web, Mobile, Java, API…)"
-                    name="faculty"
-                    id="faculty"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="description"
                     component="div"
                     className={`${style.error}`}
                   />
                 </div>
 
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="link">
                     Video Link{" "}
                   </label>
                   <Field
                     type="text"
                     placeholder="https://www.youtube.com/watch?v=7_7g5IHu0rs&list=PL_V2z3lwuCDf3_po8kU0tJBydjOIOzk6U&index=1&t=1s"
-                    name="faculty"
-                    id="faculty"
+                    name="link"
+                    id="link"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="faculty"
+                    name="link"
                     component="div"
                     className={`${style.error}`}
                   />

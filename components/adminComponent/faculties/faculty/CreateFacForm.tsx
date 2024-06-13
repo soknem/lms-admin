@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import style from "../../style.module.css";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiUploadCloud } from "react-icons/fi";
 import {
   Dialog,
   DialogContent,
@@ -39,27 +39,12 @@ const validationSchema = Yup.object().shape({
       }
       return SUPPORTED_FORMATS.includes(value.type);
     })
-    .test("fileSize", "File Size is too large", (value: any) => {
+    .test("fileSize", "Fsile Size is too large", (value: any) => {
       if (!value) {
         true;
       }
       return value.size <= FILE_SIZE;
     })
-    .required("Required"),
-  fileProduct: Yup.mixed()
-    .test("fileFormat", "Unsupported Format", (value: any) => {
-      if (!value) {
-        return true;
-      }
-      return SUPPORTED_FORMATS.includes(value.type);
-    })
-    .test("fileSize", "File Size is too large", (value: any) => {
-      if (!value) {
-        true;
-      }
-      return value.size <= FILE_SIZE;
-    })
-
     .required("Required"),
   status: Yup.string().required("A selection is required"),
 });
@@ -99,17 +84,44 @@ const CustomInput = ({ field, setFieldValue }: any) => {
   const handleUploadFile = (e: any) => {
     const file = e.target.files[0];
     const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
     setImagePreview(localUrl);
 
     setFieldValue(field.name, file);
   };
+
   return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
+    <div className="w-full">
+      <input
+        type="file"
+        onChange={handleUploadFile}
+        className="hidden "
+        id="file"
+      />
+      <label
+        htmlFor="file"
+        className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+      >
+        {!imagePreview ? (
+          <div className="flex  items-center justify-center gap-8">
+            <FiUploadCloud className="text-lms-primary text-[34px]" />
+            <div className="flex flex-col items-start justify-start gap-1">
+              <p className="text-center text-md text-black">
+                Select a file or drag and drop here
+              </p>
+              <p className="text-center text-md text-lms-gray-30">
+                JPG, PNG or PDF, file size no more than 10MB
+              </p>
+            </div>
+          </div>
+        ) : (
+          <Image
+            src={imagePreview}
+            alt="preview"
+            layout="fill"
+            objectFit="cover"
+          />
+        )}
+      </label>
     </div>
   );
 };
@@ -132,42 +144,14 @@ export function CreateFacForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white-80 bg-white border">
+        <Button className="bg-lms-primary text-white hover:bg-lms-primary">
           <FiPlus className="mr-2 h-4 w-4" /> Add Faculty
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
           <DialogTitle>Add Faculty</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -210,20 +194,15 @@ export function CreateFacForm() {
 
                 {/* Faculty Description */}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="faculty">
+                  <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field
                     type="text"
-                    placeholder="This is main faculty of our academic"
-                    name="faculty"
-                    id="faculty"
+                    placeholder="This is main description of our academic"
+                    name="description"
+                    id="description"
                     className={`${style.input}`}
-                  />
-                  <ErrorMessage
-                    name="faculty"
-                    component="div"
-                    className={`${style.error}`}
                   />
                 </div>
 
@@ -268,7 +247,7 @@ export function CreateFacForm() {
                   />
                 </div>
 
-                {/* Product Image*/}
+                {/* Faculty Image*/}
                 <div className="mb-4">
                   <label
                     htmlFor="logo"

@@ -1,9 +1,4 @@
 
-
-// type Props = {
-//     params: { code: string }
-//     searchParams: { [key: string]: string | string[] | undefined }
-// } 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Breadcrumb,
@@ -90,42 +85,42 @@ export default async function ClassDetail() {
               <div className='flex justify-between '>
                 <div>
                   <Label className='text-lms-gray-30'>Generation</Label>
-                  <p className='flex font-medium text-black'>Generation 1</p>
+                  <p className='flex font-medium text-lms-black-90'>Generation 1</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Year</Label>
-                  <p className='flex font-medium text-black'>Foundation Year</p>
+                  <p className='flex font-medium text-lms-black-90'>Foundation Year</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Academic Year</Label>
-                  <p className='flex font-medium text-black'>2024-2025</p>
+                  <p className='flex font-medium text-lms-black-90'>2024-2025</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Degree</Label>
-                  <p className='flex font-medium text-black'>Bachelor</p>
+                  <p className='flex font-medium text-lms-black-90'>Bachelor</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Study Program</Label>
-                  <p className='flex font-medium text-black'>Software Engineer</p>
+                  <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Enrolled Student</Label>
                   <div className='flex gap-2'>
-                    <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-                    <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-                    <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
+                    <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-lms-black-90 font-medium'>10</span></p>
+                    <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-lms-black-90 font-medium'>5</span></p>
+                    <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-lms-black-90 font-medium'>5</span></p>
                   </div>
 
 
                 </div>
               </div>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
+              <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+                <AccordionItem value="item-1"  >
                   <AccordionTrigger>SEMESTER I</AccordionTrigger>
                   <AccordionContent>
 

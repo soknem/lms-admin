@@ -5,6 +5,8 @@ export type CurriculumType = {
   description: string;
   type: string;
   status: number;
+  subject: string;
+  file: string;
 };
 
 // **** Slide *****
@@ -14,6 +16,8 @@ export type SlideType = {
   description: string;
   type: string;
   status: number;
+  subject: string;
+  file: string;
 };
 
 // **** Video *****
@@ -23,6 +27,8 @@ export type VideoType = {
   description: string;
   type: string;
   status: number;
+  subject: string;
+  file: string;
 };
 
 export type StatusOption = {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { TbFilter } from "react-icons/tb";
+import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 //import from shad cn
 import {
   ColumnDef,
@@ -141,50 +141,44 @@ export function PaymentTable<TData, TValue>({
   }, []);
 
   const [isFocused, setIsFocused] = useState(false);
-  const filterOptions = ["All", "Public", "Disable", "Draft"];
+  const filterOptions = ["All", "Paid", "Unpaid"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     const filterValue =
-      value === "All"
-        ? ""
-        : value === "Public"
-        ? "true"
-        : value === "Disable"
-        ? "false"
-        : "draft";
+        value === "All" ? "" : value === "Paid" ? "paid" : "unpaid";
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 
   return (
     <>
       <section className="w-full h-[192px] bg-white rounded flex items-center gap-9 p-6">
-        <div className="w-[330px] h-[136px] bg-[#ABC3FF] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Earnings this semester
           </p>
           <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#FFD338] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">To be paid</p>
           <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#18C964] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Earnings this semester
           </p>
           <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#ABC3FF] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Total students
           </p>
           <p className="text-4xl font-bold text-lms-primary">150 people</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#FFD338] rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[330px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Students to be paid:
           </p>
@@ -194,53 +188,51 @@ export function PaymentTable<TData, TValue>({
 
       {/* Search */}
       <div className="flex items-center justify-between gap-4 ">
-        <div className="flex items-center py-4 w-full">
-          <div className="flex items-center w-full relative">
-            <Input
-              placeholder="Search Payment"
+        <div className="flex items-center w-full relative">
+          <Input
+              placeholder="Search Curriculum"
               value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                  (table.getColumn("name_en")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
+                  table.getColumn("name_en")?.setFilterValue(event.target.value)
               }
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              className="border-[#E6E6E6] bg-white focus:pl-8 "
-            />
-            {isFocused && (
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
-              </div>
-            )}
+
+              className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
+          />
+
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FaSearch className="text-gray-400"/>
           </div>
+
         </div>
 
         {/* Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+                variant="outline"
+                className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
             >
+              <TbFilter className='mr-2 h-4 w-4'/>
               {selectedFilter}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            align="end"
-            className="border-[#E6E6E6] bg-white"
+              align="end"
+              className="border-[#E6E6E6] bg-white"
           >
             {filterOptions.map((option) => (
-              <DropdownMenuItem
-                key={option}
-                onSelect={() => handleFilterChange(option)}
-                className={`cursor-pointer  ${
-                  (table.getColumn("status")?.getFilterValue() || "All") ===
-                  option
-                }`}
-              >
-                {option}
-              </DropdownMenuItem>
+                <DropdownMenuItem
+                    key={option}
+                    onSelect={() => handleFilterChange(option)}
+                    className={`cursor-pointer  ${
+                        (table.getColumn("status")?.getFilterValue() || "All") ===
+                        option
+                    }`}
+                >
+                  {option}
+                </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -249,34 +241,34 @@ export function PaymentTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+                variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
             >
-              Columns
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
+              View
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white">
             {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize focus:bg-background"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value) 
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                      <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize focus:bg-background"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) =>
+                              column.toggleVisibility(!!value)
+                          }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                  );
+                })}
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <CreatePayForm />
+        <CreatePayForm/>
       </div>
 
       <div className="flex items-center justify-between gap-4">
@@ -284,10 +276,9 @@ export function PaymentTable<TData, TValue>({
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
-              <TbFilter className="mr-2 h-4 w-4" />
+              <TbFilter className="mr-2 h-4 w-4"/>
               {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
             </Button>
           </PopoverTrigger>
@@ -328,8 +319,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Year
@@ -340,8 +330,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Academic Year
@@ -352,8 +341,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Degree
@@ -364,8 +352,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Faculty
@@ -376,8 +363,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Major
@@ -388,8 +374,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Class
@@ -400,8 +385,7 @@ export function PaymentTable<TData, TValue>({
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
-              className="w-[200px] justify-center bg-white text-gray-30"
+                variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
             >
               <TbFilter className="mr-2 h-4 w-4" />
               Filter By Shift

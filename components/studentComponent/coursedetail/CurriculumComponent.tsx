@@ -25,17 +25,17 @@ export default function CurriculumComponent() {
     <div className="items-center p-[40px] bg-white rounded-lg my-10">
       {/* Course Title */}
 
-      <h2 className="text-[36px] font-bold text-black_90 mb-[24px]">
+      <h2 className="text-[36px] font-bold text-lms-black90 mb-[24px]">
         {courseDetails.title}
       </h2>
       {/* Course Description */}
 
-      <p className="text-gray-80 text-[18px] mb-6 ">
+      <p className="text-lms-gray-80 text-[18px] mb-6 ">
         {courseDetails.description}
       </p>
       {/* Curriculum Heading */}
 
-      <h3 className="text-[24px] font-bold text-black_90 mb-4">
+      <h3 className="text-[24px] font-bold text-lms-black90 mb-4">
         What you will learn in this course?
       </h3>
       {/* Curriculum List */}
@@ -43,7 +43,7 @@ export default function CurriculumComponent() {
       <div className="font-semibold text-[20px]">
         {curriculumList.map((item, index) => (
           <div key={index} className="flex items-center mb-[10px]">
-            <BiSolidMessageSquareCheck className="text-primary w-[27px] h-[27px] mr-[34px]" />
+            <BiSolidMessageSquareCheck className="text-lms-primary w-[27px] h-[27px] mr-[34px]" />
             <span>{item}</span>
           </div>
         ))}

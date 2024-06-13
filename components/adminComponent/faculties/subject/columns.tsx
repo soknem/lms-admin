@@ -6,18 +6,11 @@ import { MdEdit } from "react-icons/md";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
-// @ts-ignore
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
+
+//. @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/subject/SubActionCell";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -79,7 +72,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   // Check if the column is the status column
   if (column.id === "status") {
     return (
-      <span className={value ? "text-green-500" : "text-red-500"}>
+      <span className={value ? "text-lms-success bg-green-300 px-5 py-1 rounded-[10px]" : "text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"}>
         {value ? "Public" : "Draft"}
       </span>
     );
@@ -127,7 +120,7 @@ const EditCell = ({ row, table }: any) => {
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
         </button>
       )}
     </div>

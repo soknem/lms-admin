@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-
-
 //import from shad cn
 import {
   ColumnDef,
@@ -33,16 +31,8 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { Input } from '@/components/ui/input'
-
-
 import { Button } from "@/components/ui/button"
 
-import { TbSearch } from "react-icons/tb";
-
-import { useMediaQuery } from "usehooks-ts"
-
-import { FaSearch } from "react-icons/fa";
 import {
   Command,
   CommandEmpty,
@@ -63,12 +53,10 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 // @ts-ignore
-import { CreateLectureForm } from './form/CreateLectureForm'
-import { inspect } from 'util'
+
 import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
-
-
-
+// @ts-ignore
+import CreateLectureForm from "@/components/adminComponent/academics/lectures/form/CreateLectureForm";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]

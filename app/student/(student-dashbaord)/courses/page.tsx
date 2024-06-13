@@ -7,9 +7,11 @@ import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
+import { CardCourseComponent1 } from "@/components/studentComponent/courses/card/CardCourseComponent1";
+import { CardCourseComponent2 } from "@/components/studentComponent/courses/card/CardCourseComponent2";
+
 
 export default function Course() {
-  const [isFocused, setIsFocused] = useState(false);
   return (
     <div className="flex flex-col h-full w-full p-9 gap-4">
       {/* <h2 className="text-4xl text-lms-primary-color font-bold">Course</h2> */}
@@ -66,27 +68,32 @@ export default function Course() {
 
       {/* search course */}
       <section className="mt-24 flex items-center  flex-col gap-4 justify-between ">
-        <div className="flex items-start py-4 w-[65%] gap-4">
-          <div className="flex items-start w-full relative">
-            <Input
-              placeholder="Search Student"
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              className="border-[#E6E6E6] bg-white focus:pl-8 "
-            />
-            {isFocused && (
+        <div className="flex items-start py-4  gap-4">
+          <div className="flex items-center w-[950px] justify-between gap-4 ">
+            <div className="flex items-center w-full relative">
+              <Input
+                  placeholder="Search Course"
+
+
+                  className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
+              />
+
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
+                <FaSearch className="text-gray-400"/>
               </div>
-            )}
+
+            </div>
+
+
           </div>
+
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                variant="outline"
-                className="w-[200px] justify-center bg-white text-gray-30"
+                  variant="outline"
+                  className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
               >
-                <TbFilter className="mr-2 h-4 w-4" />
+                <TbFilter className='mr-2 h-4 w-4'/>
                 Filter By Semester
               </Button>
             </PopoverTrigger>
@@ -94,10 +101,10 @@ export default function Course() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4">
-          <CardCourseComponent />
-          <CardCourseComponent />
-          <CardCourseComponent />
-          <CardCourseComponent />
+          <CardCourseComponent/>
+          <CardCourseComponent1/>
+          <CardCourseComponent2/>
+          <CardCourseComponent/>
         </div>
       </section>
     </div>

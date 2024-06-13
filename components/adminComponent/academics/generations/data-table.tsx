@@ -36,7 +36,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 // @ts-ignore
-import { CreateGenForm } from './CreateGenForm'
+import  CreateGenForm  from './CreateGenForm'
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { FaSearch } from "react-icons/fa";

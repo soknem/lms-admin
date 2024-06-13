@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 import {
   Breadcrumb,
@@ -7,25 +7,27 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 
-export  function BreadcrumbWithCustomSeparator() {
+export function BreadcrumbWithCustomSeparator() {
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink>
-            <Link  href="/student/courses">Course</Link>
+            <Link href="/student/courses" legacyBehavior passHref>
+              <BreadcrumbLink>Course</BreadcrumbLink>
+            </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink className="font-semibold text-primary">
-            <Link href="">Detail</Link>
+          <BreadcrumbLink className="font-semibold text-lms-primary">
+            <Link href="">C++ Programming</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
+

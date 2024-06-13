@@ -8,10 +8,9 @@ import { ThemeProvider } from "@/components/ui/themeProvider";
 import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
 // @ts-ignore
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
-
-
-
-
+import { usePathname } from "next/navigation";
+// @ts-ignore
+import ReportSidebar from "@/components/instructorComponent/reports/sidebar/ReportSidebarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -21,6 +20,9 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 export default function RootLayout({ children }: RootLayoutProps) {
+  const pathname = usePathname();
+
+  const showAcademicSidebar = pathname.startsWith("/instructor/reports");
   return (
     <html lang="en" suppressHydrationWarning>
       {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
@@ -30,18 +32,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-        >
+        <ThemeProvider attribute="class" defaultTheme="system">
           <nav className="w-full h-[72px]">
             <NavbarComponent />
           </nav>
           <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-            <aside>
+            <aside className="flex">
               <InstructorSidebarComponent />
+              {showAcademicSidebar && <ReportSidebar/>}
             </aside>
-            <section className="w-full">{children}</section>
+            <section className="flex-grow overflow-auto">{children}</section>
           </section>
         </ThemeProvider>
       </body>

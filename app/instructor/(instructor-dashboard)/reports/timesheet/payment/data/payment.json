@@ -1,0 +1,51 @@
+[
+    {
+      "date": "10 MAY 2025",
+      "session": "02:00 PM - 03:30 PM",
+      "theoryRate": 15.00,
+      "pwRate": 8.00,
+      "theoryHour": 1.5,
+      "pwHour": 4,
+      "total": "$76.5"
+    },
+    {
+      "date": "12 JUN 2025",
+      "session": "03:45 PM - 5:15 PM",
+      "theoryRate": 8.00,
+      "pwRate": 18.00,
+      "theoryHour": 1.8,
+      "pwHour": 2,
+      "total": "$25.5"
+    },
+    {
+      "date": "11 JULY 2025",
+      "session": "04:00 PM - 05:30 PM",
+      "theoryRate": 12.00,
+      "pwRate": 9.00,
+      "theoryHour": 1.9,
+      "pwHour": 0,
+      "total": "$12.5"
+    },
+    {
+      "date": "05 March 2024",
+      "session": "02:00 PM - 03:30 PM",
+      "theoryRate": 15.00,
+      "pwRate": 8.00,
+      "theoryHour": 1.5,
+      "pwHour": 0,
+      "total": "$22.5"
+    },
+    {
+      "date": "11 MAY 2025",
+      "session": "02:00 PM - 03:30 PM",
+      "theoryRate": 9.00,
+      "pwRate": 8.00,
+      "theoryHour": 1.5,
+      "pwHour": 0,
+      "total": "$24.5"
+    }
+
+
+]
+
+  

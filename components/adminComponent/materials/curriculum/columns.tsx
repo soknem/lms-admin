@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { CurriculumType, StatusOption } from "@/lib/types/admin/materials";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -77,13 +78,13 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return (
       <span
         className={
-          value == 1
-            ? "Public text-green-500"
-            : value == 2
-            ? "Disable text-red-500"
-            : value == 3
-            ? "Draft text-gray-400"
-            : ""
+          value === 1
+              ? "Public text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+              : value === 2
+                  ? "Disable text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                  : value === 3
+                      ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+                      : ""
         }
       >
         {value == 1
@@ -139,7 +140,7 @@ const EditCell = ({ row, table }: any) => {
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
         </button>
       )}
     </div>

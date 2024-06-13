@@ -19,6 +19,7 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { SetupStudyProgramType, StatusOption } from "@/lib/types/admin/faculty";
 // @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/SetUpStuActioncell";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -82,12 +83,12 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       <span
         className={
           value === "true"
-            ? "Public text-green-500"
-            : value === "false"
-            ? "Disable text-red-500"
-            : value === "draft"
-            ? "Draft text-gray-400"
-            : ""
+              ? "Public text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+              : value === "false"
+                  ? "Disable text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                  : value === "draft"
+                      ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+                      : ""
         }
       >
         {value === "true"
@@ -143,7 +144,7 @@ const EditCell = ({ row, table }: any) => {
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
         </button>
       )}
     </div>

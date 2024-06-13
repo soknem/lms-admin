@@ -13,10 +13,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { DegreeType, SetupStudyProgramType } from "@/lib/types/admin/faculty";
+import { SetupStudyProgramType } from "@/lib/types/admin/faculty";
 import { useState } from "react";
 import Image from "next/image";
-import { create } from "domain";
 
 const initialValues = {
   id: "",
@@ -105,42 +104,14 @@ export function CreateSetStuProForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white-80 bg-white border">
-          <FiPlus className="mr-2 h-4 w-4" /> Add degree
+        <Button className="bg-lms-primary text-white hover:bg-lms-primary">
+          <FiPlus className="mr-2 h-4 w-4" /> Add Subject
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
           <DialogTitle>Add degree</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -168,18 +139,18 @@ export function CreateSetStuProForm() {
               <div className="flex flex-col gap-4">
                 {/* Degree Level*/}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="level">
+                  <label className={`${style.label}`} htmlFor="subject">
                     Subject
                   </label>
                   <Field
                     type="text"
                     placeholder="Introduction to IT"
-                    name="level"
-                    id="level"
+                    name="subject"
+                    id="subject"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="level"
+                    name="subject"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -187,18 +158,18 @@ export function CreateSetStuProForm() {
 
                 {/* Degree Description*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="semester">
                     Semester
                   </label>
                   <Field
                     type="text"
-                    name="degree"
+                    name="semester"
                     placeholder="Semester 1"
-                    id="degree"
+                    id="semester"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="semester"
                     component="div"
                     className={`${style.error}`}
                   />

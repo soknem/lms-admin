@@ -10,13 +10,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { DegreeType, SetupStudyProgramType } from "@/lib/types/admin/faculty";
 import { useState } from "react";
 import Image from "next/image";
-import { create } from "domain";
 
 const initialValues = {
   id: "",
@@ -87,55 +85,16 @@ const CustomInput = ({ field, setFieldValue }: any) => {
   );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function EditSetStuProForm() {
   return (
     <Dialog open>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
-          <DialogTitle>Add degree</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
+          <DialogTitle>Edit degree</DialogTitle>
         </DialogHeader>
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
 
         <Formik
           initialValues={initialValues}
@@ -163,18 +122,18 @@ export function EditSetStuProForm() {
               <div className="flex flex-col gap-4">
                 {/* Degree Level*/}
                 <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="level">
+                  <label className={`${style.label}`} htmlFor="subject">
                     Subject
                   </label>
                   <Field
                     type="text"
                     placeholder="Introduction to IT"
-                    name="level"
-                    id="level"
+                    name="subject"
+                    id="subject"
                     className={` ${style.input}`}
                   />
                   <ErrorMessage
-                    name="level"
+                    name="subject"
                     component="div"
                     className={`${style.error}`}
                   />
@@ -182,18 +141,18 @@ export function EditSetStuProForm() {
 
                 {/* Degree Description*/}
                 <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="degree">
+                  <label className={`${style.label}`} htmlFor="semester">
                     Semester
                   </label>
                   <Field
                     type="text"
-                    name="degree"
+                    name="semester"
                     placeholder="Semester 1"
-                    id="degree"
+                    id="semester"
                     className={`${style.input}`}
                   />
                   <ErrorMessage
-                    name="degree"
+                    name="semester"
                     component="div"
                     className={`${style.error}`}
                   />

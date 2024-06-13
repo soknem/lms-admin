@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 // Data structure for course details
 const courseData = {
@@ -35,25 +37,30 @@ const courseData = {
  */
 
 export default function CourseDetailHeader() {
+  const router = useRouter();
+  const handleNavigate = () => {
+    router.push("/instructor/courses/int-profile");
+  };
+
   return (
     <main>
       {/* Course Overview Section */}
       <section className="mx-[90px] flex flex-col-2 ">
         <div className="h-[250px]">
           {/* Semester Badge */}
-          <span className="px-[25px] py-1 text-sm font-semibold text-white bg-red-500 rounded-full mb-10">
+          <span className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
             {courseData.semester}
           </span>
           {/* Course Title */}
-          <h2 className="text-[40px] font-bold text-black_90 mt-[14px]">
+          <h2 className="text-[40px] font-bold text-lms-black90 mt-[14px]">
             {courseData.title}
           </h2>
           {/* Course Description */}
-          <p className="text-gray-700 w-[803px] text-[18px] mt-[14px]">
+          <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
             {courseData.description}
           </p>
           {/* Credits Information */}
-          <div className="flex items-center mt-[16px]">
+          <div className="flex items-center mt-[20px]">
             <span className="mr-4 font-semibold">
               Credit: {courseData.credits.total}
             </span>
@@ -70,26 +77,27 @@ export default function CourseDetailHeader() {
           <Image
             src={courseData.logo}
             alt="Course Logo"
-            width={300}
+            width={215}
             height={215}
-            className="w-[300px] h-[215px]"
+            className="w-[215px] h-[215px]"
           />
         </div>
       </section>
       {/* Instructor and Students Section */}
-      <div className="flex items-center mx-[90px]">
+      <div className="flex items-center -[20px]  mx-[90px]">
         <Image
           className="w-[60px] h-[60px] rounded-full  mr-4"
+          onClick={handleNavigate}
           src={courseData.instructor.image}
           alt="Instructor"
           width={60}
           height={60}
         />
         <div>
-          <p className="font-bold text-[20px] text-primary">
+          <p className="font-bold text-[20px] text-lms-primary">
             {courseData.instructor.name}
           </p>
-          <p className="text-gray-600 text-[18px]">
+          <p className="text-lms-gray-80 text-[18px]">
             {courseData.instructor.title}
           </p>
         </div>
@@ -110,12 +118,12 @@ export default function CourseDetailHeader() {
           <div className="flex items-center ml-2">
             <div className="mr-2 font-bold">
               {courseData.studentsJoined}
-              <div className="text-gray_80">Students Joined</div>
+              <div className="text-lms-gray-80">Students Joined</div>
             </div>
           </div>
 
           <div className="mx-[100px] mt-5">
-            <span className="text-gray_80  font-bold">Class Start:</span>
+            <span className="text-lms-gray-80 font-bold">Class Start:</span>
             <span className="ml-2 font-bold ">{courseData.classStart}</span>
           </div>
         </div>

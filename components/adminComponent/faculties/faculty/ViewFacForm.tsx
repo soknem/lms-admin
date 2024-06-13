@@ -80,51 +80,17 @@ const CustomInput = ({ field, setFieldValue }: any) => {
   );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function ViewFacForm() {
   const router = useRouter();
   return (
     <Dialog open>
       <DialogContent className="w-[480px] bg-white ">
-        {/* <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
-
+        <DialogHeader>
+          <DialogTitle>Faculty Information</DialogTitle>
+        </DialogHeader>
         <Formik
           initialValues={initialValues}
           onSubmit={async (values) => {
@@ -216,29 +182,6 @@ export function ViewFacForm() {
                     />
                   </div>
                 </div>
-
-                {/* Product Image
-                <div className="mb-4">
-                  <label
-                    htmlFor="logo"
-                    className="block text-sm font-medium text-gray-700 my-2"
-                  >
-                    Faculty Logo
-                  </label>
-                  <Field
-                    type="file"
-                    name="logo"
-                    id="logo"
-                    component={CustomInput}
-                    setFieldValue={setFieldValue}
-                    className="mt-1"
-                  />
-                  <ErrorMessage
-                    name="logo"
-                    component="div"
-                    className="text-red-500 mt-1 text-sm"
-                  />
-                </div> */}
               </div>
             </Form>
           )}

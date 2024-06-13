@@ -2,7 +2,6 @@ import React from "react";
 
 //import component
 
-
 //import type
 import { LectureType } from "@/lib/types/admin/academics";
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
