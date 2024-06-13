@@ -12,7 +12,6 @@ import { CardCourseComponent2 } from "@/components/studentComponent/courses/card
 
 
 export default function Course() {
-  const [isFocused, setIsFocused] = useState(false);
   return (
     <div className="flex flex-col h-full w-full p-9 gap-4">
       {/* <h2 className="text-4xl text-lms-primary-color font-bold">Course</h2> */}
