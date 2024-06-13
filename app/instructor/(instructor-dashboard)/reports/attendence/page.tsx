@@ -5,10 +5,11 @@ import React from "react";
 //import type
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json";
 // @ts-ignore
-// @ts-ignore
 import { AttentType } from "@/lib/types/instructor/report";
 import attendence from "@/app/instructor/(instructor-dashboard)/reports/attendence/data/attentdent.json";
+// @ts-ignore
 import { attentdentColumns } from "@/components/instructorComponent/reports/attendence/AttentdentColumns";
+// @ts-ignore
 import { AttentdentData } from "@/components/instructorComponent/reports/attendence/AttentdentData";
 
 

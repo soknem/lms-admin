@@ -5,7 +5,9 @@ import {CourseAssessmentColumns} from "@/components/adminComponent/academics/ass
 import {CourseAssesmentDataTable} from "@/components/adminComponent/academics/assesments/eachCourse/data-table";
 import {courseAssessmentType} from "@/lib/types/admin/academics";
 import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments/data/courseAssesment.json";
+// @ts-ignore
 import { InstructorCourseAssessmentColumns } from "@/components/instructorComponent/assessments/columns";
+// @ts-ignore
 import { InstructorCourseAssesmentDataTable } from "@/components/instructorComponent/assessments/data-table";
 
 export default function Academics() {

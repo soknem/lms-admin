@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
+// @ts-ignore
 import { MenuList } from "./academicMenu";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";

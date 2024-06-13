@@ -1,7 +1,7 @@
-import { EditInsProForm } from "@/components/instructorComponent/setting/EditInsPro";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { PiCertificateFill } from "react-icons/pi";
+import {EditInsProForm} from "@/components/instructorcomponent/setting/EditInsPro";
 
 export default function Setting() {
   return (

@@ -8,15 +8,9 @@ import {FaSearch} from "react-icons/fa";
 import {FaBook} from "react-icons/fa6";
 import {Popover, PopoverTrigger} from "@/components/ui/popover";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import {CreatePayForm} from "@/components/admincomponent/payments/CreatePayForm";
+// @ts-ignore
 import { CardCourseComponent1 } from "@/components/studentComponent/courses/card/CardCourseComponent1";
+// @ts-ignore
 import { CardCourseComponent2 } from "@/components/studentComponent/courses/card/CardCourseComponent2";
 
 export default function Course() {

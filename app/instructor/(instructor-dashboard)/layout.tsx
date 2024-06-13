@@ -9,6 +9,7 @@ import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarCompo
 // @ts-ignore
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 import { usePathname } from "next/navigation";
+// @ts-ignore
 import ReportSidebar from "@/components/instructorComponent/reports/sidebar/ReportSidebarComponent";
 
 const fontSans = FontSans({

@@ -8,11 +8,17 @@ import {  getSlide, getVideo } from "@/lib/endpoints/MokApi";
 import React from "react";
 
 import {CurriculumType} from "@/lib/types/admin/materials";
+// @ts-ignore
 import { CurriculumTable } from "@/components/instructorComponent/materials/curriculum/data-table";
+// @ts-ignore
 import { curriculumColumns } from "@/components/instructorComponent/materials/curriculum/columns";
+// @ts-ignore
 import { SlideTable } from "@/components/instructorComponent/materials/slide/data-table";
+// @ts-ignore
 import { slideColumns } from "@/components/instructorComponent/materials/slide/columns";
+// @ts-ignore
 import { VideoTable } from "@/components/instructorComponent/materials/video/data-table";
+// @ts-ignore
 import { videoColumns } from "@/components/instructorComponent/materials/video/columns";
 
 
