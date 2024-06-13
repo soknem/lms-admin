@@ -148,7 +148,7 @@ export function CreateStudyProForm() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white-80 bg-white border">
+        <Button className="bg-lms-primary text-white hover:bg-lms-primary">
           <FiPlus className="mr-2 h-4 w-4" /> Add Study Program
         </Button>
       </DialogTrigger>

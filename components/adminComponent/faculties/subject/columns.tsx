@@ -8,8 +8,7 @@ import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
-// @ts-ignore
-import ActionsCell from "./SubActionCell";
+import ActionsCell from "@/components/adminComponent/faculties/subject/SubActionCell";
 //. @ts-ignore
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -71,7 +70,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   // Check if the column is the status column
   if (column.id === "status") {
     return (
-      <span className={value ? "text-green-500" : "text-red-500"}>
+      <span className={value ? "text-lms-success bg-green-300 px-5 py-1 rounded-[10px]" : "text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"}>
         {value ? "Public" : "Draft"}
       </span>
     );

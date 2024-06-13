@@ -28,13 +28,13 @@ const courseCardData = {
 export function CardCourseComponent2() {
   const router = useRouter();
   return (
-    <a href="/student/courses/coursedetail">
+
       <Card className="w-[566px] h-[299px] bg-white">
         <CardHeader className="mx-[40px]">
-          <CardTitle className="text-primary font-bold text-[24px] mb-[15px]">
+          <CardTitle className="text-lms-primary font-bold text-[24px]">
             {courseCardData.title}
           </CardTitle>
-          <CardDescription className="text-gray-80 text-[16px] leading-[24px]">
+          <CardDescription className="text-lms-black90 text-[16px]">
             {courseCardData.description}
           </CardDescription>
         </CardHeader>
@@ -42,7 +42,7 @@ export function CardCourseComponent2() {
           <div className="flex items-center -space-x-4 ">
             {courseCardData.images.map((image, index) => (
               <Image
-                onClick={() => router.push("admin/users/staff/1")}
+                onClick={() => router.push("/instructor/courses/int-profile")}
                 key={index}
                 src={image.src}
                 alt={image.alt}
@@ -73,6 +73,6 @@ export function CardCourseComponent2() {
           </div>
         </CardContent>
       </Card>
-    </a>
+
   );
 }

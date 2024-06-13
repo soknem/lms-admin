@@ -39,7 +39,7 @@ const courseData = {
 export default function CourseDetailHeader() {
   const router = useRouter();
   const handleNavigate = () => {
-    router.push("/admin/users/staff/1");
+    router.push("/instructor/courses/int-profile");
   };
 
   return (

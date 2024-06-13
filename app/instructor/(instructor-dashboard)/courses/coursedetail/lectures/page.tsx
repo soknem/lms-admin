@@ -3,24 +3,38 @@ import React from "react";
 //import component
 
 //import type
-import { LectureType } from "@/lib/types/admin/academics";
+import {LectureType} from "@/lib/types/admin/academics";
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
 // @ts-ignore
-import { LectureDataTable } from "@/components/admincomponent/academics/lectures/LectureDataTable";
+import {LectureDataTable} from "@/components/admincomponent/academics/lectures/LectureDataTable";
 // @ts-ignore
-import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
+import {LectureColumns} from "@/components/admincomponent/academics/lectures/LectureColumns";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {InstructorEndedLectureDatatable} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureDatatable";
 
+// @ts-ignore
+import {
+    InstructorEndedLectureDatatable
+}
+// @ts-ignore
+from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureDatatable";
+
+// @ts-ignore
 import {
     InstructorCurrentLectureDataTable
-} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
+}
+// @ts-ignore
+    from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
+
 import {
     InstructorCurrentLectureColumns
-} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureColumns";
+}
+// @ts-ignore
+    from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureColumns";
 import {
     InstructorEndedLectureColumns
-} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureColumns";
+}
+// @ts-ignore
+    from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureColumns";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -32,7 +46,7 @@ import {
 import Link from "next/link";
 
 
-export default  function Lecture() {
+export default function Lecture() {
     const data: LectureType[] = lectures;
 
     // Filter data for current data
@@ -42,20 +56,22 @@ export default  function Lecture() {
 
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">
-            <Breadcrumb >
+            <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link href="/instructor/courses" className='font-semibold text-gray-30 uppercase'>COURSE</Link>
+                            <Link href="/instructor/courses"
+                                  className='font-semibold text-gray-30 uppercase'>COURSE</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator/>
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link href="/instructor/courses/coursedetail" className='font-semibold text-gray-30 uppercase'>INTRODUCTION TO IT</Link>
+                            <Link href="/instructor/courses/coursedetail"
+                                  className='font-semibold text-gray-30 uppercase'>INTRODUCTION TO IT</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator/>
                     <BreadcrumbItem>
                         <BreadcrumbPage className="font-semibold text-lms-primary uppercase">LECTURE</BreadcrumbPage>
                     </BreadcrumbItem>
@@ -71,11 +87,13 @@ export default  function Lecture() {
                 </TabsList>
 
                 <TabsContent value="current">
-                    <InstructorCurrentLectureDataTable columns={InstructorCurrentLectureColumns} data={filteredCurrentLectureData} />
+                    <InstructorCurrentLectureDataTable columns={InstructorCurrentLectureColumns}
+                                                       data={filteredCurrentLectureData}/>
                 </TabsContent>
 
-                <TabsContent value="ended" >
-                    <InstructorEndedLectureDatatable columns={InstructorEndedLectureColumns} data={filteredEndedLectureData} />
+                <TabsContent value="ended">
+                    <InstructorEndedLectureDatatable columns={InstructorEndedLectureColumns}
+                                                     data={filteredEndedLectureData}/>
                 </TabsContent>
 
             </Tabs>

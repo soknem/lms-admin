@@ -77,7 +77,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   // Apply specific color for total value 22.5
   if (accessorKey === "total" && value === 22.5) {
-    return <span style={{ color: 'red' }}>{value}$</span>;
+    return <span style={{ color: "red" }}>{value}$</span>;
   }
 
   return <span>{value}</span>;
@@ -93,6 +93,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           DATE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -107,6 +108,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           SESSION
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -121,6 +123,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           THEORYRATE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -137,6 +140,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
           className="w-[130px] flex justify-start items-start"
         >
           PW RATE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -150,9 +154,10 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           // To customize the size of each column
-          className="w-[130px] flex justify-start items-start"
+          className="w-[150px] flex justify-start items-start"
         >
           THEORYHOUR
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -164,6 +169,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
       return (
         <Button variant="ghost">
           PW HOUR
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },

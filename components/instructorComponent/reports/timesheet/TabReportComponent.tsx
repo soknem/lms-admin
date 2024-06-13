@@ -12,18 +12,22 @@ export default function TabReportComponent() {
   return (
     <div>
       <Tabs defaultValue="payment">
-        <TabsList>
-          <TabsTrigger value="payment">Payment History</TabsTrigger>
-          <TabsTrigger value="teaching">Teaching History</TabsTrigger>
-        </TabsList>
+        <div className="w-full flex items-end justify-end">
+        
+          <TabsList>
+            <TabsTrigger value="payment">Payment History</TabsTrigger>
+            <TabsTrigger value="teaching">Teaching History</TabsTrigger>
+          </TabsList>
+        </div>
+
         <TabsContent value="payment">
           <div className="bg-white">
-            <Payment/>
+            <Payment />
           </div>
         </TabsContent>
         <TabsContent value="teaching">
           <div className="bg-white">
-           <Teaching/>
+            <Teaching />
           </div>
         </TabsContent>
       </Tabs>

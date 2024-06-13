@@ -63,6 +63,7 @@ import { useRouter } from "next/navigation";
 // @ts-ignore
 import { inspect } from "util";
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -320,9 +321,7 @@ export function AttentdentData<TData, TValue>({
 
         {/* Column visibility */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-           
-          </DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild></DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white ">
             {table
               .getAllColumns()
@@ -343,11 +342,61 @@ export function AttentdentData<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-
       </div>
 
       {/* Table */}
-      <div className="rounded-md p-4 bg-white">
+      <div className="rounded-md p-4 bg-lms-white-80">
+        <div className="flex justify-between p-4 ">
+          <div>
+            <Label className="text-lms-gray-80 ">Generation</Label>
+
+            <p className="flex font-medium text-lms-black90">Generation 1</p>
+          </div>
+          <div>
+            <Label className="text-lms-gray-80">Year</Label>
+            <p className="flex font-medium text-lms-black90">Foundation Year</p>
+          </div>
+          <div>
+            <Label className="text-lms-gray-80">Academic Year</Label>
+            <p className="flex font-medium text-lms-black90">2024-2025</p>
+          </div>
+          <div>
+            <Label className="text-lms-gray-80">Study Program</Label>
+            <p className="flex font-medium text-lms-black90">Information Technology</p>
+          </div>
+          <div>
+            <Label className="text-lms-gray-80">Course</Label>
+            <p className="flex font-medium text-lms-black90">Web Design</p>
+          </div>
+          <div>
+            <Label className="text-lms-gray-80">Class</Label>
+            <div className="flex gap-2">
+              <p className="flextext-lms-black90 font-medium">
+                Istad 01
+              </p>
+            </div>
+            <Label className="text-lms-gray-80">Duration</Label>
+            <div className="flex gap-2">
+              <p className="flextext-lms-black90 font-medium">
+                01/02/2021-02/03/2023
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-lms-transcript-header p-4 rounded-md">
+          <p className="text-lms-gray-80 font-semibold">Scores Point</p>
+          <div className="flex gap-6 text-lms-black90">
+            <p>
+              Present <span className="font-bold">P</span>
+            </p>
+            <p>
+              Excused Absent <span className="font-bold">EA = -0.5pt</span>
+            </p>
+            <p>
+              Unexcused Absent <span className="font-bold">UA = -1pt</span>
+            </p>
+          </div>
+        </div>
         <Table>
           <TableHeader className="text-lms-gray-30">
             {table.getHeaderGroups().map((headerGroup) => (

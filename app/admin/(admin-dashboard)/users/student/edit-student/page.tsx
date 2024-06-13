@@ -1,5 +1,4 @@
 // @ts-ignore
-import StudyDetailtTable from "@/components/admincomponent/faculties/studygrogram/studyprogram-detail/studydetail";
 import { EditUserStuForm } from "@/components/admincomponent/users/students/EditUserStu";
 import {
   Breadcrumb,
