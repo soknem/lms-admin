@@ -14,7 +14,6 @@ import { EditFacForm } from "./EditFacForm";
 import { ViewFacForm } from "./ViewFacForm";
 import { useRouter } from "next/navigation";
 import { EditUserStuForm } from "@/components/adminComponent/users/students/EditUserStu";
-
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
   const student = row.original;

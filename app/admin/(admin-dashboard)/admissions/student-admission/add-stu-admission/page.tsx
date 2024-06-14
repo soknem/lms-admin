@@ -1,8 +1,6 @@
 // @ts-ignore
-import StudyDetailtTable from "@/components/admincomponent/faculties/studygrogram/studyprogram-detail/studydetail";
-import { EditUserStuForm } from "@/components/admincomponent/users/students/EditUserStu";
-import MoreInfo from "@/components/admincomponent/users/students/StuMoreInfo";
-import { AddUserStudentForm } from "@/components/admincomponent/users/students/addStudentForm";
+
+import { AddStudentAmsForm } from "@/components/adminComponent/admissions/student-admission/addStudentAmsForm";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -18,7 +16,6 @@ import React from "react";
 import { FaCamera } from "react-icons/fa6";
 import { IoCameraOutline } from "react-icons/io5";
 import { PiCertificateFill } from "react-icons/pi";
-import {AddStudentAmsForm} from "@/components/admincomponent/admissions/student-admission/addStudentAmsForm";
 
 export default function Users() {
     return (

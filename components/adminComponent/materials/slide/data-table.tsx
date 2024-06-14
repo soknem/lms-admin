@@ -37,7 +37,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {CommandInput} from "@/components/ui/command";
-import {CreateMaterialForm} from "@/components/admincomponent/materials/addMaterialForm";
+import { CreateMaterialForm } from "../addMaterialForm";
 
 //custom component import
 
