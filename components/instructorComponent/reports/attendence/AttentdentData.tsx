@@ -384,7 +384,7 @@ export function AttentdentData<TData, TValue>({
           </div>
         </div>
         <div className="bg-lms-transcript-header p-4 rounded-md">
-          <p className="text-lms-gray-80 font-semibold">Score's Point</p>
+          <p className="text-lms-gray-80 font-semibold">Scores Point</p>
           <div className="flex gap-6 text-lms-black90">
             <p>
               Present <span className="font-bold">P</span>

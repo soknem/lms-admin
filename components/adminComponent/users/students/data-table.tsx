@@ -39,7 +39,6 @@ import {Input} from "@/components/ui/input";
 import {CommandInput} from "@/components/ui/command";
 // @ts-ignore
 import {CreateFacForm} from "./CreateFacForm";
-import {AddUserStudentForm} from "@/components/admincomponent/users/students/addStudentForm";
 import {FiPlus} from "react-icons/fi";
 import {useRouter} from "next/navigation";
 

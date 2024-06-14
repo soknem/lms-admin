@@ -13,7 +13,7 @@ import { EditFacForm } from "./EditFacForm";
 // @ts-ignore
 import { ViewFacForm } from "./ViewFacForm";
 import { useRouter } from "next/navigation";
-import { EditUserStuForm } from "./EditUserStu";
+import { EditUserStuForm } from "@/components/adminComponent/users/students/EditUserStu";
 
 const ActionsCell = ({ row }: any) => {
   const [isEditFormVisible, setEditFormVisible] = useState(false);
