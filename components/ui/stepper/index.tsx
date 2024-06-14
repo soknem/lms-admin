@@ -14,6 +14,7 @@ const VARIABLE_SIZES = {
   lg: "44px",
 };
 
+// eslint-disable-next-line react/display-name
 const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   (props, ref: React.Ref<HTMLDivElement>) => {
     const {

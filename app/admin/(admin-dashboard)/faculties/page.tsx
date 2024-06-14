@@ -22,10 +22,13 @@ import { studyProgramColumns } from "@/components/admincomponent/faculties/study
 import { SubjectTable } from "@/components/admincomponent/faculties/subject/data-table";
 // @ts-ignore
 import { subjectColumns } from "@/components/admincomponent/faculties/subject/columns";
+import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
+import facData from "@/components/admincomponent/faculties/faculty/facData.json";
+import degreeData from "@/components/admincomponent/faculties/degree/degreeData.json";
 
 export default async function Page() {
-  const facData = await getFaculties();
-  const deData = await getDegree();
+  const facultyData : FacultyType[] = facData;
+  const deData : DegreeType[] = degreeData;
   const stuData = await getStudyProgram();
   const subData = await getSubject();
 
@@ -65,7 +68,7 @@ export default async function Page() {
           </TabsList>
 
           <TabsContent value="faculty">
-            <FacultyTable columns={facultyColumns} data={facData} />
+            <FacultyTable columns={facultyColumns} data={facultyData} />
           </TabsContent>
 
           <TabsContent value="degree">

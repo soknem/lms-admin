@@ -14,22 +14,24 @@ interface StepInternalConfig {
 
 interface FullStepProps extends StepProps, StepInternalConfig {}
 
-const Step = React.forwardRef<HTMLLIElement, StepProps>((props, ref: React.Ref<any>) => {
-  const {
-    children,
-    description,
-    icon,
-    state,
-    checkIcon,
-    errorIcon,
-    index,
-    isCompletedStep,
-    isCurrentStep,
-    isLastStep,
-    isKeepError,
-    label,
-    onClickStep,
-  } = props as FullStepProps;
+// eslint-disable-next-line react/display-name
+const Step = React.forwardRef<HTMLLIElement, StepProps>(
+	(props, ref: React.Ref<any>) => {
+		const {
+			children,
+			description,
+			icon,
+			state,
+			checkIcon,
+			errorIcon,
+			index,
+			isCompletedStep,
+			isCurrentStep,
+			isLastStep,
+			isKeepError,
+			label,
+			onClickStep,
+		} = props as FullStepProps;
 
   const { isVertical, isError, isLoading, clickable } = useStepper();
 

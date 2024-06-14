@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 export function CardCourseComponent() {
   const router = useRouter();
   return (
-    <a href="/student/courses/coursedetail">
     <Card className="w-[566px] h-[299px] bg-white" >
       <CardHeader className="mx-[40px]">
         <CardTitle className="text-lms-primary font-bold text-[24px] ">
@@ -30,7 +29,7 @@ export function CardCourseComponent() {
       <div className="flex items-center -space-x-4 ">
         {courseCardData.images.map((image, index) => (
           <Image
-          onClick={() => router.push("admin/users/staff/1")}
+          onClick={() => router.push("/instructor/courses/int-profile")}
             key={index}
             src={image.src}
             alt={image.alt}
@@ -61,6 +60,5 @@ export function CardCourseComponent() {
       </div>
       </CardContent> 
     </Card>
-    </a>
   );
 }

@@ -8,6 +8,8 @@ import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/cou
 // @ts-ignore
 import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
+
+// @ts-ignore
 import TabComponent from "@/components/studentComponent/coursedetail/TabComponent";
 
 export default function coursedetail() {

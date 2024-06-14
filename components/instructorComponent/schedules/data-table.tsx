@@ -35,6 +35,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 
 //custom component import
 
@@ -104,7 +105,6 @@ export function ScheduleTable<TData, TValue>({
 
   console.log("data from page: ", data);
 
-  const [isFocused, setIsFocused] = useState(false);
   const filterOptions = ["All", "Public", "Disable", "Draft"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
@@ -126,22 +126,19 @@ export function ScheduleTable<TData, TValue>({
         <div className="flex items-center py-4 w-full">
           <div className="flex items-center w-full relative">
             <Input
-              placeholder="Search schedule"
-              value={
-                (table.getColumn("subject")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("subject")?.setFilterValue(event.target.value)
-              }
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-              className="border-[#E6E6E6] bg-white focus:pl-8 "
+                placeholder="Search schedule"
+                value={
+                    (table.getColumn("subject")?.getFilterValue() as string) ?? ""
+                }
+                onChange={(event) =>
+                    table.getColumn("subject")?.setFilterValue(event.target.value)
+                }
+
+                className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
             />
-            {isFocused && (
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
-              </div>
-            )}
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <FaSearch className="text-gray-400"/>
+            </div>
           </div>
         </div>
 
@@ -149,9 +146,10 @@ export function ScheduleTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+                variant="outline"
+                className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
             >
+              <TbFilter className='mr-2 h-4 w-4'/>
               {selectedFilter}
             </Button>
           </DropdownMenuTrigger>
@@ -178,10 +176,10 @@ export function ScheduleTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              variant="outline"
-              className="border-[#E6E6E6] bg-white ml-auto"
+                variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
             >
-              Columns
+              <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
+              View
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white">

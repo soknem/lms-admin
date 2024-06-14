@@ -30,8 +30,10 @@ const iconVariants = cva("", {
   },
 });
 
-const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>((props, ref) => {
-  const { size } = useStepper();
+// eslint-disable-next-line react/display-name
+const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
+	(props, ref) => {
+		const { size } = useStepper();
 
   const {
     isCompletedStep,

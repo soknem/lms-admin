@@ -36,6 +36,7 @@ const verticalStepVariants = cva(
   }
 );
 
+// eslint-disable-next-line react/display-name
 const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
   (props, ref) => {
     const {

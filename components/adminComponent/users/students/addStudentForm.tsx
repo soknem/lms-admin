@@ -3,25 +3,12 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "./style.module.css";
-import {FiPlus, FiUploadCloud} from "react-icons/fi";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+import { FiUploadCloud} from "react-icons/fi";
 
 import {useState} from "react";
 import Image from "next/image";
-import {
-    CurriculumType,
-    SlideType,
-    VideoType,
-} from "@/lib/types/admin/materials";
+
 import {IoIosArrowDown} from "react-icons/io";
-import {MdAddToPhotos} from "react-icons/md";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {UserStudentType} from "@/lib/types/admin/user";
 
@@ -158,8 +145,8 @@ export function AddUserStudentForm() {
 
     return (
         <section
-            className="flex flex-grow flex-col gap-6 px-10 bg-white border w-[1240px] h-[1020px] items-center-center rounded-[10px]">
-            <section className="h-[90px] flex items-center">
+            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] h-[1350px] 2xl:h-[1020px] items-center-center rounded-[10px]">
+            <section className="h-[90px] flex items-center mx-10 ">
                 <h1 className="text-3xl font-bold text-lms-black-90">
                     Add Student
                 </h1>
@@ -171,7 +158,7 @@ export function AddUserStudentForm() {
                 defaultValue="personal_info"
                 className="w-full py-0 my-0 "
             >
-                <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[150px]  rounded-none  -mx-10">
+                <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[150px]  rounded-none -px-10 ">
                     <div className="flex justify-between container">
                         <TabsTrigger
                             value="personal_info"
@@ -199,7 +186,7 @@ export function AddUserStudentForm() {
 
                 {/* Personal Information */}
                 <TabsContent value="personal_info">
-                    <div className="border-b-2 py-6">
+                    <div className="border-b-2 mx-10  py-6">
                         <h1 className="text-2xl font-bold text-lms-black-90 ">Personal Information</h1>
                     </div>
                     <Formik
@@ -236,8 +223,8 @@ export function AddUserStudentForm() {
                         }}
                     >
                         {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full h-[605px] container ">
-                                <div className="grid grid-cols-3 gap-4 justify-center items-center">
+                            <Form className="py-4 rounded-lg w-full h-[920px] 2xl:h-[605px] flex  justify-center ">
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
                                     {/*name_en */}
                                     <div className={`${style.inputContainer}`}>
                                         <label className={`${style.label}`} htmlFor="name_en">
@@ -534,8 +521,8 @@ export function AddUserStudentForm() {
                 </TabsContent>
 
                 {/* Education Information */}
-                <TabsContent value="edu_info">
-                    <div className="border-b-2 py-6">
+                <TabsContent value="edu_info" >
+                    <div className="border-b-2 mx-10  py-6">
                         <h1 className="text-2xl font-bold text-lms-black-90 ">Education Information</h1>
                     </div>
                     <Formik
@@ -572,8 +559,8 @@ export function AddUserStudentForm() {
                         }}
                     >
                         {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full h-[605px] container ">
-                                <div className="grid grid-cols-3 gap-4 justify-center items-center">
+                            <Form className="py-4 rounded-lg w-full  flex  justify-center ">
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
                                     {/* Class Student */}
                                     <div className={style.inputContainer}>
                                         <label className={style.label} htmlFor="class_stu">
@@ -627,7 +614,7 @@ export function AddUserStudentForm() {
                                     </div>
 
                                     {/* Grade */}
-                                    <div className={`${style.inputContainer}  `}>
+                                    <div className={`${style.inputContainer}  grid col-span-2 2xl:col-span-1`}>
                                         <label className={`${style.label}`} htmlFor="grade">
                                             Diploma Grade
                                         </label>
@@ -737,7 +724,7 @@ export function AddUserStudentForm() {
                             </Form>
                         )}
                     </Formik>
-                    <div className="flex justify-end w-full container">
+                    <div className="flex justify-end w-full container mx-auto">
                         <Button
                             type="submit"
                             className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
@@ -749,10 +736,11 @@ export function AddUserStudentForm() {
                 </TabsContent>
 
                 {/* School Information */}
-                <TabsContent value="school_info">
-                    <div className="border-b-2 py-6">
+                <TabsContent value="school_info" >
+                    <div className="border-b-2 mx-10  py-6">
                         <h1 className="text-2xl font-bold text-lms-black-90 ">Education Information</h1>
                     </div>
+
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
@@ -787,8 +775,8 @@ export function AddUserStudentForm() {
                         }}
                     >
                         {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full h-[605px] container ">
-                                <div className="grid grid-cols-3 gap-4 justify-center items-center">
+                            <Form className="py-4 rounded-lg w-full flex justify-center ">
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center ">
                                     {/* Shift */}
                                     <div className={style.inputContainer}>
                                         <label className={style.label} htmlFor="shift">
@@ -899,6 +887,7 @@ export function AddUserStudentForm() {
                             </Form>
                         )}
                     </Formik>
+
                     <div className="flex justify-end w-full container">
                         <Button
                             type="submit"
