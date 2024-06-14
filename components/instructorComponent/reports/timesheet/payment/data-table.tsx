@@ -130,14 +130,15 @@ export function PaymentDataTable<TData, TValue>({
     <>
       {/* Table */}
 
-      <div className="rounded-[10px] p-4 bg-lms-white-80">
+      <div className="rounded-[10px] bg-lms-white-80">
         <p className="text-black_80 font-bold ml-4 mb-4">
           FY2025 - A1 Introduction to IT
           <span className="text-lms-success">( Paid )</span>
         </p>
-        <div className="flex justify-between p-4">
+        <div className="flex justify-between p-4 ">
           <div>
-            <Label className="text-lms-gray-80">Generation</Label>
+            <Label className="text-lms-gray-80 ">Generation</Label>
+            
             <p className="flex font-medium text-lms-black90">Generation 1</p>
           </div>
           <div>

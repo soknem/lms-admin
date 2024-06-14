@@ -18,12 +18,14 @@ export default function TabComponent() {
     <div>
       <Tabs defaultValue="student">
         <TabsList>
-          <TabsTrigger value="student">Student</TabsTrigger>
-          <TabsTrigger value="instructor">Instructor</TabsTrigger>
-          <TabsTrigger value="staff">Staff</TabsTrigger>
-          <TabsTrigger value="admission">Admission</TabsTrigger>
-          <TabsTrigger value="payment">Student payment</TabsTrigger>
-          <TabsTrigger value="earning">Earning</TabsTrigger>
+          <div className="w-full flex items-end justify-end">
+            <TabsTrigger value="student">Student</TabsTrigger>
+            <TabsTrigger value="instructor">Instructor</TabsTrigger>
+            <TabsTrigger value="staff">Staff</TabsTrigger>
+            <TabsTrigger value="admission">Admission</TabsTrigger>
+            <TabsTrigger value="payment">Student payment</TabsTrigger>
+            <TabsTrigger value="earning">Earning</TabsTrigger>{" "}
+          </div>
         </TabsList>
         <TabsContent value="student">
           <ReportComponent />

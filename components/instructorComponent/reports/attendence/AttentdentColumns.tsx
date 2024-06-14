@@ -16,6 +16,7 @@ import {
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
 import { AttentType } from "@/lib/types/instructor/report";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -41,20 +42,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   if (column.id === "id") {
     return <span>{value}</span>;
   }
-
-  // if (column.id === "student") {
-  //   const studentData = row.original;
-  //   return (
-  //     <div className="flex items-center">
-  //       <img
-  //         src={studentData.profile_image}
-  //         alt={studentData.name}
-  //         className="w-8 h-8 rounded-full mr-2"
-  //       />
-  //       <span>{studentData.name}</span>
-  //     </div>
-  //   );
-  // }
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
@@ -135,12 +122,12 @@ const EditCell = ({ row, table }: any) => {
             name="done"
             className="bg-green-100 rounded-full p-1"
           >
-            <IoCheckmarkSharp size={20} className="text-green-500" />
+            <IoCheckmarkSharp size={24} className="text-green-500" />
           </button>
         </div>
       ) : (
         <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
         </button>
       )}
     </div>
