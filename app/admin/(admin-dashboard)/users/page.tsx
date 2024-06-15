@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { getStudent } from "@/lib/endpoints/MokApi";
 // @ts-ignore
 import StaffList from "@/components/adminComponent/users/staff/StaffList";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
 
 
 export default async function Users() {
@@ -35,6 +36,7 @@ export default async function Users() {
           </TabsContent>
         </Tabs>
       </div>
+
     </main>
   );
 }
