@@ -11,6 +11,7 @@ import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar
 import { usePathname } from "next/navigation";
 // @ts-ignore
 import ReportSidebar from "@/components/instructorComponent/reports/sidebar/ReportSidebarComponent";
+import StoreProvider from "@/app/StoreProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -33,16 +34,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system">
-          <nav className="w-full h-[72px]">
-            <NavbarComponent />
-          </nav>
-          <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-            <aside className="flex">
-              <InstructorSidebarComponent />
-              {showAcademicSidebar && <ReportSidebar/>}
-            </aside>
-            <section className="flex-grow overflow-auto">{children}</section>
-          </section>
+          <StoreProvider>
+            <nav className="w-full h-[72px]">
+              <NavbarComponent/>
+            </nav>
+            <section className="flex flex-grow min-h-[calc(100vh-72px)]">
+              <aside className="flex">
+                <InstructorSidebarComponent/>
+                {showAcademicSidebar && <ReportSidebar/>}
+              </aside>
+              <section className="flex-grow overflow-auto">{children}</section>
+            </section>
+          </StoreProvider>
+
         </ThemeProvider>
       </body>
     </html>

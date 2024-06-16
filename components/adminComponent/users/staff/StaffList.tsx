@@ -88,12 +88,12 @@ export default function StaffList() {
                         align="end"
                         className="border-[#E6E6E6] bg-white "
                     >
-                        <DropdownMenuItem onClick={() => router.push(`/user/add-instructor`)}>
+                        <DropdownMenuItem onClick={() => router.push(`/admin/users/staff/add-instructor`)}>
                             <Button className='flex justify-start bg-transparent w-full hover:bg-gray-50'>
                                 Instructor
                             </Button>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => router.push(`/user/add-staff`)}>
+                        <DropdownMenuItem onClick={() => router.push(`/admin/users/staff/add-staff`)}>
                             <Button className='flex justify-start bg-transparent w-full hover:bg-gray-50'>
                                 Staff
                             </Button>

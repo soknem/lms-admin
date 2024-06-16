@@ -1,3 +1,7 @@
+:root {
+  --font-suwannaphum: 'Suwannaphum', sans-serif;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,5 +11,5 @@ body {
 }
 
 .khmer-font {
-  font-family: var(--font-suwannaphum);
+  font-family: var(--font-suwannaphum), serif;
 }
