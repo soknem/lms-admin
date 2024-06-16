@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { ScheduleType, StatusOption } from "@/lib/types/instructor/schedule";
+import StatusBadge from "@/components/common/StatusBadge";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -30,6 +31,23 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     setValue(newValue);
     tableMeta?.updateData(row.index, column.id, newValue);
   };
+
+  // custom render on cell
+  const accessorKey = column.columnDef.accessorKey;
+
+  // Custom status
+  if (accessorKey === 'status') {
+
+    switch (value) {
+      case "true":
+        return <StatusBadge type="success" status="Started" />
+      case "false":
+        return <StatusBadge type="warning" status="Pending" />
+      case "draft":
+        return <StatusBadge type="error" status="Ended" />
+    }
+  }
+
   // Ensure the "id" column is not editable
   if (column.id === "id") {
     return <span>{value}</span>;
@@ -58,29 +76,29 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       />
     );
   }
-  if (column.id === "status") {
-    return (
-      <span
-        className={
-          value === "active"
-            ? "Public text-green-500"
-            : value === "inactive"
-            ? "Disable text-red-500"
-            : value === "disable"
-            ? "Draft text-gray-400"
-            : ""
-        }
-      >
-        {value === "active"
-          ? "Public"
-          : value === "inactive"
-          ? "Disable"
-          : value === "disable"
-          ? "Draft"
-          : ""}
-      </span>
-    );
-  }
+  // if (column.id === "status") {
+  //   return (
+  //     <span
+  //       className={
+  //         value === "active"
+  //           ? "Public text-green-500"
+  //           : value === "inactive"
+  //           ? "Disable text-red-500"
+  //           : value === "disable"
+  //           ? "Draft text-gray-400"
+  //           : ""
+  //       }
+  //     >
+  //       {value === "active"
+  //         ? "Public"
+  //         : value === "inactive"
+  //         ? "Disable"
+  //         : value === "disable"
+  //         ? "Draft"
+  //         : ""}
+  //     </span>
+  //   );
+  // }
 
   return <span>{value}</span>;
 };
@@ -150,16 +168,32 @@ export const scheduleColumns: ColumnDef<ScheduleType>[] = [
 
   {
     accessorKey: "session",
-    header: () => {
-      return <div>SESSION</div>;
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            SESSION
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
     },
     cell: TableCell,
   },
 
   {
     accessorKey: "class",
-    header: () => {
-      return <div>class</div>;
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            CLASS
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
     },
     cell: TableCell,
   },
@@ -203,8 +237,5 @@ export const scheduleColumns: ColumnDef<ScheduleType>[] = [
       ],
     },
   },
-  {
-    id: "edit",
-    cell: EditCell,
-  },
+
 ];

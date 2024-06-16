@@ -1,24 +1,23 @@
-
-
 // @ts-ignore
 import { curriculumColumns } from "@/components/admincomponent/materials/curriculum/columns";
 // @ts-ignore
 import { slideColumns } from "@/components/admincomponent/materials/slide/columns";
-import curriculum from "@/components/admincomponent/materials/curriculum/curriculum.json"
+import curriculum from "@/components/admincomponent/materials/curriculum/curriculum.json";
 // @ts-ignore
 import { videoColumns } from "@/components/admincomponent/materials/video/columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {  getSlide, getVideo } from "@/lib/endpoints/MokApi";
+import { getSlide, getVideo } from "@/lib/endpoints/MokApi";
 import React from "react";
 // @ts-ignore
 import { VideoTable } from "@/components/adminComponent/materials/video/data-table";
 // @ts-ignore
 import { SlideTable } from "@/components/adminComponent/materials/slide/data-table";
-import {CurriculumType} from "@/lib/types/admin/materials";
-import {CurriculumTable} from "@/components/adminComponent/materials/curriculum/data-table";
+import { CurriculumType } from "@/lib/types/admin/materials";
+import { CurriculumTable } from "@/components/adminComponent/materials/curriculum/data-table";
+import UserStaffComponent from "@/components/card/staff/CardDisableComponent";
 
 export default async function Materials() {
-  const curData : CurriculumType[] = curriculum;
+  const curData: CurriculumType[] = curriculum;
 
   const slideData = await getSlide();
   const videoData = await getVideo();
@@ -33,7 +32,6 @@ export default async function Materials() {
         </TabsList>
         <TabsContent value="curriculum">
           <CurriculumTable columns={curriculumColumns} data={curData} />
-
         </TabsContent>
         <TabsContent value="slide">
           <SlideTable columns={slideColumns} data={slideData} />

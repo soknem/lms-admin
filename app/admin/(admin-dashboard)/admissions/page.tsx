@@ -6,7 +6,6 @@ import { AdmissionTable } from "@/components/admincomponent/admissions/data-tabl
 import { getAdmission } from "@/lib/endpoints/MokApi";
 import React from "react";
 import {CurriculumType} from "@/lib/types/admin/materials";
-import curriculum from "@/components/admincomponent/materials/curriculum/curriculum.json";
 import {AdmissionType} from "@/lib/types/admin/admission";
 import adsData from "@/components/admincomponent/admissions/adsData.json"
 
