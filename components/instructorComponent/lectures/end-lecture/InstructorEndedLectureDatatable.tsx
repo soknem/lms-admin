@@ -314,8 +314,7 @@ export function InstructorEndedLectureDatatable<TData, TValue>({
         </div>
 
 
-        {/* Create class form */}
-        <CreateLectureForm />
+
       </div>
 
 

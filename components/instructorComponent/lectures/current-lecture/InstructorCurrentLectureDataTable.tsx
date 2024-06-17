@@ -62,8 +62,16 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
+<<<<<<< HEAD
 import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
 import CreateLectureForm from "@/components/admincomponent/academics/lectures/form/CreateLectureForm";
+=======
+// @ts-ignore
+
+import { inspect } from 'util'
+import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
+import CreateLectureForm from "@/components/adminComponent/academics/lectures/form/CreateLectureForm";
+>>>>>>> 26b8739d2473afd3020f715ebdee44474a22a7b0
 
 
 

@@ -88,7 +88,6 @@ export default function CreateLectureForm() {
     const [openCls, setOpenCls] = React.useState(false)
     const [valueCls, setValueCls] = React.useState("")
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const formik = useFormik({
         initialValues: {
             startTime: "",
@@ -118,7 +117,7 @@ export default function CreateLectureForm() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
-                    <FiPlus className="mr-2 h-4 w-4 " /> Add Class
+                    <FiPlus className="mr-2 h-4 w-4 " /> Add Lecture
                 </Button>
             </DialogTrigger>
             <DialogContent className="bg-white w-[500px] ">

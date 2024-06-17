@@ -8,6 +8,7 @@ import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarCompo
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 import { usePathname } from "next/navigation";
 import ReportSidebar from "@/components/instructorcomponent/reports/sidebar/ReportSidebarComponent";
+import StoreProvider from "@/app/StoreProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,16 +31,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system">
-          <nav className="w-full h-[72px]">
-            <NavbarComponent />
-          </nav>
-          <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-            <aside className="flex">
-              <InstructorSidebarComponent />
-              {showAcademicSidebar && <ReportSidebar/>}
-            </aside>
-            <section className="flex-grow overflow-auto">{children}</section>
-          </section>
+          <StoreProvider>
+            <nav className="w-full h-[72px]">
+              <NavbarComponent/>
+            </nav>
+            <section className="flex flex-grow min-h-[calc(100vh-72px)]">
+              <aside className="flex">
+                <InstructorSidebarComponent/>
+                {showAcademicSidebar && <ReportSidebar/>}
+              </aside>
+              <section className="flex-grow overflow-auto">{children}</section>
+            </section>
+          </StoreProvider>
+
         </ThemeProvider>
       </body>
     </html>

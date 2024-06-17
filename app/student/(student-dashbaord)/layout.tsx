@@ -9,11 +9,9 @@ import { usePathname } from "next/navigation";
 import { ThemeProvider } from "@/components/ui/themeProvider";
 import NavbarComponent from "@/components/studentcomponent/navbar/NavbarComponent";
 import StudentSidebarComponent from "@/components/studentcomponent/sidebar/StudentSidebarComponents";
+import StoreProvider from "@/app/StoreProvider";
+import { inter, suwannaphum } from "@/app/font";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 interface RootLayoutProps {
   children: ReactNode;
 }
@@ -26,24 +24,24 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn(
           "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
-          fontSans.variable
+            inter.variable, suwannaphum.variable
         )}
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
         >
-
-          <nav className="w-full h-[72px]">
-            <NavbarComponent />
-          </nav>
-          <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-            <aside>
-              {showStudentSidebar && <StudentSidebarComponent />}
-            </aside>
-            <section className="w-full">{children}</section>
-          </section>
-
+          <StoreProvider>
+            <nav className="w-full h-[72px]">
+              <NavbarComponent/>
+            </nav>
+            <section className="flex flex-grow min-h-[calc(100vh-72px)]">
+              <aside>
+                {showStudentSidebar && <StudentSidebarComponent/>}
+              </aside>
+              <section className="w-full">{children}</section>
+            </section>
+          </StoreProvider>
 
         </ThemeProvider>
       </body>

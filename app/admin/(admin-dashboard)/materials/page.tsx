@@ -3,7 +3,7 @@ import { slideColumns } from "@/components/admincomponent/materials/slide/column
 import curriculum from "@/components/admincomponent/materials/curriculum/curriculum.json"
 import { videoColumns } from "@/components/admincomponent/materials/video/columns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {  getSlide, getVideo } from "@/lib/endpoints/MokApi";
+import { getSlide, getVideo } from "@/lib/endpoints/MokApi";
 import React from "react";
 import { VideoTable } from "@/components/admincomponent/materials/video/data-table";
 import {CurriculumType} from "@/lib/types/admin/materials";
@@ -11,7 +11,7 @@ import {CurriculumTable} from "@/components/admincomponent/materials/curriculum/
 import {SlideTable} from "@/components/admincomponent/materials/slide/data-table";
 
 export default async function Materials() {
-  const curData : CurriculumType[] = curriculum;
+  const curData: CurriculumType[] = curriculum;
 
   const slideData = await getSlide();
   const videoData = await getVideo();

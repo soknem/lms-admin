@@ -22,7 +22,7 @@ export function CustomErrorMessagePass({
 
     if (touched[fieldName] && typeof errorMessage === "string") {
       toast({
-        variant: "default",
+        variant: "red",
         title: "Validation Password Error",
         description: errorMessage,
       });

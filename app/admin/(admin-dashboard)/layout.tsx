@@ -8,11 +8,12 @@ import { ReactNode, useState } from "react";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
+import { inter, suwannaphum } from "@/app/font";
+import StoreProvider from "@/app/StoreProvider";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import Error from "@/app/error";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+
 interface RootLayoutProps {
   children: ReactNode;
 }
@@ -29,21 +30,27 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
       <body
         className={cn(
           "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
-          fontSans.variable
+            inter.variable, suwannaphum.variable
         )}
       >
-        <nav className="w-full h-[72px]">
-          <NavbarComponent />
-        </nav>
+      <StoreProvider>
+          <ErrorBoundary errorComponent={Error}>
+              <nav className="w-full h-[72px]">
+                  <NavbarComponent/>
+              </nav>
 
-        <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-          <aside className="flex">
-            <AdminSidebarComponent />
-            {showAcademicSidebar && <AcademicSidebar />}
-          </aside>
+              <section className="flex flex-grow min-h-[calc(100vh-72px)]">
+                  <aside className="flex">
+                      <AdminSidebarComponent/>
+                      {showAcademicSidebar && <AcademicSidebar/>}
+                  </aside>
 
-          <section className="flex-grow overflow-auto text-lms-black-90  ">{children}</section>
-        </section>
+                  <section className="flex-grow overflow-auto text-lms-black-90  ">{children}</section>
+              </section>
+          </ErrorBoundary>
+
+      </StoreProvider>
+
       </body>
     </html>
   );

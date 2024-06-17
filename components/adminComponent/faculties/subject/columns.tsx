@@ -9,8 +9,12 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, SubjectType } from "@/lib/types/admin/faculty";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
+import ActionsCell from "@/components/adminComponent/faculties/subject/SubActionCell";
 
+<<<<<<< HEAD
 import ActionsCell from "@/components/admincomponent/faculties/subject/SubActionCell";
+=======
+>>>>>>> 26b8739d2473afd3020f715ebdee44474a22a7b0
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();

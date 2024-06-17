@@ -9,11 +9,19 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InstructorCurrentLectureDataTable } from "@/components/instructorcomponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
-import { InstructorCurrentLectureColumns } from "@/components/instructorcomponent/lectures/current-lecture/InstructorCurrentLectureColumns";
-import { InstructorEndedLectureDatatable } from "@/components/instructorcomponent/lectures/end-lecture/InstructorEndedLectureDatatable";
-import { InstructorEndedLectureColumns } from "@/components/instructorcomponent/lectures/end-lecture/InstructorEndedLectureColumns";
-import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json";
+import lectures from "./data/lectures.json"
+import {
+  InstructorCurrentLectureDataTable
+} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
+import {
+  InstructorCurrentLectureColumns
+} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureColumns";
+import {
+  InstructorEndedLectureDatatable
+} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureDatatable";
+import {
+  InstructorEndedLectureColumns
+} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureColumns";
 
 export default function Lecture() {
   const data: LectureType[] = lectures;
