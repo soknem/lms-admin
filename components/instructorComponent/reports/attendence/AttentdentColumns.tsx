@@ -69,18 +69,24 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   if (column.id === "status") {
     return (
-      <span
-        className={
-          value === "Active"
-            ? "text-green-500"
-            : value === "Drop"
-            ? "text-red-500"
-            : value === "Hiatus"
-            ? "text-gray-400"
-            : ""
-        }
-      >
-        {value}
+        <span
+            className={
+              value === 1
+                  ? "Active text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+                  : value === 2
+                      ? "Drop text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                      : value === 3
+                          ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+                          : ""
+            }
+        >
+        {value == 1
+            ? "Active"
+            : value == 2
+                ? "Drop"
+                : value == 3
+                    ? "Draft"
+                    : ""}
       </span>
     );
   }
@@ -244,22 +250,22 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
     accessorKey: "status",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          STATUS
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            STATUS
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
     meta: {
       type: "select",
       options: [
-        { value: "Active", label: "Active" },
-        { value: "Drop", label: "Drop" },
-        { value: "Hiatus", label: "Hiatus" },
+        { value: 1, label: "Active" },
+        { value: 2, label: "Drop" },
+        { value: 3, label: "Draft" },
       ],
     },
   },
@@ -267,4 +273,5 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
     id: "edit",
     cell: EditCell,
   },
+
 ];
