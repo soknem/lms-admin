@@ -2,7 +2,6 @@
 
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
-//import from shad cn
 import {
     ColumnDef,
     flexRender,
@@ -35,7 +34,6 @@ import {
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-// @ts-ignore
 import {CreateDeForm} from "./CreateDeForm";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 

@@ -1,6 +1,3 @@
-// @ts-ignore
-import StudyDetailtTable from "@/components/admincomponent/faculties/studygrogram/studyprogram-detail/studydetail";
-// @ts-ignore
 import MoreInfo from "@/components/admincomponent/users/students/StuMoreInfo";
 import {
   Breadcrumb,
@@ -9,8 +6,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { PiCertificateFill } from "react-icons/pi";

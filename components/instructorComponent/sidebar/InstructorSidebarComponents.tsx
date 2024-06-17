@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
-import {Logout, MenuList} from "@/components/instructorComponent/sidebar/instructorMenu";
+import {Logout, MenuList} from "@/components/instructorcomponent/sidebar/instructorMenu";
 
 type MenuItem = {
   path: string;
@@ -19,7 +19,6 @@ type LogoutItem = {
 };
 
 export default function AdminSidebarComponent() {
-  // @ts-ignore
   const [menuList, setMenuList] = useState<MenuItem[]>(MenuList);
   const [logout, setLogout] = useState<LogoutItem[]>(Logout);
   const pathname = usePathname();

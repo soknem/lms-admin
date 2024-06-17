@@ -34,7 +34,6 @@ import { Button } from "@/components/ui/button"
 import { FaSearch } from "react-icons/fa";
 
 import { useRouter } from 'next/navigation'
-// @ts-ignore
 import {CalendarIcon} from "lucide-react";
 
 

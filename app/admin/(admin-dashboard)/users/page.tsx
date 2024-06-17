@@ -1,13 +1,9 @@
 
-// @ts-ignore
 import { userStudentColumns } from "@/components/admincomponent/users/students/columns";
-// @ts-ignore
 import { UserStudentTable } from "@/components/admincomponent/users/students/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRouter } from "next/navigation";
 import { getStudent } from "@/lib/endpoints/MokApi";
-// @ts-ignore
-import StaffList from "@/components/adminComponent/users/staff/StaffList";
+import StaffList from "@/components/admincomponent/users/staff/StaffList";
 
 
 export default async function Users() {

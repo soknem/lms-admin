@@ -4,7 +4,7 @@ import {usePathname} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {useTheme} from "next-themes";
 import {BsMoonStarsFill, BsSunFill} from "react-icons/bs";
-import {MenuList, Logout} from "@/components/adminComponent/sidebar/adminMenu";
+import {MenuList, Logout} from "@/components/admincomponent/sidebar/adminMenu";
 
 type MenuItem = {
     path: string;

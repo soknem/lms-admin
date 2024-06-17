@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import instructorProfile from "@/public/intructor.jpg";
-import StaffDetailComponent from "@/components/adminComponent/users/staff/StaffDetailComponent";
-// import InstructorDetail from "@/components/adminComponent/users/staff/InstructorDetail";
+import StaffDetailComponent from "@/components/admincomponent/users/staff/StaffDetailComponent";
 
 const insData = {
     id: "000001",

@@ -36,10 +36,8 @@ import {
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-// @ts-ignore
-import {CreateMaterialForm} from "@/components/adminComponent/materials/addMaterialForm";
+import {CreateMaterialForm} from "@/components/admincomponent/materials/addMaterialForm";
 
-//custom component import
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];

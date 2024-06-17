@@ -4,13 +4,10 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ReactNode, useState } from "react";
 import { ThemeProvider } from "@/components/ui/themeProvider";
-// @ts-ignore
 import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
-// @ts-ignore
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 import { usePathname } from "next/navigation";
-// @ts-ignore
-import ReportSidebar from "@/components/instructorComponent/reports/sidebar/ReportSidebarComponent";
+import ReportSidebar from "@/components/instructorcomponent/reports/sidebar/ReportSidebarComponent";
 
 const fontSans = FontSans({
   subsets: ["latin"],

@@ -16,10 +16,10 @@ import { BiSolidBookOpen } from "react-icons/bi";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 //components
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
-// @ts-ignore
-import MoreInfo from "./StaffMoreInfoComponent";
-// @ts-ignore
-import CourseCardComponent from "./CourseCardComponent";
+import MoreInfo from "@/components/admincomponent/users/staff/StaffMoreInfoComponent";
+import CourseCardComponent from "@/components/admincomponent/users/staff/CourseCardComponent";
+// import MoreInfo from "./StaffMoreInfocomponent";
+// import CourseCardComponent from "./CourseCardComponent";
 
 type cardProps = {
     id: string,

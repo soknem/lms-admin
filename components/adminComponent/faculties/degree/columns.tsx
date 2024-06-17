@@ -1,23 +1,14 @@
 "use client";
 import {RxCross2} from "react-icons/rx";
 import {IoCheckmarkSharp} from "react-icons/io5";
-import {MdEdit} from "react-icons/md";
 
 import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal, ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
 
 import {DegreeType, StatusOption} from "@/lib/types/admin/faculty";
-// @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/degree/DegreeActionCell";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 

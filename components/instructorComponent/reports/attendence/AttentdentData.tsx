@@ -60,8 +60,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-// @ts-ignore
-import { inspect } from "util";
+
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 import { Label } from "@radix-ui/react-dropdown-menu";
 

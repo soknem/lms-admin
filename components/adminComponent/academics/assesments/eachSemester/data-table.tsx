@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 
 
-//import from shad cn
 import {
   ColumnDef,
   flexRender,
@@ -36,14 +35,11 @@ import {
 
 import { Input } from '@/components/ui/input'
 
-//custom component import
 import { FaSearch } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button"
 
-import { TbSearch } from "react-icons/tb";
 
-import { useMediaQuery } from "usehooks-ts"
 import {
   Command,
   CommandEmpty,

@@ -1,26 +1,16 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  getDegree,
-  getFaculties,
   getStudyProgram,
   getSubject,
 } from "@/lib/endpoints/MokApi";
-// @ts-ignore
 import { FacultyTable } from "@/components/admincomponent/faculties/faculty/data-table";
-// @ts-ignore
 import { facultyColumns } from "@/components/admincomponent/faculties/faculty/columns";
-// @ts-ignore
 import { DegreeTable } from "@/components/admincomponent/faculties/degree/data-table";
-// @ts-ignore
 import { degreeColumns } from "@/components/admincomponent/faculties/degree/columns";
-// @ts-ignore
 import { StudyProgramTable } from "@/components/admincomponent/faculties/studygrogram/data-table";
-// @ts-ignore
 import { studyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/columns";
-// @ts-ignore
 import { SubjectTable } from "@/components/admincomponent/faculties/subject/data-table";
-// @ts-ignore
 import { subjectColumns } from "@/components/admincomponent/faculties/subject/columns";
 import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
 import facData from "@/components/admincomponent/faculties/faculty/facData.json";

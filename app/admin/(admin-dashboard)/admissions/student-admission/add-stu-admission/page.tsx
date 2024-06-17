@@ -1,6 +1,4 @@
-// @ts-ignore
-
-import { AddStudentAmsForm } from "@/components/adminComponent/admissions/student-admission/addStudentAmsForm";
+import { AddStudentAmsForm } from "@/components/admincomponent/admissions/student-admission/addStudentAmsForm";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -8,14 +6,8 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaCamera } from "react-icons/fa6";
-import { IoCameraOutline } from "react-icons/io5";
-import { PiCertificateFill } from "react-icons/pi";
 
 export default function Users() {
     return (

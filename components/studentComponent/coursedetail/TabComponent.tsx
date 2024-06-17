@@ -1,16 +1,13 @@
 'use client'
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// @ts-ignore
-import CurriculumComponent from "./CurriculumComponent";
-// @ts-ignore
-import SlideComponent from "./SlideComponent";
-// @ts-ignore
-import VideoComponent from "./VideoComponent";
 import {Button} from "@/components/ui/button";
 
 import {TbArrowNarrowRight} from "react-icons/tb";
 import {useRouter} from "next/navigation";
+import CurriculumComponent from "@/components/studentcomponent/coursedetail/CurriculumComponent";
+import SlideComponent from "@/components/studentcomponent/coursedetail/SlideComponent";
+import VideoComponent from "@/components/studentcomponent/coursedetail/VideoComponent";
 
 
 export default function TabComponent() {

@@ -1,11 +1,8 @@
-// @ts-ignore
 import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
-// @ts-ignore
 import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
 
-// @ts-ignore
-import TabComponent from "@/components/studentComponent/coursedetail/TabComponent";
+import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
 
 export default function coursedetail() {
   return (

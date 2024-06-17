@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { BsMoonStarsFill, BsSunFill } from 'react-icons/bs';
 import { useTheme } from "next-themes";
-import {Logout, MenuList} from "@/components/studentComponent/sidebar/studentMenu";
+import {Logout, MenuList} from "@/components/studentcomponent/sidebar/studentMenu";
 
 type MenuItem = {
     path: string;

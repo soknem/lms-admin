@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-// @ts-ignore
 
 const courseCardData = {
   title: "Web Design",

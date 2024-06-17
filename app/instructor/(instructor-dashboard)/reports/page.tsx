@@ -1,4 +1,3 @@
-// @ts-ignore
 import { DateComponent } from "@/components/instructorcomponent/reports/timesheet/DateComponent";
 import TabReportComponent from "@/components/instructorcomponent/reports/timesheet/TabReportComponent";
 import React from "react";

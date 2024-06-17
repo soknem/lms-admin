@@ -12,25 +12,16 @@ import semesterAssessments from "@/app/admin/(admin-dashboard)/academics/assessm
 //each course import
 import {courseAssessmentType} from "@/lib/types/admin/academics";
 import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments/data/courseAssesment.json"
-
-
 import React from "react";
-// @ts-ignore
 import {TranscriptDataTable} from "@/components/admincomponent/academics/assesments/transcript/data-table";
-// @ts-ignore
 import {TranscriptColumns} from "@/components/admincomponent/academics/assesments/transcript/columns";
-// @ts-ignore
 import {CourseAssesmentDataTable} from "@/components/admincomponent/academics/assesments/eachCourse/data-table";
-// @ts-ignore
 import {CourseAssessmentColumns} from "@/components/admincomponent/academics/assesments/eachCourse/columns";
-// @ts-ignore
-
-import {SemesterDataTable} from "@/components/adminComponent/academics/assesments/eachSemester/data-table";
+import {SemesterDataTable} from "@/components/admincomponent/academics/assesments/eachSemester/data-table";
 import {
     eachSemesterColumn,
 }
-// @ts-ignore
-    from "@/components/adminComponent/academics/assesments/eachSemester/columns";
+    from "@/components/admincomponent/academics/assesments/eachSemester/columns";
 
 export default function Assessment() {
 
@@ -41,7 +32,6 @@ export default function Assessment() {
     const courseData: courseAssessmentType[] = courseAssesment;
 
 
-    // @ts-ignore
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
             <h2 className="text-3xl text-lms-primary font-bold">Assesments</h2>

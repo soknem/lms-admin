@@ -26,41 +26,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-import { Input } from "@/components/ui/input";
 
-//custom component import
-import { FaSearch } from "react-icons/fa";
-
-import { Button } from "@/components/ui/button";
-
-import { TbSearch } from "react-icons/tb";
-
-import { useMediaQuery } from "usehooks-ts";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import { TbFilter } from "react-icons/tb";
-
-import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from "next/navigation";
 import { Label } from "@radix-ui/react-dropdown-menu";
 

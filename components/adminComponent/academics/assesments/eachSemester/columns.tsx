@@ -1,27 +1,11 @@
 'use client'
-import { RxCross2 } from "react-icons/rx";
-import { IoCheckmarkSharp } from "react-icons/io5";
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
-import { TbArchive, TbFileIsr, TbTrash } from "react-icons/tb";
-import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { OptionType, SubjectType, semesterAssessementType } from "@/lib/types/admin/academics";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import StatusBadge from "@/components/common/StatusBadge";
-import {className} from "postcss-selector-parser";
 
-// Helper function to get unique subjects from the data
 const getUniqueSubjects = (data: semesterAssessementType[]) => {
     const subjectsSet = new Set<string>();
     data.forEach((item) => {

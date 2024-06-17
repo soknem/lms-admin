@@ -9,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-// @ts-ignore
 import { EditSetStuProForm } from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/EditSetStuProForm";
 
 const ActionsCell = ({ row }: any) => {

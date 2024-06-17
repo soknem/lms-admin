@@ -35,7 +35,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// @ts-ignore
 import { CreateMaterialForm } from "../addMaterialForm";
 
 //custom component import

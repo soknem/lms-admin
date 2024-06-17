@@ -1,4 +1,3 @@
-// @ts-ignore
 import { EditInsProForm } from "@/components/instructorcomponent/setting/EditInsPro";
 import { Button } from "@/components/ui/button";
 import React from "react";

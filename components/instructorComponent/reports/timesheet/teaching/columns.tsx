@@ -1,24 +1,13 @@
 "use client";
-import { RxCross2 } from "react-icons/rx";
-import { IoCheckmarkSharp } from "react-icons/io5";
+
 
 import { ColumnDef } from "@tanstack/react-table";
 
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { TbArchive } from "react-icons/tb";
-import { TbFileIsr } from "react-icons/tb";
-import { format } from "date-fns";
+
 
 import { Button } from "@/components/ui/button";
-import { TbTrash } from "react-icons/tb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { TeachingType } from "@/lib/types/instructor/teachingtype";
