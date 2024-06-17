@@ -1,3 +1,4 @@
+// CardLogin.tsx
 'use client'
 import * as React from "react";
 import { useState } from "react";
@@ -12,7 +13,6 @@ import * as Yup from "yup";
 import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail';
 import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
 
-// Define initial values for the form fields
 interface InitialValues {
     emailOrUsername: string;
     password: string;
@@ -23,13 +23,11 @@ const initialValues: InitialValues = {
     password: "",
 };
 
-// Define validation schema using Yup
 const validationSchema = Yup.object({
     emailOrUsername: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
 });
 
-// Define function to get field class name based on validation status
 const getFieldClassName = (
     errors: FormikErrors<InitialValues>,
     touched: FormikTouched<InitialValues>,
@@ -44,9 +42,24 @@ const getFieldClassName = (
         : `${baseClass} ${validClass}`;
 };
 
-// Define CardLogin component
+interface DecodedToken {
+    iss: string;
+    sub: string;
+    exp: number;
+    iat: number;
+    roles: string[];
+}
+
+function parseJwt(token: string): DecodedToken | null {
+    if (!token) { return null; }
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+}
+
 export function CardLogin() {
     const [showPassword, setShowPassword] = useState(false);
+    const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
     const router = useRouter();
 
     const handleShowPassword = () => {
@@ -65,7 +78,23 @@ export function CardLogin() {
             .then((data) => {
                 console.log("data from login: ", data);
                 if (data.accessToken) {
-                    router.push("/admin/faculties");
+                    const decoded = parseJwt(data.accessToken);
+                    if (decoded) {
+                        setDecodedToken(decoded);
+                        // Check user role and navigate accordingly
+                        if (decoded.roles.includes("admin")) {
+                            router.push("/admin/faculties");
+                        } else if (decoded.roles.includes("student")) {
+                            router.push("/student/courses");
+                        } else if (decoded.roles.includes("instructor")) {
+                            router.push("/instructor/courses");
+                        } else {
+                            alert("Unauthorized Role");
+                        }
+                    }
+                    console.log("decoded Token from login: ",decodedToken?.roles || "no role")
+
+                    // router.push("/admin/faculties");
                 } else {
                     alert("Login Failed");
                     actions.setSubmitting(false);
@@ -103,7 +132,6 @@ export function CardLogin() {
                         <CardContent>
                             <Form>
                                 <section className="grid w-full items-center gap-4">
-                                    {/* Email field */}
                                     <section className="space-y-2">
                                         <label className="text-[15px] dark:text-gray-600" htmlFor="email">
                                             Email
@@ -120,7 +148,6 @@ export function CardLogin() {
                                         />
                                         <CustomErrorMessageEmail errors={errors} touched={touched} fieldName="emailOrUsername" />
                                     </section>
-                                    {/* Password field */}
                                     <section className="space-y-2">
                                         <label className="text-[15px] dark:text-gray-600" htmlFor="password">
                                             Password
@@ -147,13 +174,11 @@ export function CardLogin() {
                                         </section>
                                         <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password" />
                                     </section>
-                                    {/* Link for first time login */}
                                     <p className="text-center mt-4">
                                         <a href="/reset" className="text-[#253C95] dark:text-[#253C95] hover:underline">
                                             First time login?
                                         </a>
                                     </p>
-                                    {/* Submit button */}
                                     <Button
                                         className="w-full bg-[#253C95] dark:bg-[#253C95] hover:bg-blue-500 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl"
                                         type="submit"
@@ -162,6 +187,16 @@ export function CardLogin() {
                                     </Button>
                                 </section>
                             </Form>
+                            {/*{decodedToken && (*/}
+                            {/*    <div className="mt-4 p-4 border rounded-md">*/}
+                            {/*        <h3 className="text-xl font-bold mb-2">Decoded Token Information</h3>*/}
+                            {/*        <p><strong>Issuer:</strong> {decodedToken.iss}</p>*/}
+                            {/*        <p><strong>Username:</strong> {decodedToken.sub}</p>*/}
+                            {/*        <p><strong>Expiration:</strong> {new Date(decodedToken.exp * 1000).toLocaleString()}</p>*/}
+                            {/*        <p><strong>Issued At:</strong> {new Date(decodedToken.iat * 1000).toLocaleString()}</p>*/}
+                            {/*        <p><strong>Roles:</strong> {decodedToken.roles.join(', ')}</p>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
                         </CardContent>
                     </section>
                 )}
