@@ -45,28 +45,27 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
-      <select
-        className="border-1 border-gray-300 rounded-md focus:to-primary"
-        onChange={onSelectChange}
-        value={value}
-      >
-        {columnMeta?.options?.map((option: StatusOption) => (
-          <option key={option.label} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        <select
+            className="border-1 border-gray-300 rounded-md focus:to-primary"
+            onChange={onSelectChange}
+            value={value}
+        >
+          {columnMeta?.options?.map((option: StatusOption) => (
+              <option key={option.label} value={option.value}>
+                {option.label}
+              </option>
+          ))}
+        </select>
     ) : (
-      <input
-        className="w-full p-2 border-1 border-gray-300 rounded-md"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        type={columnMeta?.type || "text"}
-      />
+        <input
+            className="w-full p-2 border-1 border-gray-300 rounded-md"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={onBlur}
+            type={columnMeta?.type || "text"}
+        />
     );
   }
-
   if (column.id === "status") {
     return (
         <span
@@ -269,6 +268,7 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
       ],
     },
   },
+
   {
     id: "edit",
     cell: EditCell,
