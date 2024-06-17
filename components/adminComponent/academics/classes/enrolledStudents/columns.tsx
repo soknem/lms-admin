@@ -12,20 +12,11 @@ import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button'
 import { TbTrash  } from "react-icons/tb";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
 import { OptionType , StudentType } from "@/lib/types/admin/academics";
 
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import StatusBadge from "@/components/common/StatusBadge";
 
 

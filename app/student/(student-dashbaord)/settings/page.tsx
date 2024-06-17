@@ -1,5 +1,4 @@
-// @ts-ignore
-import { EditInsProForm } from "@/components/instructorComponent/setting/EditInsPro";
+import { EditInsProForm } from "@/components/instructorcomponent/setting/EditInsPro";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { PiCertificateFill } from "react-icons/pi";

@@ -1,5 +1,4 @@
 import instructorProfile from "@/public/intructor.jpg";
-
 export const InsData = [
     {
         id: 1,

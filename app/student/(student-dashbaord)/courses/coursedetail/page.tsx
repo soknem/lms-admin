@@ -1,7 +1,6 @@
 
 import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
 import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
-// @ts-ignore
 import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
 import React from "react";
 

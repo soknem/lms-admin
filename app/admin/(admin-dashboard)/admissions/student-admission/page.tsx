@@ -1,6 +1,4 @@
-// @ts-ignore
 import { StudentAdmissionColumns } from "@/components/admincomponent/admissions/student-admission/columns";
-// @ts-ignore
 import { StudentAdmissionTable } from "@/components/admincomponent/admissions/student-admission/data-table";
 import {
   Breadcrumb,
@@ -9,7 +7,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-// import { getAdmission, getStudentAdmission } from "@/lib/endpoints/MokApi";
 import Link from "next/link";
 import React from "react";
 import { StudentAdmissionType} from "@/lib/types/admin/admission";

@@ -7,8 +7,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-// @ts-ignore
-import {EditUserStaffForm} from "@/components/adminComponent/users/staff/EditUserStaffForm";
+import {EditUserStaffForm} from "@/components/admincomponent/users/staff/EditUserStaffForm";
 
 
 export default function Users() {

@@ -60,8 +60,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from "next/navigation";
-// @ts-ignore
-import { inspect } from "util";
+
 import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
@@ -345,7 +344,7 @@ export function AttentdentData<TData, TValue>({
       </div>
 
       {/* Table */}
-      <div className="rounded-md p-4 bg-lms-white-80">
+      <div className="rounded-md p-4 bg-lms-white-80  ">
         <div className="flex justify-between p-4 ">
           <div>
             <Label className="text-lms-gray-80 ">Generation</Label>
@@ -370,18 +369,16 @@ export function AttentdentData<TData, TValue>({
           </div>
           <div>
             <Label className="text-lms-gray-80">Class</Label>
-            <div className="flex gap-2">
-              <p className="flextext-lms-black90 font-medium">
-                Istad 01
-              </p>
-            </div>
-            <Label className="text-lms-gray-80">Duration</Label>
-            <div className="flex gap-2">
-              <p className="flextext-lms-black90 font-medium">
-                01/02/2021-02/03/2023
-              </p>
-            </div>
+            <p className="flextext-lms-black90 font-medium">
+              Istad 01</p>
           </div>
+          <div>
+            <Label className="text-lms-gray-80">Duration</Label>
+            <p className="flextext-lms-black90 font-medium">
+              11/02/2021-12/02/2024</p>
+          </div>
+
+
         </div>
         <div className="bg-lms-transcript-header p-4 rounded-md">
           <p className="text-lms-gray-80 font-semibold">Scores Point</p>

@@ -12,10 +12,10 @@ import Link from "next/link";
 import Attendences from "@/app/instructor/(instructor-dashboard)/courses/coursedetail/lectures/data/Attendances.json"
 import {
     StudentAttendanceDataTable
-} from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceDataTable";
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceDataTable";
 import {
     StudentAttendanceColumns
-} from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceColumns";
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns";
 
 export default function StudentAttendance() {
     const data : studentAttendanceType[] = Attendences

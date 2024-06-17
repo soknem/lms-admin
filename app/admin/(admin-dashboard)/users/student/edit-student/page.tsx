@@ -1,4 +1,3 @@
-// @ts-ignore
 import { EditUserStuForm } from "@/components/admincomponent/users/students/EditUserStu";
 import {
   Breadcrumb,

@@ -62,8 +62,7 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-// @ts-ignore
-import CreateClassForm from "@/components/adminComponent/academics/classes/CreateClassForm";
+import CreateClassForm from "@/components/admincomponent/academics/classes/CreateClassForm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

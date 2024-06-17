@@ -3,10 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Teaching from "@/app/instructor/(instructor-dashboard)/reports/timesheet/teaching/page";
 import Payment from "@/app/instructor/(instructor-dashboard)/reports/timesheet/payment/page";
 
-// import HeaderComponent1 from "@/components/instructorComponent/reports/timesheet/teaching/HeaderComponent";
-// import HeaderComponent from "@/components/instructorComponent/reports/timesheet/payment/HeaderComponent";
-// import Tabledata from "@/components/instructorComponent/reports/timesheet/payment/Tabledata";
-// import Tabledata1 from "@/components/instructorComponent/reports/timesheet/teaching/Tabledata1";
+
 
 export default function TabReportComponent() {
   return (

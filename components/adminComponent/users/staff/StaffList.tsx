@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { InsData } from "@/app/admin/(admin-dashboard)/users/data/StaffData";
 // @ts-ignore
 import InstructorCardComponent from "./InstructorCardComponent";
-import UserStaffComponent from "@/components/card/staff/CardDisableComponent";
 
 export default function StaffList() {
   const router = useRouter();

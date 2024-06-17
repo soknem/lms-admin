@@ -9,10 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-// @ts-ignore
-import { EditFacForm } from "./EditFacForm";
-// @ts-ignore
-import { ViewFacForm } from "./ViewFacForm";
+
 import {useRouter} from "next/navigation";
 
 const MoreInfo = () => {

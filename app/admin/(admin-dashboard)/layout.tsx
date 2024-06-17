@@ -1,22 +1,15 @@
 "use client";
 import "@/app/globals.css";
-import { Inter as FontSans } from "next/font/google";
 import { usePathname } from "next/navigation";
-
 import { cn } from "@/lib/utils";
-import { ReactNode, useState } from "react";
-// @ts-ignore
-import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
-// @ts-ignore
-import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
-// @ts-ignore
-import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
+import { ReactNode } from "react";
 import { inter, suwannaphum } from "@/app/font";
 import StoreProvider from "@/app/StoreProvider";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import Error from "@/app/error";
-
-
+import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 interface RootLayoutProps {
   children: ReactNode;
 }

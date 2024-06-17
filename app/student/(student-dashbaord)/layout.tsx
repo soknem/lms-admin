@@ -7,9 +7,7 @@ import { ReactNode, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { ThemeProvider } from "@/components/ui/themeProvider";
-// @ts-ignore
 import NavbarComponent from "@/components/studentcomponent/navbar/NavbarComponent";
-// @ts-ignore
 import StudentSidebarComponent from "@/components/studentcomponent/sidebar/StudentSidebarComponents";
 import StoreProvider from "@/app/StoreProvider";
 import { inter, suwannaphum } from "@/app/font";

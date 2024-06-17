@@ -1,9 +1,6 @@
-// @ts-ignore
 import { paymentColumns } from "@/components/admincomponent/payments/columns";
-// @ts-ignore
 import { PaymentTable } from "@/components/admincomponent/payments/data-table";
 import React from "react";
-
 import {PaymentType} from "@/lib/types/admin/payments";
 import payData from "@/components/admincomponent/payments/payData.json"
 

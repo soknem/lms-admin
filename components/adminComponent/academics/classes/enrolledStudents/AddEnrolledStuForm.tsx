@@ -4,18 +4,6 @@ import {FiPlus} from "react-icons/fi";
 import { useFormik } from "formik";
 import * as Yup from 'yup'
 import RequiredFieldLabelComponent from "@/components/common/RequiredFieldLabelComponent";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import {Label} from "@/components/ui/label";
-// dropdown import
-import { IoIosArrowDown } from "react-icons/io";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 import React from "react";
 type Checked = DropdownMenuCheckboxItemProps["checked"]

@@ -152,7 +152,7 @@ export function CreateStudyProForm() {
           <FiPlus className="mr-2 h-4 w-4" /> Add Study Program
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[480px] h-[80%] overflow-y-auto bg-white ">
+      <DialogContent className="w-[480px] h-[80%] scr overflow-y-auto overflow-x-hidden bg-white ">
         <DialogHeader>
           <DialogTitle>Add Study Program</DialogTitle>
         </DialogHeader>

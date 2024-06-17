@@ -20,8 +20,6 @@ import {
     StatusOption,
     StudyProgramType,
 } from "@/lib/types/admin/faculty";
-import {useRouter} from "next/navigation";
-// @ts-ignore
 import ActionsCell from "@/components/admincomponent/faculties/studygrogram/StudyProgramActtionCell";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 

@@ -1,13 +1,9 @@
 import React from "react";
 
-//import component
 
-//import type
 import { LectureType } from "@/lib/types/admin/academics";
 import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
-// @ts-ignore
 import { LectureDataTable } from "@/components/admincomponent/academics/lectures/LectureDataTable";
-// @ts-ignore
 import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
 
 export default  function Lecture() {

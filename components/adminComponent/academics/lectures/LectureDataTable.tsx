@@ -52,11 +52,9 @@ import { TbFilter } from "react-icons/tb";
 
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
-// @ts-ignore
 
 import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
-// @ts-ignore
-import CreateLectureForm from "@/components/adminComponent/academics/lectures/form/CreateLectureForm";
+import CreateLectureForm from "@/components/admincomponent/academics/lectures/form/CreateLectureForm";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
