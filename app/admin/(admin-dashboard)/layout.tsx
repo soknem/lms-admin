@@ -3,13 +3,13 @@ import "@/app/globals.css";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
-import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
-import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 import { inter, suwannaphum } from "@/app/font";
 import StoreProvider from "@/app/StoreProvider";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import Error from "@/app/error";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
+import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
+import AcademicSidebar from "@/components/admincomponent/academics/sidebar/AcademicSidebarComponent";
 interface RootLayoutProps {
   children: ReactNode;
 }

@@ -63,7 +63,7 @@ export default function AdminSidebarComponent() {
                                 }`}
                             />
                             {isHovered && (
-                                <span className="text-lg font-medium transition-opacity duration-300 opacity-100">
+                                <span className="text-lg font-medium transition-opacity duration-500 opacity-100">
                                     {item.title}
                                 </span>
                             )}
