@@ -12,16 +12,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import lectures from "./data/lectures.json"
 import {
   InstructorCurrentLectureDataTable
-} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
+} from "@/components/instructorcomponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
 import {
   InstructorCurrentLectureColumns
-} from "@/components/instructorComponent/lectures/current-lecture/InstructorCurrentLectureColumns";
+} from "@/components/instructorcomponent/lectures/current-lecture/InstructorCurrentLectureColumns";
 import {
   InstructorEndedLectureDatatable
-} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureDatatable";
+} from "@/components/instructorcomponent/lectures/end-lecture/InstructorEndedLectureDatatable";
 import {
   InstructorEndedLectureColumns
-} from "@/components/instructorComponent/lectures/end-lecture/InstructorEndedLectureColumns";
+} from "@/components/instructorcomponent/lectures/end-lecture/InstructorEndedLectureColumns";
 
 export default function Lecture() {
   const data: LectureType[] = lectures;

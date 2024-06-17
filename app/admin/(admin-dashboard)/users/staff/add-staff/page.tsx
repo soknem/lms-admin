@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-import AddStaffForm from "@/components/adminComponent/users/staff/AddStaffForm";
+import AddStaffForm from "@/components/admincomponent/users/staff/AddStaffForm";
 
 export default function AddStaff(){
     return (

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-import AddInstructorForm from "@/components/adminComponent/users/staff/AddInstructorForm";
+import AddInstructorForm from "@/components/admincomponent/users/staff/AddInstructorForm";
 
 export default function AddInstructor(){
     return (

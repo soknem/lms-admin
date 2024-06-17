@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-'use client'
-import {Input} from "@/components/ui/input";
-import {FaSearch} from "react-icons/fa";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {FiPlus} from "react-icons/fi";
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
-import {InsData} from "@/app/admin/(admin-dashboard)/users/data/StaffData";
-import InstructorCardComponent from "@/components/admincomponent/users/staff/InstructorCardComponent";
-=======
 "use client";
 import { Input } from "@/components/ui/input";
 import { FaSearch } from "react-icons/fa";
@@ -26,8 +14,6 @@ import { useRouter } from "next/navigation";
 import { InsData } from "@/app/admin/(admin-dashboard)/users/data/StaffData";
 // @ts-ignore
 import InstructorCardComponent from "./InstructorCardComponent";
-import UserStaffComponent from "@/components/card/staff/CardDisableComponent";
->>>>>>> 26b8739d2473afd3020f715ebdee44474a22a7b0
 
 export default function StaffList() {
   const router = useRouter();
