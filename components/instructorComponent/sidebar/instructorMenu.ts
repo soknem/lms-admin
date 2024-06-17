@@ -11,21 +11,25 @@ export const MenuList = [
   {
     path: "/instructor/courses",
     icon: ImBooks,
+    title: "Courses",
     active: false,
   },
   {
     path: "/instructor/schedules",
     icon: AiFillSchedule,
+    title: "Schedules",
     active: false,
   }, 
   {
     path: "/instructor/materials",
     icon: BiSolidComponent,
+    title: "Materials",
     active: false,
   },
   {
     path: "/instructor/assessments",
     icon: MdAssessment,
+    title: "Assessments",
     active: false,
   },
   
@@ -33,11 +37,13 @@ export const MenuList = [
   {
     path: "/instructor/reports",
     icon: HiDocumentReport,
+    title: "Reports",
     active: false,
   },
   {
     path: "/instructor/settings",
     icon: IoSettings,
+    title: "Settings",
     active: false,
   }
 ];
@@ -46,6 +52,7 @@ export const Logout = [
   {
     path: "#",
     icon: AiOutlineLogout,
+    title: "Logout",
     active: false,
   },
 ];

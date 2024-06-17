@@ -10,17 +10,20 @@ export const MenuList = [
   {
     path: "/student/courses",
     icon: ImBooks,
+    title: "Course",
     active: false,
   },
 
   {
     path: "/student/achivements",
     icon: FaAddressCard,
+    title: "Achievements",
     active: false,
   },
   {
     path: "/student/settings",
     icon: IoSettings,
+    title: "Setting",
     active: false,
   }
 ];
@@ -29,6 +32,7 @@ export const Logout = [
   {
     path: "#",
     icon: AiOutlineLogout,
+    title: "Logout",
     active: false,
   },
 ];

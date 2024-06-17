@@ -120,7 +120,7 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 export function EditStudyProForm() {
   return (
     <Dialog open>
-      <DialogContent className="w-[480px] h-[80%] overflow-y-auto bg-white ">
+      <DialogContent className="w-[480px] h-[80%] scr overflow-y-auto overflow-x-hidden bg-white ">
         <DialogHeader>
           <DialogTitle>Edit Study Program</DialogTitle>
         </DialogHeader>
