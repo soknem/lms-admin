@@ -32,11 +32,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system">
           <StoreProvider>
-            <nav className="w-full h-[72px]">
+            <nav className="w-full h-[72px] shadow-md">
               <NavbarComponent/>
             </nav>
-            <section className="flex flex-grow min-h-[calc(100vh-72px)]">
-              <aside className="flex">
+            <section className="flex flex-grow h-[calc(100vh-72px)]">
+              <aside className="flex shadow-md">
                 <InstructorSidebarComponent/>
                 {showAcademicSidebar && <ReportSidebar/>}
               </aside>

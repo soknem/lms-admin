@@ -149,34 +149,34 @@ export function PaymentTable<TData, TValue>({
 
   return (
     <>
-      <section className="w-full h-[192px] bg-white rounded flex items-center gap-9 p-6">
-        <div className="w-[330px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
+      <section className="w-full  bg-white rounded flex flex-wrap items-center gap-9 p-6">
+        <div className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Earnings this semester
           </p>
           <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">To be paid</p>
           <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Earnings this semester
           </p>
           <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Total students
           </p>
           <p className="text-4xl font-bold text-lms-primary">150 people</p>
         </div>
 
-        <div className="w-[330px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
+        <div className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
           <p className="text-2xl font-medium text-lms-black-90">
             Students to be paid:
           </p>
@@ -269,7 +269,7 @@ export function PaymentTable<TData, TValue>({
         <CreatePayForm/>
       </div>
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center  gap-4 w-full flex-wrap">
         {/* filter generation */}
         <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
           <PopoverTrigger asChild>

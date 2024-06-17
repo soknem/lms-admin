@@ -1,8 +1,8 @@
 import React from "react";
-import { GenerationType } from "@/lib/types/admin/academics";
+import {GenerationType} from "@/lib/types/admin/academics";
 import generaitions from "@/app/admin/(admin-dashboard)/academics/(generations)/data/generations.json"
-import { columns } from "@/components/admincomponent/academics/generations/columns";
-import { DataTable } from "@/components/admincomponent/academics/generations/data-table";
+import {columns} from "@/components/admincomponent/academics/generations/columns";
+import {DataTable} from "@/components/admincomponent/academics/generations/data-table";
 
 // async function getGenerations(): Promise<GenerationType[]> {
 //   const res = await fetch(
@@ -15,17 +15,15 @@ import { DataTable } from "@/components/admincomponent/academics/generations/dat
 // }
 
 
-export  default  function page() {
+export default function page() {
     // const data = await getGenerations()
 
-    const genData : GenerationType[] = generaitions;
-    
+    const genData: GenerationType[] = generaitions;
+
     return (
-      <main className='py-9'>
-        <div className='container'>
-          <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
-          <DataTable columns={columns} data={genData} />
-        </div>
-      </main>
+        <main className='flex flex-col gap-4 h-full w-full p-9'>
+            <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
+            <DataTable columns={columns} data={genData}/>
+        </main>
     )
 }
