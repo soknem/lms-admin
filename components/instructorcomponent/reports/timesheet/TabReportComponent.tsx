@@ -1,7 +1,8 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Teaching from "@/app/instructor/(instructor-dashboard)/reports/(timesheet)/teaching/page";
-import Payment from "@/app/instructor/(instructor-dashboard)/reports/(timesheet)/payment/page";
+import Payment from "@/app/instructor/(instructor-dashboard)/reports/timesheet/payment/page";
+import Teaching from "@/app/instructor/(instructor-dashboard)/reports/timesheet/teaching/page";
+
 
 export default function TabReportComponent() {
   return (

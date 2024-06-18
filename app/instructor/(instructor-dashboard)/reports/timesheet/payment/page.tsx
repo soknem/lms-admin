@@ -1,5 +1,5 @@
 import {  TimesheetType } from "@/lib/types/instructor/timesheet";
-import payment from "@/app/instructor/(instructor-dashboard)/reports/(timesheet)/payment/data/payment.json";
+import payment from "@/app/instructor/(instructor-dashboard)/reports/timesheet/payment/data/payment.json";
 import { PaymentColumns } from "@/components/instructorcomponent/reports/timesheet/payment/columns";
 import {PaymentDataTable} from "@/components/instructorcomponent/reports/timesheet/payment/data-table";
 
