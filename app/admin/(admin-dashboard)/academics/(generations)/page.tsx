@@ -1,8 +1,10 @@
-import React from "react";
+'use client'
+import React, {useEffect, useState} from "react";
 import { GenerationType } from "@/lib/types/admin/academics";
 import generaitions from "@/app/admin/(admin-dashboard)/academics/(generations)/data/generations.json"
 import { columns } from "@/components/admincomponent/academics/generations/columns";
 import { DataTable } from "@/components/admincomponent/academics/generations/data-table";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculty";
 
 // async function getGenerations(): Promise<GenerationType[]> {
 //   const res = await fetch(
@@ -15,17 +17,40 @@ import { DataTable } from "@/components/admincomponent/academics/generations/dat
 // }
 
 
-export  default  function page() {
+export  default  function Generation() {
     // const data = await getGenerations()
+
+    const { data, error, isLoading, isFetching } = useGetFacultiesQuery({
+        page: 0,
+        pageSize: 10,
+    });
+
+    useEffect(() => {
+        if (data) {
+            console.log('Fetched Data:', data);
+        }
+        if (error) {
+            console.error('Error fetching faculties:', error);
+        }
+    }, [data, error]);
+
+    if (isLoading) return <div>Loading...</div>;
+
+
+    console.log("data from faculty api: ", data);
+    console.log("error from faculty api: ", error);
+    console.log("isLoading", isLoading);
+
+
 
     const genData : GenerationType[] = generaitions;
     
     return (
       <main className='py-9'>
-        <div className='container'>
-          <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
-          <DataTable columns={columns} data={genData} />
-        </div>
+          <div className='container'>
+              <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
+              <DataTable columns={columns} data={genData}/>
+          </div>
       </main>
     )
 }

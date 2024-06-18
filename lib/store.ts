@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
+import {facultyApi} from "@/lib/features/admin/faculty";
+
 
 export const makeStore = () => {
     return configureStore({
-        reducer: {}
+        reducer: {
+            [facultyApi.reducerPath]: facultyApi.reducer,
+        },
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(facultyApi.middleware),
     })
 }
 
