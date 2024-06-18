@@ -3,6 +3,7 @@ import { BiSolidComponent } from "react-icons/bi";
 import { FaBuilding, FaCashRegister, FaUser } from "react-icons/fa6";
 import { HiDocumentReport } from "react-icons/hi";
 import { HiCurrencyDollar, HiMiniAcademicCap } from "react-icons/hi2";
+import { IoMdArrowDropright } from "react-icons/io";
 
 // set value of MenuList to display the sidebar menu
 export const MenuList = [
@@ -16,6 +17,7 @@ export const MenuList = [
     path: "/admin/academics",
     icon: HiMiniAcademicCap,
     title: "Academic",
+    subicon: IoMdArrowDropright ,
     active: false,
   },
   {

@@ -1,15 +1,17 @@
 import Link from "next/link";
-import React, {useState, useEffect} from "react";
-import {usePathname} from "next/navigation";
-import {Button} from "@/components/ui/button";
-import {useTheme} from "next-themes";
-import {BsMoonStarsFill, BsSunFill} from "react-icons/bs";
-import {MenuList, Logout} from "@/components/admincomponent/sidebar/adminMenu";
+import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
+import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
+import { MenuList, Logout } from "@/components/admincomponent/sidebar/adminMenu";
+import { IconType } from "react-icons";
 
 type MenuItem = {
     path: string;
     icon: any;
     title: string;
+    subicon?: IconType;
 };
 
 type LogoutItem = {
@@ -18,11 +20,15 @@ type LogoutItem = {
     title: string;
 };
 
-export default function AdminSidebarComponent() {
+export default function AdminSidebarComponent({
+                                                  toggleAcademicSidebar,
+                                                  activePath,
+                                                  setActivePath,
+                                              }:any) {
     const [menuList, setMenuList] = useState<MenuItem[]>(MenuList);
     const [logout, setLogout] = useState<LogoutItem[]>(Logout);
     const pathname = usePathname();
-    const {theme, setTheme} = useTheme();
+    const { theme, setTheme } = useTheme();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
@@ -51,21 +57,34 @@ export default function AdminSidebarComponent() {
                 {menuList.map((item, index) => (
                     <Link key={index} href={item.path} passHref>
                         <Button
-                            className={`${buttonClass(pathname.startsWith(item.path))} ${
+                            className={`${buttonClass(activePath.startsWith(item.path))} ${
                                 isHovered ? "w-[200px] flex justify-start gap-4" : ""
                             }`}
+                            onClick={() => setActivePath(item.path)}
                         >
                             <item.icon
                                 className={`w-5 h-5 ${
-                                    pathname === item.path
+                                    activePath === item.path
                                         ? "text-lms-primary"
                                         : "text-white group-hover:text-lms-primary"
                                 }`}
                             />
                             {isHovered && (
-                                <span className="text-lg font-medium transition-opacity duration-300 opacity-100">
-                                    {item.title}
-                                </span>
+                                <div className="flex items-center gap-9">
+                  <span className="text-lg font-medium transition-opacity duration-300 opacity-100">
+                    {item.title}
+                  </span>
+                                    {item.subicon && (
+                                        <item.subicon
+                                            className="w-5 h-5 transition-opacity duration-300 opacity-100"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                toggleAcademicSidebar();
+                                                setActivePath(item.path);
+                                            }}
+                                        />
+                                    )}
+                                </div>
                             )}
                         </Button>
                     </Link>
@@ -94,21 +113,21 @@ export default function AdminSidebarComponent() {
                 {logout.map((item, index) => (
                     <Link key={index} href={item.path} passHref>
                         <Button
-                            className={`${buttonClass(pathname.startsWith(item.path))} ${
+                            className={`${buttonClass(activePath.startsWith(item.path))} ${
                                 isHovered ? "w-[200px] flex justify-start gap-4" : ""
                             }`}
                         >
                             <item.icon
                                 className={`w-5 h-5 ${
-                                    pathname === item.path
+                                    activePath === item.path
                                         ? "text-primary"
                                         : "text-white group-hover:text-lms-primary"
                                 }`}
                             />
                             {isHovered && (
                                 <span className="text-lg font-medium transition-opacity duration-300 opacity-100">
-                                    {item.title}
-                                </span>
+                  {item.title}
+                </span>
                             )}
                         </Button>
                     </Link>

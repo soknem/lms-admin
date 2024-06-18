@@ -8,8 +8,11 @@ type MenuItem = {
   path: string;
   name: string;
 };
-
-export default function AcademicSidebar() {
+type AcademicSidebarProps = {
+    activePath: string;
+    setActivePath: (path: string) => void;
+};
+export default function AcademicSidebar({ activePath, setActivePath }: AcademicSidebarProps) {
   const [menuList, setMenuList] = useState<MenuItem[]>(MenuList);
   const pathname = usePathname();
   return (

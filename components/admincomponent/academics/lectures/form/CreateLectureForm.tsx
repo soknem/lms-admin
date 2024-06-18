@@ -136,7 +136,7 @@ export default function CreateLectureForm() {
                             name="className"
                             onChange={formik.handleChange}
                             value={formik.values.startTime}
-                            className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
+                            className="border-2 focus:border-lms-error  bg-gray-50 border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
                             placeholder="8:30AM"
 
                         />
@@ -144,6 +144,7 @@ export default function CreateLectureForm() {
                             formik.errors.startTime ? <p className="text-red-700">{formik.errors.startTime}</p> : null
                         }
                     </div>
+
                     <div>
                         <RequiredFieldLabelComponent labelText="End Time"
                                                      labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>

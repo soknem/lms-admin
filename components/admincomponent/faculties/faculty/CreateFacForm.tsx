@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { FacultyType } from "@/lib/types/admin/faculty";
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
+import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
   id: "",
@@ -174,27 +175,31 @@ export function CreateFacForm() {
             <Form className="py-4 rounded-lg w-full ">
               <div className="flex flex-col gap-4">
                 {/* faculty title*/}
-                <div className={` ${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="name">
-                    Title
-                  </label>
-                  <Field
-                    type="text"
-                    placeholder="Faculty of Engineering"
-                    name="name"
-                    id="name"
-                    className={` ${style.input}`}
-                  />
-                  <ErrorMessage
-                    name="name"
-                    component="div"
-                    className={`${style.error}`}
-                  />
-                </div>
+                  <div className={` ${style.inputContainer}`}>
+                      <div className="flex">
+                          <label className={`${style.label}`} htmlFor="name">
+                              Title
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                      </div>
 
-                {/* Faculty Description */}
-                <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="description">
+                      <Field
+                          type="text"
+                          placeholder="Faculty of Engineering"
+                          name="name"
+                          id="name"
+                          className={` ${style.input}`}
+                      />
+                      <ErrorMessage
+                          name="name"
+                          component="div"
+                          className={`${style.error}`}
+                      />
+                  </div>
+
+                  {/* Faculty Description */}
+                  <div className={`${style.inputContainer}`}>
+                      <label className={`${style.label}`} htmlFor="description">
                     Description
                   </label>
                   <Field

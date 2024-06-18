@@ -46,11 +46,9 @@ export  default  function Generation() {
     const genData : GenerationType[] = generaitions;
     
     return (
-      <main className='py-9'>
-          <div className='container'>
-              <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
-              <DataTable columns={columns} data={genData}/>
-          </div>
-      </main>
+        <main className='flex flex-col gap-4 h-full w-full p-9'>
+            <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
+            <DataTable columns={columns} data={genData}/>
+        </main>
     )
 }
