@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/dialog";
 
 import { FacultyType, SubjectType } from "@/lib/types/admin/faculty";
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { FaCamera } from "react-icons/fa6";
+import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
   subject: "",
@@ -120,8 +121,13 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 // );
 
 export function EditSubjectForm() {
+  const [open, setOpen] = useState(true);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[540px] bg-white ">
         <DialogHeader>
           <DialogTitle>Edit Subject</DialogTitle>
@@ -148,142 +154,159 @@ export function EditSubjectForm() {
           }}
         >
           {({ setFieldValue }) => (
-            <Form className="py-4 rounded-lg w-full ">
-              <div className="flex flex-col items-center gap-4">
-                <div
-                  className={`flex items-center justify-center relative ${style.imageContainer}`}
-                >
-                  <img
-                    src="https://api.istad.co/media/image/a3c4f87e-7a85-44c3-a568-6c5abef76cfe.png"
-                    alt="faculty"
-                    className="w-full h-full rounded-full"
-                  />
-                  <div className="w-8 h-8 bg-lms-background rounded-full flex items-center justify-center absolute right-0 bottom-1">
-                    <FaCamera />
-                  </div>
-                </div>
-
-                <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="subject">
-                    Subject
-                  </label>
-                  <Field
-                    type="text"
-                    placeholder="Introduction to IT"
-                    name="subject"
-                    id="subject"
-                    className={` ${style.input}`}
-                  />
-                  <ErrorMessage
-                    name="subject"
-                    component="div"
-                    className={`${style.error}`}
-                  />
-                </div>
-
-                <div
-                  className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}
-                >
-                  <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="hour">
-                      Hour
-                    </label>
-                    <Field name="hour" className={` ${style.input}`} />
-                  </div>
-
-                  <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="theory">
-                      Theory
-                    </label>
-                    <Field name="theory" className={` ${style.input}`} />
-                  </div>
-
-                  <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="practice">
-                      Practice
-                    </label>
-                    <Field name="practice" className={` ${style.input}`} />
-                  </div>
-
-                  <div className="w-[80px] ">
-                    <label className={`${style.label}`} htmlFor="internship">
-                      Interniship
-                    </label>
-                    <Field name="internship" className={` ${style.input}`} />
-                  </div>
-                </div>
-
-                {/* Faculty Description */}
-                <div className={`${style.inputContainer}`}>
-                  <label className={`${style.label}`} htmlFor="description">
-                    Description
-                  </label>
-                  <Field
-                    type="text"
-                    placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
-                    name="description"
-                    id="description"
-                    className={`${style.input}`}
-                  />
-                  <ErrorMessage
-                    name="description"
-                    component="div"
-                    className={`${style.error}`}
-                  />
-                </div>
-
-                {/* status */}
-                <div className={`${style.inputContainer}  `}>
-                  <label className={`${style.label}`} htmlFor="status">
-                    Visibility
-                  </label>
-                  {/* <Field
-                    type="number"
-                    name="status"
-                    id="status"
-                    className={`${style.input}`}
-                  />
-                  */}
-
-                  <div className="flex gap-4 h-[40px] items-center">
-                    <Field
-                      name="status"
-                      component={RadioButton}
-                      value="1"
-                      label="Public"
+              <Form className="py-4 rounded-lg w-full ">
+                <div className="flex flex-col items-center gap-4">
+                  <div
+                      className={`flex items-center justify-center relative ${style.imageContainer}`}
+                  >
+                    <img
+                        src="https://api.istad.co/media/image/a3c4f87e-7a85-44c3-a568-6c5abef76cfe.png"
+                        alt="faculty"
+                        className="w-full h-full rounded-full"
                     />
+                    <div
+                        className="w-8 h-8 bg-lms-background rounded-full flex items-center justify-center absolute right-0 bottom-1">
+                      <FaCamera/>
+                    </div>
+                  </div>
+                  <div className={`${style.inputContainer}`}>
+                    <div className="flex">
+                      <label className={`${style.label}`} htmlFor="subject">
+                        Subject
+                      </label>
+                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                    </div>
+
                     <Field
-                      name="status"
-                      component={RadioButton}
-                      value="2"
-                      label="Draft"
+                        type="text"
+                        placeholder="Introduction to IT"
+                        name="subject"
+                        id="subject"
+                        className={` ${style.input}`}
                     />
-                    <Field
-                      name="status"
-                      component={RadioButton}
-                      value="3"
-                      label="Disable"
+                    <ErrorMessage
+                        name="subject"
+                        component="div"
+                        className={`${style.error}`}
                     />
                   </div>
 
-                  <ErrorMessage
-                    name="status"
-                    component={RadioButton}
-                    className={`${style.error}`}
-                  />
-                </div>
-              </div>
+                  <div
+                      className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}>
+                    <div className="w-[80px] ">
+                      <div className="flex">
+                        <label className={`${style.label}`} htmlFor="hour">
+                          Hour
+                        </label>
+                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                      </div>
 
-              {/* button submit */}
-              <DialogFooter>
-                <Button
-                  type="submit"
-                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                >
-                  Save Change
-                </Button>
-              </DialogFooter>
-            </Form>
+                      <Field name="hour" className={` ${style.input}`}/>
+                    </div>
+
+                    <div className="w-[80px] ">
+                      <div className="flex">
+                        <label className={`${style.label}`} htmlFor="theory">
+                          Theory
+                        </label>
+                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                      </div>
+
+                      <Field name="theory" className={` ${style.input}`}/>
+                    </div>
+
+                    <div className="w-[80px] ">
+                      <div className="flex">
+                        <label className={`${style.label}`} htmlFor="practice">
+                          Practice
+                        </label>
+                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                      </div>
+
+                      <Field name="practice" className={` ${style.input}`}/>
+                    </div>
+
+                    <div className="w-[80px] ">
+                      <div className="flex">
+                        <label className={`${style.label}`} htmlFor="internship">
+                          Internship
+                        </label>
+                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                      </div>
+
+                      <Field name="internship" className={` ${style.input}`}/>
+                    </div>
+                  </div>
+
+
+                  <div className={`${style.inputContainer}`}>
+                    <label className={`${style.label}`} htmlFor="description">
+                      Description
+                    </label>
+                    <Field
+                        type="text"
+                        placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
+                        name="description"
+                        id="description"
+                        className={`${style.input}`}
+                    />
+                    <ErrorMessage
+                        name="description"
+                        component="div"
+                        className={`${style.error}`}
+                    />
+                  </div>
+
+                  {/* status */}
+                  <div className={`${style.inputContainer}  `}>
+                    <div className="flex">
+                      <label className={`${style.label}`} htmlFor="status">
+                        Visibility
+                      </label>
+                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                    </div>
+
+                    <div className="flex gap-4 h-[40px] items-center">
+                      <Field
+                          name="status"
+                          component={RadioButton}
+                          value="1"
+                          label="Public"
+                      />
+                      <Field
+                          name="status"
+                          component={RadioButton}
+                          value="2"
+                          label="Draft"
+                      />
+                      <Field
+                          name="status"
+                          component={RadioButton}
+                          value="3"
+                          label="Disable"
+                      />
+                    </div>
+
+                    <ErrorMessage
+                        name="status"
+                        component={RadioButton}
+                        className={`${style.error}`}
+                    />
+                  </div>
+
+                </div>
+
+
+                {/* button submit */}
+                <DialogFooter>
+                  <Button
+                      type="submit"
+                      className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                  >
+                    Save Change
+                  </Button>
+                </DialogFooter>
+              </Form>
           )}
         </Formik>
       </DialogContent>

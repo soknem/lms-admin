@@ -13,8 +13,7 @@ import {CardCourseComponent2} from "@/components/studentcomponent/courses/card/C
 export default function Course() {
     return (
         <div className="flex flex-col h-full w-full p-9 gap-4">
-            {/* <h2 className="text-4xl text-lms-primary-color font-bold">Course</h2> */}
-            {/* student profile banner */}
+
             <section
                 className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
                 <div className="flex flex-col gap-4">
@@ -66,32 +65,28 @@ export default function Course() {
                 </div>
             </section>
 
-            {/* search course */}
-            <section className="mt-24 flex items-center  flex-col gap-4 justify-between ">
-                <div className="flex items-start py-4  gap-4">
-                    <div className="flex items-center w-[950px] justify-between gap-4 ">
+
+            <section className="mt-24 flex items-center flex-col gap-4 justify-between w-full max-w-6xl mx-auto">
+
+                {/* search course */}
+                <div className="flex items-start py-4 w-full gap-4">
+                    <div className="flex items-center w-full justify-between gap-4">
                         <div className="flex items-center w-full relative">
                             <Input
                                 placeholder="Search Course"
-
-
-                                className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
+                                className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30 w-full"
                             />
-
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <FaSearch className="text-gray-400"/>
                             </div>
-
                         </div>
-
-
                     </div>
 
                     <Popover>
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
-                                className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
+                                className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                             >
                                 <TbFilter className='mr-2 h-4 w-4'/>
                                 Filter By Semester
@@ -100,7 +95,8 @@ export default function Course() {
                     </Popover>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4">
+                {/*course */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4 w-full">
                     <CardCourseComponent/>
                     <CardCourseComponent1/>
                     <CardCourseComponent2/>

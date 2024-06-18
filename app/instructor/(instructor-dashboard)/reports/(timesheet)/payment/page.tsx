@@ -1,7 +1,7 @@
 import {  TimesheetType } from "@/lib/types/instructor/timesheet";
-import payment from "@/app/instructor/(instructor-dashboard)/reports/timesheet/payment/data/payment.json";
-import { PaymentDataTable } from "@/components/instructorcomponent/reports/timesheet/payment/data-table";
+import payment from "@/app/instructor/(instructor-dashboard)/reports/(timesheet)/payment/data/payment.json";
 import { PaymentColumns } from "@/components/instructorcomponent/reports/timesheet/payment/columns";
+import {PaymentDataTable} from "@/components/instructorcomponent/reports/timesheet/payment/data-table";
 
 export default function Payment() {
   const paymentData: TimesheetType[] = payment;

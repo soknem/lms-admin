@@ -91,8 +91,13 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 // );
 
 export function ViewDeForm() {
+    const [open, setOpen] = useState(true);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[480px] bg-white ">
         <DialogHeader>
           <DialogTitle>Degree Information</DialogTitle>

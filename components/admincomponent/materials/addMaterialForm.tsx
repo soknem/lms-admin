@@ -23,6 +23,7 @@ import {
 import { IoIosArrowDown } from "react-icons/io";
 import { MdAddToPhotos } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Separator} from "@/components/ui/separator";
 
 const initialValues = {
   title: "",
@@ -160,30 +161,33 @@ export function CreateMaterialForm() {
           defaultValue="faculty"
           className="w-full "
         >
-          <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[120px] flex gap-[200px]">
+          <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[120px] flex items-center justify-center gap-[20px]">
             <TabsTrigger
-              value="curriculum"
-              className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                value="curriculum"
+                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
             >
               1
             </TabsTrigger>
 
-            {/* <div className="border-l border-lms-primary h-full mx-2"></div> Vertical line */}
+            <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
 
             <TabsTrigger
-              value="slide"
-              className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                value="slide"
+                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
             >
               2
             </TabsTrigger>
 
+            <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
+
             <TabsTrigger
-              value="video"
-              className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                value="video"
+                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
             >
               3
             </TabsTrigger>
           </TabsList>
+
 
           {/* Curriculum */}
           <TabsContent value="curriculum">

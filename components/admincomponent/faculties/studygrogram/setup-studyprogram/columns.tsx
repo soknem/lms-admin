@@ -82,11 +82,11 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       <span
         className={
           value === "true"
-              ? "Public text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+              ? "Public text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
               : value === "false"
-                  ? "Disable text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                  ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
                   : value === "draft"
-                      ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+                      ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
                       : ""
         }
       >

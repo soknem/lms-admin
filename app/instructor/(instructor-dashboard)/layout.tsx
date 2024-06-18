@@ -1,51 +1,47 @@
 "use client";
 import "@/app/globals.css";
-import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { ReactNode, useState } from "react";
-import { ThemeProvider } from "@/components/ui/themeProvider";
+import { ReactNode, useState, useEffect } from "react";
+import { inter, suwannaphum } from "@/app/font";
+import StoreProvider from "@/app/StoreProvider";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import Error from "@/app/error";
 import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
-import { usePathname } from "next/navigation";
-import ReportSidebar from "@/components/instructorcomponent/reports/sidebar/ReportSidebarComponent";
-import StoreProvider from "@/app/StoreProvider";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+
 interface RootLayoutProps {
-  children: ReactNode;
+    children: ReactNode;
 }
-export default function RootLayout({ children }: RootLayoutProps) {
-  const pathname = usePathname();
 
-  const showAcademicSidebar = pathname.startsWith("/instructor/reports");
-  return (
-    <html lang="en" suppressHydrationWarning>
-      {/* <body className="flex none-scroll-bar overflow-x-auto bg-gray-300"> */}
-      <body
-        className={cn(
-          "min-h-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
-          fontSans.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system">
-          <StoreProvider>
-            <nav className="w-full h-[72px] shadow-md">
-              <NavbarComponent/>
-            </nav>
-            <section className="flex flex-grow h-[calc(100vh-72px)]">
-              <aside className="flex shadow-md">
-                <InstructorSidebarComponent/>
-                {showAcademicSidebar && <ReportSidebar/>}
-              </aside>
-              <section className="flex-grow overflow-auto">{children}</section>
-            </section>
-          </StoreProvider>
+export default function RootLayoutParent({ children }: RootLayoutProps) {
 
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" suppressHydrationWarning>
+        <body
+            className={cn(
+                "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
+                inter.variable, suwannaphum.variable
+            )}
+        >
+        <StoreProvider>
+            <ErrorBoundary errorComponent={Error}>
+                <nav className="w-full h-[72px] shadow-md">
+                    <NavbarComponent />
+                </nav>
+
+                <section className="flex flex-grow h-[calc(100vh-72px)]">
+                    <aside className="flex">
+                        <InstructorSidebarComponent/>
+                    </aside>
+
+                    <section className="flex-grow overflow-auto text-lms-black-90">
+                        {children}
+                    </section>
+                </section>
+            </ErrorBoundary>
+        </StoreProvider>
+        </body>
+        </html>
+    );
 }

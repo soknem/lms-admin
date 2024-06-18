@@ -94,8 +94,13 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 // );
 
 export function ViewSubjectForm() {
+  const [open, setOpen] = useState(true);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
-    <Dialog open>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[540px] bg-white ">
         <DialogHeader>
           <DialogTitle>Subject Information</DialogTitle>
@@ -244,15 +249,7 @@ export function ViewSubjectForm() {
                 </div>
               </div>
 
-              {/* button submit */}
-              <DialogFooter>
-                <Button
-                  type="submit"
-                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                >
-                  Save Change
-                </Button>
-              </DialogFooter>
+
             </Form>
           )}
         </Formik>
