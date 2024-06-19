@@ -36,10 +36,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <NavbarComponent/>
             </nav>
             <section className="flex flex-grow h-[calc(100vh-72px)]">
-              <aside className="shadow-md">
+              <aside className=" shadow-md">
                 {showStudentSidebar && <StudentSidebarComponent/>}
               </aside>
-              <section className="w-full">{children}</section>
+              <section className="flex-grow overflow-auto text-lms-black-90">{children}</section>
             </section>
           </StoreProvider>
 

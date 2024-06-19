@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {IoIosArrowDown} from "react-icons/io";
+import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
     card_id: 0,
@@ -168,7 +169,7 @@ export function EditInsProForm() {
             >
                 {() => (
                     <Form className="py-4 rounded-lg w-full flex flex-col justify-center items-center">
-                        <div className="grid grid-cols-3 gap-4 justify-center items-center">
+                        <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
                             {/* image */}
                             <div className="h-[170px] w-[164px] relative rounded-[10px] grid row-span-2">
                                 <img
@@ -184,9 +185,13 @@ export function EditInsProForm() {
 
                             {/* name english */}
                             <div className={` ${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="name_en">
-                                    FullName(EN)
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="name_en">
+                                        FullName(EN)
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="text"
                                     name="name_en"
@@ -197,9 +202,13 @@ export function EditInsProForm() {
 
                             {/* name khmer */}
                             <div className={` ${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="name_kh">
-                                    FullName(KH)
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="name_kh">
+                                        FullName(KH)
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="text"
                                     name="name_kh"
@@ -208,38 +217,15 @@ export function EditInsProForm() {
                                 />
                             </div>
 
-                            {/* <div className={style.inputContainer}>
-                <label className={style.label} htmlFor="gender">
-                  Gender
-                </label>
-                <div className="relative w-full">
-                  <Field
-                    as="select"
-                    type="dropdown"
-                    name="gender"
-                    id="gender"
-                    readOnly
-                    className={style.input}
-                  />
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="h-8 w-8 p-0 absolute right-2 top-1"
-                      >
-                        <IoIosArrowDown className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    
-                  </DropdownMenu>
-                </div>
-              </div> */}
-
                             {/* gender */}
                             <div className={style.inputContainer}>
-                                <label className={style.label} htmlFor="gender">
-                                    Gender
-                                </label>
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="gender">
+                                        Gender
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <div className="relative w-full">
                                     <Field
                                         as="select"
@@ -266,9 +252,13 @@ export function EditInsProForm() {
 
                             {/* dob */}
                             <div className={`${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="dob">
-                                    Date of birth
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="dob">
+                                        Date of birth
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="date"
                                     name="dob"
@@ -279,9 +269,13 @@ export function EditInsProForm() {
 
                             {/* Personal Number */}
                             <div className={`${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="fam_ph_number">
-                                    Personal Number
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="fam_ph_number">
+                                        Personal Number
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="fam_ph_number"
                                     name="fam_ph_number"
@@ -293,9 +287,13 @@ export function EditInsProForm() {
                             {/* Family Number */}
 
                             <div className={`${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="ph_number">
-                                    Family Number
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="ph_number">
+                                        Family Number
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="ph_number"
                                     name="ph_number"
@@ -311,9 +309,13 @@ export function EditInsProForm() {
 
                             {/* email */}
                             <div className={`${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="email">
-                                    Email
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="email">
+                                        Email
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="email"
                                     name="email"
@@ -324,9 +326,13 @@ export function EditInsProForm() {
 
                             {/* pob */}
                             <div className={`${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="pob">
-                                    Place Of Birth
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="pob">
+                                        Place Of Birth
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="address"
                                     name="pob"
@@ -337,9 +343,13 @@ export function EditInsProForm() {
 
                             {/* address */}
                             <div className={`${style.inputContainer}`}>
-                                <label className={`${style.label}`} htmlFor="address">
-                                    Current Address
-                                </label>
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="address">
+                                        Current Address
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
+
                                 <Field
                                     type="address"
                                     name="address"
@@ -350,15 +360,12 @@ export function EditInsProForm() {
 
                             {/* status */}
                             <div className={`${style.inputContainer}  `}>
-                                <label className={`${style.label}`} htmlFor="status">
-                                    Visibility
-                                </label>
-                                {/* <Field
-                    type="number"
-                    name="status"
-                    id="status"
-                    className={`${style.input}`}
-                  /> */}
+                                <div className="flex">
+                                    <label className={`${style.label}`} htmlFor="status">
+                                        Visibility
+                                    </label>
+                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                </div>
 
                                 <div className="flex gap-9 h-[40px] items-center text-[16px] font-normal">
                                     <Field

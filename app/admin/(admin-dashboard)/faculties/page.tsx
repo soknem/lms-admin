@@ -5,29 +5,23 @@ import {
   getStudyProgram,
   getSubject,
 } from "@/lib/endpoints/MokApi";
+import { FacultyTable } from "@/components/admincomponent/faculties/faculty/data-table";
+import { facultyColumns } from "@/components/admincomponent/faculties/faculty/columns";
+import { DegreeTable } from "@/components/admincomponent/faculties/degree/data-table";
+import { degreeColumns } from "@/components/admincomponent/faculties/degree/columns";
+import { StudyProgramTable } from "@/components/admincomponent/faculties/studygrogram/data-table";
+import { studyProgramColumns } from "@/components/admincomponent/faculties/studygrogram/columns";
+import { SubjectTable } from "@/components/admincomponent/faculties/subject/data-table";
+import { subjectColumns } from "@/components/admincomponent/faculties/subject/columns";
 import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
 import facData from "@/components/admincomponent/faculties/faculty/facData.json";
 import degreeData from "@/components/admincomponent/faculties/degree/degreeData.json";
-import {FacultyTable} from "@/components/admincomponent/faculties/faculty/data-table";
-import {facultyColumns} from "@/components/admincomponent/faculties/faculty/columns";
-import {DegreeTable} from "@/components/admincomponent/faculties/degree/data-table";
-import {degreeColumns} from "@/components/admincomponent/faculties/degree/columns";
-import {StudyProgramTable} from "@/components/admincomponent/faculties/studygrogram/data-table";
-import {studyProgramColumns} from "@/components/admincomponent/faculties/studygrogram/columns";
-import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
-import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
-
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculty";
 
 export default async function Page() {
   const facultyData : FacultyType[] = facData;
   const deData : DegreeType[] = degreeData;
   const stuData = await getStudyProgram();
   const subData = await getSubject();
-
-
-
-
 
   return (
     <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">

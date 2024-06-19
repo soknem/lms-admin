@@ -12,6 +12,7 @@ import {
 import instructorProfile from "@/public/intructor.jpg";
 import StaffDetailComponent from "@/components/admincomponent/users/staff/StaffDetailComponent";
 
+
 const insData = {
     id: "000001",
     imageSrc: instructorProfile,

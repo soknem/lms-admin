@@ -12,6 +12,7 @@ import {IoIosArrowDown} from "react-icons/io";
 import {MdAddToPhotos} from "react-icons/md";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {UserStudentType} from "@/lib/types/admin/user";
+import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
     card_id: 0,
@@ -160,28 +161,46 @@ export function AddStudentAmsForm() {
                 className="w-full py-0 my-0 "
             >
                 <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[150px]  rounded-none -px-10 ">
-                    <div className="flex justify-between container">
-                        <TabsTrigger
-                            value="personal_info"
-                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-                        >
-                            1
-                        </TabsTrigger>
+                    <div className="flex items-center justify-center container gap-[20px]">
+
+
+                        <div className={`flex flex-col justify-center items-center gap-4`}>
+                            <TabsTrigger
+                                value="personal_info"
+                                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                            >
+                                1
+                            </TabsTrigger>
+                            <span className="text-lms-primary text-lg ">Personal Information</span>
+                        </div>
+
+
                         {/* <div className="border-l border-lms-primary h-full mx-2"></div> Vertical line */}
+                        <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
 
-                        <TabsTrigger
-                            value="edu_info"
-                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-                        >
-                            2
-                        </TabsTrigger>
+                        <div className={`flex flex-col justify-center items-center gap-4`}>
+                            <TabsTrigger
+                                value="edu_info"
+                                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                            >
+                                2
+                            </TabsTrigger>
+                            <span className="text-lms-primary text-lg ">Education Information</span>
+                        </div>
 
-                        <TabsTrigger
-                            value="school_info"
-                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-                        >
-                            3
-                        </TabsTrigger>
+
+                        <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
+
+
+                        <div className={`flex flex-col justify-center items-center gap-4`}>
+                            <TabsTrigger
+                                value="school_info"
+                                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                            >
+                                3
+                            </TabsTrigger> <span className="text-lms-primary text-lg ">Institude Information</span>
+                        </div>
+
                     </div>
                 </TabsList>
 
@@ -228,9 +247,13 @@ export function AddStudentAmsForm() {
                                 <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
                                     {/*name_en */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="name_en">
-                                            Name ( EN )
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="name_en">
+                                                Name ( EN )
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="text"
                                             name="name_en"
@@ -247,9 +270,13 @@ export function AddStudentAmsForm() {
 
                                     {/*name_en */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="name_kh">
-                                            Name ( EN )
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="name_kh">
+                                                Name ( EN )
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="text"
                                             name="name_kh"
@@ -266,9 +293,13 @@ export function AddStudentAmsForm() {
 
                                     {/* formal image */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
-                                        <label className={`${style.label}`} htmlFor="file">
-                                            Upload Formal Picture
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="file">
+                                                Upload Formal Picture
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="file"
                                             name="file"
@@ -285,11 +316,15 @@ export function AddStudentAmsForm() {
 
                                     {/* Gender */}
                                     <div className={style.inputContainer}>
-                                        <label className={style.label} htmlFor="gender">
-                                            Gender
-                                        </label>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="gender">
+                                                Gender
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <div className="relative w-full">
-                                            <Field
+                                        <Field
                                                 as="select"
                                                 name="gender"
                                                 id="gender"
@@ -319,9 +354,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Dob */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="dob">
-                                            Date of Birth
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="dob">
+                                                Date of Birth
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="date"
                                             name="dob"
@@ -338,9 +377,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Contact */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="ph_number">
-                                            Contact Number
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="ph_number">
+                                                Contact Number
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="text"
                                             name="ph_number"
@@ -357,9 +400,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Email */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="email">
-                                            Email
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="email">
+                                                Email
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="email"
                                             name="email"
@@ -376,9 +423,13 @@ export function AddStudentAmsForm() {
 
                                     {/* High school */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="high_school">
-                                            High School
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="high_school">
+                                                High School
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="high_school"
                                             name="high_school"
@@ -395,9 +446,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Place of Birth */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="pob">
-                                            Place of Birth
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="pob">
+                                                Place of Birth
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="address"
                                             name="pob"
@@ -414,9 +469,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Upload Identity */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
-                                        <label className={`${style.label}`} htmlFor="file">
-                                            Upload Identity{" "}
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="file">
+                                                Upload Identity{" "}
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="file"
                                             name="file"
@@ -433,9 +492,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Current Address */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="address">
-                                            Current Address
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="address">
+                                                Current Address
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="address"
                                             name="address"
@@ -452,9 +515,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Guardian Contact */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="fam_ph_number">
-                                            Guardian Contact
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="fam_ph_number">
+                                                Guardian Contact
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="fam_ph_number"
                                             name="fam_ph_number"
@@ -471,9 +538,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Guardian Relationship */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="guaedian_rel">
-                                            Guardian Relationship
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="guaedian_rel">
+                                                Guardian Relationship
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="text"
                                             name="guaedian_rel"
@@ -490,9 +561,13 @@ export function AddStudentAmsForm() {
 
                                     {/* Get to know ISTAD through: */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="know_istad">
-                                            Get to know ISTAD through:
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="know_istad">
+                                                Get to know ISTAD through:
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="text"
                                             name="know_istad"
@@ -564,11 +639,15 @@ export function AddStudentAmsForm() {
                                 <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
                                     {/* Class Student */}
                                     <div className={style.inputContainer}>
-                                        <label className={style.label} htmlFor="class_stu">
-                                            Class Student
-                                        </label>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="class_stu">
+                                                Class Student
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <div className="relative w-full">
-                                            <Field
+                                        <Field
                                                 as="select"
                                                 name="class_stu"
                                                 id="class_stu"
@@ -597,9 +676,13 @@ export function AddStudentAmsForm() {
 
                                     {/*Diploma Session */}
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="diploma">
-                                            Diploma Session
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="diploma">
+                                                Diploma Session
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="text"
                                             name="diploma"
@@ -616,11 +699,15 @@ export function AddStudentAmsForm() {
 
                                     {/* Grade */}
                                     <div className={`${style.inputContainer}  grid col-span-2 2xl:col-span-1`}>
-                                        <label className={`${style.label}`} htmlFor="grade">
-                                            Diploma Grade
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="grade">
+                                                Diploma Grade
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <div className="flex flex-wrap justify-between items-center">
-                                            <Field
+                                        <Field
                                                 name="grade"
                                                 component={RadioButton}
                                                 value="1"
@@ -667,9 +754,13 @@ export function AddStudentAmsForm() {
 
                                     {/* High Certificate */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
-                                        <label className={`${style.label}`} htmlFor="file">
-                                            High Certificate
-                                        </label>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="file">
+                                                High Certificate
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <Field
                                             type="file"
                                             name="file"
@@ -739,7 +830,7 @@ export function AddStudentAmsForm() {
                 {/* School Information */}
                 <TabsContent value="school_info">
                     <div className="border-b-2 mx-10  py-6">
-                        <h1 className="text-2xl font-bold text-lms-black-90 ">Education Information</h1>
+                        <h1 className="text-2xl font-bold text-lms-black-90 ">Institude Information</h1>
                     </div>
 
                     <Formik
@@ -780,11 +871,15 @@ export function AddStudentAmsForm() {
                                 <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center ">
                                     {/* Shift */}
                                     <div className={style.inputContainer}>
-                                        <label className={style.label} htmlFor="shift">
-                                            Shift
-                                        </label>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="shift">
+                                                Shift
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <div className="relative w-full">
-                                            <Field
+                                        <Field
                                                 as="select"
                                                 name="shift"
                                                 id="shift"
@@ -815,11 +910,15 @@ export function AddStudentAmsForm() {
 
                                     {/* Degree */}
                                     <div className={style.inputContainer}>
-                                        <label className={style.label} htmlFor="degree">
-                                            Degree
-                                        </label>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="degree">
+                                                Degree
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <div className="relative w-full">
-                                            <Field
+                                        <Field
                                                 as="select"
                                                 name="degree"
                                                 id="degree"
@@ -853,11 +952,15 @@ export function AddStudentAmsForm() {
 
                                     {/* Study Program */}
                                     <div className={style.inputContainer}>
-                                        <label className={style.label} htmlFor="study_pro">
-                                            Study Program
-                                        </label>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="study_pro">
+                                                Study Program
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
                                         <div className="relative w-full">
-                                            <Field
+                                        <Field
                                                 as="select"
                                                 name="study_pro"
                                                 id="study_pro"

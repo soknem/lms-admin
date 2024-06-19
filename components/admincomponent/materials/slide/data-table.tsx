@@ -38,6 +38,8 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {CommandInput} from "@/components/ui/command";
 import { CreateMaterialForm } from "../addMaterialForm";
+import {FiPlus} from "react-icons/fi";
+import {useRouter} from "next/navigation";
 
 //custom component import
 
@@ -57,6 +59,7 @@ export function SlideTable<TData, TValue>({
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
     const [selectedFilter, setSelectedFilter] = useState("All");
+    const router = useRouter();
 
     const table = useReactTable({
         data,
@@ -184,7 +187,7 @@ export function SlideTable<TData, TValue>({
                             variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
                         >
                             <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
-                            Columns
+                            Table View
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-white">
@@ -208,7 +211,9 @@ export function SlideTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <CreateMaterialForm/>
+                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/admin/materials/add-materials")}}>
+                    <FiPlus className="mr-2 h-4 w-4" /> Add Material
+                </Button>
             </div>
 
             {/* Table */}

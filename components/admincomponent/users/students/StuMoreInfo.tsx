@@ -28,7 +28,7 @@ const MoreInfo = () => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             className="focus:bg-background"
-            onClick={() => router.push("/admin/users/edit-student")}
+            onClick={() => router.push("/admin/users/student/edit-student")}
           >
             Edit
           </DropdownMenuItem>

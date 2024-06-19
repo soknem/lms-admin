@@ -69,7 +69,7 @@ export function CardLogin() {
     };
 
     const handleSubmit = (values: InitialValues, actions: any) => {
-        fetch(`${process.env.NEXT_PUBLIC_LMS_URL}/api/login`, {
+        fetch(`http://localhost:3000/api/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

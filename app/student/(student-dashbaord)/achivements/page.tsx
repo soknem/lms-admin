@@ -21,7 +21,7 @@ const labelsField = [
 
 export default function Achievement() {
   return (
-    <main className="flex flex-col h-full w-full p-9">
+    <main className="flex flex-col h-full w-full p-9 gap-9">
       {/* <h2 className="text-4xl text-lms-primary-color font-bold">Achievement</h2> */}
       {/* student profile banner */}
       <section className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
@@ -75,7 +75,7 @@ export default function Achievement() {
       </section>
 
       {/* Transcript */}
-      <section className="bg-white w-full flex flex-col items-center justify-center p-9 lg:mt-24 rounded-xl gap-9">
+      <section className="bg-white w-full flex flex-col items-center justify-center p-9 mt-24 rounded-xl gap-9">
         <div className="flex flex-col gap-4 ">
           <h1 className="font-bold text-4xl text-center">
             Center of Science and Technology Advanced Development

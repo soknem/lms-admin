@@ -72,7 +72,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   // Check if the column is the status column
   if (column.id === "status") {
     return (
-      <span className={value ? "text-lms-success bg-green-300 px-5 py-1 rounded-[10px]" : "text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"}>
+      <span className={value ? "text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]" : "text-white bg-red-500 px-3 py-1 rounded-[10px]"}>
         {value ? "Public" : "Draft"}
       </span>
     );

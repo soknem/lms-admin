@@ -83,12 +83,26 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "status") {
         return (
             <span
-                className={value ? "text-lms-success bg-green-300 px-5 py-1 rounded-[10px]" : "text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"}>
-        {value ? "Public" : "Draft"}
+                className={
+                    value === "true"
+                        ? "Public text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
+                        : value === "false"
+                            ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            : value === "draft"
+                                ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
+                                : ""
+                }
+            >
+        {value === "true"
+            ? "Public"
+            : value === "false"
+                ? "Disable"
+                : value === "draft"
+                    ? "Draft"
+                    : ""}
       </span>
         );
     }
-
 
     return <span>{value}</span>;
 };
@@ -132,7 +146,7 @@ const EditCell = ({row, table}: any) => {
                 </div>
             ) : (
                 <button onClick={setEditedRows} name="edit">
-                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
                 </button>
             )}
         </div>
@@ -215,8 +229,9 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
         meta: {
             type: "select",
             options: [
-                {value: "true", label: "Public"},
-                {value: "false", label: "Draft"},
+                { value: "true", label: "Public" },
+                { value: "false", label: "Disable" },
+                { value: "draft", label: "Draft" },
             ],
         },
     },

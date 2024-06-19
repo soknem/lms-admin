@@ -93,9 +93,9 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         <span
             className={
               value === "paid"
-                  ? "Paid text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+                  ? "Paid text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
                   : value === "unpaid"
-                      ? "Unpaid text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                      ? "Unpaid text-white bg-red-500 px-3 py-1 rounded-[10px]"
                       : ""
 
             }

@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   CurriculumType,
@@ -23,6 +23,8 @@ import {
 import { IoIosArrowDown } from "react-icons/io";
 import { MdAddToPhotos } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Separator} from "@/components/ui/separator";
+import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
   title: "",
@@ -142,182 +144,192 @@ export function CreateMaterialForm() {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="bg-lms-primary text-white hover:bg-lms-primary">
-          <FiPlus className="mr-2 h-4 w-4" /> Add Material
-        </Button>
-      </DialogTrigger>
 
-      <DialogContent className="w-[960px] flex flex-col items-start bg-white px-0">
-        <DialogHeader className="px-4">
-          <DialogTitle>Course Material</DialogTitle>
-        </DialogHeader>
-
+      <div className="w-full flex flex-grow flex-col items-center-center rounded-[10px] border bg-white gap-6">
+        <section className="h-[90px] flex items-center mx-10 ">
+          <h1 className="text-3xl font-bold text-lms-black-90">
+            Add Materials
+          </h1>
+        </section>
         <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          defaultValue="faculty"
-          className="w-full "
+            value={activeTab}
+            onValueChange={setActiveTab}
+            defaultValue="faculty"
+            className="w-full "
         >
-          <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[120px] flex gap-[200px]">
-            <TabsTrigger
-              value="curriculum"
-              className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-            >
-              1
-            </TabsTrigger>
+          <TabsList
+              className="dark:bg-gray-800 bg-lms-background w-full h-[150px] flex items-center justify-center rounded-none gap-[20px]">
+            <div className={`flex flex-col justify-center items-center gap-4`}>
+              <TabsTrigger
+                  value="curriculum"
+                  className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+              >
+                1
+              </TabsTrigger>
+              <span className="text-lms-primary text-lg ">Curriculum</span>
+            </div>
 
-            {/* <div className="border-l border-lms-primary h-full mx-2"></div> Vertical line */}
+            {/*<div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>*/}
+            <Separator orientation="horizontal" className="w-[200px] bg-gray-300 dark:bg-gray-700"/>
 
-            <TabsTrigger
-              value="slide"
-              className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-            >
-              2
-            </TabsTrigger>
+            <div className={`flex flex-col justify-center items-center gap-4`}>
+              <TabsTrigger
+                  value="slide"
+                  className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+              >
+                2
+              </TabsTrigger>
+              <span className="text-lms-primary text-lg ">Slide</span>
+            </div>
 
-            <TabsTrigger
-              value="video"
-              className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-            >
-              3
-            </TabsTrigger>
+            {/*<div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>*/}
+            <Separator orientation="horizontal" className="w-[200px] bg-gray-300 dark:bg-gray-700"/>
+
+            <div className={`flex flex-col justify-center items-center gap-4`}>
+              <TabsTrigger
+                  value="video"
+                  className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+              >
+                3
+              </TabsTrigger>
+              <span className="text-lms-primary text-lg ">Video</span>
+            </div>
           </TabsList>
+
 
           {/* Curriculum */}
           <TabsContent value="curriculum">
             <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={async (values) => {
-                // create degree post
-                const curriculumPost: CurriculumType = {
-                  title: values.title,
-                  course: values.course,
-                  description: values.description,
-                  type: values.type,
-                  subject: values.subject,
-                  file: values.file,
-                  status: values.status,
-                };
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={async (values) => {
+                  // create degree post
+                  const curriculumPost: CurriculumType = {
+                    title: values.title,
+                    course: values.course,
+                    description: values.description,
+                    type: values.type,
+                    subject: values.subject,
+                    file: values.file,
+                    status: values.status,
+                  };
 
-                // post product
-                handleSubmit(curriculumPost);
-              }}
+                  // post product
+                  handleSubmit(curriculumPost);
+                }}
             >
-              {({ setFieldValue }) => (
-                <Form className="py-4 rounded-lg w-full h-[605px]">
-                  <div className="flex flex-col gap-4 items-center justify-center">
-                    {/*Curriculum */}
-                    <div className={style.inputContainer}>
-                      <label className={style.label} htmlFor="subject">
-                        Subject
-                      </label>
-                      <div className="relative w-full">
-                        <Field
-                          as="select"
-                          name="subject"
-                          id="subject"
-                          className={`${style.input} appearance-none`}
-                        >
-                          <option value="" disabled hidden>
-                            Select Subjext
-                          </option>
-                          <option value="Web Design">Web Design</option>
-                          <option value="Spring Framework">
-                            Spring Framework
-                          </option>
-                          <option value="C++ Programming">
-                            C++ Programming
-                          </option>
-                        </Field>
-                        <ErrorMessage
-                          name="subject"
-                          component="div"
-                          className={`${style.error}`}
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <IoIosArrowDown
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
+              {({setFieldValue}) => (
+                  <Form className="py-4 rounded-lg w-full h-[605px]">
+                    <div className="flex flex-col gap-4 items-center justify-center">
+
+                      <div className={style.inputContainer}>
+
+                        <div className="flex">
+                          <label className={style.label} htmlFor="subject">
+                            Subject
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
                         </div>
+
+                        <div className="relative w-full">
+                          <Field
+                              as="select"
+                              name="subject"
+                              id="subject"
+                              className={`${style.input} appearance-none`}
+                          >
+                            <option value="" disabled hidden>
+                              Select Subject
+                            </option>
+                            <option value="Web Design">Web Design</option>
+                            <option value="Spring Framework">
+                              Spring Framework
+                            </option>
+                            <option value="C++ Programming">
+                              C++ Programming
+                            </option>
+                          </Field>
+                          <ErrorMessage
+                              name="subject"
+                              component="div"
+                              className={`${style.error}`}
+                          />
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <IoIosArrowDown
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <div className="flex">
+                          <label className={`${style.label}`} htmlFor="title">
+                            Title
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                        </div>
+
+                        <Field
+                            type="text"
+                            name="title"
+                            placeholder="Web Design Curriculum"
+                            id="title"
+                            className={`${style.input}`}
+                        />
+                        <ErrorMessage
+                            name="title"
+                            component="div"
+                            className={`${style.error}`}
+                        />
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <label className={`${style.label}`} htmlFor="description">
+                        Description
+                        </label>
+                        <Field
+                            // as="textarea"
+                            type="text"
+                            name="description"
+                            id="description"
+                            className={`${style.input}`}
+                        />
+                        <ErrorMessage
+                            name="description"
+                            component="div"
+                            className={`${style.error}`}
+                        />
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <label className={`${style.label}`} htmlFor="file">
+                          File Upload
+                        </label>
+                        <Field
+                            type="file"
+                            name="file"
+                            id="file"
+                            component={CustomInput}
+                            setFieldValue={setFieldValue}
+                        />
+                        <ErrorMessage
+                            name="file"
+                            component="div"
+                            className={`${style.error}`}
+                        />
                       </div>
                     </div>
 
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="title">
-                        Title
-                      </label>
-                      <Field
-                        type="text"
-                        name="title"
-                        placeholder="Web Design Curriculum"
-                        id="title"
-                        className={`${style.input}`}
-                      />
-                      <ErrorMessage
-                        name="title"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="description">
-                        Description
-                      </label>
-                      <Field
-                        // as="textarea"
-                        type="text"
-                        name="description"
-                        id="description"
-                        className={`${style.input}`}
-                      />
-                      <ErrorMessage
-                        name="description"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="file">
-                        File Upload
-                      </label>
-                      <Field
-                        type="file"
-                        name="file"
-                        id="file"
-                        component={CustomInput}
-                        setFieldValue={setFieldValue}
-                      />
-                      <ErrorMessage
-                        name="file"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-                  </div>
-
-                  {/* button submit */}
-                  {/* <DialogFooter>
-                <Button
-                  type="submit"
-                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                >
-                  Add
-                </Button>
-              </DialogFooter> */}
-                </Form>
+                  </Form>
               )}
             </Formik>
             <div className="flex justify-end w-[900px]">
               <Button
-                type="submit"
-                className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                onClick={() => handleNext(activeTab)}
+                  type="submit"
+                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                  onClick={() => handleNext(activeTab)}
               >
                 Next
               </Button>
@@ -327,136 +339,135 @@ export function CreateMaterialForm() {
           {/* Slide */}
           <TabsContent value="slide">
             <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={async (values) => {
-                // create degree post
-                const curriculumPost: SlideType = {
-                  title: values.title,
-                  course: values.course,
-                  description: values.description,
-                  type: values.type,
-                  subject: values.subject,
-                  file: values.file,
-                  status: values.status,
-                };
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={async (values) => {
+                  // create degree post
+                  const curriculumPost: SlideType = {
+                    title: values.title,
+                    course: values.course,
+                    description: values.description,
+                    type: values.type,
+                    subject: values.subject,
+                    file: values.file,
+                    status: values.status,
+                  };
 
-                // post product
-                handleSubmit(curriculumPost);
-              }}
+                  // post product
+                  handleSubmit(curriculumPost);
+                }}
             >
-              {({ setFieldValue }) => (
-                <Form className="py-4 rounded-lg w-full h-[605px]">
-                  <div className="flex flex-col gap-4 items-center justify-center">
-                    {/*Curriculum */}
-                    <div className={style.inputContainer}>
-                      <label className={style.label} htmlFor="subject">
-                        Subject
-                      </label>
-                      <div className="relative w-full">
-                        <Field
-                          as="select"
-                          name="subject"
-                          id="subject"
-                          className={`${style.input} appearance-none`}
-                        >
-                          <option value="" disabled hidden>
-                            Select Subjext
-                          </option>
-                          <option value="Web Design">Web Design</option>
-                          <option value="Spring Framework">
-                            Spring Framework
-                          </option>
-                          <option value="C++ Programming">
-                            C++ Programming
-                          </option>
-                        </Field>
-                        <ErrorMessage
-                          name="subject"
-                          component="div"
-                          className={`${style.error}`}
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <IoIosArrowDown
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
+              {({setFieldValue}) => (
+                  <Form className="py-4 rounded-lg w-full h-[605px]">
+                    <div className="flex flex-col gap-4 items-center justify-center">
+
+                      <div className={style.inputContainer}>
+                        <div className="flex">
+                          <label className={style.label} htmlFor="subject">
+                            Subject
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
                         </div>
+
+                        <div className="relative w-full">
+                          <Field
+                              as="select"
+                              name="subject"
+                              id="subject"
+                              className={`${style.input} appearance-none`}
+                          >
+                            <option value="" disabled hidden>
+                              Select Subjext
+                            </option>
+                            <option value="Web Design">Web Design</option>
+                            <option value="Spring Framework">
+                              Spring Framework
+                            </option>
+                            <option value="C++ Programming">
+                              C++ Programming
+                            </option>
+                          </Field>
+                          <ErrorMessage
+                              name="subject"
+                              component="div"
+                              className={`${style.error}`}
+                          />
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <IoIosArrowDown
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <div className="flex">
+                          <label className={`${style.label}`} htmlFor="title">
+                            Title
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                        </div>
+
+                        <Field
+                            type="text"
+                            name="title"
+                            placeholder="Web Design Slide"
+                            id="title"
+                            className={`${style.input}`}
+                        />
+                        <ErrorMessage
+                            name="title"
+                            component="div"
+                            className={`${style.error}`}
+                        />
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <label className={`${style.label}`} htmlFor="description">
+                        Description
+                        </label>
+                        <Field
+                            // as="textarea"
+                            type="text"
+                            name="description"
+                            id="description"
+                            className={`${style.input}`}
+                        />
+                        <ErrorMessage
+                            name="description"
+                            component="div"
+                            className={`${style.error}`}
+                        />
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <label className={`${style.label}`} htmlFor="file">
+                          File Upload
+                        </label>
+                        <Field
+                            type="file"
+                            name="file"
+                            id="file"
+                            component={CustomInput}
+                            setFieldValue={setFieldValue}
+                        />
+                        <ErrorMessage
+                            name="file"
+                            component="div"
+                            className={`${style.error}`}
+                        />
                       </div>
                     </div>
 
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="title">
-                        Title
-                      </label>
-                      <Field
-                        type="text"
-                        name="title"
-                        placeholder="Web Design Slide"
-                        id="title"
-                        className={`${style.input}`}
-                      />
-                      <ErrorMessage
-                        name="title"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="description">
-                        Description
-                      </label>
-                      <Field
-                        // as="textarea"
-                        type="text"
-                        name="description"
-                        id="description"
-                        className={`${style.input}`}
-                      />
-                      <ErrorMessage
-                        name="description"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="file">
-                        File Upload
-                      </label>
-                      <Field
-                        type="file"
-                        name="file"
-                        id="file"
-                        component={CustomInput}
-                        setFieldValue={setFieldValue}
-                      />
-                      <ErrorMessage
-                        name="file"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-                  </div>
-
-                  {/* button submit */}
-                  {/* <DialogFooter>
-                <Button
-                  type="submit"
-                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                >
-                  Add
-                </Button>
-              </DialogFooter> */}
-                </Form>
+                  </Form>
               )}
             </Formik>
             <div className="flex justify-end w-[900px]">
               <Button
-                type="submit"
-                className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                onClick={() => handleNext(activeTab)}
+                  type="submit"
+                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                  onClick={() => handleNext(activeTab)}
               >
                 Next
               </Button>
@@ -466,142 +477,140 @@ export function CreateMaterialForm() {
           {/* Video */}
           <TabsContent value="video">
             <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={async (values) => {
-                // create degree post
-                const curriculumPost: VideoType = {
-                  title: values.title,
-                  course: values.course,
-                  description: values.description,
-                  type: values.type,
-                  subject: values.subject,
-                  file: values.file,
-                  status: values.status,
-                };
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={async (values) => {
+                  // create degree post
+                  const curriculumPost: VideoType = {
+                    title: values.title,
+                    course: values.course,
+                    description: values.description,
+                    type: values.type,
+                    subject: values.subject,
+                    file: values.file,
+                    status: values.status,
+                  };
 
-                // post product
-                handleSubmit(curriculumPost);
-              }}
+                  // post product
+                  handleSubmit(curriculumPost);
+                }}
             >
-              {({ setFieldValue }) => (
-                <Form className="py-4 rounded-lg w-full h-[605px]">
-                  <div className="flex flex-col gap-4 items-center justify-center">
-                    {/*Curriculum */}
-                    <div className={style.inputContainer}>
-                      <label className={style.label} htmlFor="subject">
-                        Subject
-                      </label>
-                      <div className="relative w-full">
-                        <Field
-                          as="select"
-                          name="subject"
-                          id="subject"
-                          className={`${style.input} appearance-none`}
-                        >
-                          <option value="" disabled hidden>
-                            Select Subjext
-                          </option>
-                          <option value="Web Design">Web Design</option>
-                          <option value="Spring Framework">
-                            Spring Framework
-                          </option>
-                          <option value="C++ Programming">
-                            C++ Programming
-                          </option>
-                        </Field>
-                        <ErrorMessage
-                          name="subject"
-                          component="div"
-                          className={`${style.error}`}
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <IoIosArrowDown
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
+              {({setFieldValue}) => (
+                  <Form className="py-4 rounded-lg w-full h-[605px]">
+                    <div className="flex flex-col gap-4 items-center justify-center">
+
+                      <div className={style.inputContainer}>
+                        <div className="flex">
+                          <label className={style.label} htmlFor="subject">
+                            Subject
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
                         </div>
+
+                        <div className="relative w-full">
+                          <Field
+                              as="select"
+                              name="subject"
+                              id="subject"
+                              className={`${style.input} appearance-none`}
+                          >
+                            <option value="" disabled hidden>
+                              Select Subjext
+                            </option>
+                            <option value="Web Design">Web Design</option>
+                            <option value="Spring Framework">
+                              Spring Framework
+                            </option>
+                            <option value="C++ Programming">
+                              C++ Programming
+                            </option>
+                          </Field>
+                          <ErrorMessage
+                              name="subject"
+                              component="div"
+                              className={`${style.error}`}
+                          />
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                            <IoIosArrowDown
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <div className="flex">
+                          <label className={`${style.label}`} htmlFor="title">
+                            Title
+                          </label>
+                          <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                        </div>
+
+                        <Field
+                            type="text"
+                            name="title"
+                            placeholder="Web Design Video"
+                            id="title"
+                            className={`${style.input}`}
+                        />
+                        <ErrorMessage
+                            name="title"
+                            component="div"
+                            className={`${style.error}`}
+                        />
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <label className={`${style.label}`} htmlFor="description">
+                        Description
+                        </label>
+                        <Field
+                            // as="textarea"
+                            type="text"
+                            name="description"
+                            id="description"
+                            className={`${style.input}`}
+                        />
+                        <ErrorMessage
+                            name="description"
+                            component="div"
+                            className={`${style.error}`}
+                        />
+                      </div>
+
+                      <div className={`${style.inputContainer}`}>
+                        <label className={`${style.label}`} htmlFor="file">
+                          File Upload
+                        </label>
+                        <Field
+                            type="file"
+                            name="file"
+                            id="file"
+                            component={CustomInput}
+                            setFieldValue={setFieldValue}
+                        />
+                        <ErrorMessage
+                            name="file"
+                            component="div"
+                            className={`${style.error}`}
+                        />
                       </div>
                     </div>
 
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="title">
-                        Title
-                      </label>
-                      <Field
-                        type="text"
-                        name="title"
-                        placeholder="Web Design Video"
-                        id="title"
-                        className={`${style.input}`}
-                      />
-                      <ErrorMessage
-                        name="title"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="description">
-                        Description
-                      </label>
-                      <Field
-                        // as="textarea"
-                        type="text"
-                        name="description"
-                        id="description"
-                        className={`${style.input}`}
-                      />
-                      <ErrorMessage
-                        name="description"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-
-                    <div className={`${style.inputContainer}`}>
-                      <label className={`${style.label}`} htmlFor="file">
-                        File Upload
-                      </label>
-                      <Field
-                        type="file"
-                        name="file"
-                        id="file"
-                        component={CustomInput}
-                        setFieldValue={setFieldValue}
-                      />
-                      <ErrorMessage
-                        name="file"
-                        component="div"
-                        className={`${style.error}`}
-                      />
-                    </div>
-                  </div>
-
-                  {/* button submit */}
-                  {/* <DialogFooter>
-                <Button
-                  type="submit"
-                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                >
-                  Add
-                </Button>
-              </DialogFooter> */}
-                </Form>
+                  </Form>
               )}
             </Formik>{" "}
             <div className="flex justify-end w-[900px]">
               <Button
-                type="submit"
-                className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                  type="submit"
+                  className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
               >
                 Upload
               </Button>
             </div>
           </TabsContent>
         </Tabs>
-      </DialogContent>
-    </Dialog>
+      </div>
   );
 }

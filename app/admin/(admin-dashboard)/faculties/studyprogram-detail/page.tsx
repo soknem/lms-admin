@@ -18,7 +18,7 @@ export default function Users() {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          <h3 className="font-semibold text-lms-primary">VIEW</h3>
+          <h3 className="font-semibold text-lms-primary">Introduction to IT</h3>
         </BreadcrumbList>
       </Breadcrumb>
 
