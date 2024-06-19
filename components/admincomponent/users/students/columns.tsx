@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 import { StatusOption, UserStudentType } from "@/lib/types/admin/user";
 import ActionsCell from "./StudentActionCell";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -72,11 +73,11 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       <span
         className={
           value === "true"
-            ? "Public text-green-500"
+            ? "Public text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
             : value === "false"
-            ? "Disable text-red-500"
+            ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
             : value === "draft"
-            ? "Hiatus text-lms-gray-30"
+            ? "Hiatus bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
             : ""
         }
       >
@@ -115,31 +116,31 @@ const EditCell = ({ row, table }: any) => {
   };
 
   return (
-    <div>
-      {meta?.editedRows[row.id] ? (
-        <div>
-          <button
-            className="mr-3 bg-red-100 rounded-full p-1"
-            onClick={setEditedRows}
-            name="cancel"
-          >
-            <RxCross2 size={20} className="text-red-500" />
-          </button>
+      <div>
+        {meta?.editedRows[row.id] ? (
+            <div>
+              <button
+                  className="mr-3 bg-red-100 rounded-full p-1"
+                  onClick={setEditedRows}
+                  name="cancel"
+              >
+                <RxCross2 size={20} className="text-red-500" />
+              </button>
 
-          <button
-            onClick={setEditedRows}
-            name="done"
-            className="bg-green-100 rounded-full p-1"
-          >
-            <IoCheckmarkSharp size={20} className="text-green-500" />
-          </button>
-        </div>
-      ) : (
-        <button onClick={setEditedRows} name="edit">
-          <MdEdit size={18} className="text-gray-30" />
-        </button>
-      )}
-    </div>
+              <button
+                  onClick={setEditedRows}
+                  name="done"
+                  className="bg-green-100 rounded-full p-1"
+              >
+                <IoCheckmarkSharp size={20} className="text-green-500" />
+              </button>
+            </div>
+        ) : (
+            <button onClick={setEditedRows} name="edit">
+              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+            </button>
+        )}
+      </div>
   );
 };
 

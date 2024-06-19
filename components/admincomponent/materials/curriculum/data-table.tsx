@@ -35,8 +35,9 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CreateMaterialForm } from "../addMaterialForm";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
+import {FiPlus} from "react-icons/fi";
+import {useRouter} from "next/navigation";
 
 //custom component import
 
@@ -56,6 +57,7 @@ export function CurriculumTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -107,17 +109,17 @@ export function CurriculumTable<TData, TValue>({
   console.log("data from page: ", data);
 
   const filterOptions = ["All", "Public", "Disable", "Draft"];
+
   const handleFilterChange = (value:any) => {
     setSelectedFilter(value);
 
     // Mapping filter options to corresponding numerical values
-    const filterValue =
-        value === "All" ? undefined :
-            value === "Public" ? 1 :
-                value === "Disable" ? 2 :
-                    3;
+    const filterValue = value === "All" ? undefined :
+        value === "Public" ? 1 :
+            value === "Disable" ? 2 :
+                3;
 
-    // Assuming `table` is defined somewhere in your component
+    // Applying the filter to the table
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 
@@ -151,26 +153,31 @@ export function CurriculumTable<TData, TValue>({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                  variant='outline'
-                  className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
+                  variant="outline"
+                  className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
               >
-                <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
-                Columns
+                <TbFilter className='mr-2 h-4 w-4'/>
+                {selectedFilter}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white">
+            <DropdownMenuContent
+                align="end"
+                className="border-[#E6E6E6] bg-white"
+            >
               {filterOptions.map((option) => (
                   <DropdownMenuItem
                       key={option}
-                      className="capitalize focus:bg-background"
-                      onClick={() => handleFilterChange(option)}
+                      onSelect={() => handleFilterChange(option)}
+                      className={`cursor-pointer  ${
+                          (table.getColumn("status")?.getFilterValue() || "All") ===
+                          option
+                      }`}
                   >
                     {option}
                   </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-
 
           {/* Column visibility */}
           <DropdownMenu>
@@ -179,7 +186,7 @@ export function CurriculumTable<TData, TValue>({
                   variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
               >
                 <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
-                Columns
+                Table View
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="bg-white">
@@ -203,7 +210,9 @@ export function CurriculumTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <CreateMaterialForm/>
+          <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/admin/materials/add-materials")}}>
+            <FiPlus className="mr-2 h-4 w-4" /> Add Material
+          </Button>
         </div>
 
         {/* Table */}

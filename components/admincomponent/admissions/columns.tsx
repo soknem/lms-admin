@@ -79,11 +79,11 @@ const TableCell = ({getValue, row, column, table}: any) => {
             <span
                 className={
                     value === "opening"
-                        ? "Opening text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
+                        ? "Opening text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
                         : value === "ended"
-                            ? "Ended text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
+                            ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
                             : value === "achieved"
-                                ? "Achieved text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+                                ? "Achieved bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
                                 : ""
                 }
             >

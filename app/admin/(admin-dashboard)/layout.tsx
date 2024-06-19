@@ -26,7 +26,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         >
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
-                <nav className="w-full h-[72px]">
+                <nav className="w-full h-[72px] shadow-md">
                     <NavbarComponent/>
                 </nav>
 

@@ -18,6 +18,7 @@ import {useState} from "react";
 import Image from "next/image";
 import {create} from "domain";
 import {PaymentType} from "@/lib/types/admin/payments";
+import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
     id: "0001",
@@ -145,12 +146,15 @@ const years = Array.from(new Array(40), (val, index) => currentYear - index);
 export function CreatePayForm() {
     return (
         <Dialog>
+
             <DialogTrigger asChild>
                 <Button className="bg-lms-primary text-white hover:bg-lms-primary">
                     <FiPlus className="mr-2 h-4 w-4"/> Add Payment
                 </Button>
             </DialogTrigger>
+
             <DialogContent className="w-[910px] bg-white ">
+
                 <DialogHeader>
                     <DialogTitle>Add Payment</DialogTitle>
                 </DialogHeader>
@@ -192,9 +196,13 @@ export function CreatePayForm() {
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-wrap gap-4">
                                 <div className={` ${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="name">
-                                        Student Name
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="name">
+                                            Student Name
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
                                         type="text"
                                         placeholder="Chan Tola"
@@ -210,9 +218,13 @@ export function CreatePayForm() {
                                 </div>
 
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="gender">
-                                        Gender
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="gender">
+                                            Gender
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
                                         type="text"
                                         name="gender"
@@ -228,9 +240,13 @@ export function CreatePayForm() {
                                 </div>
 
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="academic_fee">
-                                        Academic Fee
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="academic_fee">
+                                            Academic Fee
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
                                         type="text"
                                         placeholder="$ 700"
@@ -264,9 +280,13 @@ export function CreatePayForm() {
                                 </div>
 
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="total_payment">
-                                        Paid Amount
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="total_payment">
+                                            Paid Amount
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
                                         type="text"
                                         placeholder="$ 500"
@@ -282,9 +302,13 @@ export function CreatePayForm() {
                                 </div>
 
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="date">
-                                        Paid Date
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="date">
+                                            Paid Date
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
                                         type="date"
                                         placeholder="Feb 25, 2023"
@@ -300,9 +324,13 @@ export function CreatePayForm() {
                                 </div>
 
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="payment_method">
-                                        Payment Method
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="payment_method">
+                                            Payment Method
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
                                         type="text"
                                         placeholder="Cash Payment"

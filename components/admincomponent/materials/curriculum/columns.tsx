@@ -74,27 +74,29 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       />
     );
   }
+
   if (column.id === "status") {
     return (
-      <span
-        className={
-          value === 1
-              ? "Public text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
-              : value === 2
-                  ? "Disable text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
-                  : value === 3
-                      ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
-                      : ""
-        }
-      >
-        {value == 1
-          ? "Public"
-          : value == 2
+        <span
+            className={
+              value == 1
+                  ? "Public text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                  : value == 2
+                      ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                      : value == 3
+                          ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
+                          : ""
+            }
+        >
+  {value == 1
+      ? "Public"
+      : value == 2
           ? "Disable"
           : value == 3
-          ? "Draft"
-          : ""}
-      </span>
+              ? "Draft"
+              : ""}
+</span>
+
     );
   }
 
@@ -102,7 +104,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 };
 
 // Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
+const EditCell = ({row, table}: any) => {
   const meta = table.options.meta;
 
   const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -110,7 +112,7 @@ const EditCell = ({ row, table }: any) => {
 
     meta?.setEditedRows((old: any) => ({
       ...old,
-      [row.id]: action === "edit" ? true : false,
+      [row.id]: action === "edit",
     }));
 
     if (action === "cancel") {

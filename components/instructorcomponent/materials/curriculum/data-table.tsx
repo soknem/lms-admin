@@ -37,6 +37,8 @@ import {
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {CreateMaterialForm} from "@/components/instructorcomponent/materials/addMaterialForm";
+import {useRouter} from "next/navigation";
+import {FiPlus} from "react-icons/fi";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -54,6 +56,7 @@ export function CurriculumTable<TData, TValue>({
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
     const [selectedFilter, setSelectedFilter] = useState("All");
+    const router = useRouter();
 
     const table = useReactTable({
         data,
@@ -182,7 +185,7 @@ export function CurriculumTable<TData, TValue>({
                             variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
                         >
                             <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
-                            Columns
+                            Table View
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-white">
@@ -206,7 +209,9 @@ export function CurriculumTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <CreateMaterialForm/>
+                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/instructor/materials/add-materials")}}>
+                    <FiPlus className="mr-2 h-4 w-4" /> Add Material
+                </Button>
             </div>
 
             {/* Table */}
