@@ -62,6 +62,8 @@ export function CardLogin() {
     const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
     const router = useRouter();
 
+    const [error, setError] = useState<string | null>(null);
+
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -106,6 +108,8 @@ export function CardLogin() {
                 actions.setSubmitting(false);
             });
     };
+
+
 
     return (
         <Card className="w-[550px] bg-white dark:bg-white p-[24px] border border-gray-300 dark:border-white">

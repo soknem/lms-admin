@@ -21,6 +21,7 @@ export default function RootLayoutParent({ children }: RootLayoutProps) {
     const [activePath, setActivePath] = useState(MenuList[0].path);
     const [isAcademicSidebarVisible, setAcademicSidebarVisible] = useState(false);
 
+
     const toggleAcademicSidebar = () => {
         setAcademicSidebarVisible((prev) => !prev);
     };

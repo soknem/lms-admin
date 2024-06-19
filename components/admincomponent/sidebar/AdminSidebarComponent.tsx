@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
@@ -32,6 +32,8 @@ export default function AdminSidebarComponent({
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
 
+    const router = useRouter();
+
     useEffect(() => {
         setIsDarkMode(theme === "dark");
     }, [theme]);
@@ -46,6 +48,24 @@ export default function AdminSidebarComponent({
         `group flex items-center justify-center p-4 rounded-[10px] hover:bg-lms-background hover:text-lms-primary ${
             isActive ? "bg-lms-background text-lms-primary" : ""
         }`;
+
+    const handleLogout = () => {
+        fetch(`${process.env.NEXT_PUBLIC_LMS_URL}/api/logout`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("data from logout: ", data);
+                router.push("/login");
+            }).catch((error) => {
+            console.error("Error:", error);
+            alert("LogOut Failed");
+        });
+    }
 
     return (
         <div
@@ -116,6 +136,8 @@ export default function AdminSidebarComponent({
                             className={`${buttonClass(activePath.startsWith(item.path))} ${
                                 isHovered ? "w-[200px] flex justify-start gap-4" : ""
                             }`}
+
+                            onClick={handleLogout}
                         >
                             <item.icon
                                 className={`w-5 h-5 ${

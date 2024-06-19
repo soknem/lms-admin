@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import {facultyApi} from "@/lib/features/admin/faculty";
+import authSlice from './features/auth/authSlice'
+import {istadLmsApi} from "@/lib/api";
 
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
-            [facultyApi.reducerPath]: facultyApi.reducer,
+            [istadLmsApi.reducerPath]: istadLmsApi.reducer,
+            auth: authSlice
         },
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(facultyApi.middleware),
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })
 }
 
