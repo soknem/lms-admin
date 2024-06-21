@@ -1,173 +1,173 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 //import from shad cn
 import {
-  ColumnDef,
-  flexRender,
-  SortingState,
-  VisibilityState,
-  ColumnFiltersState,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
+    ColumnDef,
+    flexRender,
+    SortingState,
+    VisibilityState,
+    ColumnFiltersState,
+    getCoreRowModel,
+    getSortedRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    useReactTable,
 } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
 } from "@/components/ui/command";
 
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { TbFilter } from "react-icons/tb";
+import {TbFilter} from "react-icons/tb";
 
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
 }
 
 export function FilterAdmin<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [allData, setData] = useState(() => [...data]);
-  const [originalData, setOriginalData] = useState(() => [...data]);
-  const [editedRows, setEditedRows] = useState({});
+                                               columns,
+                                               data,
+                                           }: DataTableProps<TData, TValue>) {
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [allData, setData] = useState(() => [...data]);
+    const [originalData, setOriginalData] = useState(() => [...data]);
+    const [editedRows, setEditedRows] = useState({});
 
-  // filters
-  const [openIns, setopenIns] = useState(false);
-  const [selectedIns, setselectedIns] = React.useState<any>(null);
+    // filters
+    const [openIns, setopenIns] = useState(false);
+    const [selectedIns, setselectedIns] = React.useState<any>(null);
 
-  const [openClass, setOpenClass] = useState(false);
-  const [selectedClass, setSelectedClass] = React.useState<any>(null);
+    const [openClass, setOpenClass] = useState(false);
+    const [selectedClass, setSelectedClass] = React.useState<any>(null);
 
-  const [openCourse, setOpenCourse] = useState(false);
-  const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
+    const [openCourse, setOpenCourse] = useState(false);
+    const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
 
-  const router = useRouter();
+    const router = useRouter();
 
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-    },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    meta: {
-      editedRows,
-      setEditedRows,
-      revertData: (rowIndex: number, revert: boolean) => {
-        if (revert) {
-          setData((old) =>
-            old.map((row, index) =>
-              index === rowIndex ? originalData[rowIndex] : row
-            )
-          );
-        } else {
-          setOriginalData((old) =>
-            old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
-          );
+    const table = useReactTable({
+        data,
+        columns,
+        state: {
+            sorting,
+            columnFilters,
+            columnVisibility,
+        },
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        onColumnVisibilityChange: setColumnVisibility,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        meta: {
+            editedRows,
+            setEditedRows,
+            revertData: (rowIndex: number, revert: boolean) => {
+                if (revert) {
+                    setData((old) =>
+                        old.map((row, index) =>
+                            index === rowIndex ? originalData[rowIndex] : row
+                        )
+                    );
+                } else {
+                    setOriginalData((old) =>
+                        old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
+                    );
+                }
+            },
+            updateData: (rowIndex: number, columnId: string, value: string) => {
+                setData((old) =>
+                    old.map((row, index) => {
+                        if (index === rowIndex) {
+                            return {
+                                ...old[rowIndex],
+                                [columnId]: value,
+                            };
+                        }
+                        return row;
+                    })
+                );
+            },
+        },
+    });
+
+    //reset popup
+    const handleReset = (columnId: string) => {
+        if (columnId === "instructor") {
+            setselectedIns(null);
         }
-      },
-      updateData: (rowIndex: number, columnId: string, value: string) => {
-        setData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex],
-                [columnId]: value,
-              };
-            }
-            return row;
-          })
-        );
-      },
-    },
-  });
+        if (columnId === "class") {
+            setSelectedClass(null);
+        }
+        if (columnId === "course") {
+            setSelectedCourse(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
 
-  //reset popup
-  const handleReset = (columnId: string) => {
-    if (columnId === "instructor") {
-      setselectedIns(null);
-    }
-    if (columnId === "class") {
-      setSelectedClass(null);
-    }
-    if (columnId === "course") {
-      setSelectedCourse(null);
-    }
-    table.getColumn(columnId)?.setFilterValue("");
-    setData([...originalData]);
-  };
+    // filters data of instructor
+    const FilteredIns = data.reduce((instructor: string[], item: any) => {
+        if (!instructor.includes(item.instructor)) {
+            instructor.push(item.instructor);
+        }
+        return instructor;
+    }, []);
 
-  // filter data of instructor
-  const FilteredIns = data.reduce((instructor: string[], item: any) => {
-    if (!instructor.includes(item.instructor)) {
-      instructor.push(item.instructor);
-    }
-    return instructor;
-  }, []);
+    //filters data of class
+    const FilteredClass = data.reduce((cs: string[], item: any) => {
+        if (!cs.includes(item.class)) {
+            cs.push(item.class);
+        }
+        return cs;
+    }, []);
 
-  //filter data of class
-  const FilteredClass = data.reduce((cs: string[], item: any) => {
-    if (!cs.includes(item.class)) {
-      cs.push(item.class);
-    }
-    return cs;
-  }, []);
+    //filters data of course
+    const FilteredCourse = data.reduce((course: string[], item: any) => {
+        if (!course.includes(item.course)) {
+            course.push(item.course);
+        }
+        return course;
+    }, []);
 
-  //filter data of course
-  const FilteredCourse = data.reduce((course: string[], item: any) => {
-    if (!course.includes(item.course)) {
-      course.push(item.course);
-    }
-    return course;
-  }, []);
+    return (
+        <>
+            <div className="flex items-center gap-4">
 
-  return (
-    <>
-      <div className="flex items-center gap-4">
-       
 
-        {/* filter Instructor */}
-        <Popover open={openIns} onOpenChange={setopenIns}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
-              {selectedIns ? <>{selectedIns}</> : <> Filter Generation</>}
-            </Button>
-          </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                {/* filters Instructor */}
+                <Popover open={openIns} onOpenChange={setopenIns}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+                        >
+                            <TbFilter className="mr-2 h-4 w-4"/>
+                            {selectedIns ? <>{selectedIns}</> : <> Filter Generation</>}
+                        </Button>
+                    </PopoverTrigger>
+                    {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput placeholder="Filter Instructor..." />
 
@@ -199,20 +199,20 @@ export function FilterAdmin<TData, TValue>({
               </Button>
             )}
           </PopoverContent> */}
-        </Popover>
+                </Popover>
 
-        {/* filter class */}
-        <Popover open={openClass} onOpenChange={setOpenClass}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
-              {selectedClass ? <>{selectedClass}</> : <> Filter Academic</>}
-            </Button>
-          </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                {/* filters class */}
+                <Popover open={openClass} onOpenChange={setOpenClass}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+                        >
+                            <TbFilter className="mr-2 h-4 w-4"/>
+                            {selectedClass ? <>{selectedClass}</> : <> Filter Academic</>}
+                        </Button>
+                    </PopoverTrigger>
+                    {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput placeholder="Filter class..." />
 
@@ -244,20 +244,20 @@ export function FilterAdmin<TData, TValue>({
               </Button>
             )}
           </PopoverContent> */}
-        </Popover>
+                </Popover>
 
-        {/* filter course */}
-        <Popover open={openCourse} onOpenChange={setOpenCourse}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
-            >
-              <TbFilter className="mr-2 h-4 w-4" />
-              {selectedCourse ? <>{selectedCourse}</> : <> Filter Major</>}
-            </Button>
-          </PopoverTrigger>
-          {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                {/* filters course */}
+                <Popover open={openCourse} onOpenChange={setOpenCourse}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
+                        >
+                            <TbFilter className="mr-2 h-4 w-4"/>
+                            {selectedCourse ? <>{selectedCourse}</> : <> Filter Major</>}
+                        </Button>
+                    </PopoverTrigger>
+                    {/* <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput placeholder="Filter Course..." />
 
@@ -289,12 +289,12 @@ export function FilterAdmin<TData, TValue>({
               </Button>
             )}
           </PopoverContent> */}
-        </Popover>
+                </Popover>
 
-        
-      </div>
 
-     
-    </>
-  );
+            </div>
+
+
+        </>
+    );
 }
