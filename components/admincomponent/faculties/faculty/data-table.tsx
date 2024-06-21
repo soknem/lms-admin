@@ -163,7 +163,7 @@ export function FacultyTable<TData, TValue>({
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
                                 className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
                                     option
                                 }`}
                             >

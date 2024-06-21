@@ -132,10 +132,10 @@ export function StudyProgramTable<TData, TValue>({
                         <Input
                             placeholder="Search Study Program"
                             value={
-                                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                                (table.getColumn("studyProgramName")?.getFilterValue() as string) ?? ""
                             }
                             onChange={(event) =>
-                                table.getColumn("name")?.setFilterValue(event.target.value)
+                                table.getColumn("studyProgramName")?.setFilterValue(event.target.value)
                             }
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30 "
                         />
@@ -166,7 +166,7 @@ export function StudyProgramTable<TData, TValue>({
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
                                 className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
                                     option
                                 }`}
                             >

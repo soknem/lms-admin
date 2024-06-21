@@ -116,10 +116,10 @@ export function DataTable<TData, TValue>({
           <Input
             placeholder="Search by generation...."
             value={
-              (table.getColumn("generation")?.getFilterValue() as string) ?? ""
+              (table.getColumn("name")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("generation")?.setFilterValue(event.target.value)
+              table.getColumn("name")?.setFilterValue(event.target.value)
             }
 
             className="border-[#E6E6E6] bg-white pl-10 "

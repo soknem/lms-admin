@@ -55,40 +55,40 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
     // Custom rendering for specific columns : customize date which can take pick date time
-    if (accessorKey === 'startYear' || accessorKey === 'endYear') {
-        const dateValue = new Date(value);
-        const formattedDate = format(dateValue, 'yyyy');
-        const currentYear = new Date().getFullYear();
-        const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-        if (tableMeta?.editedRows[row.id]) {
-            return (
-                //custom year selector only
-                <select
-                    className="border-1 border-lms-gray-30 rounded-md focus:border-lms-gray-30"
-                    value={new Date(value).getFullYear()}
-                    onChange={(e) => {
-                        const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
-                        setValue(newValue);
-                        tableMeta?.updateData(row.index, column.id, newValue);
-                    }}
-                >
-                    {years.map((year) => (
-                        <option  key={year} value={year}>
-                            {year}
-                        </option>
-                    ))}
-                </select>
-            );
-        } else {
-
-            return <div >{formattedDate}</div>;
-
-        }
-    }
+    // if (accessorKey === 'startYear' || accessorKey === 'endYear') {
+    //     const dateValue = new Date(value);
+    //     const formattedDate = format(dateValue, 'yyyy');
+    //     const currentYear = new Date().getFullYear();
+    //     const years = Array.from(new Array(40), (val, index) => currentYear - index);
+    //
+    //     if (tableMeta?.editedRows[row.id]) {
+    //         return (
+    //             //custom year selector only
+    //             <select
+    //                 className="border-1 border-lms-gray-30 rounded-md focus:border-lms-gray-30"
+    //                 value={new Date(value).getFullYear()}
+    //                 onChange={(e) => {
+    //                     const newValue = new Date(Number(e.target.value), 0, 1).toISOString();
+    //                     setValue(newValue);
+    //                     tableMeta?.updateData(row.index, column.id, newValue);
+    //                 }}
+    //             >
+    //                 {years.map((year) => (
+    //                     <option  key={year} value={year}>
+    //                         {year}
+    //                     </option>
+    //                 ))}
+    //             </select>
+    //         );
+    //     } else {
+    //
+    //         return <div >{formattedDate}</div>;
+    //
+    //     }
+    // }
 
     // Custom rendering for specific columns 
-    if (accessorKey === 'status') {
+    if (accessorKey === 'isDraft') {
         const DisplayValue = value.toString();
 
         if (tableMeta?.editedRows[row.id]) {
@@ -107,7 +107,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
             );
         } else {
 
-            if (DisplayValue === 'true') {
+            if (DisplayValue === 'false') {
                 return <StatusBadge type="success" status="Public" />
             } else {
                 return <StatusBadge type="default" status="Draft" />
@@ -117,6 +117,35 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         }
     }
 
+    // Custom rendering for specific columns
+    if (accessorKey === 'isDeleted') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem  value="false" id="active" />
+                        <Label htmlFor="public">Active</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="disable" />
+                        <Label htmlFor="draft">Disable</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Active" />
+            } else {
+                return <StatusBadge type="default" status="Disable" />
+            }
+
+
+        }
+    }
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -198,7 +227,7 @@ const EditCell = ({ row, table }: any) => {
 
 export const columns: ColumnDef<GenerationType>[] = [
     {
-        accessorKey: 'generation',
+        accessorKey: 'name',
         header: ({ column }) => {
             return (
                 <Button
@@ -244,7 +273,24 @@ export const columns: ColumnDef<GenerationType>[] = [
 
     },
     {
-        accessorKey: 'status',
+        accessorKey: 'isDraft',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    VISIBILITY
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell,
+
+
+    },
+    {
+        accessorKey: 'isDeleted',
         header: ({ column }) => {
             return (
                 <Button
@@ -257,15 +303,7 @@ export const columns: ColumnDef<GenerationType>[] = [
             )
         },
         cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                { value: "Select", label: "Select Status" },
-                { value: "Public", label: "Public" },
-                { value: "Draft", label: "Draft" },
-                { value: "Disable", label: "Disable" },
-            ],
-        },
+
 
     },
     {

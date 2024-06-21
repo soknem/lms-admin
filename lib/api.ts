@@ -1,13 +1,13 @@
 // Or from '@reduxjs/toolkit/query' if not using the auto-generated hooks
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "./store";
-import { setAccessToken } from "./features/auth/authSlice";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {RootState} from "./store";
+import {setAccessToken} from "./features/auth/authSlice";
 // initialize an empty api service that we'll inject endpoints into later as needed
 
 // Setting up prepareHeaders to include the token in the headers
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_ISTAD_LMS_API_URL,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, {getState}) => {
         const token = (getState() as RootState).auth.token;
         // if we have a token, let's set the authorization header
         if (token) {
@@ -31,7 +31,7 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
             api.dispatch(setAccessToken(data.accessToken));
             // re-run the query with the new token
             result = await baseQuery(args, api, extraOptions);
-         } else {
+        } else {
             const res = await fetch("http://localhost:3000/api/logout", {
                 method: "POST",
                 credentials: "include",
@@ -42,7 +42,6 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
     }
     return result;
 };
-
 export const istadLmsApi = createApi({
     reducerPath: "istadLmsApi",
     baseQuery: baseQueryWithReAuth,
