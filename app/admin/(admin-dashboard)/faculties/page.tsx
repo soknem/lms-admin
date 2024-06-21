@@ -14,6 +14,9 @@ import {selectToken} from "@/lib/features/auth/authSlice";
 import {useGetFacultiesQuery} from "@/lib/features/admin/faculty";
 import {useGetDegreesQuery} from "@/lib/features/admin/degree";
 import {useGetStudyProgramsQuery} from "@/lib/features/admin/studyprogram";
+import {useGetSubjectsQuery} from "@/lib/features/admin/subject";
+import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
+import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
 
 export default function Page() {
     const token = useAppSelector(selectToken);
@@ -50,6 +53,16 @@ export default function Page() {
         pageSize: 10,
     });
 
+    const {
+        data: subjectData,
+        error: subjectError,
+        isLoading: subjectLoading,
+        isFetching: subjectFetching
+    } = useGetSubjectsQuery({
+        page: 0,
+        pageSize: 10,
+    });
+
     useEffect(() => {
         if (facultiesData) {
             console.log('Fetched Faculties Data:', facultiesData.content);
@@ -76,6 +89,15 @@ export default function Page() {
             console.error('Error fetching study Programs:', studyProgramsError);
         }
     }, [studyProgramsData, studyProgramsError]);
+
+    useEffect(() => {
+        if (subjectData) {
+            console.log('Fetched Data:', subjectData);
+        }
+        if (subjectError) {
+            console.error('Error fetching faculties:', subjectError);
+        }
+    }, [subjectData, subjectError]);
 
     if (facultiesLoading || degreesLoading || studyProgramsLoading) return <div>Loading...</div>;
 
@@ -127,7 +149,7 @@ export default function Page() {
                     </TabsContent>
 
                     <TabsContent value="subject">
-                        {/*<SubjectTable columns={subjectColumns} data={subData}/>*/}
+                        <SubjectTable columns={subjectColumns} data={subjectData.content}/>
                     </TabsContent>
                 </Tabs>
             </section>

@@ -1,28 +1,25 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import {MiddlewareAPI} from "@reduxjs/toolkit";
 
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest,api: MiddlewareAPI) {
 
     if (req.nextUrl.pathname === '/') {
-        // Redirect to /login
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    // const refreshToken = req.cookies.get('refresh-istad-lms');
-    // console.log("rt from middleware",refreshToken)
-    //
-    // if (!refreshToken) {
-    //     // Redirect to login page if refreshToken is not found in the cookies
-    //     return NextResponse.redirect(new URL('/login', req.url));
-    // }
-    //
-    // // If refreshToken is found, continue with the request
-    // return NextResponse.next();
+    const refreshToken = req.cookies.get('refresh-istad-lms');
+
+    if (!refreshToken) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
+
+    return NextResponse.next();
 
 }
-// export const config = {
-//     matcher: ['/admin/:path*', '/student/:path*', '/instructor/:path*'], // List of routes to apply the middleware to
-// };
+export const config = {
+    matcher: ['/','/admin/:path*', '/student/:path*', '/instructor/:path*'], // List of routes to apply the CustomMiddleware to
+};
 

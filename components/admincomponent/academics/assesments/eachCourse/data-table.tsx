@@ -454,5 +454,3 @@ export function CourseAssesmentDataTable<TData, TValue>({
         </>
     )
 }
-
-

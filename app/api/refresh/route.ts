@@ -24,9 +24,6 @@ export async function POST() {
 
     // get the refresh token value
     const refreshToken = credential.value;
-    console.log(
-        "refresh token : ",refreshToken
-    )
 
     // if the refresh token is found, make a POST request to the Our API
     const response = await fetch(
@@ -38,7 +35,7 @@ export async function POST() {
         }
     );
 
-    console.log("Response log from refresh",response)
+
 
     // If the request fails, return an error message to the client-side
     if (!response.ok) {
@@ -57,7 +54,6 @@ export async function POST() {
     const refresh = data?.refreshToken || null;
     const access = data?.accessToken || null;
 
-    console.log("refresh token : ",data);
 
     // Serialize the refresh token and set it as a cookie with
     // (httpOnly, secure, path, and sameSite options) in the response headers to the client-side
