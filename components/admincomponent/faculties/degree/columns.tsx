@@ -69,27 +69,24 @@ const TableCell = ({getValue, row, column, table}: any) => {
             />
         );
     }
-    if (column.id === "status") {
+
+    if (column.id === "isDraft") {
         return (
             <span
                 className={
-                    value === "true"
-                        ? "Public text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
-                        : value === "false"
-                            ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                            : value === "draft"
-                                ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
-                                : ""
+                    value === true
+                        ? "Public text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                        : value === false
+                            ? "Draft text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            : ""
                 }
             >
-        {value === "true"
-            ? "Public"
-            : value === "false"
-                ? "Disable"
-                : value === "draft"
-                    ? "Draft"
+            {value === true
+                ? "Public"
+                : value === false
+                    ? "Disable"
                     : ""}
-      </span>
+        </span>
         );
     }
 
@@ -105,7 +102,7 @@ const EditCell = ({row, table}: any) => {
 
         meta?.setEditedRows((old: any) => ({
             ...old,
-            [row.id]: action === "edit" ? true : false,
+            [row.id]: action === "edit",
         }));
 
         if (action === "cancel") {
@@ -135,7 +132,7 @@ const EditCell = ({row, table}: any) => {
                 </div>
             ) : (
                 <button onClick={setEditedRows} name="edit">
-                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
                 </button>
             )}
         </div>
@@ -143,21 +140,6 @@ const EditCell = ({row, table}: any) => {
 };
 
 export const degreeColumns: ColumnDef<DegreeType>[] = [
-    {
-        accessorKey: "id",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    ID
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
     {
         accessorKey: "level",
         header: ({column}) => {
@@ -173,6 +155,7 @@ export const degreeColumns: ColumnDef<DegreeType>[] = [
         },
         cell: TableCell,
     },
+
     {
         accessorKey: "description",
         header: () => {
@@ -180,16 +163,9 @@ export const degreeColumns: ColumnDef<DegreeType>[] = [
         },
         cell: TableCell,
     },
-    {
-        accessorKey: "create_by",
-        header: () => {
-            return <div>CREATED BY</div>;
-        },
-        cell: TableCell,
-    },
 
     {
-        accessorKey: "status",
+        accessorKey: "isDraft",
         header: ({column}) => {
             return (
                 <Button
@@ -201,20 +177,23 @@ export const degreeColumns: ColumnDef<DegreeType>[] = [
                 </Button>
             );
         },
+
+
         cell: TableCell,
         meta: {
             type: "select",
             options: [
-                {value: "true", label: "Public"},
-                {value: "false", label: "Disable"},
-                {value: "draft", label: "Draft"},
+                {value: true, label: "Public"},
+                {value: false, label: "Draft"},
             ],
         },
     },
+
     {
         id: "edit",
         cell: EditCell,
     },
+
     {
         id: "actions",
         cell: ActionsCell,

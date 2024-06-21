@@ -21,11 +21,13 @@ import {useRouter} from "next/navigation";
 import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
-    id: "",
+    alias: "",
     name: "",
     description: "",
+    address: "",
     logo: "",
-    status: "",
+    isDraft: false,
+    isDeleted: false,
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -106,11 +108,13 @@ export function EditFacForm() {
                     onSubmit={async (values) => {
                         // create faculty post
                         const FacultyPost: FacultyType = {
-                            id: values.id,
+                            alias: values.alias,
                             name: values.name,
                             description: values.description,
+                            address: values.address,
                             logo: values.logo,
-                            status: values.status,
+                            isDraft: values.isDraft,
+                            isDeleted: values.isDeleted,
                         };
                         router.push("/admin/faculties");
                         // post product
@@ -216,7 +220,7 @@ export function EditFacForm() {
 
                             {/* button submit */}
                             <DialogFooter>
-                            <Button
+                                <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >

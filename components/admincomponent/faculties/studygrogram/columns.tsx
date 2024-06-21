@@ -43,6 +43,13 @@ const TableCell = ({getValue, row, column, table}: any) => {
         tableMeta?.updateData(row.index, column.id, newValue);
     };
 
+    if (column.id === "description") {
+        const words = value.split(" ");
+        const firstFiveWords = words.slice(0, 5).join(" ");
+        const displayText = words.length > 5 ? `${firstFiveWords}...` : firstFiveWords;
+        return <span>{displayText}</span>;
+    }
+
     if (column.id === "logo") {
         return (
             <img
@@ -55,11 +62,10 @@ const TableCell = ({getValue, row, column, table}: any) => {
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
-            //custom on only normal dropdown
             <select
-                className="border-1 border-gray-30 rounded-md focus:to-primary"
+                className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
                 onChange={onSelectChange}
-                value={value ? "true" : "false"}
+                value={value}
             >
                 {columnMeta?.options?.map((option: StatusOption) => (
                     <option key={option.label} value={option.value}>
@@ -68,9 +74,8 @@ const TableCell = ({getValue, row, column, table}: any) => {
                 ))}
             </select>
         ) : (
-            //custom on normal input text
             <input
-                className="w-full p-2 border-1 border-gray-30 rounded-md"
+                className="w-full p-2 border-1 border-gray-300 "
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -79,28 +84,23 @@ const TableCell = ({getValue, row, column, table}: any) => {
         );
     }
 
-    // Check if the column is the status column
-    if (column.id === "status") {
+    if (column.id === "isDraft") {
         return (
             <span
                 className={
-                    value === "true"
-                        ? "Public text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
-                        : value === "false"
-                            ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                            : value === "draft"
-                                ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
-                                : ""
+                    value === true
+                        ? "Public text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                        : value === false
+                            ? "Draft text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            : ""
                 }
             >
-        {value === "true"
-            ? "Public"
-            : value === "false"
-                ? "Disable"
-                : value === "draft"
-                    ? "Draft"
+            {value === true
+                ? "Public"
+                : value === false
+                    ? "Disable"
                     : ""}
-      </span>
+        </span>
         );
     }
 
@@ -154,23 +154,9 @@ const EditCell = ({row, table}: any) => {
 };
 
 export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
+
     {
-        accessorKey: "id",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    ID
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-    {
-        accessorKey: "name",
+        accessorKey: "studyProgramName",
         header: ({column}) => {
             return (
                 <Button
@@ -184,6 +170,7 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
         },
         cell: TableCell,
     },
+
     {
         accessorKey: "description",
         header: () => {
@@ -191,6 +178,7 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
         },
         cell: TableCell,
     },
+
     {
         accessorKey: "logo",
         header: () => {
@@ -198,22 +186,25 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "degree",
+        accessorKey: "degree.level",
         header: () => {
             return <div>DEGREE</div>;
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "faculty",
+        accessorKey: "faculty.name",
         header: () => {
             return <div>FACULTY</div>;
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "status",
+        accessorKey: "isDraft",
         header: ({column}) => {
             return (
                 <Button
@@ -229,16 +220,17 @@ export const studyProgramColumns: ColumnDef<StudyProgramType>[] = [
         meta: {
             type: "select",
             options: [
-                { value: "true", label: "Public" },
-                { value: "false", label: "Disable" },
-                { value: "draft", label: "Draft" },
+                {value: true, label: "Public"},
+                {value: false, label: "Draft"},
             ],
         },
     },
+
     {
         id: "edit",
         cell: EditCell,
     },
+
     {
         id: "actions",
         cell: ActionsCell,

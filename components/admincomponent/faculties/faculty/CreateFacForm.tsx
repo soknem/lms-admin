@@ -17,13 +17,19 @@ import {FacultyType} from "@/lib/types/admin/faculty";
 import React, {useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
+// import formatters from "chart.js/dist/core/core.ticks";
+// import values = formatters.values;
+
 
 const initialValues = {
-    id: "",
+    alias: "",
     name: "",
     description: "",
+    address: "",
     logo: "",
-    status: "",
+    isDeleted: true,
+    isDraft: true
+
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -161,11 +167,13 @@ export function CreateFacForm() {
                     onSubmit={async (values) => {
                         // create faculty post
                         const FacultyPost: FacultyType = {
-                            id: values.id,
+                            alias: values.alias,
                             name: values.name,
                             description: values.description,
+                            address: values.address,
                             logo: values.logo,
-                            status: values.status,
+                            isDeleted: values.isDeleted,
+                            isDraft: values.isDraft
                         };
 
                         // post product

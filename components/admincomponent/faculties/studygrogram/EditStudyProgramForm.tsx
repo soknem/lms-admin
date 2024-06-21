@@ -19,14 +19,21 @@ import {FaCamera} from "react-icons/fa6";
 import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
-    id: "",
-    name: "",
-    faculty: "",
-    degree: "",
+    alias: "",
+    studyProgramName: "",
     logo: "",
     description: "",
     link: "",
-    status: "",
+    isDeleted: false,
+    isDraft: false,
+    degree: {
+        alias: "",
+        level: "",
+    },
+    faculty: {
+        alias: "",
+        name: ""
+    }
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -137,14 +144,20 @@ export function EditStudyProForm() {
                     onSubmit={async (values) => {
                         // create faculty post
                         const StudyProPost: StudyProgramType = {
-                            id: values.id,
-                            name: values.name,
+                            alias: values.alias,
+                            studyProgramName: values.studyProgramName,
                             description: values.description,
                             logo: values.logo,
-                            faculty: values.faculty,
-                            degree: values.degree,
-                            link: values.link,
-                            status: values.status,
+                            isDeleted: values.isDeleted,
+                            isDraft: values.isDraft,
+                            degree: {
+                                alias: values.degree.alias,
+                                level: values.degree.level,
+                            },
+                            faculty: {
+                                alias: values.faculty.alias,
+                                name: values.faculty.name
+                            }
                         };
 
                         // post product
