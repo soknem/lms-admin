@@ -1,5 +1,5 @@
 'use client'
-import React from "react";
+import React, {useEffect} from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   getStudyProgram,
@@ -17,11 +17,25 @@ import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
 import facData from "@/components/admincomponent/faculties/faculty/facData.json";
 import degreeData from "@/components/admincomponent/faculties/degree/degreeData.json";
 
-export default async function Page() {
-  const facultyData : FacultyType[] = facData;
-  const deData : DegreeType[] = degreeData;
-  const stuData = await getStudyProgram();
-  const subData = await getSubject();
+import {useGetSubjectsQuery} from "@/lib/features/admin/subject";
+
+
+
+export default function Page() {
+  // const { data, error, isLoading, isFetching } = useGetSubjectsQuery ({
+  //   page: 0,
+  //   pageSize: 10,
+  // });
+  //
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log('Fetched Data:', data);
+  //   }
+  //   if (error) {
+  //     console.error('Error fetching faculties:', error);
+  //   }
+  // }, [data, error]);
+
 
   return (
     <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">
@@ -59,19 +73,19 @@ export default async function Page() {
           </TabsList>
 
           <TabsContent value="faculty">
-            <FacultyTable columns={facultyColumns} data={facultyData} />
+            {/*<FacultyTable columns={facultyColumns} data={facultyData} />*/}
           </TabsContent>
 
           <TabsContent value="degree">
-            <DegreeTable columns={degreeColumns} data={deData} />
+            {/*<DegreeTable columns={degreeColumns} data={deData} />*/}
           </TabsContent>
 
           <TabsContent value="study-program">
-            <StudyProgramTable columns={studyProgramColumns} data={stuData} />
+            {/*<StudyProgramTable columns={studyProgramColumns} data={stuData} />*/}
           </TabsContent>
 
           <TabsContent value="subject">
-            <SubjectTable columns={subjectColumns} data={subData} />
+            {/*<SubjectTable columns={subjectColumns} data={subData} />*/}
           </TabsContent>
         </Tabs>
       </section>

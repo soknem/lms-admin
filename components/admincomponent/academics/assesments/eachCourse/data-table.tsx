@@ -142,7 +142,7 @@ export function CourseAssesmentDataTable<TData, TValue>({
     },
   })
 
-  //reset filter popup
+  //reset-password filter popup
   const handleReset = (columnId: string) => {
     if (columnId === 'class') {
       setselectedClass(null);

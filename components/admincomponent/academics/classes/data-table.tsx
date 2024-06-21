@@ -151,7 +151,7 @@ export function DataTable<TData, TValue>({
   //   setData([...originalData]);
   // };
 
-  //reset popup
+  //reset-password popup
   const handleReset = (columnId: string) => {
     if (columnId === 'generationAlias') {
       setSelectedGen(null);
