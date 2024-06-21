@@ -1,6 +1,11 @@
+'use client'
 import AchievementTable from "@/components/studentcomponent/achievements/AchievementComponent";
 import React from "react";
 import { FaBook } from "react-icons/fa6";
+import { useGetAchievementQuery} from "@/lib/features/student/achievement";
+import * as console from "node:console";
+import { useEffect } from "react";
+
 const labelsTitle = [
   "Name (KH)",
   "Name (EN)",
@@ -18,6 +23,21 @@ const labelsField = [
   "Bachelor Degree",
   "Information Technology",
 ];
+
+
+// const { data, error, isLoading, isFetching } = useGetAchievementQuery
+// ()
+// useEffect(() => {
+//   if (data) {
+//     console.log('Fetched Data:', data);
+//   }
+//   if (error) {
+//     console.error('Error fetching faculties:', error);
+//   }
+// }, [data, error]);
+//
+//
+// console.log()
 
 export default function Achievement() {
   return (
