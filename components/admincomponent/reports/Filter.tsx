@@ -112,7 +112,7 @@ export function FilterAdmin<TData, TValue>({
     },
   });
 
-  //reset popup
+  //reset-password popup
   const handleReset = (columnId: string) => {
     if (columnId === "instructor") {
       setselectedIns(null);

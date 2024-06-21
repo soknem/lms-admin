@@ -139,7 +139,7 @@ export function AttentdentData<TData, TValue>({
     },
   });
 
-  //reset popup
+  //reset-password popup
   const handleReset = (columnId: string) => {
     if (columnId === "semester") {
       setselectedAtt(null);

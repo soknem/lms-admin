@@ -141,7 +141,7 @@ export function SemesterDataTable<TData, TValue>({
     },
   })
 
-  //reset filter popup
+  //reset-password filter popup
   const handleReset = (columnId: string) => {
     if (columnId === 'studyProgram') {
       setSelectedProgram(null);

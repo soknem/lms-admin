@@ -24,10 +24,6 @@ import {selectToken} from "@/lib/features/auth/authSlice";
 
 export  default  function Generation() {
     // const data = await getGenerations()
-    const token = useAppSelector(selectToken);
-
-    console.log("token from admin: ", token)
-
     const { data, error, isLoading, isFetching } = useGetFacultiesQuery({
         page: 0,
         pageSize: 10,

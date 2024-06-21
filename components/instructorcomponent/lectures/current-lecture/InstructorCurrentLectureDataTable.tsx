@@ -148,7 +148,7 @@ export function InstructorCurrentLectureDataTable<TData, TValue>({
   //   setData([...originalData]);
   // };
 
-  //reset popup
+  //reset-password popup
   const handleReset = (columnId: string) => {
     if (columnId === 'class') {
       setSelectedClass(null);
