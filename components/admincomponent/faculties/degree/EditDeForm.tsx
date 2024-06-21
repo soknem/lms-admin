@@ -19,11 +19,12 @@ import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
-    id: "",
+    alias: "",
     level: "",
     description: "",
-    create_by: "",
-    status: "",
+    // create_by: "",
+    isDeleted: false,
+    isDraft: false
 };
 
 const validationSchema = Yup.object().shape({
@@ -119,11 +120,12 @@ export function EditDeForm() {
                     onSubmit={async (values) => {
                         // create degree post
                         const degreePost: DegreeType = {
-                            id: values.id,
+                            alias: values.alias,
                             level: values.level,
                             description: values.description,
-                            create_by: values.create_by,
-                            status: values.status,
+                            // create_by: values.create_by,
+                            isDraft: values.isDraft,
+                            isDeleted: values.isDeleted,
                         };
 
                         // post product

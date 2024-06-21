@@ -32,8 +32,8 @@ export type StudyProgramType = {
         level: string,
     },
     faculty: {
+        alias: string,
         name: string,
-        level: string,
     }
 };
 
