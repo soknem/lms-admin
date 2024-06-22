@@ -1,51 +1,39 @@
 'use client'
 import React, {useEffect, useState} from "react";
-import {GenerationType} from "@/lib/types/admin/academics";
+import { GenerationType } from "@/lib/types/admin/academics";
 import generaitions from "@/app/admin/(admin-dashboard)/academics/(generations)/data/generations.json"
-import {columns} from "@/components/admincomponent/academics/generations/columns";
-import {DataTable} from "@/components/admincomponent/academics/generations/data-table";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import { columns } from "@/components/admincomponent/academics/generations/columns";
+import { DataTable } from "@/components/admincomponent/academics/generations/data-table";
+import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    selectError,
+    selectGeneration,
+    selectLoading, setError, setGenerations
+} from "@/lib/features/admin/academic-management/generation/generationSlice";
 
+export  default  function Generation() {
 
-import {useAppSelector} from "@/lib/hook";
-import {selectToken} from "@/lib/features/auth/authSlice";
+    const dispatch = useDispatch<AppDispatch>();
+    const { data, error, isLoading } = useGetGenerationQuery({ page: 0, pageSize: 10 });
 
-// async function getGenerations(): Promise<GenerationType[]> {
-//   const res = await fetch(
-//     "https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations"
-//   );
-//   const data = await res.json();
-
-//   // console.log("data from page: ",data);
-//   return data;
-// }
-
-
-export default function Generation() {
-    // const data = await getGenerations()
-    const {data, error, isLoading, isFetching} = useGetFacultiesQuery({
-        page: 0,
-        pageSize: 10,
-    });
+    const generations = useSelector((state: RootState) => selectGeneration(state));
+    const loading = useSelector(selectLoading);
+    const fetchError = useSelector(selectError);
 
     useEffect(() => {
         if (data) {
-            console.log('Fetched Data:', data);
+            dispatch(setGenerations(data.content));
         }
         if (error) {
-            console.error('Error fetching faculties:', error);
+            dispatch(setError(error.toString()));
         }
-    }, [data, error]);
+    }, [data, error, dispatch]);
 
-    if (isLoading) return <div>Loading...</div>;
+    console.log("generation from page: " , generations)
 
-
-    console.log("data from faculty api: ", data);
-    console.log("error from faculty api: ", error);
-    console.log("isLoading", isLoading);
-
-
-    const genData: GenerationType[] = generaitions;
+    const genData : GenerationType[] = generations;
 
     return (
         <main className='flex flex-col gap-4 h-full w-full p-9'>

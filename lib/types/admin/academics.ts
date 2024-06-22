@@ -1,12 +1,25 @@
 
 // **** Generation *****
 export type GenerationType = {
-  generation: string;
-  startYear: string;
-  endYear: string;
-  status: string;
+    name: string;
+  startYear: number;
+  endYear: number;
   alias: string;
+  isDeleted: boolean;
+  isDraft: boolean;
+  description?: string;
 };
+
+export type CreateGenerationType = {
+    name: string;
+    startYear: number;
+    endYear: number;
+    alias: string;
+    isDraft: boolean;
+    description?: string;
+};
+
+
 
 export type OptionType = {
   label: string;
