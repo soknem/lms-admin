@@ -11,17 +11,17 @@ import {studyProgramColumns} from "@/components/admincomponent/faculties/studygr
 // import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
 import {useAppSelector} from "@/lib/hook";
 import {selectToken} from "@/lib/features/auth/authSlice";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculty";
-import {useGetDegreesQuery} from "@/lib/features/admin/degree";
-import {useGetStudyProgramsQuery} from "@/lib/features/admin/studyprogram";
-import {useGetSubjectsQuery} from "@/lib/features/admin/subject";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
+import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
+import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
 import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
 import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
 
 export default function Page() {
     const token = useAppSelector(selectToken);
 
-    // console.log("token from admin: ", token)
+    console.log("token from admin: ", token)
 
     const {
         data: facultiesData,
@@ -149,7 +149,7 @@ export default function Page() {
                     </TabsContent>
 
                     <TabsContent value="subject">
-                        <SubjectTable columns={subjectColumns} data={subjectData.content}/>
+                        {/*<SubjectTable columns={subjectColumns} data={subjectData.content}/>*/}
                     </TabsContent>
                 </Tabs>
             </section>
