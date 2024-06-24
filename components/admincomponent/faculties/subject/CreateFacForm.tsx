@@ -19,7 +19,7 @@ import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
-    subject: "",
+    title: "",
     logo: "",
     hour: 0,
     theory: 0,
@@ -169,7 +169,7 @@ export function CreateSubjectForm() {
                     onSubmit={async (values) => {
                         // create faculty post
                         const SubjectPost: SubjectType = {
-                            subject: values.subject,
+                            title: values.title,
                             logo: values.logo,
                             hour: values.hour,
                             theory: values.theory,

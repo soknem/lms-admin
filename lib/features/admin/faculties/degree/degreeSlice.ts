@@ -1,0 +1,48 @@
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import type {RootState} from "@/lib/store";
+import {DegreeType} from "@/lib/types/admin/faculty";
+
+type DegreeState = {
+    degrees: DegreeType[];
+    isLoading: boolean;
+    error: string | null;
+}
+
+const initialState: DegreeState = {
+    degrees: [],
+    isLoading: false,
+    error: null,
+}
+
+const degreeSlice = createSlice({
+    name: "degreeSlice",
+    initialState,
+    reducers: {
+        setDegrees: (state, action: PayloadAction<DegreeType[]>) => {
+            state.degrees = action.payload;
+            state.isLoading = false;
+            state.error = null;
+        },
+        setLoading: (state) => {
+            state.isLoading = true;
+            state.error = null;
+        },
+        setError: (state, action: PayloadAction<string>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        addDegree: (state, action: PayloadAction<DegreeType>) => {
+            state.degrees.push(action.payload);
+            state.isLoading = false;
+            state.error = null;
+        },
+    }
+})
+
+export const {addDegree, setDegrees, setLoading, setError} = degreeSlice.actions;
+export const selectDegree = (state: RootState) => state.degree.degrees;
+export const selectLoading = (state: RootState) => state.degree.isLoading;
+export const selectError = (state: RootState) => state.degree.error;
+
+
+export default degreeSlice.reducer;
