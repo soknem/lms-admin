@@ -24,6 +24,7 @@ export default function CreateGenForm() {
     const [createGeneration] = useCreateGenerationMutation();
     const [isLoading, setIsLoading] = useState(false);
     const { refetch: refetchGenerations } = useGetGenerationQuery({ page: 0, pageSize: 10 });
+    const currentYear = new Date().getFullYear();
 
     // Regex pattern
     const aliasPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -73,14 +74,36 @@ export default function CreateGenForm() {
                     "Alias must be in lowercase, contain no spaces, ex: generation-2"
                 )
                 .required("Alias is Required"),
+
             name: Yup.string()
-                .required("Title is Required"),
-            startYear: Yup.number()
+                .matches(/^[^!@#$%^&*(),.?":{}|<>]+$/, "Title cannot contain special characters.")
+                .required("Name is required"),
+
+            startYear: Yup.string().matches(/^\d+$/, "Start Year must be a valid year and contain only numbers.")
+                .test('is-valid-start-year', 'Start Year must be a valid year.', value => {
+                    const year = Number(value);
+                    return year > 0 && year >= currentYear - 100;
+                })
                 .required("Start Year is required")
                 .typeError("Start Year must be a number"),
-            endYear: Yup.number()
+
+            endYear: Yup.string().matches(/^\d+$/, "End Year must be a valid year and contain only numbers.")
                 .required("End Year is required")
-                .typeError("End Year must be a number"),
+                .typeError("End Year must be a number")
+                .test('is-valid-end-year', 'End Year must be a valid year.', value => {
+                    const year = Number(value);
+                    return year > 0;
+                })
+                .when('startYear', (startYear, schema) => {
+                    return schema.test({
+                        test: endYear => {
+                            const start = Number(startYear);
+                            const end = Number(endYear);
+                            return end > start;
+                        },
+                        message: 'End Year must be greater than Start Year',
+                    });
+                }),
             isDraft: Yup.boolean()
         }),
         onSubmit: values => {
