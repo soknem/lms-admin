@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import authSlice from './features/auth/authSlice'
 import {istadLmsApi} from "@/lib/api";
 import generationSlice from "@/lib/features/admin/academic-management/generation/generationSlice";
@@ -9,6 +9,7 @@ import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
 import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import studentSlice from "@/lib/features/admin/user-management/student/studentSlice";
 import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import admissionSlice from "@/lib/features/admin/admission-management/admissionSlice";
 
 
 export const makeStore = () => {
@@ -24,6 +25,7 @@ export const makeStore = () => {
             degree: degreeSlice,
             studyProgram: studyProgramSlice,
             subject: subjectSlice,
+            admission: admissionSlice,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })

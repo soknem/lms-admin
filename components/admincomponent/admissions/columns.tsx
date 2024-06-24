@@ -1,7 +1,6 @@
 "use client";
 import {RxCross2} from "react-icons/rx";
 import {IoCheckmarkSharp} from "react-icons/io5";
-import {MdEdit} from "react-icons/md";
 
 import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal, ArrowUpDown} from "lucide-react";
@@ -74,35 +73,44 @@ const TableCell = ({getValue, row, column, table}: any) => {
             />
         );
     }
+
     if (column.id === "status") {
         return (
             <span
                 className={
-                    value === "opening"
+                    value === 1
                         ? "Opening text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
-                        : value === "ended"
+                        : value === 2
                             ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                            : value === "achieved"
+                            : value === 3
                                 ? "Achieved bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
                                 : ""
                 }
             >
-        {value === "opening"
+        {value === 1
             ? "Opening"
-            : value === "ended"
+            : value === 2
                 ? "Ended"
-                : value === "achieved"
+                : value === 3
                     ? "Achieved"
                     : ""}
       </span>
         );
     }
 
+    if (column.id === "endDate") {
+        return <span>{value ? value : "No Data"}</span>;
+    }
+
+    if (column.id === "telegramLink") {
+        return <span>{value ? value : "No Data"}</span>;
+    }
+
     return <span>{value}</span>;
 };
 
 // Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
+const EditCell = ({row, table}: any) => {
     const meta = table.options.meta;
 
     const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -110,7 +118,7 @@ const EditCell = ({ row, table }: any) => {
 
         meta?.setEditedRows((old: any) => ({
             ...old,
-            [row.id]: action === "edit" ? true : false,
+            [row.id]: action === "edit",
         }));
 
         if (action === "cancel") {
@@ -127,7 +135,7 @@ const EditCell = ({ row, table }: any) => {
                         onClick={setEditedRows}
                         name="cancel"
                     >
-                        <RxCross2 size={20} className="text-red-500" />
+                        <RxCross2 size={20} className="text-red-500"/>
                     </button>
 
                     <button
@@ -135,12 +143,12 @@ const EditCell = ({ row, table }: any) => {
                         name="done"
                         className="bg-green-100 rounded-full p-1"
                     >
-                        <IoCheckmarkSharp size={20} className="text-green-500" />
+                        <IoCheckmarkSharp size={20} className="text-green-500"/>
                     </button>
                 </div>
             ) : (
                 <button onClick={setEditedRows} name="edit">
-                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
                 </button>
             )}
         </div>
@@ -149,7 +157,7 @@ const EditCell = ({ row, table }: any) => {
 
 export const admissionColumns: ColumnDef<AdmissionType>[] = [
     {
-        accessorKey: "academic_year",
+        accessorKey: "academicYear",
         header: ({column}) => {
             return (
                 <Button
@@ -163,8 +171,9 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "start_date",
+        accessorKey: "openDate",
         header: ({column}) => {
             return (
                 <Button
@@ -178,8 +187,9 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "end_date",
+        accessorKey: "endDate",
         header: ({column}) => {
             return (
                 <Button
@@ -193,8 +203,9 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "telegram_group",
+        accessorKey: "telegramLink",
         header: () => {
             return <div>TELEGRAM GROUP</div>;
         },
@@ -218,12 +229,13 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
         meta: {
             type: "select",
             options: [
-                {value: "opening", label: "Opening"},
-                {value: "ended", label: "Ended"},
-                {value: "achieved", label: "Achieved"},
+                {value: 1, label: "Opening"},
+                {value: 2, label: "Ended"},
+                {value: 3, label: "Achieved"},
             ],
         },
     },
+
     {
         accessorKey: "remark",
         header: () => {
@@ -231,10 +243,12 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
         id: "edit",
         cell: EditCell,
     },
+
     {
         id: "actions",
         cell: ({row}) => {
@@ -252,7 +266,7 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
                         <DropdownMenuItem
                             className="focus:bg-background"
                             onClick={() =>
-                                navigator.clipboard.writeText(admission.academic_year)
+                                navigator.clipboard.writeText(admission.academicYear)
                             }
                         >
                             Copy ID
