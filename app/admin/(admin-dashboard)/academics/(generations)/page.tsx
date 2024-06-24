@@ -8,9 +8,8 @@ import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/ge
 import {AppDispatch, RootState} from "@/lib/store";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    selectError,
     selectGeneration,
-    selectLoading, setError, setGenerations
+    setGenerations
 } from "@/lib/features/admin/academic-management/generation/generationSlice";
 
 export  default  function Generation() {
@@ -19,19 +18,18 @@ export  default  function Generation() {
     const { data, error, isLoading } = useGetGenerationQuery({ page: 0, pageSize: 10 });
 
     const generations = useSelector((state: RootState) => selectGeneration(state));
-    const loading = useSelector(selectLoading);
-    const fetchError = useSelector(selectError);
+
 
     useEffect(() => {
         if (data) {
             dispatch(setGenerations(data.content));
         }
         if (error) {
-            dispatch(setError(error.toString()));
+            console.error("failed to load generation", error);
         }
     }, [data, error, dispatch]);
 
-    console.log("generation from page: " , generations)
+    // console.log("generation from page: " , generations)
 
     const genData : GenerationType[] = generations;
 

@@ -135,20 +135,63 @@ export type SubjectType = {
   score: number
 };
 
+// export type courseAssessmentType = {
+//   uuid: string
+//   cardId: string,
+//   nameEn: string,
+//   gender: string,
+//   dob: string,
+//   class: string,
+//   course: string,
+//   midtermExamScore: number,
+//   finalExamScore: number,
+//   attendanceScore: number,
+//   assignmentScore: number,
+//   miniProjectScore: number,
+//   activityScore: number,
+//   status: number
+// }
+
 export type courseAssessmentType = {
-  cardId: string,
-  nameEn: string,
-  gender: string,
-  dob: string,
-  class: string,
-  course: string,
-  mitTerm: number,
-  final: number,
-  att: number,
-  assgmt: number,
-  mp: number,
-  act: number,
-  grade: string,
-  total: number,
-  status: number
-}
+    uuid: string;
+    activityScore: number;
+    attendanceScore: number;
+    midtermExamScore: number;
+    finalExamScore: number;
+    miniProjectScore: number;
+    assignmentScore: number;
+    student: {
+        uuid: string;
+        nameEn: string;
+        nameKh: string;
+        username: string;
+        email: string;
+        phoneNumber: string;
+        dob: string;
+        gender: string;
+        profileImage: string;
+    };
+    course: {
+        uuid: string;
+        title: string;
+        credit: number | null;
+    } | null;
+    isDeleted: boolean;
+};
+
+export type courseAssessmentTableType = {
+    uuid: string;
+    cardId: string;
+    nameEn: string;
+    gender: string;
+    dob: string;
+    class: string;
+    course: string;
+    midtermExamScore: number;
+    finalExamScore: number;
+    attendanceScore: number;
+    assignmentScore: number;
+    miniProjectScore: number;
+    activityScore: number;
+    status: number;
+};

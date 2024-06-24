@@ -1,15 +1,36 @@
-
+'use client'
 import { userStudentColumns } from "@/components/admincomponent/users/students/columns";
 import { UserStudentTable } from "@/components/admincomponent/users/students/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getStudent } from "@/lib/endpoints/MokApi";
 import StaffList from "@/components/admincomponent/users/staff/StaffList";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useGetStudentQuery} from "@/lib/features/admin/user-management/student/student";
+import {selectStudent, setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
+import {useEffect} from "react";
+import {setAssessment} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 
 
-export default async function Users() {
+export default function Users() {
+  const dispatch = useDispatch<AppDispatch>();
 
-  const userStuData = await getStudent();
+  const { data, error, isLoading } = useGetStudentQuery({ page: 0, pageSize: 10 });
 
+  const StudentData = useSelector((state: RootState) => selectStudent(state));
+
+  useEffect(() => {
+    if(data) {
+      dispatch(setStudent(data.content))
+    }
+    if(error){
+      console.error("failed to load students", error);
+    }
+  }, [data, error, dispatch]);
+
+  console.log("student data: ", StudentData)
+
+  // const userStuData = await getStudent();
 
 
   return (
@@ -23,7 +44,7 @@ export default async function Users() {
           </TabsList>
 
           <TabsContent value="student">
-            <UserStudentTable columns={userStudentColumns} data={userStuData}/> 
+            {/*<UserStudentTable columns={userStudentColumns} data={userStuData}/> */}
           </TabsContent>
 
           <TabsContent value="staff">
