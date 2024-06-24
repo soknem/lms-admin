@@ -51,7 +51,7 @@ export type SetupStudyProgramType = {
 
 // **** Subjects *****
 export type SubjectType = {
-    subject: string;
+    title: string;
     logo: string;
     hour: number;
     theory: number;
