@@ -10,7 +10,7 @@ import {Label} from "@/components/ui/label";
 import {CreateGenerationType} from "@/lib/types/admin/academics";
 import {AppDispatch, RootState} from "@/lib/store";
 import {useDispatch, useSelector} from "react-redux";
-import {addGeneration, setError, setLoading} from "@/lib/features/admin/academic-management/generation/generationSlice";
+import {addGeneration} from "@/lib/features/admin/academic-management/generation/generationSlice";
 import {
     useCreateGenerationMutation,
     useGetGenerationQuery

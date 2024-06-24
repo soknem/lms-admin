@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType , courseAssessmentType } from "@/lib/types/admin/academics";
+import { OptionType , courseAssessmentTableType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -150,7 +150,7 @@ const EditCell = ({ row, table }: any) => {
 };
 
 
-export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
+export const CourseAssessmentColumns: ColumnDef<courseAssessmentTableType>[] = [
     {
         accessorKey: 'cardId',
         header: ({ column }) => {
@@ -252,7 +252,7 @@ export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
 
     },
     {
-        accessorKey: 'mitTerm',
+        accessorKey: 'midtermExamScore',
         header: ({ column }) => {
             return (
                 <Button
@@ -267,7 +267,7 @@ export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
 
     },
     {
-        accessorKey: 'final',
+        accessorKey: 'finalExamScore',
         header: ({ column }) => {
             return (
                 <Button
@@ -282,7 +282,7 @@ export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
 
     },
     {
-        accessorKey: 'att',
+        accessorKey: 'attendanceScore',
         header: ({ column }) => {
             return (
                 <Button
@@ -297,7 +297,7 @@ export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
 
     },
     {
-        accessorKey: 'assgmt',
+        accessorKey: 'assignmentScore',
         header: ({ column }) => {
             return (
                 <Button
@@ -312,7 +312,7 @@ export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
 
     },
     {
-        accessorKey: 'mp',
+        accessorKey: 'miniProjectScore',
         header: ({ column }) => {
             return (
                 <Button
@@ -327,7 +327,7 @@ export const CourseAssessmentColumns: ColumnDef<courseAssessmentType>[] = [
 
     },
     {
-        accessorKey: 'act',
+        accessorKey: 'activityScore',
         header: ({ column }) => {
             return (
                 <Button

@@ -23,14 +23,6 @@ const generationSlice = createSlice({
             state.isLoading = false;
             state.error = null;
         },
-        setLoading: (state) => {
-            state.isLoading = true;
-            state.error = null;
-        },
-        setError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
         addGeneration: (state, action: PayloadAction<GenerationType>) => {
             state.generations.push(action.payload);
             state.isLoading = false;
@@ -39,10 +31,8 @@ const generationSlice = createSlice({
     }
 })
 
-export const { addGeneration,setGenerations, setLoading, setError } = generationSlice.actions;
+export const { addGeneration,setGenerations } = generationSlice.actions;
 export const selectGeneration = (state: RootState) => state.generation.generations;
-export const selectLoading = (state: RootState) => state.generation.isLoading;
-export const selectError = (state: RootState) => state.generation.error;
 
 
 export default generationSlice.reducer;
