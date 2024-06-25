@@ -1,6 +1,5 @@
 "use client";
 import {Button} from "@/components/ui/button";
-import {CardCourseComponent} from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
@@ -96,8 +95,6 @@ export default function Course() {
 
                 {/*course */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4 w-full">
-                    <CardCourseComponent/>
-                    <CardCourseComponent/>
                 </div>
             </section>
 
