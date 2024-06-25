@@ -13,10 +13,18 @@ export const generationApi = istadLmsApi.injectEndpoints({
                 body: newGeneration,
             }),
         }),
+        filterGenerations: builder.mutation<any, { pageNumber: number, pageSize: number, body: any }>({
+            query: ({ pageNumber, pageSize, body }) => ({
+                url: `/generations/filter?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+                method: 'POST',
+                body: body,
+            }),
+        }),
     })
 })
 
 export const {
     useGetGenerationQuery,
-    useCreateGenerationMutation
+    useCreateGenerationMutation,
+    useFilterGenerationsMutation
 } = generationApi;

@@ -2,8 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import authSlice from './features/auth/authSlice'
 import {istadLmsApi} from "@/lib/api";
 import generationSlice from "@/lib/features/admin/academic-management/generation/generationSlice";
-import achievementSlide  from "@/lib/features/student/achievement/achievementSlice";
-import courseSlice from "@/lib/features/student/course/studentCourseSlice";
 
 
 export const makeStore = () => {
@@ -12,8 +10,6 @@ export const makeStore = () => {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
             auth: authSlice,
             generation: generationSlice,
-            achievement: achievementSlide,
-            course: courseSlice,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })
@@ -21,8 +17,6 @@ export const makeStore = () => {
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>
-
-
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<AppStore['getState']>
 export type AppDispatch = AppStore['dispatch']

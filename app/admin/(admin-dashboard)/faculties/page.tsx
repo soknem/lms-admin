@@ -7,99 +7,107 @@ import {DegreeTable} from "@/components/admincomponent/faculties/degree/data-tab
 import {degreeColumns} from "@/components/admincomponent/faculties/degree/columns";
 import {StudyProgramTable} from "@/components/admincomponent/faculties/studygrogram/data-table";
 import {studyProgramColumns} from "@/components/admincomponent/faculties/studygrogram/columns";
-// import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
-// import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
-import {useAppSelector} from "@/lib/hook";
 import {selectToken} from "@/lib/features/auth/authSlice";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculty";
-import {useGetDegreesQuery} from "@/lib/features/admin/degree";
-import {useGetStudyProgramsQuery} from "@/lib/features/admin/studyprogram";
-import {useGetSubjectsQuery} from "@/lib/features/admin/subject";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {
+    selectError,
+    selectFaculty,
+    selectLoading, setError,
+    setFaculties
+} from "@/lib/features/admin/faculties/faculty/facultySlice";
+import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
+import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
+import {selectStudyProgram, setStudyPrograms} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
+import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
 import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
+import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
 
 export default function Page() {
-    const token = useAppSelector(selectToken);
-
+    const dispatch = useDispatch<AppDispatch>();
+    // const token = useAppSelector(selectToken);
     // console.log("token from admin: ", token)
 
+    // Faculty data
     const {
         data: facultiesData,
         error: facultiesError,
         isLoading: facultiesLoading,
-        isFetching: facultiesFetching
-    } = useGetFacultiesQuery({
-        page: 0,
-        pageSize: 10,
-    });
+    } = useGetFacultiesQuery({page: 0, pageSize: 10});
+    const faculties = useSelector((state: RootState) => selectFaculty(state));
+    const facLoading = useSelector(selectLoading);
+    const fecError = useSelector(selectError);
 
+    useEffect(() => {
+        if (facultiesData) {
+            dispatch(setFaculties(facultiesData.content));
+        }
+        if (fecError) {
+            dispatch(setError(fecError.toString()));
+        }
+    }, [facultiesData, fecError, dispatch]);
+
+
+    // Degree data
     const {
         data: degreesData,
         error: degreesError,
         isLoading: degreesLoading,
-        isFetching: degreesFetching
-    } = useGetDegreesQuery({
-        page: 0,
-        pageSize: 10,
-    });
+    } = useGetDegreesQuery({page: 0, pageSize: 10});
+    const degrees = useSelector((state: RootState) => selectDegree(state));
+    const deLoading = useSelector(selectLoading);
+    const deError = useSelector(selectError);
 
+    useEffect(() => {
+        if (degreesData) {
+            dispatch(setDegrees(degreesData.content));
+        }
+        if (deError) {
+            dispatch(setError(deError.toString()));
+        }
+    }, [degreesData, deError, dispatch]);
+
+    // Study Program data
     const {
         data: studyProgramsData,
         error: studyProgramsError,
         isLoading: studyProgramsLoading,
-        isFetching: studyProgramsFetching
-    } = useGetStudyProgramsQuery({
-        page: 0,
-        pageSize: 10,
-    });
-
-    const {
-        data: subjectData,
-        error: subjectError,
-        isLoading: subjectLoading,
-        isFetching: subjectFetching
-    } = useGetSubjectsQuery({
-        page: 0,
-        pageSize: 10,
-    });
-
-    useEffect(() => {
-        if (facultiesData) {
-            console.log('Fetched Faculties Data:', facultiesData.content);
-        }
-        if (facultiesError) {
-            console.error('Error fetching faculties:', facultiesError);
-        }
-    }, [facultiesData, facultiesError]);
-
-    useEffect(() => {
-        if (degreesData) {
-            console.log('Fetched Degrees Data:', degreesData.content);
-        }
-        if (degreesError) {
-            console.error('Error fetching degrees:', degreesError);
-        }
-    }, [degreesData, degreesError]);
+    } = useGetStudyProgramsQuery({page: 0, pageSize: 10});
+    const studyPrograms = useSelector((state: RootState) => selectStudyProgram(state));
+    const stuProLoading = useSelector(selectLoading);
+    const stuProError = useSelector(selectError);
 
     useEffect(() => {
         if (studyProgramsData) {
-            console.log('Fetched study Programs Data:', studyProgramsData.content);
+            dispatch(setStudyPrograms(studyProgramsData.content));
         }
-        if (studyProgramsError) {
-            console.error('Error fetching study Programs:', studyProgramsError);
+        if (stuProError) {
+            dispatch(setError(stuProError.toString()));
         }
-    }, [studyProgramsData, studyProgramsError]);
+    }, [studyProgramsData, stuProError, dispatch]);
+
+    // Subject data
+    const {
+        data: subjectsData,
+        error: subjectsError,
+        isLoading: subjectsLoading,
+    } = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const subjects = useSelector((state: RootState) => selectSubject(state));
+    const subLoading = useSelector(selectLoading);
+    const subError = useSelector(selectError);
 
     useEffect(() => {
-        if (subjectData) {
-            console.log('Fetched Data:', subjectData);
+        if (subjectsData) {
+            dispatch(setSubjects(subjectsData.content));
         }
-        if (subjectError) {
-            console.error('Error fetching faculties:', subjectError);
+        if (subError) {
+            dispatch(setError(subError.toString()));
         }
-    }, [subjectData, subjectError]);
+    }, [subjectsData, subError, dispatch]);
 
-    if (facultiesLoading || degreesLoading || studyProgramsLoading) return <div>Loading...</div>;
 
     return (
         <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">
@@ -137,19 +145,19 @@ export default function Page() {
                     </TabsList>
 
                     <TabsContent value="faculty">
-                        <FacultyTable columns={facultyColumns} data={facultiesData.content}/>
+                        <FacultyTable columns={facultyColumns} data={faculties}/>
                     </TabsContent>
 
                     <TabsContent value="degree">
-                        <DegreeTable columns={degreeColumns} data={degreesData.content}/>
+                        <DegreeTable columns={degreeColumns} data={degrees}/>
                     </TabsContent>
 
                     <TabsContent value="study-program">
-                        <StudyProgramTable columns={studyProgramColumns} data={studyProgramsData.content}/>
+                        <StudyProgramTable columns={studyProgramColumns} data={studyPrograms}/>
                     </TabsContent>
 
                     <TabsContent value="subject">
-                        <SubjectTable columns={subjectColumns} data={subjectData.content}/>
+                        <SubjectTable columns={subjectColumns} data={subjects}/>
                     </TabsContent>
                 </Tabs>
             </section>

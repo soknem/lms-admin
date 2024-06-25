@@ -1,18 +1,18 @@
+'use client'
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
 // transcript import
 import {TranscriptType} from "@/lib/types/admin/academics";
 import transcripts from "@/app/admin/(admin-dashboard)/academics/assessments/data/transcripts.json"
 
-
 //each semester import
 import {semesterAssessementType} from "@/lib/types/admin/academics";
 import semesterAssessments from "@/app/admin/(admin-dashboard)/academics/assessments/data/semesterAssessments.json"
 
 //each course import
-import {courseAssessmentType} from "@/lib/types/admin/academics";
+import {courseAssessmentType , courseAssessmentTableType} from "@/lib/types/admin/academics";
 import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments/data/courseAssesment.json"
-import React from "react";
+import React, {useEffect} from "react";
 import {TranscriptDataTable} from "@/components/admincomponent/academics/assesments/transcript/data-table";
 import {TranscriptColumns} from "@/components/admincomponent/academics/assesments/transcript/columns";
 import {CourseAssesmentDataTable} from "@/components/admincomponent/academics/assesments/eachCourse/data-table";
@@ -22,15 +22,59 @@ import {
     eachSemesterColumn,
 }
     from "@/components/admincomponent/academics/assesments/eachSemester/columns";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useGetAssessmentQuery} from "@/lib/features/admin/academic-management/assesment/assessment";
+import {
+    selectAssessment,setAssessment
+} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 
 export default function Assessment() {
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const { data, error, isLoading } = useGetAssessmentQuery({ page: 0, pageSize: 10 });
+
+    const CourseAssessmentData = useSelector((state: RootState) => selectAssessment(state));
+
+    useEffect(() => {
+        if(data) {
+            dispatch(setAssessment(data.content))
+        }
+        if(error){
+            console.error("failed to load assessment", error);
+        }
+    }, [data, error, dispatch]);
+
+    // console.log("assessment from page: " , CourseAssessmentData)
 
     const transcriptData: TranscriptType[] = transcripts;
 
     const semesterData: semesterAssessementType[] = semesterAssessments;
 
-    const courseData: courseAssessmentType[] = courseAssesment;
+    // filter course data from response
+    const transformData = (data: courseAssessmentType[]): courseAssessmentTableType[] => {
+        return data.map(item => ({
+            uuid: item.uuid,
+            cardId: 'N/A',
+            nameEn: item.student.nameEn,
+            gender: item.student.gender,
+            dob: item.student.dob,
+            class:  'N/A',
+            course: item.course ? item.course.title : 'N/A',
+            midtermExamScore: item.midtermExamScore,
+            finalExamScore: item.finalExamScore,
+            attendanceScore: item.attendanceScore,
+            assignmentScore: item.assignmentScore,
+            miniProjectScore: item.miniProjectScore,
+            activityScore: item.activityScore,
+            status: item.isDeleted ? 0 : 1,
+        }));
+    };
 
+    const courseData: courseAssessmentTableType[] = transformData(CourseAssessmentData);
+
+    console.log("data after filter: " , courseData)
 
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
