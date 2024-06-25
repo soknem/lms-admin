@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/store";
 import { courseAssessmentType } from "@/lib/types/admin/academics";
+import {lectureRespondType} from "@/lib/types/admin/academics";
 
 type LectureState = {
-    lectures: any[];
+    lectures: lectureRespondType[];
 }
 
 const initialState: LectureState = {
@@ -14,7 +15,7 @@ const lectureSlice = createSlice({
     name: "lectureSlice",
     initialState,
     reducers: {
-        setLecture: (state, action: PayloadAction<any[]>) => {
+        setLecture: (state, action: PayloadAction<lectureRespondType[]>) => {
             state.lectures = action.payload;
         },
 

@@ -86,22 +86,7 @@ export type CourseType = {
     visibility: boolean
 }
 
-export type LectureType = {
-  // alias: string,
-  startTime: string,
-  endTime: string,
-  description: string,
-  lectureDate: string,
-  status: number,
-  // courseAlias: string,
-  // additional on not have in api
-  teachingType: string,
-  isDelete: boolean,
-  class: string,
-  instructor: string,
-  course: string
 
-}
 
 export type TranscriptType = {
   cardId: string,
@@ -152,6 +137,7 @@ export type SubjectType = {
 //   status: number
 // }
 
+//response course assessment
 export type courseAssessmentType = {
     uuid: string;
     activityScore: number;
@@ -195,3 +181,58 @@ export type courseAssessmentTableType = {
     activityScore: number;
     status: number;
 };
+
+//response lecture
+export type lectureRespondType = {
+    uuid: string;
+    startTime: string;
+    endTime: string;
+    description: string;
+    lectureDate: string;
+    isDeleted: boolean;
+    isDraft: boolean;
+    status: number;
+    teachingType: string;
+    classCode: string;
+    course: {
+        uuid: string;
+        title: string;
+        instructor: {
+            uuid: string;
+            nameEn: string;
+        } | null;
+    };
+}
+
+// export type LectureType = {
+//     // alias: string,
+//     startTime: string,
+//     endTime: string,
+//     description: string,
+//     lectureDate: string,
+//     status: number,
+//     // courseAlias: string,
+//     // additional on not have in api
+//     teachingType: string,
+//     isDelete: boolean,
+//     class: string,
+//     instructor: string,
+//     course: string
+//
+// }
+
+export type LectureType = {
+    uuid: string;
+    //session is the combination of start time and end time
+    session: string;
+    lectureDate: string;
+    isDeleted: boolean;
+    isDraft: boolean;
+    status: number;
+    teachingType: string;
+    classCode: string;
+    courseTitle: string;
+    courseUuid: string;
+    instructorName: string;
+    instructorUuid: string
+}
