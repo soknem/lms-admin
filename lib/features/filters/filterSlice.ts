@@ -1,49 +1,50 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+// filterSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootFilterState, FilterState, Filter } from '@/lib/types/filter/filterTypes';
 
-interface Filter {
-    column: string;
-    value: string;
-    operation: string;
-    joinTable?: string | null;
-}
-
-interface FilterState {
-    globalOperator: 'AND' | 'OR';
-    specsDto: Filter[];
-}
-
-const initialState: FilterState = {
-    globalOperator: 'AND',
-    specsDto: [],
+const initialState: RootFilterState = {
+    generation: { globalOperator: 'AND', specsDto: [] },
+    class: { globalOperator: 'AND', specsDto: [] },
+    course: { globalOperator: 'AND', specsDto: [] },
+    // Initialize other filter types if needed
 };
 
 const filterSlice = createSlice({
     name: 'filter',
     initialState,
     reducers: {
-        setGlobalOperator(state, action: PayloadAction<'AND' | 'OR'>) {
-            state.globalOperator = action.payload;
+        setGlobalOperator(state, action: PayloadAction<{ filterType: string; operator: 'AND' | 'OR' }>) {
+            const { filterType, operator } = action.payload;
+            if (!state[filterType]) {
+                state[filterType] = { globalOperator: 'AND', specsDto: [] };
+            }
+            state[filterType].globalOperator = operator;
         },
-        addOrUpdateFilter(state, action: PayloadAction<Filter>) {
-            const existingFilterIndex = state.specsDto.findIndex(
-                filter => filter.column === action.payload.column
-            );
+        addOrUpdateFilter(state, action: PayloadAction<{ filterType: string; filter: Filter }>) {
+            const { filterType, filter } = action.payload;
+            if (!state[filterType]) {
+                state[filterType] = { globalOperator: 'AND', specsDto: [] };
+            }
+            const existingFilterIndex = state[filterType].specsDto.findIndex(f => f.column === filter.column);
             if (existingFilterIndex >= 0) {
-                // Update the existing filters's value
-                state.specsDto[existingFilterIndex] = action.payload;
+                state[filterType].specsDto[existingFilterIndex] = filter;
             } else {
-                // Add new filters
-                state.specsDto.push(action.payload);
+                state[filterType].specsDto.push(filter);
             }
         },
-        removeFilter(state, action: PayloadAction<string>) {
-            state.specsDto = state.specsDto.filter(filter => filter.column !== action.payload);
+        removeFilter(state, action: PayloadAction<{ filterType: string; column: string }>) {
+            const { filterType, column } = action.payload;
+            if (state[filterType]) {
+                state[filterType].specsDto = state[filterType].specsDto.filter(filter => filter.column !== column);
+            }
         },
-        resetFilters(state) {
-            state.specsDto = [];
+        resetFilters(state, action: PayloadAction<string>) {
+            if (state[action.payload]) {
+                state[action.payload].specsDto = [];
+            }
         },
     },
 });
 
-export const {setGlobalOperator, addOrUpdateFilter, removeFilter, resetFilters} = filterSlice.actions;
+export const { setGlobalOperator, addOrUpdateFilter, removeFilter, resetFilters } = filterSlice.actions;
 export default filterSlice.reducer;

@@ -9,6 +9,9 @@ import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
 import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import studentSlice from "@/lib/features/admin/user-management/student/studentSlice";
 import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import filterReducer from '@/lib/features/filters/filterSlice';
+import courseReducer from '@/lib/features/admin/academic-management/courses/courseSlice';
+import classSlice from '@/lib/features/admin/academic-management/classes/classSlice';
 
 
 export const makeStore = () => {
@@ -24,6 +27,10 @@ export const makeStore = () => {
             degree: degreeSlice,
             studyProgram: studyProgramSlice,
             subject: subjectSlice,
+            filter: filterReducer,
+            course: courseReducer,
+            class: classSlice,
+
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })
