@@ -3,6 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootFilterState, FilterState, Filter } from '@/lib/types/filter/filterTypes';
 
 const initialState: RootFilterState = {
+
+    //it use for difference state of filter
     generation: { globalOperator: 'AND', specsDto: [] },
     class: { globalOperator: 'AND', specsDto: [] },
     course: { globalOperator: 'AND', specsDto: [] },
