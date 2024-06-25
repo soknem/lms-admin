@@ -38,7 +38,7 @@ const courseSlice = createSlice({
 export const { setCourses, setLoading, setError } = courseSlice.actions;
 
 export const selectCourses = (state: RootState) => state.course.courses;
-export const selectLoading = (state: RootState) => state.course.loading;
+export const selectLoading = (state: RootState) => state.course.isLoading;
 export const selectError = (state: RootState) => state.course.error;
 
 export default courseSlice.reducer;

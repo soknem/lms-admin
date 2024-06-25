@@ -40,9 +40,8 @@ const facultySlice = createSlice({
 })
 
 export const {addFaculty, setFaculties, setLoading, setError} = facultySlice.actions;
-export const selectFaculty = (state: RootState) => state.facutly.faculties;
-export const selectLoading = (state: RootState) => state.facutly.isLoading;
-export const selectError = (state: RootState) => state.facutly.error;
-
+export const selectFaculty = (state: RootState) => state.faculty.faculties;
+export const selectLoading = (state: RootState) => state.faculty.isLoading;
+export const selectError = (state: RootState) => state.faculty.error;
 
 export default facultySlice.reducer;
