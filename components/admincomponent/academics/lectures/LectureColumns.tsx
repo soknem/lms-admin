@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType, LectureType } from "@/lib/types/admin/academics";
+import {OptionType, LectureType, LectureRespondType} from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -63,13 +63,63 @@ const TableCell = ({ getValue, row, column, table }: any) => {
           }
     }
 
-    //data in session is a combination of starttime and end time
-    if (accessorKey === 'session') {
-        const startTime = row.original.startTime;
-        const endTime = row.original.endTime;
-        return <span>{`${startTime} - ${endTime}`}</span>;
+    if (accessorKey === 'isDraft') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem  value="false" id="started" />
+                        <Label htmlFor="public">Public</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="pending" />
+                        <Label htmlFor="draft">Draft</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Public" />
+            } else {
+                return <StatusBadge type="default" status="Draft" />
+            }
+
+
+        }
     }
 
+    if (accessorKey === 'isDeleted') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem  value="false" id="active" />
+                        <Label htmlFor="public">Active</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="disable" />
+                        <Label htmlFor="draft">Disable</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Active" />
+            } else {
+                return <StatusBadge type="default" status="Disable" />
+            }
+
+
+        }
+    }
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -109,7 +159,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const LectureColumns: ColumnDef<LectureType>[] = [
+export const LectureColumns: ColumnDef<LectureRespondType>[] = [
     {
         accessorKey: 'lectureDate',
         header: ({ column }) => {
@@ -146,7 +196,7 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
     },
 
     {
-        accessorKey: 'class',
+        accessorKey: 'classCode',
         header: ({ column }) => {
             return (
                 <Button
@@ -163,7 +213,7 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
     },
 
     {
-        accessorKey: 'instructor',
+        accessorKey: 'instructorName',
         header: ({ column }) => {
             return (
                 <Button
@@ -179,7 +229,7 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
 
     },
     {
-        accessorKey: 'course',
+        accessorKey: 'courseTitle',
         header: ({ column }) => {
             return (
                 <Button
@@ -219,6 +269,38 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
                     STATUS
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'isDraft',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    VISIBILITY
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'isDeleted',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    STATE
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )

@@ -141,13 +141,13 @@ export function LectureDataTable<TData, TValue>({
 
   //reset-password popup
   const handleReset = (columnId: string) => {
-    if (columnId === 'instructor') {
+    if (columnId === 'instructorName') {
       setselectedIns(null);
     }
-    if (columnId === 'class') {
+    if (columnId === 'classCode') {
       setSelectedClass(null);
     }
-    if (columnId === 'course') {
+    if (columnId === 'courseTitle') {
       setSelectedCourse(null);
     }
     table.getColumn(columnId)?.setFilterValue('');
@@ -155,27 +155,27 @@ export function LectureDataTable<TData, TValue>({
   };
 
 
-  // filter data of instructor
-  const FilteredIns = data.reduce((instructor: string[], item: any) => {
-    if (!instructor.includes(item.instructor)) {
-      instructor.push(item.instructor);
+  // filter data of instructorName
+  const FilteredIns = data.reduce((instructorName: string[], item: any) => {
+    if (!instructorName.includes(item.instructorName)) {
+      instructorName.push(item.instructorName);
     }
-    return instructor;
+    return instructorName;
   }, []);
 
 
   //filter data of class
   const FilteredClass = data.reduce((cs: string[], item: any) => {
-    if (!cs.includes(item.class)) {
-      cs.push(item.class);
+    if (!cs.includes(item.classCode)) {
+      cs.push(item.classCode);
     }
     return cs;
   }, []);
 
   //filter data of course
   const FilteredCourse = data.reduce((course: string[], item: any) => {
-    if (!course.includes(item.course)) {
-      course.push(item.course);
+    if (!course.includes(item.courseTitle)) {
+      course.push(item.courseTitle);
     }
     return course;
   }, []);
@@ -209,18 +209,18 @@ export function LectureDataTable<TData, TValue>({
 
         <DatePickerWithRange/>
 
-        {/* filter Instructor */}
+        {/* filter instructorName */}
         <Popover open={openIns} onOpenChange={setopenIns}>
           <PopoverTrigger asChild>
             <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
               <TbFilter className='mr-2 h-4 w-4' />
-              {selectedIns ? <>{selectedIns}</> : <> Filter Instructor</>}
+              {selectedIns ? <>{selectedIns}</> : <> Filter instructorName</>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0 bg-white" align="start">
             <Command>
               <CommandInput
-                placeholder="Filter Instructor..." />
+                placeholder="Filter instructor..." />
 
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
@@ -231,7 +231,7 @@ export function LectureDataTable<TData, TValue>({
                       value={ins}
                       onSelect={(value) => {
                         setselectedIns(value);
-                        table.getColumn('instructor')?.setFilterValue(value);
+                        table.getColumn('instructorName')?.setFilterValue(value);
                         setopenIns(false);
                       }}
                     >
@@ -242,7 +242,7 @@ export function LectureDataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedIns && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructor')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('instructorName')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -269,7 +269,7 @@ export function LectureDataTable<TData, TValue>({
                       value={cs}
                       onSelect={(value) => {
                         setSelectedClass(value);
-                        table.getColumn('class')?.setFilterValue(value);
+                        table.getColumn('classCode')?.setFilterValue(value);
                         setOpenClass(false);
                       }}
                     >
@@ -280,7 +280,7 @@ export function LectureDataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedClass && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('class')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('classCode')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -307,7 +307,7 @@ export function LectureDataTable<TData, TValue>({
                       value={course}
                       onSelect={(value) => {
                         setSelectedCourse(value);
-                        table.getColumn('class')?.setFilterValue(value);
+                        table.getColumn('courseTitle')?.setFilterValue(value);
                         setOpenCourse(false);
                       }}
                     >
@@ -318,7 +318,7 @@ export function LectureDataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedCourse && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset('course')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset('courseTitle')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>

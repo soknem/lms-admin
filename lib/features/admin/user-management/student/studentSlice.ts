@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/store";
 import { courseAssessmentType } from "@/lib/types/admin/academics";
+import {UserStudentDetailType} from "@/lib/types/admin/user";
 
 type StudentState = {
-    students: any[];
+    students: UserStudentDetailType[];
 }
 
 const initialState: StudentState = {
@@ -14,7 +15,7 @@ const studentSlice = createSlice({
     name: "studentSlice",
     initialState,
     reducers: {
-        setStudent: (state, action: PayloadAction<courseAssessmentType[]>) => {
+        setStudent: (state, action: PayloadAction<UserStudentDetailType[]>) => {
             state.students = action.payload;
         },
 

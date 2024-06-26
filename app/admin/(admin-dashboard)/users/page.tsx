@@ -44,7 +44,7 @@ export default function Users() {
           </TabsList>
 
           <TabsContent value="student">
-            {/*<UserStudentTable columns={userStudentColumns} data={userStuData}/> */}
+            <UserStudentTable columns={userStudentColumns} data={StudentData}/>
           </TabsContent>
 
           <TabsContent value="staff">

@@ -13,10 +13,14 @@ export const classApi = istadLmsApi.injectEndpoints({
                 body,
             }),
         }),
+        getClassByUuid: builder.query({
+            query: (uuid) => `/classes/${uuid}`,
+        }),
     })
 });
 
 export const {
     useGetClassesQuery,
     useFilterClassesMutation,
+    useGetClassByUuidQuery
 } = classApi;

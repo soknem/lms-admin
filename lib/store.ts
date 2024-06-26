@@ -2,6 +2,8 @@ import {configureStore} from '@reduxjs/toolkit'
 import authSlice from './features/auth/authSlice'
 import {istadLmsApi} from "@/lib/api";
 import generationSlice from "@/lib/features/admin/academic-management/generation/generationSlice";
+import filterSlice from "@/lib/features/filters/filterSlice";
+import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import degreeSlice from "@/lib/features/admin/faculties/degree/degreeSlice";
 import filterSlice from "@/lib/features/filters/filterSlice";
 import facultySlice from "@/lib/features/admin/faculties/faculty/facultySlice";
@@ -16,6 +18,9 @@ import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectu
 import admissionSlice from "@/lib/features/admin/admission-management/admissionSlice";
 import paymentSlice from "@/lib/features/admin/payment-management/paymentSlice";
 import materialsSlice from "@/lib/features/admin/materials/materialsSlice";
+import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import classSlice from '@/lib/features/admin/academic-management/classes/classSlice';
+import staffSlice from "@/lib/features/admin/user-management/staff/staffSlice";
 
 
 export const makeStore = () => {
@@ -27,6 +32,7 @@ export const makeStore = () => {
             filter: filterSlice,
             assessment: assessmentSlice,
             lecture: lectureSlice,
+            degree: degreeSlice,
             faculty: facultySlice,
             degree: degreeSlice,
             studentCourse: studentCourseSlice,
@@ -38,6 +44,9 @@ export const makeStore = () => {
             student: studentSlice,
             course: courseSlice,
             material: materialsSlice,
+            class: classSlice,
+            staff: staffSlice,
+
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),

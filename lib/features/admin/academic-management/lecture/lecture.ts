@@ -6,10 +6,18 @@ export const lectureApi = istadLmsApi.injectEndpoints({
             query: ({ page = 0, pageSize = 10 }) =>
                 `/lectures?pageNumber=${page}&pageSize=${pageSize}`,
         }),
+        addLecture: builder.mutation({
+            query: (newLecture) => ({
+                url: '/lectures',
+                method: 'POST',
+                body: newLecture,
+            }),
+        }),
 
     })
 })
 
 export const {
-    useGetLectureQuery
+    useGetLectureQuery,
+    useAddLectureMutation,
 } = lectureApi;

@@ -74,7 +74,7 @@ export default function Assessment() {
 
     const courseData: courseAssessmentTableType[] = transformData(CourseAssessmentData);
 
-    console.log("data after filter: " , courseData)
+    // console.log("data after filter: " , courseData)
 
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
