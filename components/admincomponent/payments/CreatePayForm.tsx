@@ -13,35 +13,26 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {DegreeType} from "@/lib/types/admin/faculty";
 import {useState} from "react";
 import Image from "next/image";
-import {create} from "domain";
 import {PaymentType} from "@/lib/types/admin/payments";
 import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
-    id: "0001",
     receipt_id: 0,
     name: "",
     profile_image: "",
     gender: "",
-    date: 0,
+    date: "",
     discount: 0,
     total_payment: 0,
     balance_due: 0,
     academic_fee: 0,
     payment_method: "",
-    status: "",
+    status: false,
     remark: "",
-    generation: "",
-    year: "",
-    academic: "",
-    degree: "",
-    faculty: "",
-    major: "",
-    class: "",
-    shift: "",
+    aidAmount: 0,
+    originalPayment: 0
 };
 
 const validationSchema = Yup.object().shape({
@@ -166,26 +157,21 @@ export function CreatePayForm() {
                         // create degree post
                         const paymentPost: PaymentType = {
                             receipt_id: values.receipt_id,
-                            name: values.name,
-                            profile_image: values.profile_image,
+                            student: {
+                                name: values.name,
+                                studentProfile: values.profile_image,
+                            },
                             gender: values.gender,
-                            date: values.date,
+                            paidDate: values.date,
                             discount: values.discount,
-                            total_payment: values.total_payment,
-                            balance_due: values.balance_due,
-                            academic_fee: values.academic_fee,
-                            payment_method: values.payment_method,
+                            totalPayment: values.total_payment,
+                            balanceDue: values.balance_due,
+                            courseFee: values.academic_fee,
+                            paymentMethod: values.payment_method,
                             status: values.status,
                             remark: values.remark,
-                            generation: values.gender,
-                            year: values.year,
-                            academic: values.academic,
-                            degree: values.degree,
-                            faculty: values.faculty,
-                            major: values.major,
-                            class: values.class,
-                            shift: values.shift,
-                            id: values.id,
+                            originalPayment: values.originalPayment,
+                            paidAmount: values.aidAmount,
                         };
 
                         // post product
