@@ -15,3 +15,15 @@ export type AttentType = {
   total: number;
   };
 
+export type AttendanceTableType ={
+     uuid: string;
+     nameEn: string;
+     gender: string;
+     course: string;
+     class: string;
+     p: string;
+     ea: string;
+     total: number;
+     status: string;
+
+}
