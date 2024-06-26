@@ -9,13 +9,39 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import {FiPlus} from "react-icons/fi";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {InsData} from "@/app/admin/(admin-dashboard)/users/data/StaffData";
 // @ts-ignore
 import InstructorCardComponent from "./InstructorCardComponent";
+import {useDispatch, useSelector} from "react-redux";
+import {useGetStaffQuery} from "@/lib/features/admin/user-management/staff/staff";
+import {setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import {selectStaff, setStaff} from "@/lib/features/admin/user-management/staff/staffSlice";
+import {RootState} from "@/lib/store";
 
 export default function StaffList() {
+
+    // ===== get all staff =======
+    const dispatch = useDispatch();
+
+    const { data : staffData , error : staffError } = useGetStaffQuery({ page: 0, pageSize: 10 })
+
+    const staffListData = useSelector((state: RootState) => selectStaff(state));
+
+    useEffect(() => {
+        if(staffData) {
+            // console.log("staff data: ", staffData.content)
+            dispatch(setStaff(staffData.content))
+
+        }
+        if(staffError){
+            console.error("failed to load lecture", staffError);
+        }
+    }, [staffData, staffError, dispatch]);
+
+    console.log("staffData: ", staffData);
+
     const router = useRouter();
     // State for search query and selected position filters
     const [searchQuery, setSearchQuery] = useState("");
@@ -38,6 +64,8 @@ export default function StaffList() {
     const handlePositionFilterChange = (position: string) => {
         setSelectedPosition(position);
     };
+
+
     return (
         <>
             <div className="flex flex-row gap-x-4 mt-6">

@@ -13,7 +13,9 @@ import studyProgramSlice from "@/lib/features/admin/faculties/studyProgram/study
 import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
 import studentSlice from "@/lib/features/admin/user-management/student/studentSlice";
 import courseSlice from "@/lib/features/admin/academic-management/courses/courseSlice";
-import instructorcourseSlice from "@/lib/features/instructor/course/instructorcourseSlice";
+
+
+
 
 
 export const makeStore = () => {
@@ -33,7 +35,6 @@ export const makeStore = () => {
             subject: subjectSlice,
             student: studentSlice,
             course: courseSlice,
-            instructorCourse: instructorcourseSlice,
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
