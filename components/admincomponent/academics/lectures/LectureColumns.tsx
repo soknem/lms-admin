@@ -177,7 +177,6 @@ const ActionCell = ({ row } : any) => {
     };
 
     const handleConfirm = async   (lectureUuid : string) => {
-        // Handle the confirm action
         if(isDeleted){
             await enableLecture(lectureUuid).unwrap();
             setIsDeleted((prev :any) => !prev);
@@ -193,7 +192,6 @@ const ActionCell = ({ row } : any) => {
     };
 
     const handleCancel = () => {
-        // Handle the cancel action
         setIsCardVisible(false);
     };
 
