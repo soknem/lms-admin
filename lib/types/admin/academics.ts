@@ -1,5 +1,7 @@
 
 // **** Generation *****
+import {CourseInfo, Generation, Shift, StudyProgram} from "@/lib/features/admin/academic-management/classes/classSlice";
+
 export type GenerationType = {
     name: string;
   startYear: number;
@@ -38,7 +40,39 @@ export type ClassType = {
     studentAliases: string[]
     instructorAias: string[]
 }
+export type Class = {
+    uuid: string;
+    classCode: string;
+    description: string;
+    isDeleted: boolean;
+    isDraft: boolean;
+    status: number;
+    instructor: string | null;
+    studyProgram: StudyProgram;
+    shift: Shift;
+    generation: Generation;
+    students: any[]; // Assuming students are an array of objects
+    courses: CourseInfo[];
+};
 
+export type ShortClassType = {
+    uuid: string;
+    classCode: string;
+}
+
+
+export type ShortCourseType = {
+    uuid: string;
+    title: string;
+}
+
+export type ShortCourseStudentType = {
+    uuid: string;
+    title: string;
+    score: string;
+    credit: string;
+    grade: string;
+}
 
 export type StudentType = {
     nameEn: string,
@@ -182,27 +216,6 @@ export type courseAssessmentTableType = {
     status: number;
 };
 
-//response lecture
-export type lectureRespondType = {
-    uuid: string;
-    startTime: string;
-    endTime: string;
-    description: string;
-    lectureDate: string;
-    isDeleted: boolean;
-    isDraft: boolean;
-    status: number;
-    teachingType: string;
-    classCode: string;
-    course: {
-        uuid: string;
-        title: string;
-        instructor: {
-            uuid: string;
-            nameEn: string;
-        } | null;
-    };
-}
 
 // export type LectureType = {
 //     // alias: string,
@@ -236,3 +249,33 @@ export type LectureType = {
     instructorName: string;
     instructorUuid: string
 }
+
+//response lecture
+export type LectureRespondType = {
+    uuid: string;
+    startTime: string;
+    endTime: string;
+    lectureDate: string;
+    isDeleted: boolean;
+    isDraft: boolean;
+    status: number;
+    teachingType: string;
+    classCode: string;
+    courseTitle: string;
+    courseUuid: string;
+    instructorName: string;
+    instructorUuid: string;
+    session?: string;
+}
+
+export type FormLectureType = {
+    startTime: string;
+    endTime: string;
+    lectureDate: string;
+    isDraft: boolean;
+    status: number;
+    teachingType: string;
+    courseUuid: string;
+}
+
+

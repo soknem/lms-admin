@@ -1,3 +1,5 @@
+'use client'
+
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {FiPlus} from "react-icons/fi";
@@ -7,10 +9,11 @@ import RequiredFieldLabelComponent from "@/components/common/RequiredFieldLabelC
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {Label} from "@/components/ui/label";
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
-import React from "react";
+import React, {useEffect, useState} from "react";
 type Checked = DropdownMenuCheckboxItemProps["checked"]
-
-
+import { Calendar as CalendarIcon } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import { format } from "date-fns"
 // combobox
 import {
     Command,
@@ -28,51 +31,30 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {
+    selectClasses,
+    setClasses,
+    setSingleClass
+} from "@/lib/features/admin/academic-management/classes/classSlice";
+import {useGetClassByUuidQuery, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
+import {setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";
+import {CreateGenerationType, FormLectureType, ShortCourseType} from "@/lib/types/admin/academics";
+import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
+import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {addLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import {Class} from "@/lib/types/admin/academics";
+import Select, {ActionMeta, SingleValue} from 'react-select';
 
 
-const instructors = [
-    {
-        value: "Sang Sokea",
-        label: "Sang Sokea",
-    },
-    {
-        value: "Mom Reksmey",
-        label: "Mom Reksmey",
-    },
-    {
-        value: "Chan Chayya",
-        label: "Chan Chayya",
-    },
-
-]
-
-const courses = [
-    {
-        value: "Intro",
-        label: "Introduction to IT",
-    },
-    {
-        value: "Intensive English",
-        label: "Intensive English I",
-    },
-
-
-]
-
-const classes = [
-    {
-        value: "m1",
-        label: "FY2025-M1",
-    },
-    {
-        value: "a1",
-        label: "FY2025-A1",
-    },
-
-]
+interface OptionType {
+    value: string;
+    label: string;
+}
 
 export default function CreateLectureForm() {
-
+    const [selectedOption, setSelectedOption] = useState<SingleValue<{ value: string; label: string }> | null>(null);
     // dropdown
     const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
     const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false)
@@ -88,31 +70,171 @@ export default function CreateLectureForm() {
     const [openCls, setOpenCls] = React.useState(false)
     const [valueCls, setValueCls] = React.useState("")
 
+    const [date, setDate] = React.useState<Date>()
+
+    // ============= Create Lecture =============
+    const dispatch = useDispatch<AppDispatch>();
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [createLecture] = useAddLectureMutation();
+
+    const handleCreateLecture = async (values : FormLectureType) => {
+        try {
+            setIsLoading(true);
+
+            const newLecture = {
+                startTime: values.startTime,
+                endTime: values.endTime,
+                lectureDate: values.lectureDate,
+                isDraft: values.isDraft,
+                status: selectedStatus,
+                teachingType: selectedTeachingType,
+                courseUuid: selectedCourseUUID
+            };
+
+            const result = await createLecture(newLecture).unwrap();
+
+            console.log('Generation created successfully');
+
+
+        } catch (err : any) {
+            console.error('Error creating lecture:', err);
+            if(err.status === 409){
+                console.log("lecture already exists.")
+            }else{
+                console.log("Generation creation failed:");
+            }
+
+        }
+
+    };
+
+    // ========== class ===========
+    const [selectedClassUUID, setSelectedClassUUID] = useState('');
+
+    const { data: classesData, error: classesError } = useGetClassesQuery({ page: 0, pageSize: 10 });
+
+    useEffect(() => {
+        if (classesData) {
+            const formattedClasses = classesData.content.map((cls: Class) => ({
+                value: cls.uuid,
+                label: `${cls.classCode}`,
+            }));
+            dispatch(setClasses(formattedClasses));
+        }
+        if (classesError) {
+            console.error('Failed to load classes', classesError);
+        }
+    }, [classesData, classesError, dispatch]);
+
+    const classes = useSelector(selectClasses);
+
+    const handleChange = (selectedOption : any) => {
+        // Extracting the UUID from the selected option
+        const uuid = selectedOption?.value;
+        setSelectedClassUUID(uuid); // Update your state or handle the UUID as needed
+    };
+
+    const classDropdownData = classes.content;
+
+    // ====== Course [fetch course by class uuid]========
+    const {data : classData, error: classError } = useGetClassByUuidQuery(selectedClassUUID)
+
+    const [Courses, setCourses] = useState([]);
+
+    const [selectedCourseUUID, setSelectedCourseUUID] = useState('');
+
+    useEffect(() => {
+        if (classData) {
+            const formattedCourses = classData.courses.map((crs : ShortCourseType) => ({
+                value: crs.uuid,
+                label: crs.title,
+            }));
+            setCourses(formattedCourses);
+        }
+        if (classError) {
+            console.error('Failed to load classes', classError);
+        }
+    }, [classData, classError, dispatch]);
+
+    console.log("single class data", Courses);
+
+    const handleCourseChange = (selectedOption : any) => {
+        // Extracting the UUID from the selected option
+        const uuid = selectedOption?.value;
+        setSelectedCourseUUID(uuid); // Update your state or handle the UUID as needed
+    };
+
+    // ====== teaching Type =======
+    const teachingType = [
+        {
+            value: 'Theory',
+            label: 'Theory',
+        },
+        {
+            value: 'Lab',
+            label: 'Lab',
+        },
+    ]
+
+    const [selectedTeachingType, setSelectedTeachingType] = useState('');
+    const handleTeachingChange = (selectedOption : any) => {
+        const value = selectedOption?.value;
+        setSelectedTeachingType(value); // Update your state or handle the UUID as needed
+    };
+
+    // ===== Status =====
+    const statusList = [
+        {
+            value: 1,
+            label: 'Started',
+        },
+        {
+            value: 2,
+            label: 'Pending',
+        },
+        {
+            value: 3,
+            label: 'Ended',
+        },
+    ]
+
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const handleStatusChange = (selectedOption : any) => {
+        const value = selectedOption?.value;
+        setSelectedStatus(value); // Update your state or handle the UUID as needed
+    };
+
+
     const formik = useFormik({
         initialValues: {
             startTime: "",
             endTime: "",
-            instructor: "",
-            teachingType: "",
-            date: "",
-            course: "",
-            class: "FY2025-M1",
+            teachingType: "Theory",
+            lectureDate: "",
+            status: 3,
+            courseUuid: "50984aca-28d7-4986-9055-d2757b80166a",
             isDraft: true,
+
         },
         validationSchema: Yup.object({
-            startTime: Yup.string()
-                .required("Required"),
-            endTime: Yup.string()
-                .required("Required"),
-            teachingType: Yup.string()
-                .required("Required"),
-            date: Yup.string()
-                .required("Required"),
+            startTime: Yup.string().required("Required"),
+            endTime: Yup.string().required("Required"),
+            teachingType: Yup.string().required("Required"),
         }),
         onSubmit: values => {
-            console.log(values)
+            const formattedValues = {
+                ...values,
+                lectureDate: date ? format(date, "yyyy-MM-dd") : "",
+            };
+            // dispatch(addLecture(formattedValues))
+            console.log("Form values: ", formattedValues);
+            handleCreateLecture(formattedValues);
+
         }
     })
+
     return(
         <Dialog>
             <DialogTrigger asChild>
@@ -128,6 +250,33 @@ export default function CreateLectureForm() {
                     className="space-y-4 md:space-y-6"
                     onSubmit={formik.handleSubmit}
                 >
+                    {/* Lecture Date */}
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Date"
+                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    className={cn(
+                                        "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
+                                        !date && "text-gray-600"
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-white ">
+                                <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    onSelect={setDate}
+                                    initialFocus
+                                />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+
                     {/*Start Time*/}
                     <div>
                         <RequiredFieldLabelComponent labelText="Start Time"
@@ -167,108 +316,66 @@ export default function CreateLectureForm() {
                     {/* Class */}
                     <div>
                         <RequiredFieldLabelComponent labelText="Class"
-                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <Popover open={openCls} onOpenChange={setOpenCls}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="text-gray-600 border  border-lms-gray-30 w-full bg-white justify-between"
-                                >
-                                    {value
-                                        ? classes.find((ins) => ins.value === value)?.label
-                                        : "Select Class..."}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[450px] bg-white p-0">
-                                <Command>
-                                    <CommandInput placeholder="Search Class..."/>
-                                    <CommandList>
-                                        <CommandEmpty>No course found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {classes.map((ins) => (
-                                                <CommandItem
-                                                    key={ins.value}
-                                                    value={ins.value}
-                                                    onSelect={(currentValue) => {
-                                                        setValueCls(currentValue === value ? "" : currentValue)
-                                                        setOpenCls(false)
-                                                    }}
-                                                >
-                                                    <Check
-                                                        className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            value === ins.value ? "opacity-100" : "opacity-0"
-                                                        )}
-                                                    />
-                                                    {ins.label}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        {
-                            formik.errors.class ?
-                                <p className="text-red-700">{formik.errors.class}</p> : null
-                        }
+                                                     labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+
+                        <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            defaultValue={classDropdownData[0]}
+                            isClearable={true}
+                            isSearchable={true}
+                            name="class"
+                            options={classDropdownData}
+                            onChange={handleChange}
+                        />
                     </div>
 
                     {/* Course */}
                     <div>
                         <RequiredFieldLabelComponent labelText="Course"
-                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="text-gray-600 border  border-lms-gray-30 w-full bg-white justify-between"
-                                >
-                                    {value
-                                        ? courses.find((ins) => ins.value === value)?.label
-                                        : "Select Course..."}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[450px] bg-white p-0 ">
-                                <Command>
-                                    <CommandInput className="text-gray-500" placeholder="Search Course..."/>
-                                    <CommandList>
-                                        <CommandEmpty>No course found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {courses.map((ins) => (
-                                                <CommandItem
-                                                    key={ins.value}
-                                                    value={ins.value}
-                                                    onSelect={(currentValue) => {
-                                                        setValue(currentValue === value ? "" : currentValue)
-                                                        setOpen(false)
-                                                    }}
-                                                >
-                                                    <Check
-                                                        className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            value === ins.value ? "opacity-100" : "opacity-0"
-                                                        )}
-                                                    />
-                                                    {ins.label}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        {
-                            formik.errors.instructor ?
-                                <p className="text-red-700">{formik.errors.instructor}</p> : null
-                        }
+                                                     labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+
+                        <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            defaultValue={Courses[0]}
+                            isClearable={true}
+                            isSearchable={true}
+                            name="course"
+                            options={Courses}
+                            onChange={handleCourseChange}
+                        />
                     </div>
 
+                    {/* teaching type */}
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Teaching Type"
+                                                     labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
 
+                        <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            defaultValue={teachingType[0]}
+                            name="teachingType"
+                            options={teachingType}
+                            onChange={handleTeachingChange}
+                        />
+                    </div>
+
+                    {/* Status */}
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Status"
+                                                     labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+
+                        <Select
+                            className="basic-single "
+                            classNamePrefix="select"
+                            defaultValue={statusList[0]}
+                            name="teachingType"
+                            options={statusList}
+                            onChange={handleStatusChange}
+                        />
+                    </div>
 
 
                     {/* Visibility */}

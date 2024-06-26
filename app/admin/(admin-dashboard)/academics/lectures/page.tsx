@@ -1,7 +1,6 @@
 'use client'
 import React, {useEffect} from "react";
-import {lectureRespondType, LectureType} from "@/lib/types/admin/academics";
-import lectures from "@/app/admin/(admin-dashboard)/academics/lectures/data/lectures.json"
+import {LectureRespondType, LectureType} from "@/lib/types/admin/academics";
 import { LectureDataTable } from "@/components/admincomponent/academics/lectures/LectureDataTable";
 import { LectureColumns } from "@/components/admincomponent/academics/lectures/LectureColumns";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,6 +9,7 @@ import {useGetAssessmentQuery} from "@/lib/features/admin/academic-management/as
 import {useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
 import {selectLecture, setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {setAssessment} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
+import CourseFilterComponent from "@/components/card/filter/FilterCourseComponent";
 
 export default  function Lecture() {
   // const Lecturedata: LectureType[] = lectures;
@@ -20,22 +20,12 @@ export default  function Lecture() {
 
   const LectureData = useSelector((state: RootState) => selectLecture(state));
 
-  useEffect(() => {
-    if(data) {
-      dispatch(setLecture(data.content))
-    }
-    if(error){
-      console.error("failed to load lecture", error);
-    }
-  }, [data, error, dispatch]);
-
-  // console.log("lecture data: ", LectureData[0].startTime);
-
-  // Define the transformation function
-  const transformData = (data : lectureRespondType[]) : LectureType[] => {
+  // Filter data from lecture response
+  const transformToLectureData = (data : any[]) : LectureRespondType[] => {
     return data.map(item  => ({
-      uuid: item.uuid,
-      session: `${item.startTime}-${item.endTime}`,
+      uuid: item.uuid ,
+      startTime: item.startTime,
+      endTime: item.endTime,
       lectureDate: item.lectureDate,
       isDeleted: item.isDeleted,
       isDraft: item.isDraft,
@@ -45,17 +35,29 @@ export default  function Lecture() {
       courseTitle: item.course ? item.course.title : 'N/A',
       courseUuid: item.course ? item.course.uuid : 'N/A',
       instructorName: item.course && item.course.instructor ? item.course.instructor.nameEn : 'N/A',
-      instructorUuid: item.course && item.course.instructor ? item.course.instructor.uuid : 'N/A'
+      instructorUuid: item.course && item.course.instructor ? item.course.instructor.uuid : 'N/A',
+      session: `${item.startTime}-${item.endTime}`,
     }));
   };
 
-  const LecData : LectureType[] = transformData(LectureData)
+  useEffect(() => {
+    if(data) {
+      dispatch(setLecture(transformToLectureData(data.content)))
+    }
+    if(error){
+      console.error("failed to load lecture", error);
+    }
+  }, [data, error, dispatch]);
+
+  console.log("lecture data: ", LectureData);
+
 
   return (
     <section className="flex flex-col gap-4 h-full w-full p-9">
     <h1 className=' text-3xl font-bold text-lms-primary'>Lectures</h1>
-      {/*need transform data */}
-      <LectureDataTable columns={LectureColumns} data={LecData} />
+
+      <LectureDataTable columns={LectureColumns} data={LectureData} />
+
   </section>
   );
 }

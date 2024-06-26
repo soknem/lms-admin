@@ -117,9 +117,12 @@ const classSlice = createSlice({
             state.isLoading = false;
             state.error = null;
         },
+
     },
 });
 
-export const { setClasses, addClass } = classSlice.actions;
+export const { setClasses, addClass} = classSlice.actions;
+export const selectClasses = (state: RootState) => state.class
+
 
 export default classSlice.reducer;

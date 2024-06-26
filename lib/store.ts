@@ -12,6 +12,7 @@ import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectu
 import filterReducer from '@/lib/features/filters/filterSlice';
 import courseReducer from '@/lib/features/admin/academic-management/courses/courseSlice';
 import classSlice from '@/lib/features/admin/academic-management/classes/classSlice';
+import staffSlice from "@/lib/features/admin/user-management/staff/staffSlice";
 
 
 export const makeStore = () => {
@@ -30,6 +31,7 @@ export const makeStore = () => {
             filter: filterReducer,
             course: courseReducer,
             class: classSlice,
+            staff: staffSlice,
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),

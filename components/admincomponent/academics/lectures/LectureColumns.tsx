@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType, LectureType } from "@/lib/types/admin/academics";
+import {OptionType, LectureType, LectureRespondType} from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -159,7 +159,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const LectureColumns: ColumnDef<LectureType>[] = [
+export const LectureColumns: ColumnDef<LectureRespondType>[] = [
     {
         accessorKey: 'lectureDate',
         header: ({ column }) => {
