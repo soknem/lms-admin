@@ -39,9 +39,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   };
 
   // Ensure the "id" column is not editable
-  if (column.id === "id") {
-    return <span>{value}</span>;
-  }
+
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
@@ -70,23 +68,24 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return (
         <span
             className={
-              value === 1
-                  ? "Active text-lms-success bg-green-300 px-5 py-1 rounded-[10px]"
-                  : value === 2
-                      ? "Drop text-lms-error bg-red-200 px-5 py-1 rounded-[10px]"
-                      : value === 3
-                          ? "Draft text-lms-gray-30 bg-gray-200 px-5 py-1 rounded-[10px]"
+              value == 1
+                  ? "Active text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                  : value == 2
+                      ? "Drop text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                      : value == 3
+                          ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
                           : ""
             }
         >
-        {value == 1
-            ? "Active"
-            : value == 2
-                ? "Drop"
-                : value == 3
-                    ? "Draft"
-                    : ""}
-      </span>
+  {value == 1
+      ? "Active"
+      : value == 2
+          ? "Drop"
+          : value == 3
+              ? "Draft"
+              : ""}
+</span>
+
     );
   }
 
@@ -268,7 +267,6 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
       ],
     },
   },
-
   {
     id: "edit",
     cell: EditCell,

@@ -23,14 +23,6 @@ const degreeSlice = createSlice({
             state.isLoading = false;
             state.error = null;
         },
-        setLoading: (state) => {
-            state.isLoading = true;
-            state.error = null;
-        },
-        setError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
         addDegree: (state, action: PayloadAction<DegreeType>) => {
             state.degrees.push(action.payload);
             state.isLoading = false;
@@ -39,7 +31,7 @@ const degreeSlice = createSlice({
     }
 })
 
-export const {addDegree, setDegrees, setLoading, setError} = degreeSlice.actions;
+export const {addDegree, setDegrees} = degreeSlice.actions;
 export const selectDegree = (state: RootState) => state.degree.degrees;
 export const selectLoading = (state: RootState) => state.degree.isLoading;
 export const selectError = (state: RootState) => state.degree.error;

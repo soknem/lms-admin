@@ -58,46 +58,6 @@
      "gender": "Male",
      "total": 100
       
-    },
-    {
-      "id": "1",
-      "startTime": "2024-06-01T08:00:00Z",
-      "endTime": "2024-06-01T10:00:00Z",
-      "fullName": "John Sena",
-      "cardId": "0028",
-      "status": "4",
-      "class": "Istad 2",
-      "semester": "semester 1",
-      "course": "Spring",
-      "description": "Class description",
-      "isDelete": false,
-      "p": "2", 
-      "ea": "1",
-      "ua": "3",
-     " total": "100",
-     "gender": "Male",
-     "total": 90
-      
-    },
-    {
-      "id": "1",
-      "startTime": "2024-06-01T08:00:00Z",
-      "endTime": "2024-06-01T10:00:00Z",
-      "fullName": "Kim NamJoon",
-      "cardId": "0049",
-      "status": "5",
-      "class": "Istad 1",
-      "semester": "semester 2",
-      "course": "Flutter",
-      "description": "Class description",
-      "isDelete": false,
-      "p": "2", 
-      "ea": "2",
-      "ua": "3",
-     " total": "100",
-     "gender": "Male",
-     "total": 90
-      
     }
 
   ]

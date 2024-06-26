@@ -1,16 +1,43 @@
-import { paymentColumns } from "@/components/admincomponent/payments/columns";
-import { PaymentTable } from "@/components/admincomponent/payments/data-table";
-import React from "react";
-import {PaymentType} from "@/lib/types/admin/payments";
-import payData from "@/components/admincomponent/payments/payData.json"
+"use client"
 
-export default async function Payments() {
-  // const payData = await getPayment();
-    const paymentData : PaymentType[] = payData;
-  return (
-    <main className="flex flex-col h-full w-full p-9 gap-6">
-      <h2 className="text-4xl text-lms-primary font-bold">Payments</h2>
-      <PaymentTable columns={paymentColumns} data={paymentData}/>
-    </main>
-  );
+import {paymentColumns} from "@/components/admincomponent/payments/columns";
+import {PaymentTable} from "@/components/admincomponent/payments/data-table";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {
+    selectError,
+    selectLoading,
+    selectPayment,
+    setPayments
+} from "@/lib/features/admin/payment-management/paymentSlice";
+import {setError} from "@/lib/features/admin/faculties/subject/subjectSlice";
+import {useGetPaymentsQuery} from "@/lib/features/admin/payment-management/payment";
+
+export default function Payments() {
+    const dispatch = useDispatch<AppDispatch>();
+    const {
+        data: paymentsData,
+        error: paymentsError,
+        isLoading: paymentsLoading,
+    } = useGetPaymentsQuery({page: 0, pageSize: 10});
+    const payments = useSelector((state: RootState) => selectPayment(state));
+    const payLoading = useSelector(selectLoading);
+    const payError = useSelector(selectError);
+
+    useEffect(() => {
+        if (paymentsData) {
+            dispatch(setPayments(paymentsData.content));
+        }
+        if (payError) {
+            dispatch(setError(payError.toString()));
+        }
+    }, [paymentsData, payError, dispatch]);
+
+    return (
+        <main className="flex flex-col h-full w-full p-9 gap-6">
+            <h2 className="text-4xl text-lms-primary font-bold">Payments</h2>
+            <PaymentTable columns={paymentColumns} data={payments}/>
+        </main>
+    );
 }

@@ -14,38 +14,33 @@ import {
 } from "@/components/ui/dialog";
 
 import {DegreeType} from "@/lib/types/admin/faculty";
-import {useState} from "react";
-import Image from "next/image";
-import {create} from "domain";
 import {TbAsterisk} from "react-icons/tb";
+import {useCreateDegreeMutation} from "@/lib/features/admin/faculties/degree/degree";
 
 const initialValues = {
     alias: "",
     level: "",
     description: "",
-    // create_by: "",
     isDeleted: false,
     isDraft: false
 };
 
 const validationSchema = Yup.object().shape({
-    id: Yup.number(),
-    level: Yup.string().required("Required"),
-    description: Yup.string().required("Required"),
-    create_by: Yup.string().required("Required"),
-    status: Yup.string().required("A selection is required"),
+    alias: Yup.string().required('Alias is required'),
+    level: Yup.string().required('Level is required'),
+    description: Yup.string(),
+    isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
+    isDraft: Yup.boolean().required('Please specify if the degree is a draft'),
 });
 
-const handleSubmit = async (value: DegreeType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
+const handleSubmit = async (values: DegreeType, createDegree: any) => {
+    try {
+        const response = await createDegree(values).unwrap();
+        console.log('Degree created successfully:', response);
+        // Optionally, reset the form or close the dialog here
+    } catch (error) {
+        console.error('Failed to create degree:', error);
+    }
 };
 
 const RadioButton = ({field, value, label}: any) => {
@@ -65,42 +60,10 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
-
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
-    };
-    return (
-        <div>
-            <input onChange={(e) => handleUploadFile(e)} type="file"/>
-            {imagePreview && (
-                <Image src={imagePreview} alt="preview" width={200} height={200}/>
-            )}
-        </div>
-    );
-};
-
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function CreateDeForm() {
+    const [createDegree] = useCreateDegreeMutation();
+
     return (
         <Dialog>
 
@@ -119,24 +82,34 @@ export function CreateDeForm() {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create degree post
-                        const degreePost: DegreeType = {
-                            alias: values.alias,
-                            level: values.level,
-                            description: values.description,
-                            // create_by: values.create_by,
-                            isDraft: values.isDraft,
-                            isDeleted: values.isDeleted,
-                        };
-
-                        // post product
-                        handleSubmit(degreePost);
-                    }}
+                    onSubmit={(values) => handleSubmit(values, createDegree)}
                 >
-                    {({setFieldValue}) => (
+                    {() => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-4">
+
+                                {/* Degree Alias*/}
+                                <div className={` ${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Alias
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <Field
+                                        type="text"
+                                        placeholder="Associated Degree"
+                                        name="alias"
+                                        id="alias"
+                                        className={` ${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
                                 {/* Degree Level*/}
                                 <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
@@ -178,58 +151,60 @@ export function CreateDeForm() {
                                     />
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="create_by">
-                                            Create By
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        type="text"
-                                        placeholder="Chan Tola"
-                                        name="create_by"
-                                        id="create_by"
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="create_by"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
-
                                 {/* status */}
                                 <div className={`${style.inputContainer}  `}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="status">
-                                            Visibility
+                                        <label className={`${style.label}`} htmlFor="isDraft">
+                                            isDraft
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="1"
+                                            value="true"
                                             label="Public"
                                         />
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="2"
+                                            value="false"
                                             label="Draft"
-                                        />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="3"
-                                            label="Disable"
                                         />
                                     </div>
 
                                     <ErrorMessage
-                                        name="status"
+                                        name="isDraft"
+                                        component={RadioButton}
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                <div className={`${style.inputContainer}  `}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="isDeleted">
+                                            isDeleted
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <div className="flex gap-4 h-[40px] items-center">
+                                        <Field
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            value="true"
+                                            label="Public"
+                                        />
+                                        <Field
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            value="false"
+                                            label="Draft"
+                                        />
+                                    </div>
+
+                                    <ErrorMessage
+                                        name="isDeleted"
                                         component={RadioButton}
                                         className={`${style.error}`}
                                     />
