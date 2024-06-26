@@ -4,7 +4,6 @@ import {istadLmsApi} from "@/lib/api";
 import generationSlice from "@/lib/features/admin/academic-management/generation/generationSlice";
 import degreeSlice from "@/lib/features/admin/faculties/degree/degreeSlice";
 import filterSlice from "@/lib/features/filters/filterSlice";
-import lectureSlice  from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import facultySlice from "@/lib/features/admin/faculties/faculty/facultySlice";
 import studentCourseSlice from "@/lib/features/student/course/studentCourseSlice";
 import achievementSlice from "@/lib/features/student/achievement/achievementSlice";
@@ -13,12 +12,10 @@ import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
 import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import studentSlice from "@/lib/features/admin/user-management/student/studentSlice";
 import courseSlice from "@/lib/features/admin/academic-management/courses/courseSlice";
-
-
-
 import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import admissionSlice from "@/lib/features/admin/admission-management/admissionSlice";
 import paymentSlice from "@/lib/features/admin/payment-management/paymentSlice";
+import materialsSlice from "@/lib/features/admin/materials/materialsSlice";
 
 
 export const makeStore = () => {
@@ -40,6 +37,7 @@ export const makeStore = () => {
             payment: paymentSlice,
             student: studentSlice,
             course: courseSlice,
+            material: materialsSlice,
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),

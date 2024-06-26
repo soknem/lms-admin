@@ -14,7 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {SlideType, StatusOption} from "@/lib/types/admin/materials";
+import {MaterialType, StatusOption} from "@/lib/types/admin/materials";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({getValue, row, column, table}: any) => {
@@ -149,7 +149,7 @@ const EditCell = ({row, table}: any) => {
     );
 };
 
-export const slideColumns: ColumnDef<SlideType>[] = [
+export const slideColumns: ColumnDef<MaterialType>[] = [
     {
         accessorKey: "title",
         header: ({column}) => {

@@ -26,6 +26,7 @@ import {
     selectLoading,
     setFaculties
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
+import CourseFilterComponent from "@/components/card/filter/FIlterCourseCardComponent";
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();
@@ -161,6 +162,8 @@ export default function Page() {
                         <SubjectTable columns={subjectColumns} data={subjects}/>
                     </TabsContent>
                 </Tabs>
+
+                <CourseFilterComponent/>
             </section>
         </section>
     );
