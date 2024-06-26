@@ -1,16 +1,18 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import authSlice from './features/auth/authSlice'
 import {istadLmsApi} from "@/lib/api";
 import generationSlice from "@/lib/features/admin/academic-management/generation/generationSlice";
-import facultySlice from "@/lib/features/admin/faculties/faculty/facultySlice";
+import filterSlice from "@/lib/features/filters/filterSlice";
+import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import degreeSlice from "@/lib/features/admin/faculties/degree/degreeSlice";
+import facultySlice from "@/lib/features/admin/faculties/faculty/facultySlice";
+import studentCourseSlice from "@/lib/features/student/course/studentCourseSlice";
+import achievementSlice from "@/lib/features/student/achievement/achievementSlice";
 import studyProgramSlice from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
-import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import studentSlice from "@/lib/features/admin/user-management/student/studentSlice";
+import courseSlice from "@/lib/features/admin/academic-management/courses/courseSlice";
 import lectureSlice from "@/lib/features/admin/academic-management/lecture/lectureSlice";
-import filterReducer from '@/lib/features/filters/filterSlice';
-import courseReducer from '@/lib/features/admin/academic-management/courses/courseSlice';
 import classSlice from '@/lib/features/admin/academic-management/classes/classSlice';
 import staffSlice from "@/lib/features/admin/user-management/staff/staffSlice";
 
@@ -21,17 +23,20 @@ export const makeStore = () => {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
             auth: authSlice,
             generation: generationSlice,
+            filter: filterSlice,
             assessment: assessmentSlice,
-            student: studentSlice,
             lecture: lectureSlice,
-            facutly: facultySlice,
             degree: degreeSlice,
+            faculty: facultySlice,
+            studentCourse: studentCourseSlice,
+            achievement: achievementSlice,
             studyProgram: studyProgramSlice,
             subject: subjectSlice,
-            filter: filterReducer,
-            course: courseReducer,
+            student: studentSlice,
+            course: courseSlice,
             class: classSlice,
             staff: staffSlice,
+
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),

@@ -36,7 +36,6 @@ import {AppDispatch, RootState} from "@/lib/store";
 import {
     selectClasses,
     setClasses,
-    setSingleClass
 } from "@/lib/features/admin/academic-management/classes/classSlice";
 import {useGetClassByUuidQuery, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
 import {setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";

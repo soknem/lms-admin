@@ -9,7 +9,7 @@ import {useGetAssessmentQuery} from "@/lib/features/admin/academic-management/as
 import {useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
 import {selectLecture, setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {setAssessment} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
-import CourseFilterComponent from "@/components/card/filter/FilterCourseComponent";
+
 
 export default  function Lecture() {
   // const Lecturedata: LectureType[] = lectures;
