@@ -7,12 +7,14 @@ type CardDisableType = {
   message: string;
   onConfirm: () => void;
   onCancel: () => void;
+  buttonTitle : string;
 };
 
 const CardDisableComponent: React.FC<CardDisableType> = ({
   message,
   onConfirm,
   onCancel,
+  buttonTitle,
 }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-lms-black90 bg-opacity-50">
@@ -42,7 +44,7 @@ const CardDisableComponent: React.FC<CardDisableType> = ({
             onClick={onConfirm}
             className="bg-red-600 text-lms-white-80 px-4 py-2 rounded-lg"
           >
-            Disable
+            {buttonTitle}
           </button>
           <button
             onClick={onCancel}
