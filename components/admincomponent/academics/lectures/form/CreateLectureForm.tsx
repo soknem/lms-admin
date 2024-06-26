@@ -45,11 +45,18 @@ import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/admin/ac
 import {addLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {Class} from "@/lib/types/admin/academics";
 import Select, {ActionMeta, SingleValue} from 'react-select';
+import toast, { Toaster } from 'react-hot-toast';
+import { MdError } from "react-icons/md";
 
 
-interface OptionType {
+type OptionType  = {
     value: string;
     label: string;
+}
+
+type DescriptionItem =  {
+    reason: string;
+    field: string;
 }
 
 export default function CreateLectureForm() {
@@ -93,26 +100,116 @@ export default function CreateLectureForm() {
             };
 
             const result = await createLecture(newLecture).unwrap();
-
-            console.log('Generation created successfully');
+            toast.success('Successfully created!');
+            console.log('Lecture created successfully');
 
 
         } catch (err : any) {
-            console.error('Error creating lecture:', err);
-            if(err.status === 409){
-                console.log("lecture already exists.")
-            }else{
-                console.log("Generation creation failed:");
+            // console.error('Error creating lecture:', err);
+            // toast.error(`Failed to creating lecture`);
+            // if(err.status === 409){
+            //     console.log("lecture already exists.")
+            // }else{
+            //     console.log("Generation creation failed:");
+            // }
+            let errorMessage = 'Failed to create lecture';
+            if (Array.isArray(err.data.error.description)) {
+                // If description is an array, map over it to construct a more detailed error message
+                errorMessage += err.data.error.description.map((d: DescriptionItem) => `${d.reason} (${d.field})`).join('');
+            } else {
+                // If description is a single string, append it directly with a line break
+                errorMessage += err.data.error.description ;
             }
+            console.error('Error creating lecture:', err);
+            toast.error(errorMessage, {
+                style: {
+                    marginBottom: '20px', // Add padding at the bottom of the toast
+                },
+            });
 
-        }
 
-    };
+
+            // let errorMessage = 'Failed to create lecture';
+            // let errorDescription = '';
+            //
+            // if (Array.isArray(err.data.error.description)) {
+            //     errorDescription = err.data.error.description.map((d : DescriptionItem) => `${d.reason} (${d.field})`).join('<br/>');
+            // } else {
+            //     errorDescription = err.data.error.description;
+            // }
+            //
+            // console.error('Error creating lecture:', err);
+
+
+// Create the custom toast
+//             toast.custom((t) => (
+//                 <div
+//                     className={`${
+//                         t.visible ? 'animate-enter' : 'animate-leave'
+//                     } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+//                 >
+//                     <div className="flex-1 w-0 p-4">
+//                         <div className="flex items-start">
+//                             <div className="ml-3 flex-1">
+//                                 <p className="text-based font-medium text-red-600 font-bold flex ">
+//                                     <MdError className="w-6 h-6" /> {errorMessage}
+//                                 </p>
+//                                 <p className="mt-1 text-sm text-gray-500"
+//                                    dangerouslySetInnerHTML={{__html: errorDescription}}>
+//                                 </p>
+//                             </div>
+//                         </div>
+//                     </div>
+//                     <div className="flex border-l border-gray-200">
+//                         <button
+//                             onClick={() => toast.dismiss(t.id)}
+//                             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+//                         >
+//                             Close
+//                         </button>
+//                     </div>
+//                 </div>
+//             ), {
+//                 style: {
+//                     marginBottom: '20px',
+//                 },
+//             });
+
+        //     toast.custom((t) => (
+        //         <div
+        //             className={`${
+        //                 t.visible ? 'animate-enter' : 'animate-leave'
+        //             } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        //         >
+        //             <div className="flex-1 w-0 p-4">
+        //                 <div className="flex items-start">
+        //                     <div className="ml-3 flex-1">
+        //                         <div className="flex items-center">
+        //                             <MdError className="w-6 h-6 mr-2" />
+        //                             <p className="text-base text-red-600 font-bold ">
+        //                                 {errorMessage}
+        //                             </p>
+        //                         </div>
+        //
+        //                         <p className="mt-1 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: errorDescription }}></p>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     ), {
+        //         duration: 5000, // Set duration in milliseconds (e.g., 5000ms = 5 seconds)
+        //         style: {
+        //             marginBottom: '20px',
+        //         },
+        //     });
+        // }
+
+    };}
 
     // ========== class ===========
     const [selectedClassUUID, setSelectedClassUUID] = useState('');
 
-    const { data: classesData, error: classesError } = useGetClassesQuery({ page: 0, pageSize: 10 });
+    const {data: classesData, error: classesError} = useGetClassesQuery({page: 0, pageSize: 10});
 
     useEffect(() => {
         if (classesData) {

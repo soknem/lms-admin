@@ -31,8 +31,10 @@ export default function Generation() {
 
     // console.log("generation from page: " , generations)
 
-    console.log("generation from page: ", generations)
+    // console.log("generation from page: ", generations)
+
     const genData: GenerationType[] = generations;
+
     return (
         <main className='flex flex-col gap-4 h-full w-full p-9'>
             <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>

@@ -10,6 +10,8 @@ import Error from "@/app/error";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 
+import { toast, Toaster, ToastBar } from 'react-hot-toast';
+
 interface RootLayoutProps {
     children: ReactNode;
 }
@@ -41,6 +43,30 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
                 </section>
             </ErrorBoundary>
         </StoreProvider>
+        {/*<Toaster>*/}
+        {/*    {(t) => (*/}
+        {/*        <ToastBar toast={t}>*/}
+        {/*            {({ icon, message }) => (*/}
+        {/*                <>*/}
+        {/*                    {icon}*/}
+        {/*                    {message}*/}
+        {/*                    {t.type !== 'loading' && (*/}
+        {/*                        <button onClick={() => toast.dismiss(t.id)}>X</button>*/}
+        {/*                    )}*/}
+        {/*                </>*/}
+        {/*            )}*/}
+        {/*        </ToastBar>*/}
+        {/*    )}*/}
+        {/*</Toaster>*/}
+        <Toaster
+            position="top-center"
+            toastOptions={{
+                duration: 5000, // Set the default duration to 5 seconds
+                style: {
+                    marginBottom: '20px',
+                },
+            }}
+        />
         </body>
         </html>
     );
