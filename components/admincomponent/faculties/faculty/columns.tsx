@@ -91,7 +91,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
             {value === true
                 ? "Public"
                 : value === false
-                    ? "Disable"
+                    ? "Draft"
                     : ""}
         </span>
         );
@@ -197,7 +197,7 @@ export const facultyColumns: ColumnDef<FacultyType>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    STATUS
+                    VISIBILITY
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );

@@ -163,7 +163,6 @@ export default function Page() {
                     </TabsContent>
                 </Tabs>
 
-                <CourseFilterComponent/>
             </section>
         </section>
     );

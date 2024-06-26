@@ -4,9 +4,12 @@ export type MaterialType = {
     course: string;
     description: string;
     type: string;
-    status: number;
-    subject: string;
     file: string;
+    "fileName": string,
+    "fileUrl": string,
+    "subjectAlias": null,
+    "isDeleted": false,
+    "isDraft": false
 };
 
 // // **** Slide *****

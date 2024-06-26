@@ -106,18 +106,18 @@ export function FacultyTable<TData, TValue>({
 
     console.log("data from page: ", data);
 
-    const filterOptions = ["All", "Public", "Disable", "Draft"];
+    const filterOptions = ["All", "Public", "Draft"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
         const filterValue =
             value === "All"
                 ? ""
                 : value === "Public"
-                    ? "true"
-                    : value === "Disable"
-                        ? "false"
-                        : "draft";
-        table.getColumn("status")?.setFilterValue(filterValue);
+                    ? true
+                    : value === "Draft"
+                        ? false
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
     };
 
     return (
