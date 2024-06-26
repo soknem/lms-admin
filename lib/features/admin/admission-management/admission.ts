@@ -6,8 +6,16 @@ export const admissionApi = istadLmsApi.injectEndpoints({
             query: ({page = 0, pageSize = 10}) =>
                 `/admissions?pageNumber=${page}&pageSize=${pageSize}`,
         }),
+        createAdmission: builder.mutation({
+            query: (newAdmission) => ({
+                url: '/admissions',
+                method: 'POST',
+                body: newAdmission,
+            }),
+        }),
     })
 })
 export const {
     useGetAdmissionsQuery,
+    useCreateAdmissionMutation,
 } = admissionApi;

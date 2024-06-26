@@ -11,20 +11,21 @@ import {selectToken} from "@/lib/features/auth/authSlice";
 import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {
-    selectError,
-    selectFaculty,
-    selectLoading, setError,
-    setFaculties
-} from "@/lib/features/admin/faculties/faculty/facultySlice";
+
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {selectStudyProgram, setStudyPrograms} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
-import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
+import {selectSubject, setError, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
 import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
 import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
+import {
+    selectError,
+    selectFaculty,
+    selectLoading,
+    setFaculties
+} from "@/lib/features/admin/faculties/faculty/facultySlice";
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();

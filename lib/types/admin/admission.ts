@@ -6,6 +6,7 @@ export type AdmissionType = {
     telegramLink: string;
     remark: string;
     status: number;
+    isDeleted: boolean;
 };
 
 // ****Student Admissions *****
