@@ -1,14 +1,11 @@
 "use client";
 import {Button} from "@/components/ui/button";
-import {CardCourseComponent} from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
 import {FaBook} from "react-icons/fa6";
 import {Popover, PopoverTrigger} from "@/components/ui/popover";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
-import { CardCourseComponent1 } from "@/components/studentcomponent/courses/card/CardCourseComponent1";
-import { CardCourseComponent2 } from "@/components/studentcomponent/courses/card/CardCourseComponent2";
 
 export default function Course() {
     return (
@@ -98,10 +95,6 @@ export default function Course() {
 
                 {/*course */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4 w-full">
-                    <CardCourseComponent/>
-                    <CardCourseComponent1/>
-                    <CardCourseComponent2/>
-                    <CardCourseComponent/>
                 </div>
             </section>
 
