@@ -6,8 +6,8 @@ import { FaSearch } from "react-icons/fa";
 import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
-import { useGetStudentCourseQuery } from "@/lib/features/student/course/studentCourse";
-import { selectLoading, setLoading, selectError, setError, setCourses } from "@/lib/features/student/course/studentCourseSlice";
+import { useGetInstructorCourseQuery } from "@/lib/features/instructor/course/instructorCourse";
+import { selectLoading, setLoading, selectError, setError, setCourses } from "@/lib/features/instructor/course/instructorcourseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { StudentCourseType, CourseType } from "@/lib/types/student/course/course";
@@ -18,7 +18,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 
 export default function Course() {
     const dispatch = useDispatch<AppDispatch>();
-    const { data = {}, error, isLoading } = useGetStudentCourseQuery();
+    const { data = {}, error, isLoading } = useGetInstructorCourseQuery();
     const loading = useSelector(selectLoading);
     const fetchError = useSelector(selectError);
     const [allData, setData] = useState<StudentCourseType | null>(null);
