@@ -26,6 +26,20 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
+import {
+    useDisableLectureMutation,
+    useEnableLectureMutation, useGetLectureQuery
+} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {useSelector} from "react-redux";
+import {selectLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import {TbEye, TbEyeCancel, TbPencil , TbCopy } from "react-icons/tb";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import UpdateLectureForm from "@/components/admincomponent/academics/lectures/form/UpdateLectureForm";
+import {
+    useDisableGenerationMutation,
+    useEnableGenerationMutation, useGetGenerationQuery
+} from "@/lib/features/admin/academic-management/generation/generation";
+import {selectGeneration} from "@/lib/features/admin/academic-management/generation/generationSlice";
 
 
 
@@ -127,11 +141,11 @@ const TableCell = ({ getValue, row, column, table }: any) => {
                 <RadioGroup defaultValue="comfortable" className="flex">
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem  value="false" id="active" />
-                        <Label htmlFor="public">Active</Label>
+                        <Label htmlFor="active">Active</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="true" id="disable" />
-                        <Label htmlFor="draft">Disable</Label>
+                        <Label htmlFor="disable">Disable</Label>
                     </div>
                 </RadioGroup>
             );
@@ -140,7 +154,37 @@ const TableCell = ({ getValue, row, column, table }: any) => {
             if (DisplayValue === 'false') {
                 return <StatusBadge type="success" status="Active" />
             } else {
-                return <StatusBadge type="default" status="Disable" />
+                return <StatusBadge type="error" status="Disable" />
+            }
+
+
+        }
+    }
+
+    // Custom rendering for specific columns
+    if (accessorKey === 'isActive') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem  value="false" id="started" />
+                        <Label htmlFor="started">Started</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="ended" />
+                        <Label htmlFor="ended">Ended</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="error" status="Ended" />
+            } else {
+                return <StatusBadge type="success" status="Started" />
             }
 
 
@@ -225,6 +269,87 @@ const EditCell = ({ row, table }: any) => {
     );
 };
 
+const ActionCell = ({ row } : any) => {
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
+
+    // const [enableLecture, { isLoading, isError, isSuccess }] = useEnableLectureMutation();
+    // const [disableLecture] = useDisableLectureMutation();
+
+    const [enableGeneration, setEnableGeneration] = useEnableGenerationMutation() ;
+    const [disableGeneration, setDisableGeneration] = useDisableGenerationMutation();
+
+    const generations = useSelector(selectGeneration);
+
+    console.log("Generation from column: ",generations)
+
+    const { refetch: refetchGeneration } = useGetGenerationQuery({ page: 0, pageSize: 10 });
+
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
+    };
+
+    const handleConfirm = async   (genAlias : string) => {
+        if(isDeleted){
+            await enableGeneration(genAlias).unwrap();
+            setIsDeleted((prev :any) => !prev);
+            console.log('Generation enabled successfully');
+            refetchGeneration();
+        }else{
+            await disableGeneration(genAlias).unwrap();
+            setIsDeleted((prev : any) => !prev);
+            console.log('Generation disable successfully');
+            refetchGeneration();
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
+    };
+
+
+    return (
+        <div>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' className='h-8 w-8 p-0'>
+                        <span className='sr-only'>Open menu</span>
+                        <MoreHorizontal className='h-4 w-4' />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end' className="bg-white">
+                    <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.alias)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium ">
+                        <TbCopy  size={20} className="text-gray-30 mr-2  "  /> Copy Alias
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className={` text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2 " /> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2 " /> Disable
+                            </>
+                        )}
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                    onConfirm={() => handleConfirm(row.original.alias)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
+            )}
+        </div>
+    );
+};
+
 export const columns: ColumnDef<GenerationType>[] = [
     {
         accessorKey: 'name',
@@ -273,6 +398,23 @@ export const columns: ColumnDef<GenerationType>[] = [
 
     },
     {
+        accessorKey: 'isActive',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    STATUS
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell,
+
+
+    },
+    {
         accessorKey: 'isDraft',
         header: ({ column }) => {
             return (
@@ -297,7 +439,7 @@ export const columns: ColumnDef<GenerationType>[] = [
                     variant='ghost'
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    STATUS
+                    STATE
                     <ArrowUpDown className='ml-2 h-4 w-4' />
                 </Button>
             )
@@ -308,37 +450,37 @@ export const columns: ColumnDef<GenerationType>[] = [
     },
     {
         id: "edit",
-        cell: EditCell,
+        cell: ActionCell,
     },
-    {
-        id: 'actions',
-        cell: ({ row }) => {
-            const gen = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end' className="bg-white">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            className="focus:bg-background"
-                            onClick={() => navigator.clipboard.writeText(gen.alias)}
-                        >
-                            Copy ID
-                        </DropdownMenuItem>
-                       {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                        {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">Disable</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
-    },
+    // {
+    //     id: 'actions',
+    //     cell: ({ row }) => {
+    //         const gen = row.original
+    //
+    //         return (
+    //             <DropdownMenu>
+    //                 <DropdownMenuTrigger asChild>
+    //                     <Button variant='ghost' className='h-8 w-8 p-0'>
+    //                         <span className='sr-only'>Open menu</span>
+    //                         <MoreHorizontal className='h-4 w-4' />
+    //                     </Button>
+    //                 </DropdownMenuTrigger>
+    //                 <DropdownMenuContent align='end' className="bg-white">
+    //                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    //                     <DropdownMenuItem
+    //                         className="focus:bg-background"
+    //                         onClick={() => navigator.clipboard.writeText(gen.alias)}
+    //                     >
+    //                         Copy ID
+    //                     </DropdownMenuItem>
+    //                    {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
+    //                     {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
+    //                     <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">Disable</DropdownMenuItem>
+    //                 </DropdownMenuContent>
+    //             </DropdownMenu>
+    //         )
+    //     }
+    // },
 
 ]
 

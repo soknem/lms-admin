@@ -25,6 +25,13 @@ export const lectureApi = istadLmsApi.injectEndpoints({
                 method: 'PUT',
             }),
         }),
+        updateLecture: builder.mutation<any, { uuid: string, updatedData: any }>({
+            query: ({ uuid, updatedData }) => ({
+                url: `/lectures/${uuid}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+        }),
 
     })
 })
@@ -33,6 +40,7 @@ export const {
     useGetLectureQuery,
     useAddLectureMutation,
     useEnableLectureMutation,
-    useDisableLectureMutation
+    useDisableLectureMutation,
+    useUpdateLectureMutation
 
 } = lectureApi;

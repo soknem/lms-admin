@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
-import { OptionType, ClassType } from "@/lib/types/admin/academics";
+import { OptionType, ClassTableFormType } from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -76,83 +76,54 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     }
   }
 
-  if (tableMeta?.editedRows[row.id]) {
-    return columnMeta?.type === "select" ? (
-      //custom on only normal dropdown
-      <select
-        className="border-1 border-gray-30 rounded-md focus:to-primary"
-        onChange={onSelectChange}
-        value={initialValue}
-      >
-        {columnMeta?.options?.map((option: OptionType) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    ) : (
-      //custom on normal input text
-      <input
-        className="w-full p-2 border-1 border-gray-30 rounded-md"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        type={columnMeta?.type || "text"}
-      />
-    );
+  if (accessorKey === 'isDeleted') {
+    const DisplayValue = value.toString();
+
+    if (tableMeta?.editedRows[row.id]) {
+      return (
+          //custom year selector only
+          <RadioGroup defaultValue="comfortable" className="flex">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem  value="false" id="active" />
+              <Label htmlFor="public">Active</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="true" id="disable" />
+              <Label htmlFor="draft">Disable</Label>
+            </div>
+          </RadioGroup>
+      );
+    } else {
+
+      if (DisplayValue === 'false') {
+        return <StatusBadge type="success" status="Active" />
+      } else {
+        return <StatusBadge type="error" status="Disable" />
+      }
+
+
+    }
   }
+
+  if (accessorKey === 'status') {
+
+    switch (value) {
+      case 1:
+        return <StatusBadge type="success" status="Started" />
+      case 2:
+        return <StatusBadge type="warning" status="Pending" />
+      case 3:
+        return <StatusBadge type="error" status="Ended" />
+    }
+  }
+
   return <span>{value}</span>;
 };
 
-// Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
-  const meta = table.options.meta;
 
-  const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-    const action = e.currentTarget.name;
-
-    meta?.setEditedRows((old: any) => ({
-      ...old,
-      [row.id]: action === "edit" ? true : false,
-    }));
-
-    if (action === "cancel") {
-      meta?.revertData(row.index, true);
-    }
-  };
-
-  return (
-    <div>
-      {meta?.editedRows[row.id] ? (
-        <div className="flex ">
-          <button
-            className="mr-2 bg-red-100 rounded-full p-1"
-            onClick={setEditedRows}
-            name="cancel"
-          >
-            <RxCross2 size={20} className="text-red-500" />
-          </button>
-
-          <button
-            onClick={setEditedRows}
-            name="done"
-            className="bg-green-100 rounded-full p-1"
-          >
-            <IoCheckmarkSharp size={20} className="text-green-500" />
-          </button>
-        </div>
-      ) : (
-        <button onClick={setEditedRows} name="edit">
-          <TbPencil size={18} className="text-gray-30" />
-        </button>
-      )}
-    </div>
-  );
-};
-
-export const columns: ColumnDef<ClassType>[] = [
+export const columns: ColumnDef<ClassTableFormType>[] = [
   {
-    accessorKey: "className",
+    accessorKey: "classCode",
     header: ({ column }) => {
       return (
         <Button
@@ -161,7 +132,7 @@ export const columns: ColumnDef<ClassType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          CLASS
+          CLASS CODE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -169,7 +140,7 @@ export const columns: ColumnDef<ClassType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "shiftAlias",
+    accessorKey: "shift",
     header: ({ column }) => {
       return (
         <Button
@@ -185,7 +156,7 @@ export const columns: ColumnDef<ClassType>[] = [
   },
 
   {
-    accessorKey: "generationAlias",
+    accessorKey: "generation",
     header: ({ column }) => {
       return (
         <Button
@@ -201,7 +172,7 @@ export const columns: ColumnDef<ClassType>[] = [
   },
 
   {
-    accessorKey: "studyProgramAlias",
+    accessorKey: "studyProgram",
     header: ({ column }) => {
       return (
         <Button
@@ -217,6 +188,22 @@ export const columns: ColumnDef<ClassType>[] = [
   },
 
   {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            STATUS
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+
+  {
     accessorKey: "isDraft",
     header: ({ column }) => {
       return (
@@ -224,14 +211,28 @@ export const columns: ColumnDef<ClassType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          STATUS
+          VISIBILITY
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: TableCell,
   },
-
+  {
+    accessorKey: "isDeleted",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            STATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
   {
     id: "actions",
     cell: ({ row }) => {
