@@ -4,14 +4,14 @@ import {CardLogin} from "@/components/card/cartAuth/CardLogin";
 
 export default function page() {
     return (
-        <main className=' w-full h-full '>
+        <main className='w-full h-screen relative flex items-center justify-center'>
             <section
-                className="relative flex flex-grow min-h-[calc(100vh)] bg-cover bg-center"
-                style={{backgroundImage: "url('/form.jpg')"}}
+                className="h-full w-full bg-cover bg-center"
+                style={{backgroundImage: "url('/form.jpg')", filter: "blur(5px)"}}
             >
-                <section className=' grid content-center h-screen w-full justify-center items-center '>
-                    <CardReset/>
-                </section>
+            </section>
+            <section className="absolute">
+                <CardReset/>
             </section>
         </main>
     )

@@ -1,17 +1,17 @@
-import {CardLogin} from '@/components/card/cartAuth/CardLogin'
-import React from 'react'
+import { CardLogin } from '@/components/card/cartAuth/CardLogin';
+import React from 'react';
 
 export default function page() {
     return (
-        <main className=' w-full h-full '>
+        <main className='w-full h-screen relative flex items-center justify-center'>
             <section
-                className="relative flex flex-grow min-h-[calc(100vh)] backdrop-blur-sm bg-cover bg-center"
-                style={{backgroundImage: "url('/form1.jpg')"}}
+                className="h-full w-full bg-cover bg-center"
+                style={{ backgroundImage: "url('/form.jpg')", filter: "blur(5px)" }}
             >
-                <section className=' grid content-center h-screen w-full justify-center items-center '>
-                    <CardLogin/>
-                </section>
+            </section>
+            <section className="absolute">
+                <CardLogin />
             </section>
         </main>
-    )
+    );
 }

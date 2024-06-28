@@ -10,8 +10,6 @@ import { Formik, Form, Field, FormikErrors, FormikTouched } from "formik";
 import * as Yup from "yup";
 import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail';
 import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
-import { FaUserGraduate } from "react-icons/fa";
-import LoadingComponent from "@/app/(auth)/loading";
 
 
 interface InitialValues {
@@ -34,7 +32,7 @@ const getFieldClassName = (
     touched: FormikTouched<InitialValues>,
     fieldName: keyof InitialValues
 ) => {
-    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-gray-300 block w-full p-2.5";
+    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-gray-300 border-gray-300 block w-full p-2.5";
     const errorClass = "border-red-500 dark:border-red-500";
     const validClass = "border-gray-300 dark:border-gray-300";
 
@@ -121,7 +119,7 @@ export function CardLogin() {
 
 
     return (
-        <Card className="w-[500px] bg-white dark:bg-white p-[16px] border border-gray-300 dark:border-white  ">
+        <Card className="w-[450px] bg-white/70 backdrop-blur-md dark:bg-white p-[16px] border border-gray-300 dark:border-white  ">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -138,7 +136,7 @@ export function CardLogin() {
                             <CardTitle className="  text-[40px] text-center font-bold text-[#253C95] tracking-[0.5px] leading-[54px] dark:text-[#253C95]">
                                 Welcome
                             </CardTitle>
-                            <CardDescription className="text-[20px] text-[#808897] tracking-[0.5px] dark:text-[#808897]">
+                            <CardDescription className="text-[20px] text-gray-600 tracking-[0.5px] ">
                                 Login to access your account
                             </CardDescription>
                         </CardHeader>
@@ -146,7 +144,7 @@ export function CardLogin() {
                             <Form>
                                 <section className="grid w-full items-center gap-4 mt-[20px]">
                                     <section className="space-y-2">
-                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] dark:text-gray-600" htmlFor="email">
+                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] text-gray-800" htmlFor="email">
                                             Email
                                             <span className={`text-red-500`}> *</span>
                                         </label>
@@ -166,7 +164,7 @@ export function CardLogin() {
                                         <CustomErrorMessageEmail errors={errors} touched={touched} fieldName="emailOrUsername" />
                                     </section>
                                     <section className="space-y-2">
-                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] dark:text-gray-600" htmlFor="password">
+                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] text-gray-800" htmlFor="password">
                                             Password
                                             <span className={`text-red-500`}> *</span>
                                         </label>

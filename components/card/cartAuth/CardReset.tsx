@@ -92,7 +92,7 @@ export function CardReset() {
 
     // Render the component
     return (
-        <Card className="w-[500px] bg-white dark:bg-white p-[16px] border border-gray-300 dark:border-white">
+        <Card className="w-[450px] bg-white/70 backdrop-blur-md dark:bg-white p-[16px] border border-gray-300 dark:border-white">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -102,23 +102,24 @@ export function CardReset() {
             >
                 {({errors, touched}) => (
                     <section>
-                        <CardHeader className="items-center dark:border-black mt[20px] ">
+                        <CardHeader className="items-center dark:border-white ">
                             <section className="mb-5">
                                 <Image src="/logo.png" alt="logo" width={130} height={130}/>
                             </section>
                             <CardTitle className="text-[36px] tracking-[0.5px] leading-[54px] font-bold text-[#253C95] dark:text-[#253C95]">
-                                Reset your password
+                                Change password
                             </CardTitle>
-                            <CardDescription className="text-[20px] tracking-[0.5px] leading-[30px] text-[#808897] dark:text-[#808897]">
+                            <CardDescription className="text-[20px] tracking-[0.5px] leading-[30px] text-gray-600 ">
                                 Enter new password for your account
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Form>
-                                <section className="grid w-full items-center gap-4">
+                                <section className="grid w-full items-center gap-4 mt-[20px]">
                                     <section className="space-y-2">
-                                        <label className="text-[15px] text-gray-500 " htmlFor="password">
+                                        <label className="text-[16px] text-gray-800 " htmlFor="password">
                                             New Password
+                                            <span className={`text-red-500`}> *</span>
                                         </label>
                                         <div className="relative">
                                             <Field
@@ -139,8 +140,9 @@ export function CardReset() {
                                         <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password"/>
                                     </section>
                                     <section className="space-y-2">
-                                        <label className="text-[15px] text-gray-500" htmlFor="confirmPassword">
+                                        <label className="text-[16px] text-gray-800" htmlFor="confirmPassword">
                                             Confirm New Password
+                                            <span className={`text-red-500`}> *</span>
                                         </label>
                                         <div className="relative">
                                             <Field
