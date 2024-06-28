@@ -200,6 +200,7 @@ export type courseAssessmentType = {
     isDeleted: boolean;
 };
 
+
 export type courseAssessmentTableType = {
     uuid: string;
     cardId: string;

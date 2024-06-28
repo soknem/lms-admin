@@ -1,16 +1,13 @@
 "use client";
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../../style.module.css";
-import {FiPlus} from "react-icons/fi";
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {FacultyType} from "@/lib/types/admin/faculty";
@@ -66,38 +63,38 @@ export function EditFacForm() {
     };
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
-        const [createSingleFile] = useCreateSingleFileMutation();
-
-        try {
-            // Upload the logo file
-            const fileData = new FormData();
-            fileData.append("file", values.logo);
-
-            const fileResponse = await createSingleFile(fileData).unwrap();
-            console.log(fileResponse)
-
-            if (fileResponse) {
-                // File uploaded successfully, now create the faculty
-                const newFaculty: FacultyType = {
-                    alias: values.alias,
-                    name: values.name,
-                    description: values.description,
-                    address: values.address,
-                    logo: fileResponse.name, // Assuming the response contains the URL of the uploaded file
-                    isDeleted: values.isDeleted,
-                    isDraft: values.isDraft,
-                };
-
-                // const res = await createFaculty(newFaculty).unwrap();
-                resetForm();
-                // Handle success (e.g., show a success message or close the dialog)
-            }
-        } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating faculty: ", error);
-        } finally {
-            setSubmitting(false);
-        }
+        // const [createSingleFile] = useCreateSingleFileMutation();
+        //
+        // try {
+        //     // Upload the logo file
+        //     const fileData = new FormData();
+        //     fileData.append("file", values.logo);
+        //
+        //     const fileResponse = await createSingleFile(fileData).unwrap();
+        //     console.log(fileResponse)
+        //
+        //     if (fileResponse) {
+        //         // File uploaded successfully, now create the faculty
+        //         const newFaculty: FacultyType = {
+        //             alias: values.alias,
+        //             name: values.name,
+        //             description: values.description,
+        //             address: values.address,
+        //             logo: fileResponse.name, // Assuming the response contains the URL of the uploaded file
+        //             isDeleted: values.isDeleted,
+        //             isDraft: values.isDraft,
+        //         };
+        //
+        //         // const res = await createFaculty(newFaculty).unwrap();
+        //         resetForm();
+        //         // Handle success (e.g., show a success message or close the dialog)
+        //     }
+        // } catch (error) {
+        //     // Handle error (e.g., show an error message)
+        //     console.error("Error creating faculty: ", error);
+        // } finally {
+        //     setSubmitting(false);
+        // }
     };
 
     return (
