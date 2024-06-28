@@ -13,17 +13,25 @@ export const degreeApi = istadLmsApi.injectEndpoints({
                 body: newDegree,
             }),
         }),
-        editDegree: builder.mutation({
-            query: ({alias, editDegree}) => ({
+        getDegreeByAlias: builder.query({
+            query: (alias) => ({
                 url: `/degrees/${alias}`,
-                method: 'PATCH',
-                body: editDegree,
+                method: 'GET',
             }),
         }),
+        editDegreeByAlias: builder.mutation({
+            query: ({alias, updatedData}) => ({
+                url: `/degrees/${alias}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+        }),
+
     })
 })
 export const {
     useGetDegreesQuery,
     useCreateDegreeMutation,
-    useEditDegreeMutation
+    useGetDegreeByAliasQuery,
+    useEditDegreeByAliasMutation
 } = degreeApi;

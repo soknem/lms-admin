@@ -6,8 +6,16 @@ export const studyProgramApi = istadLmsApi.injectEndpoints({
             query: ({page = 0, pageSize = 10}) =>
                 `/study-programs?pageNumber=${page}&page_size=${pageSize}`,
         }),
+        createStuProgram: builder.mutation({
+            query: (newStuProgram) => ({
+                url: '/study-programs',
+                method: 'POST',
+                body: newStuProgram,
+            }),
+        }),
     })
 })
 export const {
     useGetStudyProgramsQuery,
+    useCreateStuProgramMutation,
 } = studyProgramApi;

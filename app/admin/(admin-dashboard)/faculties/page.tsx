@@ -30,8 +30,6 @@ import CourseFilterComponent from "@/components/card/filter/FIlterCourseCardComp
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();
-    // const token = useAppSelector(selectToken);
-    // console.log("token from admin: ", token)
 
     // Faculty data
     const {

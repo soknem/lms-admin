@@ -17,56 +17,22 @@ import {FacultyType, SubjectType} from "@/lib/types/admin/faculty";
 import React, {useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
+import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
+import {useCreateSubjectMutation, useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
 
 const initialValues = {
     title: "",
     logo: "",
-    hour: 0,
+    duration: 0,
     theory: 0,
     practice: 0,
     internship: 0,
     description: "",
-    status: "",
+    isDraft: false,
 };
 
-const FILE_SIZE = 1024 * 1024 * 2; // 2MB
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
-const validationSchema = Yup.object().shape({
-    subject: Yup.string().required("Required"),
-    hour: Yup.number(),
-    theory: Yup.number(),
-    practice: Yup.number(),
-    hinternshipour: Yup.number(),
-    description: Yup.string(),
-    logo: Yup.mixed()
-        .test("fileFormat", "Unsupported Format", (value: any) => {
-            if (!value) {
-                return true;
-            }
-            return SUPPORTED_FORMATS.includes(value.type);
-        })
-        .test("fileSize", "File Size is too large", (value: any) => {
-            if (!value) {
-                true;
-            }
-            return value.size <= FILE_SIZE;
-        })
-        .required("Required"),
-    status: Yup.string().required("A selection is required"),
-});
-
-const handleSubmit = async (value: SubjectType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/facultys`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("faculty upload: ", data)
-};
+const validationSchema = Yup.object().shape({});
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -101,7 +67,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
             <input
                 type="file"
                 onChange={handleUploadFile}
-                className="hidden "
+                className="hidden"
                 id="file"
             />
             <label
@@ -109,7 +75,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
                 className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
             >
                 {!imagePreview ? (
-                    <div className="flex  items-center justify-center gap-8">
+                    <div className="flex items-center justify-center gap-8">
                         <FiUploadCloud className="text-lms-primary text-[34px]"/>
                         <div className="flex flex-col items-start justify-start gap-1">
                             <p className="text-center text-md text-black">
@@ -121,38 +87,71 @@ const CustomInput = ({field, setFieldValue}: any) => {
                         </div>
                     </div>
                 ) : (
-                    <Image
-                        src={imagePreview}
-                        alt="preview"
-                        layout="fill"
-                        objectFit="cover"
-                    />
+                    <div style={{position: 'relative', width: '100%', height: '100%'}}>
+                        <Image
+                            src={imagePreview}
+                            alt="preview"
+                            fill
+                            style={{objectFit: 'contain'}}
+                        />
+                    </div>
                 )}
             </label>
         </div>
     );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function CreateSubjectForm() {
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [createSubject] = useCreateSubjectMutation();
+    const {refetch: refetchSubjects} = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            // Upload the logo file
+            const fileData = new FormData();
+            fileData.append("file", values.logo);
+
+            const fileResponse = await createSingleFile(fileData).unwrap();
+            console.log(fileResponse)
+
+            if (fileResponse) {
+                // File uploaded successfully, now create the faculty
+                const newSubject: SubjectType = {
+                    alias: values.alias,
+                    title: values.title,
+                    duration: values.duration,
+                    theory: values.theory,
+                    practice: values.practice,
+                    internship: values.internship,
+                    description: values.description,
+                    logo: fileResponse.name,
+                    isDraft: values.isDraft,
+                };
+
+                const res = await createSubject(newSubject).unwrap();
+                resetForm();
+                // Handle success (e.g., show a success message or close the dialog)
+                refetchSubjects();
+                setIsOpen(false);
+                // console.log("Update successfully")
+
+            }
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error creating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
-        <Dialog>
+        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
 
             <DialogTrigger asChild>
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary">
+                <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
                     <FiPlus className="mr-2 h-4 w-4"/> Add Subject
                 </Button>
             </DialogTrigger>
@@ -166,30 +165,38 @@ export function CreateSubjectForm() {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create faculty post
-                        const SubjectPost: SubjectType = {
-                            title: values.title,
-                            logo: values.logo,
-                            hour: values.hour,
-                            theory: values.theory,
-                            practice: values.practice,
-                            internship: values.internship,
-                            description: values.description,
-                            status: values.status,
-                        };
-
-                        // post product
-                        handleSubmit(SubjectPost);
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col items-center gap-4">
+                            <div className="flex flex-col items-center gap-1">
+
+                                {/* Subject Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Alias
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        placeholder="Faculty of Engineering"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
 
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="subject">
+                                        <label className={`${style.label}`} htmlFor="title">
                                             Subject
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -198,12 +205,12 @@ export function CreateSubjectForm() {
                                     <Field
                                         type="text"
                                         placeholder="Introduction to IT"
-                                        name="subject"
-                                        id="subject"
+                                        name="title"
+                                        id="title"
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
-                                        name="subject"
+                                        name="title"
                                         component="div"
                                         className={`${style.error}`}
                                     />
@@ -213,13 +220,13 @@ export function CreateSubjectForm() {
                                     className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}>
                                     <div className="w-[80px] ">
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="hour">
+                                            <label className={`${style.label}`} htmlFor="duration">
                                                 Hour
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="hour" className={` ${style.input}`}/>
+                                        <Field name="duration" className={` ${style.input}`}/>
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -278,7 +285,7 @@ export function CreateSubjectForm() {
                                 {/* status */}
                                 <div className={`${style.inputContainer}  `}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="status">
+                                        <label className={`${style.label}`} htmlFor="isDraft">
                                             Visibility
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -286,33 +293,27 @@ export function CreateSubjectForm() {
 
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="1"
+                                            value="true"
                                             label="Public"
                                         />
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="2"
+                                            value="false"
                                             label="Draft"
-                                        />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="3"
-                                            label="Disable"
                                         />
                                     </div>
 
                                     <ErrorMessage
-                                        name="status"
+                                        name="isDraft"
                                         component={RadioButton}
                                         className={`${style.error}`}
                                     />
                                 </div>
 
-                                {/* Subjeect Image*/}
+                                {/* Subject Image*/}
                                 <div className={`${style.inputContainer}  `}>
                                     <label
                                         htmlFor="logo"
@@ -326,7 +327,6 @@ export function CreateSubjectForm() {
                                         id="logo"
                                         component={CustomInput}
                                         setFieldValue={setFieldValue}
-                                        className="mt-1"
                                     />
                                     <ErrorMessage
                                         name="logo"

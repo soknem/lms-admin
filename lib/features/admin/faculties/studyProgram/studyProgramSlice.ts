@@ -23,14 +23,6 @@ const studyProgramSlice = createSlice({
             state.isLoading = false;
             state.error = null;
         },
-        setLoading: (state) => {
-            state.isLoading = true;
-            state.error = null;
-        },
-        setError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
         addStudyProgram: (state, action: PayloadAction<StudyProgramType>) => {
             state.studyPrograms.push(action.payload);
             state.isLoading = false;
@@ -39,7 +31,7 @@ const studyProgramSlice = createSlice({
     }
 })
 
-export const {addStudyProgram, setStudyPrograms, setLoading, setError} = studyProgramSlice.actions;
+export const {addStudyProgram, setStudyPrograms} = studyProgramSlice.actions;
 export const selectStudyProgram = (state: RootState) => state.studyProgram.studyPrograms;
 export const selectLoading = (state: RootState) => state.studyProgram.isLoading;
 export const selectError = (state: RootState) => state.studyProgram.error;

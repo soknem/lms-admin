@@ -13,9 +13,24 @@ export const facultyApi = istadLmsApi.injectEndpoints({
                 body: newFaculty,
             }),
         }),
+        editFacultyByAlias: builder.mutation({
+            query: ({alias, updatedData}) => ({
+                url: `/faculties/${alias}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+        }),
+        getFacultyByAlias: builder.query({
+            query: (alias) => ({
+                url: `/faculties/${alias}`,
+                method: 'GET',
+            }),
+        }),
     })
 })
 export const {
     useGetFacultiesQuery,
-    useCreateFacultyMutation
+    useCreateFacultyMutation,
+    useEditFacultyByAliasMutation,
+    useGetFacultyByAliasQuery
 } = facultyApi;

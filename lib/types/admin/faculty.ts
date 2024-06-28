@@ -51,14 +51,15 @@ export type SetupStudyProgramType = {
 
 // **** Subjects *****
 export type SubjectType = {
+    alias: string,
     title: string;
     logo: string;
-    hour: number;
+    duration: number;
     theory: number;
     practice: number;
     internship: number;
     description: string;
-    status: string;
+    isDraft: boolean;
 };
 
 export type StatusOption = {

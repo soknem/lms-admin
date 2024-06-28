@@ -35,7 +35,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {useRouter} from "next/navigation";
-import {CreateStudyProForm} from "./CreateFacForm";
+import {CreateStudyProForm} from "./CreateStuProForm";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 import {FaSearch} from "react-icons/fa";
 

@@ -17,8 +17,13 @@ import {FacultyType} from "@/lib/types/admin/faculty";
 import React, {useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
-import {useCreateFacultyMutation} from "@/lib/features/admin/faculties/faculty/faculty";
+import {
+    useCreateFacultyMutation,
+    useGetFacultiesQuery,
+    useGetFacultyByAliasQuery
+} from "@/lib/features/admin/faculties/faculty/faculty";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
+// import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
 
 const initialValues = {
     alias: "",
@@ -30,13 +35,11 @@ const initialValues = {
     isDraft: true
 };
 
-
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required('Alias is required'),
     name: Yup.string().required('Title is required'),
     address: Yup.string().required('Address is required'),
     isDraft: Yup.boolean().required('Visibility is required'),
-
 });
 
 const RadioButton = ({field, value, label}: any) => {
@@ -109,6 +112,8 @@ const CustomInput = ({field, setFieldValue}: any) => {
 export function CreateFacForm() {
     const [createSingleFile] = useCreateSingleFileMutation();
     const [createFaculty] = useCreateFacultyMutation();
+    const {refetch: refetchFaculties} = useGetFacultiesQuery({page: 0, pageSize: 10});
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
@@ -134,6 +139,10 @@ export function CreateFacForm() {
                 const res = await createFaculty(newFaculty).unwrap();
                 resetForm();
                 // Handle success (e.g., show a success message or close the dialog)
+                refetchFaculties();
+                setIsOpen(false);
+                // console.log("Update successfully")
+
             }
         } catch (error) {
             // Handle error (e.g., show an error message)
@@ -144,9 +153,9 @@ export function CreateFacForm() {
     };
 
     return (
-        <Dialog>
+        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary">
+                <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
                     <FiPlus className="mr-2 h-4 w-4"/> Add Faculty
                 </Button>
             </DialogTrigger>
