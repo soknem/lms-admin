@@ -91,7 +91,7 @@ export default function Achievement() {
                         }</h3>
                         <div className="flex items-center gap-3">
                             <FaBook className="w-4 h-4 text-lms-primary"/>
-                            <p className="text-lg text-gray-800 font-semibold">{` ${totalCourses} course `} </p>
+                            <p className="text-lg text-gray-800 font-semibold">{` ${totalCourses} courses `} </p>
                         </div>
                     </div>
                 </section>
