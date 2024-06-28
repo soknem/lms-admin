@@ -69,7 +69,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
 }
 
-export function AttentdentData<TData, TValue>({
+export function AttendanceData<TData, TValue>({
                                                   columns,
                                                   data,
                                               }: DataTableProps<TData, TValue>) {

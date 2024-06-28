@@ -25,5 +25,16 @@ export type AttendanceTableType ={
      ea: string;
      total: number;
      status: string;
+    student: {
+        uuid: string;
+        nameEn: string;
+        nameKh: string;
+        username: string;
+        email: string;
+        phoneNumber: string;
+        dob: string;
+        gender: string;
+        profileImage: string;
+    };
 
 }

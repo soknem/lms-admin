@@ -138,7 +138,7 @@ const EditCell = ({ row, table }: any) => {
   );
 };
 
-export const attentdentColumns: ColumnDef<AttentType>[] = [
+export const attendantColumns: ColumnDef<AttentType>[] = [
   {
     accessorKey: "cardId",
     header: ({ column }) => {
