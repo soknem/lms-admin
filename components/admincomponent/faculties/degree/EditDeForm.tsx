@@ -10,42 +10,25 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {DegreeType} from "@/lib/types/admin/faculty";
-import {useState} from "react";
-import Image from "next/image";
+import React, {useEffect, useState} from "react";
 import {TbAsterisk} from "react-icons/tb";
 
-const initialValues = {
-    alias: "",
-    level: "",
-    description: "",
-    // create_by: "",
-    isDeleted: false,
-    isDraft: false
-};
+import {
+    useEditDegreeByAliasMutation,
+    useGetDegreeByAliasQuery,
+    useGetDegreesQuery
+} from "@/lib/features/admin/faculties/degree/degree";
 
 const validationSchema = Yup.object().shape({
-    id: Yup.number(),
-    level: Yup.string(),
+    alias: Yup.string().required('Alias is required'),
+    level: Yup.string().required('Level is required'),
     description: Yup.string(),
-    create_by: Yup.string(),
-    status: Yup.string(),
+    isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
+    isDraft: Yup.boolean().required('Please specify if the degree is a draft'),
 });
-
-const handleSubmit = async (value: DegreeType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
-};
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -53,102 +36,128 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
     );
 };
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
-
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
-    };
-    return (
-        <div>
-            <input onChange={(e) => handleUploadFile(e)} type="file"/>
-            {imagePreview && (
-                <Image src={imagePreview} alt="preview" width={200} height={200}/>
-            )}
-        </div>
-    );
-};
-
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
-
-export function EditDeForm() {
+export function EditDeForm({alias}: { alias: string }) {
     const [open, setOpen] = useState(true);
+    const [editDegree] = useEditDegreeByAliasMutation();
+    const [initialAlias, setInitialAlias] = useState("");
+    const {data: degreeData, isSuccess} = useGetDegreeByAliasQuery(alias);
+    const {refetch: refetchDegree} = useGetDegreesQuery({page: 0, pageSize: 10});
+    const [initialValues, setInitialValues] = useState({
+        alias: "",
+        level: "",
+        description: "",
+        isDeleted: false,
+        isDraft: false
+    });
+
+    useEffect(() => {
+        if (isSuccess && degreeData) {
+            setInitialValues({
+                alias: degreeData.alias,
+                level: degreeData.level,
+                description: degreeData.description,
+                isDeleted: degreeData.isDeleted,
+                isDraft: degreeData.isDraft
+            });
+            setInitialAlias(degreeData.alias);
+        }
+    }, [isSuccess, degreeData]);
 
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            const editDegreeByAlias: DegreeType = {
+                alias: values.alias,
+                level: values.level,
+                description: values.description,
+                isDeleted: values.isDeleted,
+                isDraft: values.isDraft,
+            };
+
+            await editDegree({alias: initialAlias, updatedData: editDegreeByAlias}).unwrap();
+
+            // Now update the alias if it has changed
+            if (values.alias !== initialAlias) {
+                await editDegree({
+                    alias: values.alias,
+                    updatedData: {...editDegreeByAlias, alias: values.alias}
+                }).unwrap();
+            }
+
+            resetForm();
+            refetchDegree();
+            handleClose();
+        } catch (error) {
+            console.error("Error updating degree: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-
-            <DialogContent className="w-[480px] bg-white ">
-
+            <DialogContent className="w-[480px] bg-white">
                 <DialogHeader>
-                    <DialogTitle>Edit degree</DialogTitle>
+                    <DialogTitle>Edit Degree</DialogTitle>
                 </DialogHeader>
 
                 <Formik
+                    enableReinitialize
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create degree post
-                        const degreePost: DegreeType = {
-                            alias: values.alias,
-                            level: values.level,
-                            description: values.description,
-                            // create_by: values.create_by,
-                            isDraft: values.isDraft,
-                            isDeleted: values.isDeleted,
-                        };
-
-                        // post product
-                        handleSubmit(degreePost);
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
-                        <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-4">
-                                {/* Degree Level*/}
-                                <div className={` ${style.inputContainer}`}>
+                        <Form className="py-4 rounded-lg w-full">
+                            <div className="flex flex-col gap-1">
+                                {/* Degree Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Alias
+                                        </label>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                    </div>
+                                    <Field
+                                        type="text"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* Degree Level */}
+                                <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="level">
                                             Level
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
                                     <Field
                                         type="text"
-                                        placeholder="Associated Degree"
                                         name="level"
                                         id="level"
-                                        className={` ${style.input}`}
+                                        className={`${style.input}`}
                                     />
                                     <ErrorMessage
                                         name="level"
@@ -157,7 +166,7 @@ export function EditDeForm() {
                                     />
                                 </div>
 
-                                {/* Degree Description*/}
+                                {/* Degree Description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">
                                         Description
@@ -165,7 +174,6 @@ export function EditDeForm() {
                                     <Field
                                         type="text"
                                         name="description"
-                                        placeholder="This is main degree of Engineering faculty"
                                         id="description"
                                         className={`${style.input}`}
                                     />
@@ -176,71 +184,72 @@ export function EditDeForm() {
                                     />
                                 </div>
 
+                                {/* Visibility */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="create_by">
-                                            Create By
+                                        <label className={`${style.label}`} htmlFor="isDraft">
+                                            Visibility
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
-                                    <Field
-                                        type="text"
-                                        placeholder="Chan Tola"
-                                        name="create_by"
-                                        id="create_by"
-                                        className={`${style.input}`}
-                                    />
+                                    <div className="flex gap-4 h-[40px] items-center">
+                                        <Field
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            value={true}
+                                            label="Public"
+                                        />
+                                        <Field
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            value={false}
+                                            label="Draft"
+                                        />
+                                    </div>
                                     <ErrorMessage
-                                        name="create_by"
+                                        name="isDraft"
                                         component="div"
                                         className={`${style.error}`}
                                     />
                                 </div>
 
-                                {/* status */}
-                                <div className={`${style.inputContainer}  `}>
+                                {/* Status */}
+                                <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="status">
-                                            Visibility
+                                        <label className={`${style.label}`} htmlFor="isDeleted">
+                                            Status
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDeleted"
                                             component={RadioButton}
-                                            value="1"
+                                            value={true}
                                             label="Public"
                                         />
                                         <Field
-                                            name="status"
+                                            name="isDeleted"
                                             component={RadioButton}
-                                            value="2"
+                                            value={false}
                                             label="Draft"
                                         />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="3"
-                                            label="Disable"
-                                        />
                                     </div>
-
                                     <ErrorMessage
-                                        name="status"
-                                        component={RadioButton}
+                                        name="isDeleted"
+                                        component="div"
                                         className={`${style.error}`}
                                     />
                                 </div>
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >
-                                    Save Change
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>

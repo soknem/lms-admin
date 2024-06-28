@@ -36,11 +36,11 @@ export default function StaffList() {
 
         }
         if(staffError){
-            console.error("failed to load lecture", staffError);
+            console.error("failed to load staff", staffError);
         }
     }, [staffData, staffError, dispatch]);
 
-    console.log("staffData: ", staffData);
+    console.log("staffData: ", staffListData);
 
     const router = useRouter();
     // State for search query and selected position filters

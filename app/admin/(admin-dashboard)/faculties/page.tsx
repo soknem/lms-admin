@@ -16,7 +16,7 @@ import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {selectStudyProgram, setStudyPrograms} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
-import {selectSubject, setError, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
+import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
 import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
 import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
@@ -30,8 +30,6 @@ import CourseFilterComponent from "@/components/card/filter/FIlterCourseCardComp
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();
-    // const token = useAppSelector(selectToken);
-    // console.log("token from admin: ", token)
 
     // Faculty data
     const {
@@ -46,9 +44,6 @@ export default function Page() {
     useEffect(() => {
         if (facultiesData) {
             dispatch(setFaculties(facultiesData.content));
-        }
-        if (fecError) {
-            dispatch(setError(fecError.toString()));
         }
     }, [facultiesData, fecError, dispatch]);
 
@@ -67,9 +62,6 @@ export default function Page() {
         if (degreesData) {
             dispatch(setDegrees(degreesData.content));
         }
-        if (deError) {
-            dispatch(setError(deError.toString()));
-        }
     }, [degreesData, deError, dispatch]);
 
     // Study Program data
@@ -86,9 +78,7 @@ export default function Page() {
         if (studyProgramsData) {
             dispatch(setStudyPrograms(studyProgramsData.content));
         }
-        if (stuProError) {
-            dispatch(setError(stuProError.toString()));
-        }
+
     }, [studyProgramsData, stuProError, dispatch]);
 
     // Subject data
@@ -105,9 +95,7 @@ export default function Page() {
         if (subjectsData) {
             dispatch(setSubjects(subjectsData.content));
         }
-        if (subError) {
-            dispatch(setError(subError.toString()));
-        }
+
     }, [subjectsData, subError, dispatch]);
 
 

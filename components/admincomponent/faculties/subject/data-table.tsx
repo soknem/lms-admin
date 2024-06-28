@@ -28,14 +28,14 @@ import {
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
-    DropdownMenuContent,
+    DropdownMenuContent, DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {CreateSubjectForm} from "./CreateFacForm";
-import {TbAdjustmentsHorizontal} from "react-icons/tb";
+import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 import {FaSearch} from "react-icons/fa";
 
 //custom component import
@@ -55,6 +55,7 @@ export function SubjectTable<TData, TValue>({
     const [allData, setData] = useState(() => [...data]);
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
+    const [selectedFilter, setSelectedFilter] = useState("All");
 
     const table = useReactTable({
         data,
@@ -105,6 +106,20 @@ export function SubjectTable<TData, TValue>({
 
     console.log("data from page: ", data);
 
+    const filterOptions = ["All", "Public", "Draft"];
+    const handleFilterChange = (value: string) => {
+        setSelectedFilter(value);
+        const filterValue =
+            value === "All"
+                ? ""
+                : value === "Public"
+                    ? true
+                    : value === "Draft"
+                        ? false
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
+    };
+
     return (
         <>
             {/* Search */}
@@ -127,6 +142,36 @@ export function SubjectTable<TData, TValue>({
                         </div>
                     </div>
                 </div>
+
+                {/* Filter */}
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
+                        >
+                            <TbFilter className='mr-2 h-4 w-4'/>
+                            {selectedFilter}
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        align="end"
+                        className="border-[#E6E6E6] bg-white "
+                    >
+                        {filterOptions.map((option) => (
+                            <DropdownMenuItem
+                                key={option}
+                                onSelect={() => handleFilterChange(option)}
+                                className={`cursor-pointer  ${
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
+                                    option
+                                }`}
+                            >
+                                {option}
+                            </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
 
                 {/* Column visibility */}
                 <DropdownMenu>

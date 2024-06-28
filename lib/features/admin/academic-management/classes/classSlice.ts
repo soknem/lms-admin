@@ -38,6 +38,8 @@ export type Class = {
     generation: Generation;
     students: any[]; // Assuming students are an array of objects
     courses: CourseInfo[];
+    value: string;
+    label: string;
 };
 
 export type ClassState = {
@@ -118,11 +120,14 @@ const classSlice = createSlice({
             state.error = null;
         },
 
+
     },
 });
 
 export const { setClasses, addClass} = classSlice.actions;
-export const selectClasses = (state: RootState) => state.class
+export const selectClasses = (state: RootState) => state.class.content
+
 
 
 export default classSlice.reducer;
+
