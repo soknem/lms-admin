@@ -12,42 +12,49 @@ import Link from "next/link";
 import Attendences from "@/app/instructor/(instructor-dashboard)/courses/coursedetail/lectures/data/Attendances.json"
 import {
     StudentAttendanceDataTable
-} from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceDataTable";
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceDataTable";
 import {
     StudentAttendanceColumns
-} from "@/components/instructorComponent/lectures/student-attendance/StudentAttendanceColumns";
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns";
+
 
 export default function StudentAttendance() {
-    const data : studentAttendanceType[] = Attendences
+    const data: studentAttendanceType[] = Attendences
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">
-            <Breadcrumb >
+            <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link href="/instructor/courses" className='font-semibold text-gray-30 uppercase hover:underline'>COURSE</Link>
+                            <Link href="/instructor/courses"
+                                  className='font-semibold text-gray-30 uppercase hover:underline'>COURSE</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator/>
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link href="/instructor/courses/coursedetail" className='font-semibold text-gray-30 uppercase hover:underline'>INTRODUCTION TO IT</Link>
+                            <Link href="/instructor/courses/coursedetail"
+                                  className='font-semibold text-gray-30 uppercase hover:underline'>INTRODUCTION TO
+                                IT</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator/>
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link href="/instructor/courses/coursedetail/lectures" className='font-semibold text-gray-30 uppercase hover:underline'>10:00AM - 12:00PM</Link>
+                            <Link href="/instructor/courses/coursedetail/lectures"
+                                  className='font-semibold text-gray-30 uppercase hover:underline'>10:00AM -
+                                12:00PM</Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator/>
                     <BreadcrumbItem>
-                        <BreadcrumbPage className="font-semibold text-lms-primary uppercase ">Student Attendance</BreadcrumbPage>
+                        <BreadcrumbPage className="font-semibold text-lms-primary uppercase ">Student
+                            Attendance</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
             <h1 className=' text-3xl font-bold text-lms-primary'>Student Attendance</h1>
-            <StudentAttendanceDataTable columns={StudentAttendanceColumns} data={data} />
+            <StudentAttendanceDataTable columns={StudentAttendanceColumns} data={data}/>
         </section>
     );
 }
