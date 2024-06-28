@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-import {AddUserStudentForm} from "@/components/admincomponent/users/students/addStudentForm";
+import {AddUserStudentForm} from "@/components/adminComponent/users/students/addStudentForm";
 
 export default function Users() {
   return (

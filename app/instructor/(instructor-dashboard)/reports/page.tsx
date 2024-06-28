@@ -1,6 +1,6 @@
 import { DateComponent } from "@/components/instructorcomponent/reports/timesheet/DateComponent";
-import TabReportComponent from "@/components/instructorcomponent/reports/timesheet/TabReportComponent";
 import React from "react";
+import TabReportComponent from "@/components/instructorComponent/reports/timesheet/TabReportComponent";
 
 export default function Report() {
     return (
