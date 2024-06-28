@@ -210,7 +210,7 @@ export function EditFacForm({alias}: { alias: string }) {
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 items-center justify-center">
                                 {/* Faculty logo */}
                                 <div className="flex">
                                     <Field
@@ -273,7 +273,8 @@ export function EditFacForm({alias}: { alias: string }) {
                                         Description
                                     </label>
                                     <Field
-                                        type="text"
+                                        as="textarea"
+                                        rows={3}
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}

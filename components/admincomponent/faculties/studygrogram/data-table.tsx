@@ -240,7 +240,14 @@ export function StudyProgramTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     className="hover:bg-lms-background cursor-pointer"
-                                    onClick={() => router.push(`/admin/faculties/setup-studyprogram`)}
+                                    onClick={(e) => {
+                                        // Cast e.target to HTMLElement to access closest method
+                                        const target = e.target as HTMLElement;
+                                        const isActionButton = target.closest('.action-button');
+                                        if (!isActionButton) {
+                                            router.push(`/admin/faculties/setup-studyprogram`);
+                                        }
+                                    }}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

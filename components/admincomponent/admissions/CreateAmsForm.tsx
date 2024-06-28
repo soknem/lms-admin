@@ -14,8 +14,10 @@ import {
 } from "@/components/ui/dialog";
 
 import {TbAsterisk} from "react-icons/tb";
-import {AdmissionType} from "@/lib/types/admin/admission";
 import {useCreateAdmissionMutation, useGetAdmissionsQuery} from "@/lib/features/admin/admission-management/admission";
+import {useState} from "react";
+import {FacultyType} from "@/lib/types/admin/faculty";
+import {AdmissionType} from "@/lib/types/admin/admission";
 
 const initialValues = {
     academicYear: "",
@@ -37,17 +39,6 @@ const validationSchema = Yup.object().shape({
     isDeleted: Yup.boolean(),
 });
 
-
-const handleSubmit = async (values: AdmissionType, createAdmission: any) => {
-    try {
-        const response = await createAdmission(values).unwrap();
-        console.log('Admission created successfully:', response);
-        // Optionally, reset the form or close the dialog here
-    } catch (error) {
-        console.error('Failed to create admission:', error);
-    }
-};
-
 const RadioButton = ({field, value, label}: any) => {
     return (
         <div>
@@ -68,12 +59,43 @@ const RadioButton = ({field, value, label}: any) => {
 
 export function CreateAmsForm() {
     const [createAdmission] = useCreateAdmissionMutation();
+    const {refetch: refetchAdms} = useGetAdmissionsQuery({page: 0, pageSize: 10});
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            const newAdmission: AdmissionType = {
+                academicYear: values.academicYear,
+                openDate: values.openDate,
+                endDate: values.endDate,
+                telegramLink: values.telegramLink,
+                remark: values.remark,
+                status: values.status,
+                isDeleted: values.isDeleted,
+            };
+
+            await createAdmission(newAdmission).unwrap();
+            resetForm();
+            // Handle success (e.g., show a success message or close the dialog)
+            refetchAdms();
+            setIsOpen(false);
+            // console.log("Update successfully")
+
+
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error creating admission: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
 
     return (
-        <Dialog>
+        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
 
             <DialogTrigger asChild>
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary">
+                <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
                     <FiPlus className="mr-2 h-4 w-4"/> Add Admission
                 </Button>
             </DialogTrigger>
@@ -87,12 +109,15 @@ export function CreateAmsForm() {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(values) => handleSubmit(values, createAdmission)}
+                    onSubmit={handleSubmit}
                 >
                     {() => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-4">
+
+                                {/*academicYear*/}
                                 <div className={style.inputContainer}>
+
                                     <div className="flex">
                                         <label className={style.label} htmlFor="academicYear">
                                             Academic Year
@@ -112,6 +137,7 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
+                                {/*openDate*/}
                                 <div className={style.inputContainer}>
                                     <div className="flex">
                                         <label className={style.label} htmlFor="openDate">
@@ -132,6 +158,7 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
+                                {/*endDate*/}
                                 <div className={style.inputContainer}>
                                     <div className="flex">
                                         <label className={style.label} htmlFor="endDate">
@@ -152,6 +179,7 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
+                                {/*telegramLink*/}
                                 <div className={style.inputContainer}>
                                     <label className={style.label} htmlFor="telegramLink">
                                         Telegram Group URL
@@ -170,6 +198,7 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
+                                {/*remark*/}
                                 <div className={style.inputContainer}>
                                     <label className={style.label} htmlFor="remark">
                                         Remark
@@ -223,10 +252,11 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
+                                {/*isDeleted*/}
                                 <div className={style.inputContainer}>
                                     <div className="flex">
                                         <label className={style.label} htmlFor="isDeleted">
-                                            isDeleted
+                                            Status
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>

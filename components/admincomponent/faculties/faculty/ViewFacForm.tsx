@@ -1,9 +1,6 @@
 "use client";
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import * as Yup from "yup";
-import {Button} from "@/components/ui/button";
 import style from "../../style.module.css";
-import {FiPlus} from "react-icons/fi";
 import {
     Dialog,
     DialogContent,
@@ -13,36 +10,10 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {FacultyType} from "@/lib/types/admin/faculty";
-import {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
-import {FaCamera} from "react-icons/fa6";
-import {useRouter} from "next/navigation";
-
-const initialValues = {
-    alias: "",
-    name: "",
-    description: "",
-    address: "",
-    logo: "",
-    isDraft: false,
-    isDeleted: false,
-};
-
-const FILE_SIZE = 1024 * 1024 * 2; // 2MB
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
-
-const handleSubmit = async (value: FacultyType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/facultys`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("faculty upload: ", data)
-};
+import {useGetFacultyByAliasQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {TbAsterisk} from "react-icons/tb";
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -50,145 +21,227 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                // checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
     );
 };
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
-
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
-    };
+const CustomInput = ({previewUrl}: any) => {
+    const [imagePreview, setImagePreview] = useState(previewUrl);
     return (
-        <div>
-            <input onChange={(e) => handleUploadFile(e)} type="file"/>
-            {imagePreview && (
-                <Image src={imagePreview} alt="preview" width={200} height={200}/>
-            )}
+        <div className="w-full">
+            <div
+                className={`flex items-center justify-center relative ${style.imageContainer}`}
+            >
+                {imagePreview ? (
+                    <Image
+                        src={imagePreview}
+                        alt="preview"
+                        fill
+                        style={{objectFit: "contain"}}
+                    />
+                ) : (
+                    <img
+                        src={previewUrl}
+                        alt="faculty"
+                        className="w-full h-full rounded-full"
+                    />
+                )}
+            </div>
         </div>
     );
 };
 
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-export function ViewFacForm() {
-    const router = useRouter();
+export function ViewFacForm({alias}: { alias: string }) {
     const [open, setOpen] = useState(true);
+    const [initialAlias, setInitialAlias] = useState("");
+    const [logo, setLogo] = useState(null);
+    const {data: facultyData, isSuccess} = useGetFacultyByAliasQuery(alias);
+    const [initialValues, setInitialValues] = useState({
+        alias: "",
+        name: "",
+        description: "",
+        address: "",
+        logo: "",
+        isDeleted: false,
+        isDraft: false
+    });
 
+    useEffect(() => {
+        if (isSuccess && facultyData) {
+            setInitialValues({
+                alias: facultyData.alias,
+                name: facultyData.name,
+                description: facultyData.description,
+                address: facultyData.address,
+                logo: facultyData.logo,
+                isDeleted: facultyData.isDeleted,
+                isDraft: facultyData.isDraft,
+            });
+            setInitialAlias(facultyData.alias);
+            setLogo(facultyData.logo)
+        }
+    }, [isSuccess, facultyData]);
     const handleClose = () => {
         setOpen(false);
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
+        <Dialog open={open} onOpenChange={handleClose} modal={true}>
             <DialogContent className="w-[480px] bg-white ">
                 <DialogHeader>
                     <DialogTitle>Faculty Information</DialogTitle>
                 </DialogHeader>
                 <Formik
+                    enableReinitialize
                     initialValues={initialValues}
-                    onSubmit={async (values) => {
-                        // create faculty post
-                        const FacultyPost: FacultyType = {
-                            alias: values.alias,
-                            name: values.name,
-                            description: values.description,
-                            address: values.address,
-                            logo: values.logo,
-                            isDraft: values.isDraft,
-                            isDeleted: values.isDeleted,
-                        };
-                        router.push("/admin/faculties");
-                        // post product
-                        handleSubmit(FacultyPost);
+                    onSubmit={() => {
                     }}
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col items-center gap-4">
-                                {/* faculty logo */}
-                                <div
-                                    className={`flex items-center justify-center relative ${style.imageContainer}`}
-                                >
-                                    <img
-                                        src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ-d1OG0v3Iyah3hRWqN-Ik9aKcKe-hDk66ZSCftzYOfmI3z-Mk"
-                                        alt="faculty"
-                                        className="w-full h-full rounded-full"
+                            <div className="flex flex-col gap-1 items-center justify-center">
+                                {/* Faculty logo */}
+
+                                <div className="flex">
+                                    <Field
+                                        name="logo"
+                                        component={CustomInput}
+                                        previewUrl={initialValues.logo}
                                     />
                                 </div>
 
-                                {/* faculty title*/}
-                                <div className={` ${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="name">
-                                        Title
-                                    </label>
+
+                                {/* Faculty Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Alias
+                                        </label>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                    </div>
+
                                     <Field
                                         type="text"
-                                        placeholder="Faculty of Engineering"
-                                        name="name"
-                                        id="name"
-                                        className={` ${style.input}`}
+                                        name="alias"
+                                        id="alias"
+                                        disabled
+                                        className={`${style.input}`}
                                     />
+
                                 </div>
 
+                                {/* Faculty Title */}
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="faculty">
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="name">
+                                            Title
+                                        </label>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        disabled
+                                        className={`${style.input}`}
+                                    />
+
+                                </div>
+
+                                {/* Faculty Description */}
+                                <div className={`${style.inputContainer}`}>
+                                    <label className={`${style.label}`} htmlFor="description">
                                         Description
                                     </label>
                                     <Field
-                                        type="text"
-                                        placeholder="This is main faculty of our academic"
-                                        name="faculty"
-                                        id="faculty"
+                                        as="textarea"
+                                        rows={3}
+                                        name="description"
+                                        id="description"
+                                        disabled
                                         className={`${style.input}`}
                                     />
                                 </div>
 
-                                {/* status */}
-                                <div className={`${style.inputContainer}  `}>
-                                    <label className={`${style.label}`} htmlFor="status">
-                                        Visibility
-                                    </label>
-                                    {/* <Field
-                    type="number"
-                    name="status"
-                    id="status"
-                    className={`${style.input}`}
-                  />
-                  */}
+                                {/* Faculty Address */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="address">
+                                            Address
+                                        </label>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        disabled
+                                        name="address"
+                                        id="address"
+                                        className={`${style.input}`}
+                                    />
+
+                                </div>
+
+                                {/* isDraft */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="isDraft">
+                                            Visibility
+                                        </label>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                    </div>
 
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDraft"
+                                            disabled
                                             component={RadioButton}
-                                            value="1"
+                                            value={true}
                                             label="Public"
                                         />
                                         <Field
-                                            name="status"
+                                            disabled
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="2"
+                                            value={false}
                                             label="Draft"
                                         />
+                                    </div>
+
+
+                                </div>
+
+                                {/* isDeleted */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="isDeleted">
+                                            Status
+                                        </label>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                    </div>
+
+                                    <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDeleted"
+                                            disabled
                                             component={RadioButton}
-                                            value="3"
-                                            label="Disable"
+                                            value={true}
+                                            label="Active"
+                                        />
+                                        <Field
+                                            name="isDeleted"
+                                            disabled
+                                            component={RadioButton}
+                                            value={false}
+                                            label="Inactive"
                                         />
                                     </div>
                                 </div>

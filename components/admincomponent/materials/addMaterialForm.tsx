@@ -3,76 +3,37 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "./style.module.css";
-import {FiPlus, FiUploadCloud} from "react-icons/fi";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+import {FiUploadCloud} from "react-icons/fi";
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import {
-    CurriculumType,
-    SlideType,
-    VideoType,
-} from "@/lib/types/admin/materials";
 import {IoIosArrowDown} from "react-icons/io";
-import {MdAddToPhotos} from "react-icons/md";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Separator} from "@/components/ui/separator";
 import {TbAsterisk} from "react-icons/tb";
+import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
+import {useCreateMaterialMutation, useGetMaterialsQuery} from "@/lib/features/admin/materials/material";
+import {MaterialType} from "@/lib/types/admin/materials";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
+import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const initialValues = {
+    alias: "",
     title: "",
-    course: "",
     description: "",
-    type: "",
-    status: 0,
-    subject: "",
-    file: "",
+    contentType: "",
+    extension: "",
+    size: 0,
+    // file: string;
+    fileName: "",
+    subjectAlias: "",
+    // "isDeleted": false,
+    isDraft: false
 };
 
-const validationSchema = Yup.object().shape({
-    academic_year: Yup.string().required("Required"),
-    start_dater: Yup.string().required("Required"),
-    end_dater: Yup.string().required("Required"),
-    status: Yup.string().required("A selection is required"),
-});
-
-const handleSubmit = async (value: CurriculumType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
-};
-
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
-            />
-            <label className="pl-2" htmlFor={value}>
-                {label}
-            </label>
-        </div>
-    );
-};
-
-// const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
+const validationSchema = Yup.object().shape({});
 
 const CustomInput = ({field, setFieldValue}: any) => {
     const [imagePreview, setImagePreview] = useState("");
@@ -120,21 +81,41 @@ const CustomInput = ({field, setFieldValue}: any) => {
     );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
+const RadioButton = ({field, value, label}: any) => {
+    return (
+        <div>
+            <input
+                type="radio"
+                {...field}
+                id={value}
+                value={value}
+                checked={field.value === value}
+            />
+            <label className="pl-2" htmlFor={value}>
+                {label}
+            </label>
+        </div>
+    );
+};
 
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 export function CreateMaterialForm() {
+    const dispatch = useDispatch<AppDispatch>();
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [createMaterial] = useCreateMaterialMutation();
+    const {refetch: refetchMaterials} = useGetMaterialsQuery({page: 0, pageSize: 10});
+    const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("curriculum");
+
+    const {
+        data: subjectData,
+    } = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const subjects = useSelector((state: RootState) => selectSubject(state));
+
+    useEffect(() => {
+        if (subjectData) {
+            dispatch(setSubjects(subjectData.content));
+        }
+    }, [subjectData, dispatch]);
     const handleNext = (currentTab: any) => {
         if (currentTab === "curriculum") {
             setActiveTab("slide");
@@ -143,14 +124,55 @@ export function CreateMaterialForm() {
         }
     };
 
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            // Upload the logo file
+            const fileData = new FormData();
+            fileData.append("file", values.fileName);
+
+            const fileResponse = await createSingleFile(fileData).unwrap();
+            console.log(fileResponse)
+
+            if (fileResponse) {
+                // File uploaded successfully, now create the faculty
+                const newMaterial: MaterialType = {
+                    alias: values.alias,
+                    title: values.title,
+                    description: values.description,
+                    contentType: values.contentType,
+                    extension: values.extension,
+                    size: values.size,
+                    fileName: fileResponse.fileName,
+                    subjectAlias: values.subjectAlias,
+                    isDraft: values.isDraft,
+                };
+
+                const res = await createMaterial(newMaterial).unwrap();
+                resetForm();
+                // Handle success (e.g., show a success message or close the dialog)
+                refetchMaterials();
+                setIsOpen(false);
+                // console.log("Update successfully")
+
+            }
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error creating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
 
-        <div className="w-full h-full flex flex-grow flex-col items-center-center rounded-[10px] border bg-white gap-6">
+        <div
+            className="w-full h-full flex flex-grow flex-col items-center-center mb-10 rounded-[10px] border bg-white gap-6">
             <section className="h-[90px] flex items-center mx-10 ">
                 <h1 className="text-3xl font-bold text-lms-black-90">
                     Add Materials
                 </h1>
             </section>
+
             <Tabs
                 value={activeTab}
                 onValueChange={setActiveTab}
@@ -196,72 +218,37 @@ export function CreateMaterialForm() {
                     </div>
                 </TabsList>
 
-
                 {/* Curriculum */}
                 <TabsContent value="curriculum">
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            // create degree post
-                            const curriculumPost: CurriculumType = {
-                                title: values.title,
-                                course: values.course,
-                                description: values.description,
-                                type: values.type,
-                                subject: values.subject,
-                                file: values.file,
-                                status: values.status,
-                            };
-
-                            // post product
-                            handleSubmit(curriculumPost);
-                        }}
+                        onSubmit={handleSubmit}
                     >
                         {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full h-[550px]">
+                            <Form className="py-4 rounded-lg w-full h-[605px]">
                                 <div className="flex flex-col gap-4 items-center justify-center">
 
-                                    <div className={style.inputContainer}>
-
+                                    <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="subject">
-                                                Subject
+                                            <label className={`${style.label}`} htmlFor="alias">
+                                                Alias
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <div className="relative w-full">
-                                            <Field
-                                                as="select"
-                                                name="subject"
-                                                id="subject"
-                                                className={`${style.input} appearance-none`}
-                                            >
-                                                <option value="" disabled hidden>
-                                                    Select Subject
-                                                </option>
-                                                <option value="Web Design">Web Design</option>
-                                                <option value="Spring Framework">
-                                                    Spring Framework
-                                                </option>
-                                                <option value="C++ Programming">
-                                                    C++ Programming
-                                                </option>
-                                            </Field>
-                                            <ErrorMessage
-                                                name="subject"
-                                                component="div"
-                                                className={`${style.error}`}
-                                            />
-                                            <div
-                                                className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <IoIosArrowDown
-                                                    className="h-5 w-5 text-gray-400"
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
-                                        </div>
+                                        <Field
+                                            type="text"
+                                            placeholder="Faculty of Engineering"
+                                            name="alias"
+                                            id="alias"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="alias"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
@@ -286,6 +273,31 @@ export function CreateMaterialForm() {
                                         />
                                     </div>
 
+                                    <div className={` ${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="subjectAlias">
+                                                Subject
+                                            </label>
+                                            {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                        </div>
+
+                                        <Field as="select" name="subjectAlias" id="subjectAlias"
+                                               className={` ${style.input}`}>
+                                            <option value="" label="Select Subject"/>
+                                            {Array.isArray(subjects) && subjects.map(subject => (
+                                                <option key={subject.alias} value={subject.title}
+                                                        label={subject.title}/>
+                                            ))}
+
+                                        </Field>
+
+                                        {/*<ErrorMessage*/}
+                                        {/*    name="degree.level"*/}
+                                        {/*    component="div"*/}
+                                        {/*    className={`${style.error}`}*/}
+                                        {/*/>*/}
+                                    </div>
+
                                     <div className={`${style.inputContainer}`}>
                                         <label className={`${style.label}`} htmlFor="description">
                                             Description
@@ -305,19 +317,50 @@ export function CreateMaterialForm() {
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="file">
+                                        <label className={`${style.label}`} htmlFor="fileName">
                                             File Upload
                                         </label>
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
+                                            name="fileName"
+                                            id="fileName"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="fileName"
                                             component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    {/* isDraft */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
                                             className={`${style.error}`}
                                         />
                                     </div>
@@ -330,10 +373,16 @@ export function CreateMaterialForm() {
                         <Button
                             type="submit"
                             className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                            onClick={() => handleNext(activeTab)}
                         >
-                            Next
+                            Upload
                         </Button>
+                        {/*<Button*/}
+                        {/*    type="submit"*/}
+                        {/*    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"*/}
+                        {/*    onClick={() => handleNext(activeTab)}*/}
+                        {/*>*/}
+                        {/*    Next*/}
+                        {/*</Button>*/}
                     </div>
                 </TabsContent>
 
@@ -342,65 +391,32 @@ export function CreateMaterialForm() {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            // create degree post
-                            const curriculumPost: SlideType = {
-                                title: values.title,
-                                course: values.course,
-                                description: values.description,
-                                type: values.type,
-                                subject: values.subject,
-                                file: values.file,
-                                status: values.status,
-                            };
-
-                            // post product
-                            handleSubmit(curriculumPost);
-                        }}
+                        onSubmit={handleSubmit}
                     >
                         {({setFieldValue}) => (
                             <Form className="py-4 rounded-lg w-full h-[605px]">
                                 <div className="flex flex-col gap-4 items-center justify-center">
 
-                                    <div className={style.inputContainer}>
+                                    <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="subject">
-                                                Subject
+                                            <label className={`${style.label}`} htmlFor="alias">
+                                                Alias
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <div className="relative w-full">
-                                            <Field
-                                                as="select"
-                                                name="subject"
-                                                id="subject"
-                                                className={`${style.input} appearance-none`}
-                                            >
-                                                <option value="" disabled hidden>
-                                                    Select Subject
-                                                </option>
-                                                <option value="Web Design">Web Design</option>
-                                                <option value="Spring Framework">
-                                                    Spring Framework
-                                                </option>
-                                                <option value="C++ Programming">
-                                                    C++ Programming
-                                                </option>
-                                            </Field>
-                                            <ErrorMessage
-                                                name="subject"
-                                                component="div"
-                                                className={`${style.error}`}
-                                            />
-                                            <div
-                                                className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <IoIosArrowDown
-                                                    className="h-5 w-5 text-gray-400"
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
-                                        </div>
+                                        <Field
+                                            type="text"
+                                            placeholder="Faculty of Engineering"
+                                            name="alias"
+                                            id="alias"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="alias"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
@@ -414,7 +430,7 @@ export function CreateMaterialForm() {
                                         <Field
                                             type="text"
                                             name="title"
-                                            placeholder="Web Design Slide"
+                                            placeholder="Web Design Curriculum"
                                             id="title"
                                             className={`${style.input}`}
                                         />
@@ -423,6 +439,31 @@ export function CreateMaterialForm() {
                                             component="div"
                                             className={`${style.error}`}
                                         />
+                                    </div>
+
+                                    <div className={` ${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="subjectAlias">
+                                                Subject
+                                            </label>
+                                            {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                        </div>
+
+                                        <Field as="select" name="subjectAlias" id="subjectAlias"
+                                               className={` ${style.input}`}>
+                                            <option value="" label="Select Subject"/>
+                                            {Array.isArray(subjects) && subjects.map(subject => (
+                                                <option key={subject.alias} value={subject.title}
+                                                        label={subject.title}/>
+                                            ))}
+
+                                        </Field>
+
+                                        {/*<ErrorMessage*/}
+                                        {/*    name="degree.level"*/}
+                                        {/*    component="div"*/}
+                                        {/*    className={`${style.error}`}*/}
+                                        {/*/>*/}
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
@@ -444,19 +485,50 @@ export function CreateMaterialForm() {
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="file">
+                                        <label className={`${style.label}`} htmlFor="fileName">
                                             File Upload
                                         </label>
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
+                                            name="fileName"
+                                            id="fileName"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="fileName"
                                             component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    {/* isDraft */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
                                             className={`${style.error}`}
                                         />
                                     </div>
@@ -481,65 +553,32 @@ export function CreateMaterialForm() {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            // create degree post
-                            const curriculumPost: VideoType = {
-                                title: values.title,
-                                course: values.course,
-                                description: values.description,
-                                type: values.type,
-                                subject: values.subject,
-                                file: values.file,
-                                status: values.status,
-                            };
-
-                            // post product
-                            handleSubmit(curriculumPost);
-                        }}
+                        onSubmit={handleSubmit}
                     >
                         {({setFieldValue}) => (
                             <Form className="py-4 rounded-lg w-full h-[605px]">
                                 <div className="flex flex-col gap-4 items-center justify-center">
 
-                                    <div className={style.inputContainer}>
+                                    <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="subject">
-                                                Subject
+                                            <label className={`${style.label}`} htmlFor="alias">
+                                                Alias
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <div className="relative w-full">
-                                            <Field
-                                                as="select"
-                                                name="subject"
-                                                id="subject"
-                                                className={`${style.input} appearance-none`}
-                                            >
-                                                <option value="" disabled hidden>
-                                                    Select Subjext
-                                                </option>
-                                                <option value="Web Design">Web Design</option>
-                                                <option value="Spring Framework">
-                                                    Spring Framework
-                                                </option>
-                                                <option value="C++ Programming">
-                                                    C++ Programming
-                                                </option>
-                                            </Field>
-                                            <ErrorMessage
-                                                name="subject"
-                                                component="div"
-                                                className={`${style.error}`}
-                                            />
-                                            <div
-                                                className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <IoIosArrowDown
-                                                    className="h-5 w-5 text-gray-400"
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
-                                        </div>
+                                        <Field
+                                            type="text"
+                                            placeholder="Faculty of Engineering"
+                                            name="alias"
+                                            id="alias"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="alias"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
@@ -553,7 +592,7 @@ export function CreateMaterialForm() {
                                         <Field
                                             type="text"
                                             name="title"
-                                            placeholder="Web Design Video"
+                                            placeholder="Web Design Curriculum"
                                             id="title"
                                             className={`${style.input}`}
                                         />
@@ -562,6 +601,31 @@ export function CreateMaterialForm() {
                                             component="div"
                                             className={`${style.error}`}
                                         />
+                                    </div>
+
+                                    <div className={` ${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="subjectAlias">
+                                                Subject
+                                            </label>
+                                            {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                        </div>
+
+                                        <Field as="select" name="subjectAlias" id="subjectAlias"
+                                               className={` ${style.input}`}>
+                                            <option value="" label="Select Subject"/>
+                                            {Array.isArray(subjects) && subjects.map(subject => (
+                                                <option key={subject.alias} value={subject.title}
+                                                        label={subject.title}/>
+                                            ))}
+
+                                        </Field>
+
+                                        {/*<ErrorMessage*/}
+                                        {/*    name="degree.level"*/}
+                                        {/*    component="div"*/}
+                                        {/*    className={`${style.error}`}*/}
+                                        {/*/>*/}
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
@@ -583,27 +647,58 @@ export function CreateMaterialForm() {
                                     </div>
 
                                     <div className={`${style.inputContainer}`}>
-                                        <label className={`${style.label}`} htmlFor="file">
+                                        <label className={`${style.label}`} htmlFor="fileName">
                                             File Upload
                                         </label>
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
+                                            name="fileName"
+                                            id="fileName"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="fileName"
                                             component="div"
                                             className={`${style.error}`}
                                         />
                                     </div>
-                                </div>
 
+                                    {/* isDraft */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+                                </div>
                             </Form>
                         )}
-                    </Formik>{" "}
+                    </Formik>
+
                     <div className="flex justify-end w-[900px]">
                         <Button
                             type="submit"

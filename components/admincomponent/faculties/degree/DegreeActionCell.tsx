@@ -63,7 +63,7 @@ const ActionsCell = ({row}: any) => {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            {isViewFormVisible && <ViewDeForm/>}
+            {isViewFormVisible && <ViewDeForm alias={`${degree.alias}`}/>}
             {isEditFormVisible && <EditDeForm alias={`${degree.alias}`}/>}
         </div>
     );

@@ -13,7 +13,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {FacultyType, SubjectType} from "@/lib/types/admin/faculty";
+import {SubjectType} from "@/lib/types/admin/faculty";
 import React, {useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";

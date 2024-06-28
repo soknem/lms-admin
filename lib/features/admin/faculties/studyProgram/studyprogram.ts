@@ -13,9 +13,24 @@ export const studyProgramApi = istadLmsApi.injectEndpoints({
                 body: newStuProgram,
             }),
         }),
+        editStuProByAlias: builder.mutation({
+            query: ({alias, updatedData}) => ({
+                url: `/study-programs/${alias}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+        }),
+        getStuProByAlias: builder.query({
+            query: (alias) => ({
+                url: `/study-programs/${alias}`,
+                method: 'GET',
+            }),
+        }),
     })
 })
 export const {
     useGetStudyProgramsQuery,
     useCreateStuProgramMutation,
+    useEditStuProByAliasMutation,
+    useGetStuProByAliasQuery
 } = studyProgramApi;

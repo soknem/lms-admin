@@ -65,7 +65,7 @@ const ActionsCell = ({row}: any) => {
                 </DropdownMenuContent>
             </DropdownMenu>
             {isEditFormVisible && <EditSubjectForm alias={`${subject.alias}`}/>}
-            {isViewFormVisible && <ViewSubjectForm/>}
+            {isViewFormVisible && <ViewSubjectForm alias={`${subject.alias}`}/>}
         </div>
     );
 };

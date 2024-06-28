@@ -20,6 +20,23 @@ export type DegreeType = {
 };
 
 // **** Study Program *****
+// export type StudyProgramType = {
+//     alias: string,
+//     studyProgramName: string,
+//     description: string,
+//     logo: string,
+//     isDeleted: boolean,
+//     isDraft: boolean,
+//     degree: {
+//         alias: string,
+//         level: string,
+//     },
+//     faculty: {
+//         alias: string,
+//         name: string,
+//     }
+// };
+
 export type StudyProgramType = {
     alias: string,
     studyProgramName: string,
@@ -27,15 +44,10 @@ export type StudyProgramType = {
     logo: string,
     isDeleted: boolean,
     isDraft: boolean,
-    degree: {
-        alias: string,
-        level: string,
-    },
-    faculty: {
-        alias: string,
-        name: string,
-    }
+    facultyAlias: string,
+    degreeAlias: string,
 };
+
 
 export type SetupStudyProgramType = {
     id: string;
