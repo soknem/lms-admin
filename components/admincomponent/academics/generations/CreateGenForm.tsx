@@ -2,20 +2,16 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {FiPlus} from "react-icons/fi";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from 'yup'
 import RequiredFieldLabelComponent from "@/components/common/RequiredFieldLabelComponent";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import {Label} from "@/components/ui/label";
 import {CreateGenerationType} from "@/lib/types/admin/academics";
 import {AppDispatch, RootState} from "@/lib/store";
 import {useDispatch, useSelector} from "react-redux";
-import {addGeneration} from "@/lib/features/admin/academic-management/generation/generationSlice";
 import {
     useCreateGenerationMutation,
     useGetGenerationQuery
 } from "@/lib/features/admin/academic-management/generation/generation";
-import {isAxiosError} from "axios";
 import {useState} from "react";
 
 export default function CreateGenForm() {
@@ -23,13 +19,13 @@ export default function CreateGenForm() {
     const dispatch = useDispatch<AppDispatch>();
     const [createGeneration] = useCreateGenerationMutation();
     const [isLoading, setIsLoading] = useState(false);
-    const { refetch: refetchGenerations } = useGetGenerationQuery({ page: 0, pageSize: 10 });
+    const {refetch: refetchGenerations} = useGetGenerationQuery({page: 0, pageSize: 10});
     const currentYear = new Date().getFullYear();
 
     // Regex pattern
     const aliasPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
-    const handleCreateGeneration = async (values : CreateGenerationType) => {
+    const handleCreateGeneration = async (values: CreateGenerationType) => {
         try {
             setIsLoading(true);
 
@@ -47,16 +43,14 @@ export default function CreateGenForm() {
             refetchGenerations();
 
 
-        } catch (err : any) {
+        } catch (err: any) {
             console.error('Error creating generation:', err);
-            if(err.status === 409){
+            if (err.status === 409) {
                 console.log("Generation already exists. Please choose a different alias.")
-            }else{
+            } else {
                 console.log("Generation creation failed:");
             }
-
         }
-
     };
 
     const formik = useFormik({
@@ -110,11 +104,11 @@ export default function CreateGenForm() {
             handleCreateGeneration(values);
         }
     })
-    return(
+    return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
-                    <FiPlus className="mr-2 h-4 w-4 " /> Add Generation
+                    <FiPlus className="mr-2 h-4 w-4 "/> Add Generation
                 </Button>
             </DialogTrigger>
             <DialogContent className="bg-white w-[500px] ">

@@ -7,7 +7,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-import { StatusOption, UserStudentType } from "@/lib/types/admin/user";
+import {StatusOption, UserStudentDetailType, UserStudentType} from "@/lib/types/admin/user";
 import ActionsCell from "./StudentActionCell";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
@@ -30,6 +30,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     setValue(newValue);
     tableMeta?.updateData(row.index, column.id, newValue);
   };
+
+
   // Ensure the "id" column is not editable
   if (column.id === "id") {
     return <span>{value}</span>;
@@ -92,7 +94,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     );
   }
 
-  if (column.id === "name_kh") {
+  if (column.id === "nameKh") {
     return <span className="khmer-font">{value}</span>;
   }
   return <span>{value}</span>;
@@ -144,7 +146,7 @@ const EditCell = ({ row, table }: any) => {
   );
 };
 
-export const userStudentColumns: ColumnDef<UserStudentType>[] = [
+export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
   {
     accessorKey: "card_id",
     header: ({ column }) => {
@@ -161,7 +163,7 @@ export const userStudentColumns: ColumnDef<UserStudentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "name_en",
+    accessorKey: "nameEn",
     header: ({ column }) => {
       return (
         <Button
@@ -176,7 +178,7 @@ export const userStudentColumns: ColumnDef<UserStudentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "name_kh",
+    accessorKey: "nameKh",
     header: ({ column }) => {
       return (
         <Button
@@ -186,6 +188,21 @@ export const userStudentColumns: ColumnDef<UserStudentType>[] = [
           NAME ( KH )
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
+    accessorKey: "dob",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            DOB
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -206,7 +223,7 @@ export const userStudentColumns: ColumnDef<UserStudentType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "ph_number",
+    accessorKey: "phoneNumber",
     header: ({ column }) => {
       return (
         <Button

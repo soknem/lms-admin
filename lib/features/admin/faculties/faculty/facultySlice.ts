@@ -23,14 +23,6 @@ const facultySlice = createSlice({
             state.isLoading = false;
             state.error = null;
         },
-        setLoading: (state) => {
-            state.isLoading = true;
-            state.error = null;
-        },
-        setError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
         addFaculty: (state, action: PayloadAction<FacultyType>) => {
             state.faculties.push(action.payload);
             state.isLoading = false;
@@ -39,9 +31,10 @@ const facultySlice = createSlice({
     }
 })
 
-export const {addFaculty, setFaculties, setLoading, setError} = facultySlice.actions;
+export const {addFaculty, setFaculties} = facultySlice.actions;
 export const selectFaculty = (state: RootState) => state.faculty.faculties;
 export const selectLoading = (state: RootState) => state.faculty.isLoading;
 export const selectError = (state: RootState) => state.faculty.error;
+
 
 export default facultySlice.reducer;

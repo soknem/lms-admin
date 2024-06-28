@@ -24,16 +24,16 @@ import {
 } from "@/components/instructorcomponent/lectures/end-lecture/InstructorEndedLectureColumns";
 
 export default function Lecture() {
-  const data: LectureType[] = lectures;
+  // const data: LectureType[] = lectures;
 
   // Filter data for current data
-  const filteredCurrentLectureData = data.filter(
-    (lecture) => lecture.status === 1
-  );
-
-  const filteredEndedLectureData = data.filter(
-    (lecture) => lecture.status === 2 || lecture.status === 3
-  );
+  // const filteredCurrentLectureData = data.filter(
+  //   (lecture) => lecture.status === 1
+  // );
+  //
+  // const filteredEndedLectureData = data.filter(
+  //   (lecture) => lecture.status === 2 || lecture.status === 3
+  // );
 
   return (
     <section className="flex flex-col gap-4 h-full w-full p-9">
@@ -76,17 +76,17 @@ export default function Lecture() {
         </TabsList>
 
         <TabsContent value="current">
-          <InstructorCurrentLectureDataTable
-            columns={InstructorCurrentLectureColumns}
-            data={filteredCurrentLectureData}
-          />
+          {/*<InstructorCurrentLectureDataTable*/}
+          {/*  columns={InstructorCurrentLectureColumns}*/}
+          {/*  data={filteredCurrentLectureData}*/}
+          {/*/>*/}
         </TabsContent>
 
         <TabsContent value="ended">
-          <InstructorEndedLectureDatatable
-            columns={InstructorEndedLectureColumns}
-            data={filteredEndedLectureData}
-          />
+          {/*<InstructorEndedLectureDatatable*/}
+          {/*  columns={InstructorEndedLectureColumns}*/}
+          {/*  data={filteredEndedLectureData}*/}
+          {/*/>*/}
         </TabsContent>
       </Tabs>
     </section>

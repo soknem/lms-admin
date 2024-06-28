@@ -4,7 +4,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
-import { TbArchive } from "react-icons/tb";
+import {TbEyeCancel , TbEye } from "react-icons/tb";
 
 import { Button } from '@/components/ui/button'
 import { TbPencil } from "react-icons/tb";
@@ -18,11 +18,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
-import { OptionType, LectureType } from "@/lib/types/admin/academics";
+import {OptionType, LectureType, LectureRespondType} from "@/lib/types/admin/academics";
 
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import StatusBadge from "@/components/common/StatusBadge";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import {
+    useDisableLectureMutation,
+    useEnableLectureMutation, useGetLectureQuery
+} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -63,13 +69,63 @@ const TableCell = ({ getValue, row, column, table }: any) => {
           }
     }
 
-    //data in session is a combination of starttime and end time
-    if (accessorKey === 'session') {
-        const startTime = row.original.startTime;
-        const endTime = row.original.endTime;
-        return <span>{`${startTime} - ${endTime}`}</span>;
+    if (accessorKey === 'isDraft') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem  value="false" id="started" />
+                        <Label htmlFor="public">Public</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="pending" />
+                        <Label htmlFor="draft">Draft</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Public" />
+            } else {
+                return <StatusBadge type="default" status="Draft" />
+            }
+
+
+        }
     }
 
+    if (accessorKey === 'isDeleted') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem  value="false" id="active" />
+                        <Label htmlFor="public">Active</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="disable" />
+                        <Label htmlFor="draft">Disable</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Active" />
+            } else {
+                return <StatusBadge type="error" status="Disable" />
+            }
+
+
+        }
+    }
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -107,9 +163,80 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
 };
 
+const ActionCell = ({ row } : any) => {
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
 
+    const [enableLecture, { isLoading, isError, isSuccess }] = useEnableLectureMutation();
+    const [disableLecture] = useDisableLectureMutation();
 
-export const LectureColumns: ColumnDef<LectureType>[] = [
+    const { refetch: refetchLecture } = useGetLectureQuery({ page: 0, pageSize: 10 });
+
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
+    };
+
+    const handleConfirm = async   (lectureUuid : string) => {
+        if(isDeleted){
+            await enableLecture(lectureUuid).unwrap();
+            setIsDeleted((prev :any) => !prev);
+            console.log('Lecture enabled successfully');
+            refetchLecture();
+        }else{
+            await disableLecture(lectureUuid).unwrap();
+            setIsDeleted((prev : any) => !prev);
+            console.log('Lecture disable successfully');
+            refetchLecture();
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
+    };
+
+    return (
+        <div>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' className='h-8 w-8 p-0'>
+                        <span className='sr-only'>Open menu</span>
+                        <MoreHorizontal className='h-4 w-4' />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end' className="bg-white">
+                    <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbPencil size={20} className="text-gray-30 mr-2" /> Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2" /> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2" /> Disable
+                            </>
+                        )}
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                    onConfirm={() => handleConfirm(row.original.uuid)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
+            )}
+        </div>
+    );
+};
+
+export const LectureColumns: ColumnDef<LectureRespondType>[] = [
     {
         accessorKey: 'lectureDate',
         header: ({ column }) => {
@@ -146,7 +273,7 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
     },
 
     {
-        accessorKey: 'class',
+        accessorKey: 'classCode',
         header: ({ column }) => {
             return (
                 <Button
@@ -163,7 +290,7 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
     },
 
     {
-        accessorKey: 'instructor',
+        accessorKey: 'instructorName',
         header: ({ column }) => {
             return (
                 <Button
@@ -179,7 +306,7 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
 
     },
     {
-        accessorKey: 'course',
+        accessorKey: 'courseTitle',
         header: ({ column }) => {
             return (
                 <Button
@@ -226,27 +353,42 @@ export const LectureColumns: ColumnDef<LectureType>[] = [
         cell: TableCell
 
     },
+    {
+        accessorKey: 'isDraft',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    VISIBILITY
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
+    {
+        accessorKey: 'isDeleted',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    STATE
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
+    },
 
     {
         id: 'actions',
-        cell: ({ row }) => {
-            const classes = row.original;
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end' className="bg-white">
-                        <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"><TbPencil size={20} className="text-gray-30 mr-2" /> Edit</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 font-medium focus:bg-background"><TbArchive size={20} className="text-red-600 mr-2 "/>Disable</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
+        cell: ActionCell,
     },
     
 

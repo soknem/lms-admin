@@ -1,4 +1,7 @@
 // **** User Student *****
+import {ShortClassType, ShortCourseStudentType} from "@/lib/types/admin/academics";
+import {Course} from "@/lib/features/admin/academic-management/courses/courseSlice";
+
 export type UserStudentType = {
   card_id: number;
   email: string;
@@ -23,6 +26,22 @@ export type UserStudentType = {
   study_pro: string;
 };
 
+export type UserStudentDetailType = {
+  card_id: number;
+  nameEn: string;
+  nameKh: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  dob: string;
+  gender: string;
+  profileImage: string;
+  currentAddress: string;
+  birthPlace: string;
+  classes : ShortClassType[];
+  courses: ShortCourseStudentType[];
+}
+
 export type StatusOption = {
   label: string;
   value: string;
@@ -44,3 +63,18 @@ export type UserStaffType = {
   github: string;
   status: string;
 };
+
+export type UserStaffDetailType = {
+  card_id: number;
+  nameEn: string;
+  nameKh: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  dob: string;
+  gender: string;
+  profileImage: string;
+  currentAddress: string;
+  birthPlace: string;
+}
+

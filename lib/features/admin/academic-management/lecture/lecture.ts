@@ -6,10 +6,33 @@ export const lectureApi = istadLmsApi.injectEndpoints({
             query: ({ page = 0, pageSize = 10 }) =>
                 `/lectures?pageNumber=${page}&pageSize=${pageSize}`,
         }),
+        addLecture: builder.mutation({
+            query: (newLecture) => ({
+                url: '/lectures',
+                method: 'POST',
+                body: newLecture,
+            }),
+        }),
+        enableLecture: builder.mutation<void, string>({
+            query: (lectureUuid) => ({
+                url: `/lectures/${lectureUuid}/enable`,
+                method: 'PUT',
+            }),
+        }),
+        disableLecture: builder.mutation<void, string>({
+            query: (lectureUuid) => ({
+                url: `/lectures/${lectureUuid}/disable`,
+                method: 'PUT',
+            }),
+        }),
 
     })
 })
 
 export const {
-    useGetLectureQuery
+    useGetLectureQuery,
+    useAddLectureMutation,
+    useEnableLectureMutation,
+    useDisableLectureMutation
+
 } = lectureApi;

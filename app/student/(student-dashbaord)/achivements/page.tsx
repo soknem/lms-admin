@@ -19,17 +19,12 @@ import AchievementTable from "@/components/studentcomponent/achievements/Achieve
 import type {Achievement, YearOfStudy} from "@/lib/types/student/achievement/achievement";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 
-
-
-
 export default function Achievement() {
     const dispatch = useDispatch<AppDispatch>();
     const {data = {}, error, isLoading} = useGetStudentAchievementQuery();
     const loading = useSelector(selectLoading);
     const fetchError = useSelector(selectError);
     const [allData, setData] = useState<Achievement | null>(null);
-
-
 
 
     useEffect(() => {
@@ -58,8 +53,6 @@ export default function Achievement() {
     const totalCourses = data.yearOfStudiesStudents.reduce((total: number, yearOfStudy: YearOfStudy) => {
         return total + yearOfStudy.courses.length;
     }, 0);
-
-
 
     return (
         <main className="flex flex-col h-full w-full p-9">
@@ -111,7 +104,6 @@ export default function Achievement() {
 
                 {/* Information */}
                 <div className="flex w-full lg:justify-between p-9 lg:flex-row md:flex-col  md:justify-center">
-
 
 
                     {/* student info */}
