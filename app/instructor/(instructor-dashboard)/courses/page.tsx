@@ -10,7 +10,7 @@ import { useGetInstructorCourseQuery } from "@/lib/features/instructor/course/in
 import { selectLoading, setLoading, selectError, setError, setCourses } from "@/lib/features/instructor/course/instructorcourseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import { StudentCourseType, CourseType } from "@/lib/types/student/course/course";
+import { InstructorCourseType, CourseType } from "@/lib/types/instructor/course";
 import { setAchievements } from "@/lib/features/student/achievement/achievementSlice";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
@@ -18,20 +18,24 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 
 export default function Course() {
     const dispatch = useDispatch<AppDispatch>();
-    const { data = {}, error, isLoading } = useGetInstructorCourseQuery();
+    const [page, setPage] = useState(0);  // Initialize page
+    const [pageSize, setPageSize] = useState(10);  // Initialize pageSize
+    const [searchTerm, setSearchTerm] = useState(""); // State to manage search term
+
+    const { data = {}, error, isLoading } = useGetInstructorCourseQuery({ page, pageSize });
     const loading = useSelector(selectLoading);
     const fetchError = useSelector(selectError);
-    const [allData, setData] = useState<StudentCourseType | null>(null);
+    const [allData, setData] = useState<InstructorCourseType | null>(null);
     const [openCourse, setOpenCourse] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
     const [filteredCourses, setFilteredCourses] = useState<CourseType[]>([]);
 
     useEffect(() => {
-        if (Object.keys(data).length > 0) {
+        if (data && data.content) {
             dispatch(setLoading());
             dispatch(setAchievements(data));
             setData(data);
-            setFilteredCourses(data.courses); // Set initial courses
+            setFilteredCourses(data.content.flatMap((instructor: any) => instructor.courses)); // Set initial courses
         }
         if (error) {
             dispatch(setError(error.toString()));
@@ -39,28 +43,26 @@ export default function Course() {
     }, [data, error, dispatch]);
 
     useEffect(() => {
+        let courses = data.content?.flatMap((instructor: any) => instructor.courses) || [];
         if (selectedCourse) {
             const selectedCourseNumber = Number(selectedCourse);
-            const filtered = data.courses.filter((course: CourseType) => course.semester === selectedCourseNumber);
-            setFilteredCourses(filtered);
-        } else {
-            setFilteredCourses(data.courses);
+            courses = courses.filter((course: CourseType) => course.semester === selectedCourseNumber);
         }
-    }, [selectedCourse, data.courses]);
+        if (searchTerm) {
+            courses = courses.filter((course: CourseType) =>
+                course.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+        setFilteredCourses(courses);
+    }, [selectedCourse, searchTerm, data.content]);
 
     if (!allData) {
         return <LoadingComponent />;
     }
 
-    const filterBySemester = data.courses.reduce((semester: number[], item: CourseType) => {
-        if (!semester.includes(item.semester)) {
-            semester.push(item.semester);
-        }
-        return semester;
-    }, []);
-
     const handleReset = () => {
         setSelectedCourse(null);
+        setSearchTerm("");
     };
 
     return (
@@ -86,7 +88,7 @@ export default function Course() {
                         <h3 className="text-3xl font-bold">{allData.nameEn}</h3>
                         <div className="flex items-center gap-3">
                             <FaBook className="w-4 h-4 text-lms-primary" />
-                            <p className="text-lg text-gray-800 font-semibold">{allData.courses.length} Course</p>
+                            <p className="text-lg text-gray-800 font-semibold">{filteredCourses.length} Courses</p>
                         </div>
                     </div>
                 </section>
@@ -98,6 +100,8 @@ export default function Course() {
                         <Input
                             placeholder="Search Course"
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30 w-full"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} // Update search term state
                         />
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <FaSearch className="text-gray-400" />
@@ -122,7 +126,14 @@ export default function Course() {
                                 <CommandList>
                                     <CommandEmpty>No results found.</CommandEmpty>
                                     <CommandGroup>
-                                        {filterBySemester.map((semester: number, index: number) => (
+                                        {data.content && data.content.flatMap((instructor: any) =>
+                                            instructor.courses.reduce((semester: number[], item: CourseType) => {
+                                                if (!semester.includes(item.semester)) {
+                                                    semester.push(item.semester);
+                                                }
+                                                return semester;
+                                            }, [])
+                                        ).map((semester: number, index: number) => (
                                             <CommandItem
                                                 key={index}
                                                 value={semester.toString()}

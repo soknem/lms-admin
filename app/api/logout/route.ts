@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import * as process from "node:process";
 
 // Create a POST request handler for Logout
 export async function POST() {
@@ -27,16 +28,17 @@ export async function POST() {
     if(refreshToken){
         cookieStore.delete(cookieName)
 
+        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_LMS_URL}/login`);
 
-        return NextResponse.json(
-            {
-                message: "Logout successful",
-
-            },
-            {
-                status: 200,
-            }
-        );
+        // return NextResponse.json(
+        //     {
+        //         message: "Logout successful",
+        //
+        //     },
+        //     {
+        //         status: 200,
+        //     }
+        // );
     }
 
     // If the refresh token is not found, return an error message to the client-side

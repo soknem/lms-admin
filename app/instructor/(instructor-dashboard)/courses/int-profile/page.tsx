@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, {useEffect} from "react";
 import Link from 'next/link';
 import {
     Breadcrumb,
@@ -11,6 +12,7 @@ import {
 
 import instructorProfile from "@/public/intructor.jpg";
 import StaffDetailComponent from "@/components/admincomponent/users/staff/StaffDetailComponent";
+
 
 
 const insData = {

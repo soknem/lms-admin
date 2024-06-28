@@ -29,17 +29,18 @@ export type OptionType = {
 };
 
 // **** Class *****
-export type ClassType = {
-    alias: string
-    className: string
-    studyProgramAlias: string
-    shiftAlias: string
-    generationAlias: string
-    isDelete: boolean
-    isDraft: boolean
-    studentAliases: string[]
-    instructorAias: string[]
+
+export type ClassTableFormType = {
+    uuid: string;
+    classCode: string;
+    shift: string;
+    studyProgram: string;
+    generation: string;
+    isDraft: boolean;
+    isDeleted: boolean;
+    status: number;
 }
+
 export type Class = {
     uuid: string;
     classCode: string;
@@ -199,6 +200,7 @@ export type courseAssessmentType = {
     isDeleted: boolean;
 };
 
+
 export type courseAssessmentTableType = {
     uuid: string;
     cardId: string;
@@ -278,4 +280,37 @@ export type FormLectureType = {
     courseUuid: string;
 }
 
+// class
 
+export type GenerationShortType = {
+    alias: string;
+    name: string;
+}
+
+export type ShiftType = {
+    alias: string;
+    startTime: string;
+    endTime: string;
+    name: string;
+}
+
+export type StudyProgramShortType = {
+    alias: string;
+    studyProgramName: string;
+}
+
+export type ClassDetailResponseType = {
+    uuid: string;
+    classCode: string;
+    courses: ShortCourseType[];
+    generation: GenerationShortType;
+    instructor: string;
+
+    isDeleted: boolean;
+    isDraft: boolean;
+    status: number;
+
+    students: any[];
+    studyProgram: StudyProgramShortType;
+
+}

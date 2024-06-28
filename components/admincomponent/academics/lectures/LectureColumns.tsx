@@ -29,6 +29,9 @@ import {
     useEnableLectureMutation, useGetLectureQuery
 } from "@/lib/features/admin/academic-management/lecture/lecture";
 import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
+import UpdateLectureForm from "@/components/admincomponent/academics/lectures/form/UpdateLectureForm";
+import {useSelector} from "react-redux";
+import {selectLecture, setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -170,6 +173,13 @@ const ActionCell = ({ row } : any) => {
     const [enableLecture, { isLoading, isError, isSuccess }] = useEnableLectureMutation();
     const [disableLecture] = useDisableLectureMutation();
 
+    // edit form
+    const [isFormVisible, setIsFormVisible] = useState(false);
+
+    const lectures = useSelector(selectLecture);
+
+    console.log("lecture from column: ",lectures)
+
     const { refetch: refetchLecture } = useGetLectureQuery({ page: 0, pageSize: 10 });
 
     const handleOpenCard = () => {
@@ -195,6 +205,14 @@ const ActionCell = ({ row } : any) => {
         setIsCardVisible(false);
     };
 
+    const handleEditClick = () => {
+        setIsFormVisible(true);
+    };
+
+    const handleCloseForm = () => {
+        setIsFormVisible(false);
+    };
+
     return (
         <div>
             <DropdownMenu>
@@ -205,8 +223,8 @@ const ActionCell = ({ row } : any) => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end' className="bg-white">
-                    <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
-                        <TbPencil size={20} className="text-gray-30 mr-2" /> Edit
+                    <DropdownMenuItem onClick={handleEditClick} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
@@ -231,6 +249,9 @@ const ActionCell = ({ row } : any) => {
                     onCancel={handleCancel}
                     buttonTitle={isDeleted ? "Enable" : "Disable"}
                 />
+            )}
+            {isFormVisible && (
+                <UpdateLectureForm uuid={row.original.uuid} onClose={handleCloseForm} lectureData={lectures} />
             )}
         </div>
     );
