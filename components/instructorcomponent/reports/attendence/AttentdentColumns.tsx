@@ -1,24 +1,16 @@
 "use client";
-import { RxCross2 } from "react-icons/rx";
-import { IoCheckmarkSharp } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+import {RxCross2} from "react-icons/rx";
+import {IoCheckmarkSharp} from "react-icons/io5";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-import { PaymentType, StatusOption } from "@/lib/types/admin/payments";
-import { AttentType } from "@/lib/types/instructor/report";
-import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import {ColumnDef} from "@tanstack/react-table";
+import {ArrowUpDown} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
+import {AttendanceType} from "@/lib/types/instructor/report";
+import {BiSolidMessageSquareEdit} from "react-icons/bi";
+import {StatusOption} from "@/lib/types/instructor/schedule";
 
-const TableCell = ({ getValue, row, column, table }: any) => {
+const TableCell = ({getValue, row, column, table}: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
@@ -93,7 +85,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 };
 
 // Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
+const EditCell = ({row, table}: any) => {
   const meta = table.options.meta;
 
   const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -110,106 +102,106 @@ const EditCell = ({ row, table }: any) => {
   };
 
   return (
-    <div>
-      {meta?.editedRows[row.id] ? (
-        <div>
-          <button
-            className="mr-3 bg-red-100 rounded-full p-1"
-            onClick={setEditedRows}
-            name="cancel"
-          >
-            <RxCross2 size={20} className="text-red-500" />
-          </button>
+      <div>
+        {meta?.editedRows[row.id] ? (
+            <div>
+              <button
+                  className="mr-3 bg-red-100 rounded-full p-1"
+                  onClick={setEditedRows}
+                  name="cancel"
+              >
+                <RxCross2 size={20} className="text-red-500"/>
+              </button>
 
-          <button
-            onClick={setEditedRows}
-            name="done"
-            className="bg-green-100 rounded-full p-1"
-          >
-            <IoCheckmarkSharp size={24} className="text-green-500" />
-          </button>
-        </div>
-      ) : (
-        <button onClick={setEditedRows} name="edit">
-          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
-        </button>
-      )}
-    </div>
+              <button
+                  onClick={setEditedRows}
+                  name="done"
+                  className="bg-green-100 rounded-full p-1"
+              >
+                <IoCheckmarkSharp size={24} className="text-green-500"/>
+              </button>
+            </div>
+        ) : (
+            <button onClick={setEditedRows} name="edit">
+              <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
+            </button>
+        )}
+      </div>
   );
 };
 
-export const attentdentColumns: ColumnDef<AttentType>[] = [
+export const attentdentColumns: ColumnDef<AttendanceType>[] = [
   {
     accessorKey: "cardId",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          CARD ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            CARD ID
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "fullName",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          FULLNAME(EN)
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            FULLNAME(EN)
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "gender",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          GENDER
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            GENDER
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "class",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          CLASS
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            CLASS
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "course",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          COURSE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            COURSE
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
@@ -231,29 +223,29 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
   },
   {
     accessorKey: "total",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          TOTAL SCORE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            TOTAL SCORE
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "status",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
           <Button
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             STATUS
-            <ArrowUpDown className="ml-2 h-4 w-4" />
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
           </Button>
       );
     },
@@ -261,9 +253,9 @@ export const attentdentColumns: ColumnDef<AttentType>[] = [
     meta: {
       type: "select",
       options: [
-        { value: 1, label: "Active" },
-        { value: 2, label: "Drop" },
-        { value: 3, label: "Draft" },
+        {value: 1, label: "Active"},
+        {value: 2, label: "Drop"},
+        {value: 3, label: "Draft"},
       ],
     },
   },

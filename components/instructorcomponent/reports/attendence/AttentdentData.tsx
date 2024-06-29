@@ -154,8 +154,8 @@ export function AttendanceData<TData, TValue>({
         setData([...originalData]);
     };
 
-    // filters data of instructor
-    const FilteredIns = data.reduce((semester: string[], item: any) => {
+    // filters data of semester
+    const FilteredSem = data.reduce((semester: string[], item: any) => {
         if (!semester.includes(item.semester)) {
             semester.push(item.semester);
         }
@@ -201,7 +201,7 @@ export function AttendanceData<TData, TValue>({
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
                                 <CommandGroup>
-                                    {FilteredIns.map((ins, index) => (
+                                    {FilteredSem.map((ins, index) => (
                                         <CommandItem
                                             key={index}
                                             value={ins}
