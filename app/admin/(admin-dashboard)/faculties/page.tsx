@@ -27,6 +27,7 @@ import {
     setFaculties
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
 import CourseFilterComponent from "@/components/card/filter/FIlterCourseCardComponent";
+import Error404Component from "@/components/errorPage/Error404Component";
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();
@@ -114,6 +115,7 @@ export default function Page() {
     return (
         <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">
             <section>
+                <Error404Component/>
                 <h1 className="mb-6 text-3xl font-bold text-lms-primary dark:text-blue-400">
                     Faculty Management
                 </h1>
