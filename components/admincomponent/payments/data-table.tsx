@@ -400,46 +400,48 @@ export function PaymentTable<TData, TValue>({
             {/* Table */}
             <div className="w-full rounded-md p-4 bg-white">
                 {/* class detail information */}
-                <div className="flex gap-16 p-4">
-                    <div>
+                <div className="flex flex-wrap gap-2 p-4 w-full">
+                    <div className="min-w-[150px]">
                         <Label className="text-gray-30">Generation</Label>
                         <p className="flex font-medium text-black">{selectedGen}</p>
                     </div>
 
-                    <div>
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Year</Label>
                         <p className="flex font-medium text-black">Foundation Year</p>
                     </div>
 
-                    <div>
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Academic Year</Label>
                         <p className="flex font-medium text-black">2024-2025</p>
                     </div>
 
-                    <div>
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Degree</Label>
                         <p className="flex font-medium text-black">Bachelor</p>
                     </div>
-                    <div>
+
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Faculty</Label>
                         <p className="flex font-medium text-black">Bachelor</p>
                     </div>
 
-                    <div>
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Major</Label>
                         <p className="flex font-medium text-black">Software Engineer</p>
                     </div>
 
-                    <div>
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Class</Label>
                         <p className="flex font-medium text-black">FY2025 - A1</p>
                     </div>
 
-                    <div>
+                    <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Shift</Label>
                         <p className="flex font-medium text-black">Morning</p>
                     </div>
                 </div>
+
 
                 <Table>
                     <TableHeader className="text-gray-30">

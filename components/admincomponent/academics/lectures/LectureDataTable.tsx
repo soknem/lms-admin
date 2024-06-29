@@ -180,6 +180,10 @@ export function LectureDataTable<TData, TValue>({
     return course;
   }, []);
 
+  // const handleRowClick = (row : any) => {
+  //   const uuid = table.getColumn('classCode'); // Adjust this according to your data structure
+  //   console.log('Clicked row UUID:', uuid?.id);
+  // };
 
 
   return (
@@ -381,7 +385,6 @@ export function LectureDataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
                 <TableRow
-                
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >

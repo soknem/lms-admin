@@ -159,9 +159,9 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-     
 
         <CreateGenForm/>
+
       </div>
 
       {/* Table */}

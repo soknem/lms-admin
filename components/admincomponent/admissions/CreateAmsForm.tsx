@@ -13,39 +13,39 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {DegreeType} from "@/lib/types/admin/faculty";
-import {useState} from "react";
-import Image from "next/image";
-import {create} from "domain";
-import {AdmissionType} from "@/lib/types/admin/admission";
 import {TbAsterisk} from "react-icons/tb";
+import {AdmissionType} from "@/lib/types/admin/admission";
+import {useCreateAdmissionMutation, useGetAdmissionsQuery} from "@/lib/features/admin/admission-management/admission";
 
 const initialValues = {
-    academic_year: "",
-    start_date: "",
-    end_date: "",
-    telegram_group: "",
+    academicYear: "",
+    openDate: "",
+    endDate: "",
+    telegramLink: "",
     remark: "",
-    status: "",
+    status: 0,
+    isDeleted: false,
 };
 
 const validationSchema = Yup.object().shape({
-    academic_year: Yup.string().required("Required"),
-    start_dater: Yup.string().required("Required"),
-    end_dater: Yup.string().required("Required"),
-    status: Yup.string().required("A selection is required"),
+    academicYear: Yup.string().required("Academic year is required"),
+    openDate: Yup.date().required("Start date is required"),
+    endDate: Yup.date().required("End date is required"),
+    telegramLink: Yup.string().required("Telegram group is required"),
+    remark: Yup.string(),
+    status: Yup.string(),
+    isDeleted: Yup.boolean(),
 });
 
-const handleSubmit = async (value: AdmissionType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
+
+const handleSubmit = async (values: AdmissionType, createAdmission: any) => {
+    try {
+        const response = await createAdmission(values).unwrap();
+        console.log('Admission created successfully:', response);
+        // Optionally, reset the form or close the dialog here
+    } catch (error) {
+        console.error('Failed to create admission:', error);
+    }
 };
 
 const RadioButton = ({field, value, label}: any) => {
@@ -65,42 +65,10 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
-
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
-    };
-    return (
-        <div>
-            <input onChange={(e) => handleUploadFile(e)} type="file"/>
-            {imagePreview && (
-                <Image src={imagePreview} alt="preview" width={200} height={200}/>
-            )}
-        </div>
-    );
-};
-
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function CreateAmsForm() {
+    const [createAdmission] = useCreateAdmissionMutation();
+
     return (
         <Dialog>
 
@@ -119,129 +87,111 @@ export function CreateAmsForm() {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create degree post
-                        const admissionPost: AdmissionType = {
-                            academic_year: values.academic_year,
-                            start_date: values.start_date,
-                            end_date: values.end_date,
-                            telegram_group: values.telegram_group,
-                            remark: values.remark,
-                            status: values.status,
-                        };
-
-                        // post product
-                        handleSubmit(admissionPost);
-                    }}
+                    onSubmit={(values) => handleSubmit(values, createAdmission)}
                 >
-                    {({setFieldValue}) => (
+                    {() => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-4">
-                                {/* Degree Level*/}
-                                <div className={` ${style.inputContainer}`}>
+                                <div className={style.inputContainer}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="level">
+                                        <label className={style.label} htmlFor="academicYear">
                                             Academic Year
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
                                     <Field
                                         type="text"
-                                        placeholder="2022-2023"
-                                        name="level"
-                                        id="level"
-                                        className={` ${style.input}`}
+                                        name="academicYear"
+                                        id="academicYear"
+                                        className={style.input}
                                     />
                                     <ErrorMessage
-                                        name="level"
+                                        name="academicYear"
                                         component="div"
-                                        className={`${style.error}`}
+                                        className={style.error}
                                     />
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
+                                <div className={style.inputContainer}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="startYear">
-                                            Start Date
+                                        <label className={style.label} htmlFor="openDate">
+                                            Open Date
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
                                     <Field
                                         type="date"
-                                        name="startYear"
-                                        id="startYear"
-                                        className={`${style.input}`}
+                                        name="openDate"
+                                        id="openDate"
+                                        className={style.input}
                                     />
                                     <ErrorMessage
-                                        name="startYear"
+                                        name="openDate"
                                         component="div"
-                                        className={`${style.error}`}
+                                        className={style.error}
                                     />
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
+                                <div className={style.inputContainer}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="startYear">
+                                        <label className={style.label} htmlFor="endDate">
                                             End Date
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
                                     <Field
                                         type="date"
-                                        name="startYear"
-                                        id="startYear"
-                                        className={`${style.input}`}
+                                        name="endDate"
+                                        id="endDate"
+                                        className={style.input}
                                     />
                                     <ErrorMessage
-                                        name="startYear"
+                                        name="endDate"
                                         component="div"
-                                        className={`${style.error}`}
+                                        className={style.error}
                                     />
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="degree">
-                                        Remark
-                                    </label>
-                                    <Field
-                                        type="text"
-                                        name="degree"
-                                        placeholder="this admission for first generation"
-                                        id="degree"
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="degree"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
-
-                                <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="degree">
+                                <div className={style.inputContainer}>
+                                    <label className={style.label} htmlFor="telegramLink">
                                         Telegram Group URL
                                     </label>
                                     <Field
                                         type="text"
                                         placeholder="https://t.me/admission_group"
-                                        name="degree"
-                                        id="degree"
-                                        className={`${style.input}`}
+                                        name="telegramLink"
+                                        id="telegramLink"
+                                        className={style.input}
                                     />
                                     <ErrorMessage
-                                        name="degree"
+                                        name="telegramLink"
                                         component="div"
-                                        className={`${style.error}`}
+                                        className={style.error}
+                                    />
+                                </div>
+
+                                <div className={style.inputContainer}>
+                                    <label className={style.label} htmlFor="remark">
+                                        Remark
+                                    </label>
+                                    <Field
+                                        type="text"
+                                        name="remark"
+                                        placeholder="This admission is for the first generation"
+                                        id="remark"
+                                        className={style.input}
+                                    />
+                                    <ErrorMessage
+                                        name="remark"
+                                        component="div"
+                                        className={style.error}
                                     />
                                 </div>
 
                                 {/* status */}
-                                <div className={`${style.inputContainer}  `}>
+                                <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="status">
+                                        <label className={style.label} htmlFor="status">
                                             Visibility
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -263,21 +213,48 @@ export function CreateAmsForm() {
                                             name="status"
                                             component={RadioButton}
                                             value="3"
-                                            label="Disable"
+                                            label="Disabled"
                                         />
                                     </div>
-
                                     <ErrorMessage
                                         name="status"
-                                        component={RadioButton}
-                                        className={`${style.error}`}
+                                        component="div"
+                                        className={style.error}
+                                    />
+                                </div>
+
+                                <div className={style.inputContainer}>
+                                    <div className="flex">
+                                        <label className={style.label} htmlFor="isDeleted">
+                                            isDeleted
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <div className="flex gap-4 h-[40px] items-center">
+                                        <Field
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            value="true"
+                                            label="Yes"
+                                        />
+                                        <Field
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            value="false"
+                                            label="No"
+                                        />
+                                    </div>
+                                    <ErrorMessage
+                                        name="isDeleted"
+                                        component="div"
+                                        className={style.error}
                                     />
                                 </div>
                             </div>
 
                             {/* button submit */}
                             <DialogFooter>
-                            <Button
+                                <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >

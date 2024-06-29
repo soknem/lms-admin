@@ -17,9 +17,8 @@ import {FacultyType} from "@/lib/types/admin/faculty";
 import React, {useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
-// import formatters from "chart.js/dist/core/core.ticks";
-// import values = formatters.values;
-
+import {useCreateFacultyMutation} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 
 const initialValues = {
     alias: "",
@@ -29,44 +28,16 @@ const initialValues = {
     logo: "",
     isDeleted: true,
     isDraft: true
-
 };
 
-const FILE_SIZE = 1024 * 1024 * 2; // 2MB
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 const validationSchema = Yup.object().shape({
-    id: Yup.number(),
-    name: Yup.string().required("Required"),
-    description: Yup.string().required("Required"),
-    logo: Yup.mixed()
-        .test("fileFormat", "Unsupported Format", (value: any) => {
-            if (!value) {
-                return true;
-            }
-            return SUPPORTED_FORMATS.includes(value.type);
-        })
-        .test("fileSize", "Fsile Size is too large", (value: any) => {
-            if (!value) {
-                true;
-            }
-            return value.size <= FILE_SIZE;
-        })
-        .required("Required"),
-    status: Yup.string().required("A selection is required"),
-});
+    alias: Yup.string().required('Alias is required'),
+    name: Yup.string().required('Title is required'),
+    address: Yup.string().required('Address is required'),
+    isDraft: Yup.boolean().required('Visibility is required'),
 
-const handleSubmit = async (value: FacultyType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/facultys`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("faculty upload: ", data)
-};
+});
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -101,7 +72,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
             <input
                 type="file"
                 onChange={handleUploadFile}
-                className="hidden "
+                className="hidden"
                 id="file"
             />
             <label
@@ -109,7 +80,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
                 className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
             >
                 {!imagePreview ? (
-                    <div className="flex  items-center justify-center gap-8">
+                    <div className="flex items-center justify-center gap-8">
                         <FiUploadCloud className="text-lms-primary text-[34px]"/>
                         <div className="flex flex-col items-start justify-start gap-1">
                             <p className="text-center text-md text-black">
@@ -121,33 +92,57 @@ const CustomInput = ({field, setFieldValue}: any) => {
                         </div>
                     </div>
                 ) : (
-                    <Image
-                        src={imagePreview}
-                        alt="preview"
-                        layout="fill"
-                        objectFit="cover"
-                    />
+                    <div style={{position: 'relative', width: '100%', height: '100%'}}>
+                        <Image
+                            src={imagePreview}
+                            alt="preview"
+                            fill
+                            style={{objectFit: 'contain'}}
+                        />
+                    </div>
                 )}
             </label>
         </div>
     );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
-
 export function CreateFacForm() {
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [createFaculty] = useCreateFacultyMutation();
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            // Upload the logo file
+            const fileData = new FormData();
+            fileData.append("file", values.logo);
+
+            const fileResponse = await createSingleFile(fileData).unwrap();
+            console.log(fileResponse)
+
+            if (fileResponse) {
+                // File uploaded successfully, now create the faculty
+                const newFaculty: FacultyType = {
+                    alias: values.alias,
+                    name: values.name,
+                    description: values.description,
+                    address: values.address,
+                    logo: fileResponse.name, // Assuming the response contains the URL of the uploaded file
+                    isDeleted: values.isDeleted,
+                    isDraft: values.isDraft,
+                };
+
+                const res = await createFaculty(newFaculty).unwrap();
+                resetForm();
+                // Handle success (e.g., show a success message or close the dialog)
+            }
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error creating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -164,28 +159,36 @@ export function CreateFacForm() {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create faculty post
-                        const FacultyPost: FacultyType = {
-                            alias: values.alias,
-                            name: values.name,
-                            description: values.description,
-                            address: values.address,
-                            logo: values.logo,
-                            isDeleted: values.isDeleted,
-                            isDraft: values.isDraft
-                        };
-
-                        // post product
-                        handleSubmit(FacultyPost);
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-1">
+                                {/* Faculty Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Alias
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
 
-                                {/* faculty title*/}
-                                <div className={` ${style.inputContainer}`}>
+                                    <Field
+                                        type="text"
+                                        placeholder="Faculty of Engineering"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* Faculty Title */}
+                                <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="name">
                                             Title
@@ -198,7 +201,7 @@ export function CreateFacForm() {
                                         placeholder="Faculty of Engineering"
                                         name="name"
                                         id="name"
-                                        className={` ${style.input}`}
+                                        className={`${style.input}`}
                                     />
                                     <ErrorMessage
                                         name="name"
@@ -221,10 +224,33 @@ export function CreateFacForm() {
                                     />
                                 </div>
 
-                                {/* status */}
-                                <div className={`${style.inputContainer}  `}>
+                                {/* Faculty Address */}
+                                <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="status">
+                                        <label className={`${style.label}`} htmlFor="address">
+                                            Address
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        placeholder="123 University Ave"
+                                        name="address"
+                                        id="address"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="address"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* isDraft */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="isDraft">
                                             Visibility
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -232,33 +258,58 @@ export function CreateFacForm() {
 
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="1"
+                                            value="true"
                                             label="Public"
                                         />
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="2"
+                                            value="false"
                                             label="Draft"
-                                        />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="3"
-                                            label="Disable"
                                         />
                                     </div>
 
                                     <ErrorMessage
-                                        name="status"
+                                        name="isDraft"
                                         component={RadioButton}
                                         className={`${style.error}`}
                                     />
                                 </div>
 
-                                {/* Faculty Image*/}
+                                {/* isDeleted */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="isDeleted">
+                                            Status
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <div className="flex gap-4 h-[40px] items-center">
+                                        <Field
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            value="true"
+                                            label="Public"
+                                        />
+                                        <Field
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            value="false"
+                                            label="Draft"
+                                        />
+                                    </div>
+
+                                    <ErrorMessage
+                                        name="isDeleted"
+                                        component={RadioButton}
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* Faculty Image */}
                                 <div className="mb-4">
                                     <label
                                         htmlFor="logo"
@@ -282,7 +333,7 @@ export function CreateFacForm() {
                                 </div>
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"

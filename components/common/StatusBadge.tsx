@@ -10,9 +10,9 @@ const StatusBadge = ({ type , status  } : any ) => {
         case 'warning':
           return 'bg-yellow-100 text-[#C29343] hover:bg-yellow-100';
         case 'error':
-          return 'bg-red-500 text-white';
+          return 'bg-red-500 text-white hover:bg-red-500 ';
         default:
-          return 'bg-gray-200 text-gray-500';
+          return 'bg-gray-200 text-gray-500 hover:bg-gray-200';
       }
     };
   
