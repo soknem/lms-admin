@@ -60,7 +60,6 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-
 export function CreateDeForm() {
     const [createDegree] = useCreateDegreeMutation();
 
@@ -86,7 +85,7 @@ export function CreateDeForm() {
                 >
                     {() => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-1">
 
                                 {/* Degree Alias*/}
                                 <div className={` ${style.inputContainer}`}>
@@ -155,7 +154,7 @@ export function CreateDeForm() {
                                 <div className={`${style.inputContainer}  `}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="isDraft">
-                                            isDraft
+                                            Visibility
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
@@ -184,7 +183,7 @@ export function CreateDeForm() {
                                 <div className={`${style.inputContainer}  `}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="isDeleted">
-                                            isDeleted
+                                            Status
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>

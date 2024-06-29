@@ -69,7 +69,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { uuid: string }, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
@@ -153,10 +153,10 @@ export function DataTable<TData, TValue>({
 
   //reset-password popup
   const handleReset = (columnId: string) => {
-    if (columnId === 'generationAlias') {
+    if (columnId === 'generation') {
       setSelectedGen(null);
     }
-    if (columnId === 'studyProgramAlias') {
+    if (columnId === 'studyProgram') {
       setSelectedClass(null);
     }
     table.getColumn(columnId)?.setFilterValue('');
@@ -165,20 +165,20 @@ export function DataTable<TData, TValue>({
 
 
   // filter data of generation
-  const FilteredGen = data.reduce((generationAlias: string[], item: any) => {
-    if (!generationAlias.includes(item.generationAlias)) {
-      generationAlias.push(item.generationAlias);
+  const FilteredGen = data.reduce((generation: string[], item: any) => {
+    if (!generation.includes(item.generation)) {
+      generation.push(item.generation);
     }
-    return generationAlias;
+    return generation;
   }, []);
 
 
   // filter data of study program
-  const FilteredProgram = data.reduce((studyProgramAlias: string[], item: any) => {
-    if (!studyProgramAlias.includes(item.studyProgramAlias)) {
-      studyProgramAlias.push(item.studyProgramAlias);
+  const FilteredProgram = data.reduce((studyProgram: string[], item: any) => {
+    if (!studyProgram.includes(item.studyProgram)) {
+      studyProgram.push(item.studyProgram);
     }
-    return studyProgramAlias;
+    return studyProgram;
   }, []);
 
 
@@ -192,10 +192,10 @@ export function DataTable<TData, TValue>({
           <Input
             placeholder="Search by class...."
             value={
-              (table.getColumn("className")?.getFilterValue() as string) ?? ""
+              (table.getColumn("classCode")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
-              table.getColumn("className")?.setFilterValue(event.target.value)
+              table.getColumn("classCode")?.setFilterValue(event.target.value)
             }
 
             className="border-[#E6E6E6] bg-white pl-10 "
@@ -230,7 +230,7 @@ export function DataTable<TData, TValue>({
                       value={generation}
                       onSelect={(value) => {
                         setSelectedGen(value);
-                        table.getColumn('generationAlias')?.setFilterValue(value);
+                        table.getColumn('generation')?.setFilterValue(value);
                         setOpenGeneration(false);
                       }}
                     >
@@ -241,7 +241,7 @@ export function DataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedGen && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generationAlias')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('generation')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -268,7 +268,7 @@ export function DataTable<TData, TValue>({
                       value={program}
                       onSelect={(value) => {
                         setSelectedClass(value);
-                        table.getColumn('studyProgramAlias')?.setFilterValue(value);
+                        table.getColumn('studyProgram')?.setFilterValue(value);
                         setOpenClass(false);
                       }}
                     >
@@ -279,7 +279,7 @@ export function DataTable<TData, TValue>({
               </CommandList>
             </Command>
             {selectedClass && (
-              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgramAlias')}>Reset</Button>
+              <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studyProgram')}>Reset</Button>
             )}
           </PopoverContent>
         </Popover>
@@ -346,7 +346,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
 
                   //on click go to class detail
-                  onClick={() => router.push(`classes/${row.id}`)}
+                  onClick={() => router.push(`classes/${row.original.uuid}`)}
                   className='cursor-pointer'
                 >
                   {row.getVisibleCells().map(cell => (

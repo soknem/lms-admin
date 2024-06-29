@@ -17,7 +17,6 @@ export default  function Lecture() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { data, error, isLoading } = useGetLectureQuery({ page: 0, pageSize: 10 });
-
   const LectureData = useSelector((state: RootState) => selectLecture(state));
 
   // Filter data from lecture response
@@ -49,7 +48,7 @@ export default  function Lecture() {
     }
   }, [data, error, dispatch]);
 
-  console.log("lecture data: ", LectureData);
+  console.log("lecture data from lecture page: ", LectureData);
 
 
   return (

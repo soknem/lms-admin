@@ -23,14 +23,6 @@ const subjectsSlice = createSlice({
             state.isLoading = false;
             state.error = null;
         },
-        setLoading: (state) => {
-            state.isLoading = true;
-            state.error = null;
-        },
-        setError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
         addSubject: (state, action: PayloadAction<SubjectType>) => {
             state.subjects.push(action.payload);
             state.isLoading = false;
@@ -39,7 +31,7 @@ const subjectsSlice = createSlice({
     }
 })
 
-export const {addSubject, setSubjects, setLoading, setError} = subjectsSlice.actions;
+export const {addSubject, setSubjects} = subjectsSlice.actions;
 export const selectSubject = (state: RootState) => state.subject.subjects;
 export const selectLoading = (state: RootState) => state.subject.isLoading;
 export const selectError = (state: RootState) => state.subject.error;

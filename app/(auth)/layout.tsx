@@ -1,46 +1,45 @@
 "use client";
 import "@/app/globals.css";
-import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
-import {ReactNode, useState, useEffect} from "react";
+import {ReactNode, Suspense} from "react";
 import {inter, suwannaphum} from "@/app/font";
 import StoreProvider from "@/app/StoreProvider";
 import {ErrorBoundary} from "next/dist/client/components/error-boundary";
 import Error from "@/app/error";
-import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
-import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 import {Toaster} from "@/components/ui/toaster";
 
 interface RootLayoutProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export default function RootLayoutParent({children}: RootLayoutProps) {
 
-  return (
-      <html lang="en" suppressHydrationWarning>
-      <body
-          className={cn(
-              "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
-              inter.variable, suwannaphum.variable
-          )}
-      >
-      <StoreProvider>
-          <ErrorBoundary errorComponent={Error}>
-              <section
-                  className="relative flex flex-grow min-h-[calc(100vh)] bg-cover bg-center"
-                  style={{backgroundImage: "url('/loginImage.jpg')"}}
-              >
-                  <section className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></section>
-                  <section className="relative w-full">
-                      {children}
-                      <Toaster/>
-                  </section>
-              </section>
+    return (
+        <html lang="en" suppressHydrationWarning>
+        <body
+            className={cn(
+                "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-[#f5f5f5] dark:bg-[#1a1a1a] text-[#333] dark:text-[#f5f5f5] ",
+                inter.variable, suwannaphum.variable
+            )}
+        >
+        <StoreProvider>
+            <ErrorBoundary errorComponent={Error}>
+                <Suspense fallback={<div>Loading...</div>}>
 
-          </ErrorBoundary>
-      </StoreProvider>
-      </body>
-      </html>
-  );
+
+                    <section className="absolute inset-0 "></section>
+                    <section className="relative w-full">
+                        {children}
+                        <Toaster/>
+                    </section>
+
+
+                </Suspense>
+
+
+            </ErrorBoundary>
+        </StoreProvider>
+        </body>
+        </html>
+    );
 }

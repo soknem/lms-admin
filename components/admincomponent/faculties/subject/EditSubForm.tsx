@@ -3,70 +3,25 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../../style.module.css";
-import {FiPlus} from "react-icons/fi";
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {FacultyType, SubjectType} from "@/lib/types/admin/faculty";
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
-import {FaCamera} from "react-icons/fa6";
 import {TbAsterisk} from "react-icons/tb";
-
-const initialValues = {
-    title: "",
-    logo: "",
-    hour: 0,
-    theory: 0,
-    practice: 0,
-    internship: 0,
-    description: "",
-    status: "",
-};
-
-const FILE_SIZE = 1024 * 1024 * 2; // 2MB
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
-
-const validationSchema = Yup.object().shape({
-    subject: Yup.string(),
-    hour: Yup.number(),
-    theory: Yup.number(),
-    practice: Yup.number(),
-    hinternshipour: Yup.number(),
-    description: Yup.string(),
-    logo: Yup.mixed()
-        .test("fileFormat", "Unsupported Format", (value: any) => {
-            if (!value) {
-                return true;
-            }
-            return SUPPORTED_FORMATS.includes(value.type);
-        })
-        .test("fileSize", "File Size is too large", (value: any) => {
-            if (!value) {
-                true;
-            }
-            // return value.size <= FILE_SIZE;
-        }),
-    status: Yup.string().required("A selection is required"),
-});
-
-const handleSubmit = async (value: SubjectType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/facultys`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("faculty upload: ", data)
-};
+import {IoCameraOutline} from "react-icons/io5";
+import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
+import {
+    useEditSubjectByAliasMutation,
+    useGetSubjectByAliasQuery,
+    useGetSubjectsQuery
+} from "@/lib/features/admin/faculties/subject/subject";
+import {SubjectType} from "@/lib/types/admin/faculty";
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -74,104 +29,227 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
     );
 };
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
-
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
+const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
+    const [imagePreview, setImagePreview] = useState(previewUrl);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const handleContainerClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
     };
+
+    const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const localUrl = URL.createObjectURL(file);
+            setImagePreview(localUrl);
+            setFieldValue(field.name, file);
+        }
+    };
+
     return (
-        <div>
-            <input onChange={(e) => handleUploadFile(e)} type="file"/>
-            {imagePreview && (
-                <Image src={imagePreview} alt="preview" width={200} height={200}/>
-            )}
+        <div className="w-full">
+            <div
+                className={`flex items-center justify-center relative ${style.imageContainer}`}
+                onClick={handleContainerClick}
+            >
+                {imagePreview ? (
+                    <Image
+                        src={imagePreview}
+                        alt="preview"
+                        fill
+                        style={{objectFit: "contain"}}
+                    />
+                ) : (
+                    <img
+                        src={previewUrl}
+                        alt="faculty"
+                        className="w-full h-full rounded-full"
+                    />
+                )}
+                <div
+                    className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2"
+                >
+                    <IoCameraOutline className="w-5 h-5"/>
+                </div>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleUploadFile}
+                />
+            </div>
         </div>
     );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
-
-export function EditSubjectForm() {
+export function EditSubjectForm({alias}: { alias: string }) {
     const [open, setOpen] = useState(true);
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [initialAlias, setInitialAlias] = useState("");
+    const [logo, setLogo] = useState(null);
+    const [editSubject] = useEditSubjectByAliasMutation();
+    const {data: subjectData, isSuccess} = useGetSubjectByAliasQuery(alias);
+    const {refetch: refetchSubjects} = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const [initialValues, setInitialValues] = useState({
+        alias: "",
+        title: "",
+        logo: "",
+        duration: 0,
+        theory: 0,
+        practice: 0,
+        internship: 0,
+        description: "",
+        isDraft: false,
+    });
 
     const handleClose = () => {
         setOpen(false);
     };
+
+    useEffect(() => {
+        if (isSuccess && subjectData) {
+            setInitialValues({
+                alias: subjectData.alias,
+                title: subjectData.title,
+                logo: subjectData.logo,
+                duration: subjectData.duration,
+                theory: subjectData.theory,
+                practice: subjectData.practice,
+                internship: subjectData.internship,
+                description: subjectData.description,
+                isDraft: subjectData.isDraft,
+            });
+            setInitialAlias(subjectData.alias);
+            setLogo(subjectData.logo)
+        }
+    }, [isSuccess, subjectData]);
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            let logoUrl = values.logo;
+
+            // Upload the logo file if it's a new file
+            if (values.logo instanceof File) {
+                const fileData = new FormData();
+                fileData.append("file", values.logo);
+                const fileResponse = await createSingleFile(fileData).unwrap();
+                logoUrl = fileResponse.name; // Assuming the response contains the URL of the uploaded file
+            } else if (values.logo === logo) {
+                // If the logo hasn't changed, set logoUrl to null
+                logoUrl = null;
+            }
+
+            // if (logo === values.logo) {
+            //     setLogo("");
+            // } else {
+            //     setLogo(logoUrl);
+            // }
+            // console.log("Logo", logo)
+
+            const editSubjectByAlias: SubjectType = {
+                title: values.title,
+                logo: logoUrl,
+                duration: values.duration,
+                theory: values.theory,
+                practice: values.practice,
+                internship: values.internship,
+                description: values.description,
+                isDraft: values.isDraft,
+                alias: values.alias,
+
+                // ...values,
+                // logo: logoUrl
+            };
+
+            await editSubject({alias: initialAlias, updatedData: editSubjectByAlias}).unwrap();
+            console.log("Original", initialAlias)
+
+            // Now update the alias if it has changed
+            if (values.alias !== initialAlias) {
+                await editSubject({
+                    alias: values.alias,
+                    updatedData: {...editSubjectByAlias, alias: values.alias}
+                }).unwrap();
+            }
+
+            resetForm();
+            refetchSubjects();
+            console.log("Update successfully")
+            // router.refresh(); // or any other navigation action
+            handleClose()
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error updating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
+        <Dialog open={open} onOpenChange={handleClose} modal={true}>
             <DialogContent className="w-[540px] bg-white ">
                 <DialogHeader>
                     <DialogTitle>Edit Subject</DialogTitle>
                 </DialogHeader>
 
                 <Formik
+                    enableReinitialize
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create faculty post
-                        const SubjectPost: SubjectType = {
-                            title: values.title,
-                            logo: values.logo,
-                            hour: values.hour,
-                            theory: values.theory,
-                            practice: values.practice,
-                            internship: values.internship,
-                            description: values.description,
-                            status: values.status,
-                        };
-
-                        // post product
-                        handleSubmit(SubjectPost);
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col items-center gap-4">
-                                <div
-                                    className={`flex items-center justify-center relative ${style.imageContainer}`}
-                                >
-                                    <img
-                                        src="https://api.istad.co/media/image/a3c4f87e-7a85-44c3-a568-6c5abef76cfe.png"
-                                        alt="faculty"
-                                        className="w-full h-full rounded-full"
+                            <div className="flex flex-col items-center justify-center gap-1">
+
+
+                                <div className="flex">
+                                    <Field
+                                        name="logo"
+                                        component={CustomInput}
+                                        setFieldValue={setFieldValue}
+                                        previewUrl={initialValues.logo}
                                     />
-                                    <div
-                                        className="w-8 h-8 bg-lms-background rounded-full flex items-center justify-center absolute right-0 bottom-1">
-                                        <FaCamera/>
-                                    </div>
                                 </div>
+
+
+                                {/* Subject Alias */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="subject">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Alias
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        placeholder="Faculty of Engineering"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="title">
                                             Subject
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -180,12 +258,12 @@ export function EditSubjectForm() {
                                     <Field
                                         type="text"
                                         placeholder="Introduction to IT"
-                                        name="subject"
-                                        id="subject"
+                                        name="title"
+                                        id="title"
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
-                                        name="subject"
+                                        name="title"
                                         component="div"
                                         className={`${style.error}`}
                                     />
@@ -195,13 +273,13 @@ export function EditSubjectForm() {
                                     className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}>
                                     <div className="w-[80px] ">
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="hour">
+                                            <label className={`${style.label}`} htmlFor="duration">
                                                 Hour
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="hour" className={` ${style.input}`}/>
+                                        <Field name="duration" className={` ${style.input}`}/>
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -260,7 +338,7 @@ export function EditSubjectForm() {
                                 {/* status */}
                                 <div className={`${style.inputContainer}  `}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="status">
+                                        <label className={`${style.label}`} htmlFor="isDraft">
                                             Visibility
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -268,34 +346,27 @@ export function EditSubjectForm() {
 
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="1"
+                                            value="true"
                                             label="Public"
                                         />
                                         <Field
-                                            name="status"
+                                            name="isDraft"
                                             component={RadioButton}
-                                            value="2"
+                                            value="false"
                                             label="Draft"
-                                        />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="3"
-                                            label="Disable"
                                         />
                                     </div>
 
                                     <ErrorMessage
-                                        name="status"
+                                        name="isDraft"
                                         component={RadioButton}
                                         className={`${style.error}`}
                                     />
                                 </div>
 
                             </div>
-
 
                             {/* button submit */}
                             <DialogFooter>

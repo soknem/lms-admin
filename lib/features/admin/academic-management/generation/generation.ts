@@ -20,11 +20,25 @@ export const generationApi = istadLmsApi.injectEndpoints({
                 body: body,
             }),
         }),
+        disableGeneration: builder.mutation<void, string>({
+            query: (genAlias) => ({
+                url: `/generations/${genAlias}/disable`,
+                method: 'PUT',
+            }),
+        }),
+        enableGeneration: builder.mutation<void, string>({
+            query: (genAlias) => ({
+                url: `/generations/${genAlias}/enable`,
+                method: 'PUT',
+            }),
+        }),
     })
 })
 
 export const {
     useGetGenerationQuery,
     useCreateGenerationMutation,
-    useFilterGenerationsMutation
+    useFilterGenerationsMutation,
+    useEnableGenerationMutation,
+    useDisableGenerationMutation,
 } = generationApi;

@@ -28,7 +28,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Check, ChevronsUpDown } from "lucide-react"
+
 
 import { cn } from "@/lib/utils"
 import {useDispatch, useSelector} from "react-redux";
@@ -38,15 +38,11 @@ import {
     setClasses,
 } from "@/lib/features/admin/academic-management/classes/classSlice";
 import {useGetClassByUuidQuery, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
-import {setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";
 import {CreateGenerationType, FormLectureType, ShortCourseType} from "@/lib/types/admin/academics";
-import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
 import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
-import {addLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {Class} from "@/lib/types/admin/academics";
 import Select, {ActionMeta, SingleValue} from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
-import { MdError } from "react-icons/md";
 
 
 type OptionType  = {
@@ -84,6 +80,7 @@ export default function CreateLectureForm() {
     const [isLoading, setIsLoading] = useState(false);
 
     const [createLecture] = useAddLectureMutation();
+    const { refetch: refetchLecture } = useGetLectureQuery({ page: 0, pageSize: 10 });
 
     const handleCreateLecture = async (values : FormLectureType) => {
         try {
@@ -100,18 +97,13 @@ export default function CreateLectureForm() {
             };
 
             const result = await createLecture(newLecture).unwrap();
+            refetchLecture()
             toast.success('Successfully created!');
             console.log('Lecture created successfully');
 
 
         } catch (err : any) {
-            // console.error('Error creating lecture:', err);
-            // toast.error(`Failed to creating lecture`);
-            // if(err.status === 409){
-            //     console.log("lecture already exists.")
-            // }else{
-            //     console.log("Generation creation failed:");
-            // }
+
             let errorMessage = 'Failed to create lecture';
             if (Array.isArray(err.data.error.description)) {
                 // If description is an array, map over it to construct a more detailed error message
@@ -232,7 +224,7 @@ export default function CreateLectureForm() {
         setSelectedClassUUID(uuid); // Update your state or handle the UUID as needed
     };
 
-    const classDropdownData = classes.content;
+    const classDropdownData = classes;
 
     // ====== Course [fetch course by class uuid]========
     const {data : classData, error: classError } = useGetClassByUuidQuery(selectedClassUUID)
@@ -417,7 +409,6 @@ export default function CreateLectureForm() {
                         <Select
                             className="basic-single"
                             classNamePrefix="select"
-                            defaultValue={classDropdownData[0]}
                             isClearable={true}
                             isSearchable={true}
                             name="class"
@@ -434,7 +425,6 @@ export default function CreateLectureForm() {
                         <Select
                             className="basic-single"
                             classNamePrefix="select"
-                            defaultValue={Courses[0]}
                             isClearable={true}
                             isSearchable={true}
                             name="course"
@@ -451,7 +441,6 @@ export default function CreateLectureForm() {
                         <Select
                             className="basic-single"
                             classNamePrefix="select"
-                            defaultValue={teachingType[0]}
                             name="teachingType"
                             options={teachingType}
                             onChange={handleTeachingChange}
@@ -466,7 +455,6 @@ export default function CreateLectureForm() {
                         <Select
                             className="basic-single "
                             classNamePrefix="select"
-                            defaultValue={statusList[0]}
                             name="teachingType"
                             options={statusList}
                             onChange={handleStatusChange}

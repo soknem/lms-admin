@@ -31,8 +31,6 @@ export default function Generation() {
 
     // console.log("generation from page: " , generations)
 
-    // console.log("generation from page: ", generations)
-
     const genData: GenerationType[] = generations;
 
     return (

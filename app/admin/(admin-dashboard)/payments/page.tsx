@@ -11,7 +11,6 @@ import {
     selectPayment,
     setPayments
 } from "@/lib/features/admin/payment-management/paymentSlice";
-import {setError} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {useGetPaymentsQuery} from "@/lib/features/admin/payment-management/payment";
 
 export default function Payments() {
@@ -28,9 +27,6 @@ export default function Payments() {
     useEffect(() => {
         if (paymentsData) {
             dispatch(setPayments(paymentsData.content));
-        }
-        if (payError) {
-            dispatch(setError(payError.toString()));
         }
     }, [paymentsData, payError, dispatch]);
 
