@@ -106,7 +106,7 @@ export function CurriculumTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
+    // console.log("data from in curriculum: ", data);
 
     const filterOptions = ["All", "Public", "Disable", "Draft"];
 
