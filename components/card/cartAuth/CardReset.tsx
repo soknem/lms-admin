@@ -36,13 +36,13 @@ const initialValues: InitialValues = {
 
 // Define validation schema using Yup
 const validationSchema = Yup.object({
-    password: Yup.string().required('Password is required'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Passwords must match').required('Confirm password is required'),
+    password: Yup.string().required('Please enter your new password.'),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Confirm new passwords must match with new password').required('Confirm password is required'),
 });
 
 // Define function to get field class name based on validation status
 const getFieldClassName = (errors: FormikErrors<InitialValues>, touched: FormikTouched<InitialValues>, fieldName: keyof InitialValues) => {
-    const baseClass = "bg-gray-100 dark:bg-gray-100 border text-gray-900 dark:text-gray-900 text-[15px] rounded-xl focus:ring-blue-500 block w-full p-2.5";
+    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-gray-300 block w-full p-2.5";
     const errorClass = "border-red-500 dark:border-red-500 focus:border-red-500";
     const validClass = "border-gray-300 dark:border-gray-300";
 
@@ -92,7 +92,7 @@ export function CardReset() {
 
     // Render the component
     return (
-        <Card className="w-[550px] bg-white dark:bg-white p-[24px] border border-gray-300 dark:border-white">
+        <Card className="w-[450px] bg-white/70 backdrop-blur-md dark:bg-white p-[16px] border border-gray-300 dark:border-white">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -102,30 +102,31 @@ export function CardReset() {
             >
                 {({errors, touched}) => (
                     <section>
-                        <CardHeader className="items-center dark:border-black">
+                        <CardHeader className="items-center dark:border-white ">
                             <section className="mb-5">
-                                <Image src="/logo.png" alt="logo" width={200} height={200}/>
+                                <Image src="/logo.png" alt="logo" width={130} height={130}/>
                             </section>
-                            <CardTitle className="text-[36px] font-bold text-[#253C95] dark:text-[#253C95]">
-                                Reset your password
+                            <CardTitle className="text-[36px] tracking-[0.5px] leading-[54px] font-bold text-[#253C95] dark:text-[#253C95]">
+                                Change password
                             </CardTitle>
-                            <CardDescription className="text-[20px] text-[#808897] dark:text-[#808897]">
+                            <CardDescription className="text-[20px] tracking-[0.5px] leading-[30px] text-gray-600 ">
                                 Enter new password for your account
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Form>
-                                <section className="grid w-full items-center gap-4">
+                                <section className="grid w-full items-center gap-4 mt-[20px]">
                                     <section className="space-y-2">
-                                        <label className="text-[15px] text-gray-500 " htmlFor="password">
-                                            Password
+                                        <label className="text-[16px] text-gray-800 " htmlFor="password">
+                                            New Password
+                                            <span className={`text-red-500`}> *</span>
                                         </label>
                                         <div className="relative">
                                             <Field
                                                 type={showPassword ? "text" : "password"}
                                                 name="password"
                                                 id="password"
-                                                placeholder="Password"
+                                                placeholder="New Password"
                                                 className={getFieldClassName(errors, touched, 'password')}
                                             />
                                             {!showPassword ? <BsFillEyeFill
@@ -139,15 +140,16 @@ export function CardReset() {
                                         <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password"/>
                                     </section>
                                     <section className="space-y-2">
-                                        <label className="text-[15px] text-gray-500" htmlFor="confirmPassword">
-                                            Confirm Password
+                                        <label className="text-[16px] text-gray-800" htmlFor="confirmPassword">
+                                            Confirm New Password
+                                            <span className={`text-red-500`}> *</span>
                                         </label>
                                         <div className="relative">
                                             <Field
                                                 type={showConfirmPassword ? "text" : "password"}
                                                 name="confirmPassword"
                                                 id="confirmPassword"
-                                                placeholder="Confirm Password"
+                                                placeholder="Confirm New Password"
                                                 className={getFieldClassName(errors, touched, 'confirmPassword')}
                                             />
                                             {!showConfirmPassword ? <BsFillEyeFill
@@ -164,7 +166,7 @@ export function CardReset() {
                                 </section>
                                 <section className="flex flex-col justify-between mt-6">
                                     <Button type="submit"
-                                            className="w-full bg-[#253C95] hover:bg-[#243888] rounded-xl text-white py-6 text-[15px] ">
+                                            className="w-full bg-[#253C95] tracking-[0.5px] hover:bg-[#243888] rounded-xl text-white py-6 text-[16px] ">
                                         Reset Password
                                     </Button>
                                 </section>
