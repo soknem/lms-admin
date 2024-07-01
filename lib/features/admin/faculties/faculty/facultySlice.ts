@@ -22,16 +22,11 @@ const facultySlice = createSlice({
             state.faculties = action.payload;
             state.isLoading = false;
             state.error = null;
-        },
-        addFaculty: (state, action: PayloadAction<FacultyType>) => {
-            state.faculties.push(action.payload);
-            state.isLoading = false;
-            state.error = null;
-        },
+        }
     }
 })
 
-export const {addFaculty, setFaculties} = facultySlice.actions;
+export const {setFaculties} = facultySlice.actions;
 export const selectFaculty = (state: RootState) => state.faculty.faculties;
 export const selectLoading = (state: RootState) => state.faculty.isLoading;
 export const selectError = (state: RootState) => state.faculty.error;

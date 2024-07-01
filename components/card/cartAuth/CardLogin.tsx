@@ -1,15 +1,16 @@
 'use client'
-import React, { useState } from "react"
+import * as React from "react";
+import {useState} from "react";
 import Image from "next/image";
-import { BsFillEyeFill } from "react-icons/bs";
-import { HiEyeOff } from "react-icons/hi";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Formik, Form, Field, FormikErrors, FormikTouched } from "formik";
+import {BsFillEyeFill} from "react-icons/bs";
+import {HiEyeOff} from "react-icons/hi";
+import {useRouter} from "next/navigation";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Formik, Form, Field, FormikErrors, FormikTouched} from "formik";
 import * as Yup from "yup";
-import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail';
-import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
+import {CustomErrorMessageEmail} from '../alert/CustomErrorMessageEmail';
+import {CustomErrorMessagePass} from "../alert/CustomErrorMessagePass";
 
 
 interface InitialValues {
@@ -51,7 +52,9 @@ interface DecodedToken {
 }
 
 function parseJwt(token: string): DecodedToken | null {
-    if (!token) { return null; }
+    if (!token) {
+        return null;
+    }
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse(window.atob(base64));
@@ -116,7 +119,6 @@ export function CardLogin() {
                 setLoading(false); // Hide loading
             });
     };
-
 
     return (
         <Card className="w-[450px] bg-white/70 backdrop-blur-md dark:bg-white p-[16px] border border-gray-300 dark:border-white  ">

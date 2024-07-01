@@ -53,26 +53,26 @@ export default function Assessment() {
     const semesterData: semesterAssessementType[] = semesterAssessments;
 
     // filter course data from response
-    const transformData = (data: courseAssessmentType[]): courseAssessmentTableType[] => {
-        return data.map(item => ({
-            uuid: item.uuid,
-            cardId: 'N/A',
-            nameEn: item.student.nameEn,
-            gender: item.student.gender,
-            dob: item.student.dob,
-            class:  'N/A',
-            course: item.course ? item.course.title : 'N/A',
-            midtermExamScore: item.midtermExamScore,
-            finalExamScore: item.finalExamScore,
-            attendanceScore: item.attendanceScore,
-            assignmentScore: item.assignmentScore,
-            miniProjectScore: item.miniProjectScore,
-            activityScore: item.activityScore,
-            status: item.isDeleted ? 0 : 1,
-        }));
-    };
+    // const transformData = (data: courseAssessmentType[]): courseAssessmentTableType[] => {
+    //     return data.map(item => ({
+    //         uuid: item.uuid,
+    //         cardId: 'N/A',
+    //         nameEn: item.student.nameEn,
+    //         gender: item.student.gender,
+    //         dob: item.student.dob,
+    //         class:  'N/A',
+    //         course: item.course ? item.course.title : 'N/A',
+    //         midtermExamScore: item.midtermExamScore,
+    //         finalExamScore: item.finalExamScore,
+    //         attendanceScore: item.attendanceScore,
+    //         assignmentScore: item.assignmentScore,
+    //         miniProjectScore: item.miniProjectScore,
+    //         activityScore: item.activityScore,
+    //         status: item.isDeleted ? 0 : 1,
+    //     }));
+    // };
 
-    const courseData: courseAssessmentTableType[] = transformData(CourseAssessmentData);
+    // const courseData: courseAssessmentTableType[] = transformData(CourseAssessmentData);
 
     // console.log("data after filter: " , courseData)
 
@@ -96,7 +96,7 @@ export default function Assessment() {
                 </TabsContent>
 
                 <TabsContent value="course">
-                    <CourseAssesmentDataTable columns={CourseAssessmentColumns} data={courseData}/>
+                    {/*<CourseAssesmentDataTable columns={CourseAssessmentColumns} data={courseData}/>*/}
 
                 </TabsContent>
             </Tabs>
