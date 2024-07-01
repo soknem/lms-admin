@@ -16,11 +16,33 @@ export const classApi = istadLmsApi.injectEndpoints({
         getClassByUuid: builder.query({
             query: (uuid) => `/classes/${uuid}`,
         }),
+        enableClass: builder.mutation<void, string>({
+            query: (classUuid) => ({
+                url: `/classes/${classUuid}/enable`,
+                method: 'PUT',
+            }),
+        }),
+        disableClass: builder.mutation<void, string>({
+            query: (classUuid) => ({
+                url: `/classes/${classUuid}/disable`,
+                method: 'PUT',
+            }),
+        }),
+        updateClasses: builder.mutation<void, string>({
+            query: (classUuid) => ({
+                url: `/classes/${classUuid}`,
+                method: 'PATCH',
+            }),
+        }),
+
     })
 });
 
 export const {
     useGetClassesQuery,
+    useUpdateClassesMutation,
     useFilterClassesMutation,
-    useGetClassByUuidQuery
+    useGetClassByUuidQuery,
+    useEnableClassMutation,
+    useDisableClassMutation,
 } = classApi;

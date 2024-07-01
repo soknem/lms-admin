@@ -29,7 +29,6 @@ export type OptionType = {
 };
 
 // **** Class *****
-
 export type ClassTableFormType = {
     uuid: string;
     classCode: string;
@@ -313,4 +312,16 @@ export type ClassDetailResponseType = {
     students: any[];
     studyProgram: StudyProgramShortType;
 
+}
+
+// === Shift ====
+export type ShiftResponseType = {
+    alias: string;
+    name: string;
+    startTime: string;
+    endTime: string;
+    weekday: string;
+    description: string;
+    isDeleted: string;
+    isDraft: string;
 }

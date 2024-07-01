@@ -63,6 +63,7 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import CreateClassForm from "@/components/admincomponent/academics/classes/CreateClassForm";
+import Modal from "@/components/common/ModalComponent";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -180,6 +181,16 @@ export function DataTable<TData extends { uuid: string }, TValue>({
     }
     return studyProgram;
   }, []);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
 
   return (
@@ -311,16 +322,23 @@ export function DataTable<TData extends { uuid: string }, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Create class form */}
-        <CreateClassForm />
+        <Button
+            className="px-4 py-1 text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]"
+            onClick={handleOpenModal}
+        >
+          Create Class
+        </Button>
 
-      </div>
 
-      {/* Table */}
-      <div className='rounded-md p-4 bg-white'>
-        <Table>
-          <TableHeader className='text-lms-gray-30'>
-            {table.getHeaderGroups().map(headerGroup => (
+    </div>
+
+
+  {/* Table */
+  }
+  <div className='rounded-md p-4 bg-white'>
+    <Table>
+      <TableHeader className='text-lms-gray-30'>
+        {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(header => {
                   return (
@@ -344,10 +362,6 @@ export function DataTable<TData extends { uuid: string }, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-
-                  //on click go to class detail
-                  onClick={() => router.push(`classes/${row.original.uuid}`)}
-                  className='cursor-pointer'
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id} >
@@ -428,7 +442,8 @@ export function DataTable<TData extends { uuid: string }, TValue>({
           </Button>
         </div>
       </div>
-        
+      {/* CreateClassForm Modal */}
+      <CreateClassForm isVisible={isModalVisible} onClose={handleCloseModal}/>
       </>
       )
 }

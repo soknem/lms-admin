@@ -59,7 +59,7 @@ export default function Class() {
   return (
     <main >
       <section className="flex flex-col gap-2 h-full w-full p-9">
-        <h1 className=' text-3xl font-bold text-lms-primary '>Class</h1>
+        <h1 className=' text-3xl font-bold text-lms-primary '>Classes</h1>
         <DataTable columns={columns} data={transformToClassTableData(DetailClassData)} />
       </section>
 

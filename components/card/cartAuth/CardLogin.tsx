@@ -1,7 +1,7 @@
 // CardLogin.tsx
 'use client'
 import * as React from "react";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiEyeOff } from "react-icons/hi";
@@ -14,6 +14,10 @@ import { CustomErrorMessageEmail } from '../alert/CustomErrorMessageEmail';
 import { CustomErrorMessagePass } from "../alert/CustomErrorMessagePass";
 
 import {CardReset} from "@/components/card/cartAuth/CardReset";
+import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
+import {setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/lib/store";
 
 interface InitialValues {
     emailOrUsername: string;
@@ -60,6 +64,8 @@ function parseJwt(token: string): DecodedToken | null {
     return JSON.parse(window.atob(base64));
 }
 
+
+
 export function CardLogin() {
     const [showPassword, setShowPassword] = useState(false);
     const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
@@ -70,6 +76,8 @@ export function CardLogin() {
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     };
+
+
 
 
     const handleSubmit = (values: InitialValues, actions: any) => {

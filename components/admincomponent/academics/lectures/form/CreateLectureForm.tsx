@@ -200,7 +200,7 @@ export default function CreateLectureForm() {
         //     });
         // }
 
-    };}
+    }}
 
     // ========== class ===========
     const [selectedClassUUID, setSelectedClassUUID] = useState('');
