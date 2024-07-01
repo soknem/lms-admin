@@ -22,7 +22,6 @@ import fileSlice from "@/lib/features/uploadfile/fileSlice";
 import instructorcourseSlice from "@/lib/features/instructor/course/instructorcourseSlice";
 import detailClassesSlice from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
 import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
-import dashboardSlice from "@/lib/features/dashboard/DashboardSlice";
 
 
 export const makeStore = () => {
