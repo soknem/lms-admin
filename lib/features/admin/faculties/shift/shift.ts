@@ -12,6 +12,6 @@ export const shiftApi = istadLmsApi.injectEndpoints({
 })
 
 export const {
-   
+   useGetShiftQuery
 
 } = shiftApi;

@@ -55,6 +55,20 @@ export type Class = {
     courses: CourseInfo[];
 };
 
+export type ClassCreateType = {
+    classCode: string,
+    description: string,
+    year: number,
+    generationAlias: string,
+    studyProgramAlias: string,
+    shiftAlias: string,
+    instructorUuid: string,
+    studentUuid: any,
+    academicYearAlias: string,
+    isDraft: boolean,
+    status: number,
+}
+
 export type ShortClassType = {
     uuid: string;
     classCode: string;
@@ -117,7 +131,8 @@ export type CourseType = {
     instructor: string,
     semester: number,
     year: number,
-    visibility: boolean
+    visibility: boolean,
+    isDeleted: boolean,
 }
 
 
@@ -291,6 +306,10 @@ export type ShiftType = {
     startTime: string;
     endTime: string;
     name: string;
+    weekday: boolean;
+    description: string;
+    isDeleted: boolean;
+    isDraft: boolean;
 }
 
 export type StudyProgramShortType = {

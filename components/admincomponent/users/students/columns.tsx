@@ -4,12 +4,23 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-import {StatusOption, UserStudentDetailType, UserStudentType} from "@/lib/types/admin/user";
-import ActionsCell from "./StudentActionCell";
+import {StatusOption, UserStuType, UserStudentType, UserStudentDetailType} from "@/lib/types/admin/user";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
+import StatusBadge from "@/components/common/StatusBadge";
+import {
+  useDisableLectureMutation,
+  useEnableLectureMutation, useGetLectureQuery
+} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {useSelector} from "react-redux";
+import {selectLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {TbCopy, TbEye, TbEyeCancel, TbFileImport, TbPencil} from "react-icons/tb";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import UpdateLectureForm from "@/components/admincomponent/academics/lectures/form/UpdateLectureForm";
+import {useRouter} from "next/navigation";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -47,51 +58,19 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     );
   }
 
-  if (tableMeta?.editedRows[row.id]) {
-    return columnMeta?.type === "select" ? (
-      <select
-        className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
-        onChange={onSelectChange}
-        value={value}
-      >
-        {columnMeta?.options?.map((option: StatusOption) => (
-          <option key={option.label} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    ) : (
-      <input
-        className="w-full p-2 border-1 border-gray-300 "
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        type={columnMeta?.type || "text"}
-      />
-    );
-  }
-  if (column.id === "status") {
-    return (
-      <span
-        className={
-          value === "true"
-            ? "Public text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
-            : value === "false"
-            ? "Disable text-white bg-red-500 px-3 py-1 rounded-[10px]"
-            : value === "draft"
-            ? "Hiatus bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
-            : ""
-        }
-      >
-        {value === "true"
-          ? "Public"
-          : value === "false"
-          ? "Disable"
-          : value === "draft"
-          ? "Hiatus"
-          : ""}
-      </span>
-    );
+  // Custom status
+  if (column.id === 'studentStatus') {
+
+    switch (value) {
+      case 1:
+        return <StatusBadge type="success" status="Active" />
+      case 2:
+        return <StatusBadge type="default" status="Hiatus" />
+      case 3:
+        return <StatusBadge type="error" status="Drop" />
+      case 4:
+        return <StatusBadge type="error" status="Disable" />
+    }
   }
 
   if (column.id === "nameKh") {
@@ -100,55 +79,35 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   return <span>{value}</span>;
 };
 
-// Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
-  const meta = table.options.meta;
-
-  const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-    const action = e.currentTarget.name;
-
-    meta?.setEditedRows((old: any) => ({
-      ...old,
-      [row.id]: action === "edit" ? true : false,
-    }));
-
-    if (action === "cancel") {
-      meta?.revertData(row.index, true);
-    }
-  };
-
+const ActionCell = ({ row } : any) => {
+  const router = useRouter()
   return (
       <div>
-        {meta?.editedRows[row.id] ? (
-            <div>
-              <button
-                  className="mr-3 bg-red-100 rounded-full p-1"
-                  onClick={setEditedRows}
-                  name="cancel"
-              >
-                <RxCross2 size={20} className="text-red-500" />
-              </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
+              <MoreHorizontal className='h-4 w-4' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end' className="bg-white">
+            <DropdownMenuItem onClick={() => router.push(`users/student/${row.original.uuid}`)} className=" focus:bg-background font-medium">
+              <TbFileImport  size={20} className="text-lms-gray-30 mr-2"  /> <p className="text-lms-gray-80" >View</p>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push(``)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+              <TbPencil size={20} className="text-lms-gray-30 mr-2"   /> <p className="text-lms-gray-80" >Edit</p>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-              <button
-                  onClick={setEditedRows}
-                  name="done"
-                  className="bg-green-100 rounded-full p-1"
-              >
-                <IoCheckmarkSharp size={20} className="text-green-500" />
-              </button>
-            </div>
-        ) : (
-            <button onClick={setEditedRows} name="edit">
-              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
-            </button>
-        )}
+
       </div>
   );
 };
 
 export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
   {
-    accessorKey: "card_id",
+    accessorKey: "cardId",
     header: ({ column }) => {
       return (
         <Button
@@ -193,6 +152,21 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     cell: TableCell,
   },
   {
+    accessorKey: "gender",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            GENDER
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
     accessorKey: "dob",
     header: ({ column }) => {
       return (
@@ -208,16 +182,16 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "gender",
+    accessorKey: "email",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          GENDER
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            EMAIL
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -238,7 +212,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "fam_ph_number",
+    accessorKey: "familyNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -252,15 +226,9 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     },
     cell: TableCell,
   },
+
   {
-    accessorKey: "email",
-    header: () => {
-      return <div>EMAIL</div>;
-    },
-    cell: TableCell,
-  },
-  {
-    accessorKey: "status",
+    accessorKey: "studentStatus",
     header: ({ column }) => {
       return (
         <Button
@@ -283,11 +251,8 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     },
   },
   {
-    id: "edit",
-    cell: EditCell,
-  },
-  {
     id: "actions",
-    cell: ActionsCell,
+    cell: ActionCell,
   },
 ];
+

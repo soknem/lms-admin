@@ -294,12 +294,10 @@ const ActionCell = ({ row } : any) => {
             await enableGeneration(genAlias).unwrap();
             setIsDeleted((prev :any) => !prev);
             console.log('Generation enabled successfully');
-            refetchGeneration();
         }else{
             await disableGeneration(genAlias).unwrap();
             setIsDeleted((prev : any) => !prev);
             console.log('Generation disable successfully');
-            refetchGeneration();
         }
         setIsCardVisible(false);
     };

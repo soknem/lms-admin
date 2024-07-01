@@ -31,20 +31,9 @@ import {
 
 export default function Assessment() {
 
-    const dispatch = useDispatch<AppDispatch>();
+    const { data : courseScoreData, error: courseScoreError, isLoading } = useGetAssessmentQuery({ page: 0, pageSize: 10 });
 
-    const { data, error, isLoading } = useGetAssessmentQuery({ page: 0, pageSize: 10 });
-
-    const CourseAssessmentData = useSelector((state: RootState) => selectAssessment(state));
-
-    useEffect(() => {
-        if(data) {
-            dispatch(setAssessment(data.content))
-        }
-        if(error){
-            console.error("failed to load assessment", error);
-        }
-    }, [data, error, dispatch]);
+    // console.log("courseScoreData", data);
 
     // console.log("assessment from page: " , CourseAssessmentData)
 

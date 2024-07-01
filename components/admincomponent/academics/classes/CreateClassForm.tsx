@@ -7,13 +7,19 @@ import Modal from "@/components/common/ModalComponent"; // Adjust the path as ne
 import RequiredFieldLabelComponent from "@/components/common/RequiredFieldLabelComponent";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {Generation, selectClasses} from "@/lib/features/admin/academic-management/classes/classSlice";
+import {Generation, selectClasses, Shift} from "@/lib/features/admin/academic-management/classes/classSlice";
 import {selectGeneration, setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";
-import {useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
+import {useAddClassMutation, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
 import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
-import {Class, GenerationType} from "@/lib/types/admin/academics";
+import {Class, ClassCreateType, GenerationType, ShiftType} from "@/lib/types/admin/academics";
 import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {StudyProgramType} from "@/lib/types/admin/faculty";
+import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
+import {useGetInstructorQuery} from "@/lib/features/admin/user-management/instructor/instructor";
+import {useGetAcademicYearQuery} from "@/lib/features/admin/faculties/academic-year/academicYear";
+import {toast} from "react-hot-toast";
+import {initialize} from "next/client";
+import {format} from "date-fns";
 
 type PropsType = {
   isVisible: boolean;
@@ -47,10 +53,9 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     },
   ];
 
-  const dispatch = useDispatch<AppDispatch>();
 
   // *** Generation ***
-  const {data: generationData, error: generationError} = useGetGenerationQuery({page: 0, pageSize: 10});
+  const {data: generationData, error: generationError, isLoading: isGenerationsLoading} = useGetGenerationQuery({page: 0, pageSize: 10});
 
   const [generations, setGenerations] = useState([]);
 
@@ -67,7 +72,7 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     if (generationError) {
       console.error("failed to load generation", generationError);
     }
-  }, [generationData, generationError, dispatch]);
+  }, [generationData, generationError]);
 
   const handleGenChange = (selectedOption : any) => {
     const alias = selectedOption?.value;
@@ -77,7 +82,7 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
   console.log("generations", generations);
 
   // *** Study Program ***
-  const {data: studyProgramData, error: studyProgramError} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
+  const {data: studyProgramData, error: studyProgramError, isLoading: isStudyProgramsLoading} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
 
   const [studyPrograms, setStudyPrograms] = useState([]);
 
@@ -95,7 +100,7 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     if (studyProgramError) {
       console.error("failed to load study program", studyProgramError);
     }
-  }, [studyProgramData, studyProgramError, dispatch]);
+  }, [studyProgramData, studyProgramError]);
 
   const handleProgramChange = (selectedOption : any) => {
     const alias = selectedOption?.value;
@@ -103,18 +108,130 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
   };
 
   // *** Shift ***
-  const {data: shiftData, error: shiftError} = useGetGenerationQuery({page: 0, pageSize: 10});
+  const {data: shiftData, error: shiftError, isLoading: isShiftsLoading} = useGetShiftQuery({page: 0, pageSize: 10});
 
+  const [shifts, setShifts] = useState([]);
+
+  const [selectShiftsAlias, setSelectedShiftsAlias] = useState('');
+
+  useEffect(() => {
+    if (shiftData) {
+      const formattedShift = shiftData.content.map((sp: ShiftType) => ({
+        value: sp.alias,
+        label: `${sp.name}`,
+      }));
+      setShifts(formattedShift);
+      console.log("Shift from create class: ",formattedShift)
+    }
+    if (shiftError) {
+      console.error("failed to load shift error", shiftError);
+    }
+  }, [shiftData, shiftError]);
+
+  const handleShiftChange = (selectedOption : any) => {
+    const alias = selectedOption?.value;
+    setSelectedShiftsAlias(alias);
+  };
+
+  // *** Instructor ***
+  const {data: InsData, error: InsError, isLoading: isInsLoading, isSuccess: isInsSuccess} = useGetInstructorQuery({page: 0, pageSize: 10});
+
+  const [instructors, setInstructors] = useState([]);
+
+  const [selectInstructorUuid, setSelectedInstructorUuid] = useState('');
+
+  useEffect(() => {
+    if (InsData) {
+      const formattedIns = InsData.content.map((ins: any) => ({
+        value: ins.uuid,
+        label: `${ins.username}`,
+      }));
+      setInstructors(formattedIns);
+      console.log("instructor from create class: ",formattedIns)
+    }
+    if (InsError) {
+      console.error("failed to load instructor error", InsError);
+    }
+  }, [InsData, InsError]);
+
+  const handleInstructorChange = (selectedOption : any) => {
+    const uuid = selectedOption?.value;
+    setSelectedInstructorUuid(uuid);
+  };
+
+  // if (isShiftLoading ) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // *** academic year ****
+  const {data: academicData, error: academicError, isLoading: isAcademicLoading, isSuccess: isAcademicSuccess} = useGetAcademicYearQuery({page: 0, pageSize: 10});
+
+  const [academicYears, setAcademicYears] = useState([]);
+
+  const [selectAcademicYearsUuid, setSelectedAcademicYearsUuid] = useState('');
+
+  useEffect(() => {
+    if (academicData) {
+      const formattedAca = academicData.content.map((aca: any) => ({
+        value: aca.uuid,
+        label: `${aca.academicYear}`,
+      }));
+      setAcademicYears(formattedAca);
+      console.log("instructor from create class: ",formattedAca)
+    }
+    if (InsError) {
+      console.error("failed to load shift error", InsError);
+    }
+  }, [academicData, InsError]);
+
+  const handleAcademicYearChange = (selectedOption : any) => {
+    const uuid = selectedOption?.value;
+    setSelectedAcademicYearsUuid(uuid);
+  };
+
+
+  // handle create class
+
+  const [createClass, { isLoading : isClassLoading, isSuccess : isClassSucess, error: isClassError }] = useAddClassMutation();
+
+  const handleCreateClass = async (values : ClassCreateType) => {
+    const newClass = {
+      classCode: values.classCode,
+      year: values.year,
+      generationAlias: selectedGenAlias,
+      studyProgramAlias: selectedProgramAlias,
+      shiftAlias: selectShiftsAlias,
+      instructorUuid: selectInstructorUuid,
+      studentUuid: [], // Ensuring studentUuid is an empty array
+      academicYearAlias: selectAcademicYearsUuid,
+      isDraft: values.isDraft,
+      status: selectedStatus,
+      description: ""
+    };
+
+    console.log("New Class Data: ", newClass); // Debugging the new class data
+
+    try {
+      await createClass(newClass).unwrap();
+      toast.success('Successfully created!');
+      console.log("Class created successfully"); // Debugging successful creation
+    } catch (error) {
+      toast.error('Failed to create Class!');
+      console.error("Error creating class: ", error); // Debugging the error
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
       classCode: "",
       year: 1,
+      description: "",
       generationAlias: "",
       studyProgramAlias: "",
       shiftAlias: "",
       instructorUuid: "",
-      studentUuid: [],
+      studentUuid: null, // Initial empty array
+      academicYearAlias: "",
       isDraft: true,
       status: 1,
     },
@@ -129,19 +246,24 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
       studyProgramAlias: Yup.string().required("Study program is required"),
       shiftAlias: Yup.string().required("Shift is required"),
       instructorUuid: Yup.string().nullable(),
-      studentUuid: Yup.array().of(Yup.string()).nullable(),
+      studentUuid: Yup.string().nullable(),
+      academicYearAlias: Yup.string().required("academic year is required"),
       isDraft: Yup.boolean().required("Visibility is required"),
       status: Yup.number().required("Status is required"),
     }),
+    // onSubmit: (values) => {
+    //   console.log("Create Class Form Values: ", values);
+    //   handleCreateClass(values);
+    // },
     onSubmit: (values) => {
-      console.log("Create Class Form Values: ", values);
-    },
+      handleCreateClass(values);
+    }
   });
 
   return (
       <Modal isVisible={isVisible} onClose={onClose}>
         <h2 className="text-xl text-lms-black-90 font-bold mb-4">Create Class</h2>
-        <form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
+        <form className="h-[500px] space-y-4 md:space-y-6 overflow-y-scroll" onSubmit={formik.handleSubmit}>
 
           {/* Class Code */}
           <div>
@@ -163,7 +285,7 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
 
           {/* Year */}
           <div>
-            <RequiredFieldLabelComponent labelText="Class Code"
+            <RequiredFieldLabelComponent labelText="Year"
                                          labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
             <input
                 type="number"
@@ -197,29 +319,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
 
           {/* Study Program */}
           <div>
-            <RequiredFieldLabelComponent labelText="Shift"
-                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
-
-            <Select
-                className="basic-single"
-                classNamePrefix="select"
-                isClearable={true}
-                isSearchable={true}
-                name="generationAlias"
-                options={studyPrograms}
-                onChange={handleProgramChange}
-            />
-          </div>
-
-          {/* Shift */}
-
-
-
-
-
-
-
-          <div>
             <RequiredFieldLabelComponent labelText="Study Program"
                                          labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
 
@@ -228,9 +327,57 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
                 classNamePrefix="select"
                 isClearable={true}
                 isSearchable={true}
-                name="shiftAlias"
+                name="studyProgramAlias"
                 options={studyPrograms}
                 onChange={handleProgramChange}
+            />
+          </div>
+
+          {/* Shift */}
+          <div>
+            <RequiredFieldLabelComponent labelText="Shift"
+                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+
+            <Select
+                className="basic-single"
+                classNamePrefix="select"
+                isClearable={true}
+                isSearchable={true}
+                name="shiftAlias"
+                options={shifts}
+                onChange={handleShiftChange}
+            />
+          </div>
+
+          {/* Instructor */}
+          <div>
+            <RequiredFieldLabelComponent labelText="Instructor"
+                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+
+            <Select
+                className="basic-single"
+                classNamePrefix="select"
+                isClearable={true}
+                isSearchable={true}
+                name="instructorUuid"
+                options={instructors}
+                onChange={handleInstructorChange}
+            />
+          </div>
+
+          {/* Academic Year */}
+          <div>
+            <RequiredFieldLabelComponent labelText="Academic Year"
+                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+
+            <Select
+                className="basic-single"
+                classNamePrefix="select"
+                isClearable={true}
+                isSearchable={true}
+                name="academicYearAlias"
+                options={academicYears}
+                onChange={handleAcademicYearChange}
             />
           </div>
 
@@ -248,6 +395,35 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
                 onChange={handleStatusChange}
             />
           </div>
+
+          {/* Visibility */}
+          {/*<div>*/}
+          {/*  <RequiredFieldLabelComponent*/}
+          {/*      labelText="Visibility"*/}
+          {/*      labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}*/}
+          {/*  />*/}
+          {/*  <input*/}
+          {/*      type="radio"*/}
+          {/*      id="isDraftTrue"*/}
+          {/*      name="isDraft"*/}
+          {/*      value="true"*/}
+          {/*      checked={formik.values.isDraft}*/}
+          {/*      onChange={() => formik.setFieldValue("isDraft", true)}*/}
+          {/*  />*/}
+          {/*  <label htmlFor="isDraftTrue" className="px-2 pr-4">Draft</label>*/}
+          {/*  <input*/}
+          {/*      type="radio"*/}
+          {/*      id="isDraftFalse"*/}
+          {/*      name="isDraft"*/}
+          {/*      value="false"*/}
+          {/*      checked={!formik.values.isDraft}*/}
+          {/*      onChange={() => formik.setFieldValue("isDraft", false)}*/}
+          {/*  />*/}
+          {/*  <label htmlFor="isDraftFalse" className="px-2 pr-4">Public</label>*/}
+          {/*  {formik.errors.isDraft && (*/}
+          {/*      <p className="text-red-700">{formik.errors.isDraft}</p>*/}
+          {/*  )}*/}
+          {/*</div>*/}
 
           {/* Visibility */}
           <div>
@@ -278,13 +454,14 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
             )}
           </div>
 
+
           <div className="flex justify-end">
             <button
                 type="submit"
                 className="mt-2 bg-lms-primary hover:bg-lms-primary/80 text-white font-bold py-2 px-4 rounded"
-                disabled={isLoading}
+                disabled={isClassLoading}
             >
-              {isLoading ? "Creating..." : "Create"}
+              {isClassLoading ? "Creating..." : "Create"}
             </button>
           </div>
         </form>
