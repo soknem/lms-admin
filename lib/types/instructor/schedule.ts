@@ -1,11 +1,15 @@
 // **** Schedule *****
 export type ScheduleType = {
-  subject: string;
-  date: string;
-  session: string;
-  class: string;
-  id: string;
-  status: string;
+  uuid: string;
+  startTime: string;
+  endTime: string;
+  description: string;
+  lectureDate: string;
+  status: number;
+  teachingType: "lecture" | "lab" | "seminar" | "workshop"; // Add other types if necessary
+  courseTitle: string;
+  classCode: string;
+
 };
 
 export type StatusOption = {
