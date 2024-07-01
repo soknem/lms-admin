@@ -4,7 +4,7 @@ import React from "react";
 
 import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
 
-export default function coursedetail() {
+export default function coursedetails() {
   return (
     <main>
       <div className="bg-white py-[35px]">
