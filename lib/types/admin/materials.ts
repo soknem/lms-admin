@@ -1,15 +1,16 @@
 // **** Curriculum *****
 export type MaterialType = {
+    alias: string;
     title: string;
-    course: string;
     description: string;
-    type: string;
-    file: string;
-    "fileName": string,
-    "fileUrl": string,
-    "subjectAlias": null,
-    "isDeleted": false,
-    "isDraft": false
+    contentType: string;
+    extension: string;
+    size: number;
+    // file: string;
+    fileName: string,
+    subjectAlias: null,
+    // "isDeleted": false,
+    isDraft: false
 };
 
 // **** Slide *****

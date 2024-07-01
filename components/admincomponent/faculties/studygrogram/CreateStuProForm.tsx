@@ -3,6 +3,7 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../../style.module.css";
+import {FiPlus, FiUploadCloud} from "react-icons/fi";
 import {
     Dialog,
     DialogContent,
@@ -12,24 +13,35 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {FacultyType, StudyProgramType} from "@/lib/types/admin/faculty";
-import React, {useEffect, useRef, useState} from "react";
+import {StudyProgramType} from "@/lib/types/admin/faculty";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import {FaCamera} from "react-icons/fa6";
 import {TbAsterisk} from "react-icons/tb";
-import {FiUploadCloud} from "react-icons/fi";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/lib/store";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {
-    useCreateStuProgramMutation, useEditStuProByAliasMutation,
-    useGetStudyProgramsQuery, useGetStuProByAliasQuery
+    useCreateStuProgramMutation,
+    useGetStudyProgramsQuery
 } from "@/lib/features/admin/faculties/studyProgram/studyprogram";
-import {useGetFacultiesQuery, useGetFacultyByAliasQuery} from "@/lib/features/admin/faculties/faculty/faculty";
-import {selectFaculty, setFaculties} from "@/lib/features/admin/faculties/faculty/facultySlice";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {
+    selectFaculty,
+    setFaculties
+} from "@/lib/features/admin/faculties/faculty/facultySlice";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
-import {IoCameraOutline} from "react-icons/io5";
+
+const initialValues = {
+    alias: "",
+    studyProgramName: "",
+    logo: "",
+    description: "",
+    isDeleted: false,
+    isDraft: false,
+    degreeAlias: "",
+    facultyAlias: ""
+};
 
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required("Required"),
@@ -48,93 +60,73 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
+                id={value}
+                value={value}
+                checked={field.value === value}
             />
-            <label className="pl-2" htmlFor={value.toString()}>
+            <label className="pl-2" htmlFor={value}>
                 {label}
             </label>
         </div>
     );
 };
 
-const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
-    const [imagePreview, setImagePreview] = useState(previewUrl);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const handleContainerClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
+const CustomInput = ({field, setFieldValue}: any) => {
+    const [imagePreview, setImagePreview] = useState("");
 
-    const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const localUrl = URL.createObjectURL(file);
-            setImagePreview(localUrl);
-            setFieldValue(field.name, file);
-        }
+    const handleUploadFile = (e: any) => {
+        const file = e.target.files[0];
+        const localUrl = URL.createObjectURL(file);
+        setImagePreview(localUrl);
+
+        setFieldValue(field.name, file);
     };
 
     return (
         <div className="w-full">
-            <div
-                className={`flex items-center justify-center relative ${style.imageContainer}`}
-                onClick={handleContainerClick}
+            <input
+                type="file"
+                onChange={handleUploadFile}
+                className="hidden"
+                id="file"
+            />
+            <label
+                htmlFor="file"
+                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-[420px] h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
             >
-                {imagePreview ? (
-                    <Image
-                        src={imagePreview}
-                        alt="preview"
-                        fill
-                        style={{objectFit: "contain"}}
-                    />
+                {!imagePreview ? (
+                    <div className="flex items-center justify-center gap-8">
+                        <FiUploadCloud className="text-lms-primary text-[34px]"/>
+                        <div className="flex flex-col items-start justify-start gap-1">
+                            <p className="text-center text-md text-black">
+                                Select a file or drag and drop here
+                            </p>
+                            <p className="text-center text-md text-lms-gray-30">
+                                JPG, PNG or PDF, file size no more than 10MB
+                            </p>
+                        </div>
+                    </div>
                 ) : (
-                    <img
-                        src={previewUrl}
-                        alt="faculty"
-                        className="w-full h-full rounded-full"
-                    />
+                    <div style={{position: 'relative', width: '100%', height: '100%'}}>
+                        <Image
+                            src={imagePreview}
+                            alt="preview"
+                            fill
+                            style={{objectFit: 'contain'}}
+                        />
+                    </div>
                 )}
-                <div
-                    className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2"
-                >
-                    <IoCameraOutline className="w-5 h-5"/>
-                </div>
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    onChange={handleUploadFile}
-                />
-            </div>
+            </label>
         </div>
     );
 };
 
-export function EditStudyProForm({alias}: { alias: string }) {
+export function CreateStudyProForm() {
     const dispatch = useDispatch<AppDispatch>();
-    const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
-    const [editStuProgram] = useEditStuProByAliasMutation();
-
-    const [initialAlias, setInitialAlias] = useState("");
-    const [logo, setLogo] = useState(null);
-    const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
+    const [createStuProgram] = useCreateStuProgramMutation();
     const {refetch: refetchStuPrograms} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
-    const [initialValues, setInitialValues] = useState({
-        alias: "",
-        studyProgramName: "",
-        logo: "",
-        description: "",
-        isDeleted: false,
-        isDraft: false,
-        degreeAlias: "",
-        facultyAlias: ""
-    });
-
     const {
         data: facultiesData,
     } = useGetFacultiesQuery({page: 0, pageSize: 10});
@@ -159,99 +151,61 @@ export function EditStudyProForm({alias}: { alias: string }) {
 
     }, [degreesData, dispatch]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-
-    useEffect(() => {
-        if (isSuccess && stuProData) {
-            setInitialValues({
-                alias: stuProData.alias,
-                studyProgramName: stuProData.studyProgramName,
-                logo: stuProData.logo,
-                description: stuProData.description,
-                isDeleted: stuProData.isDeleted,
-                isDraft: stuProData.isDraft,
-                degreeAlias: stuProData.degreeAlias,
-                facultyAlias: stuProData.facultyAlias
-            });
-            setInitialAlias(stuProData.alias);
-            setLogo(stuProData.logo)
-        }
-    }, [isSuccess, stuProData]);
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            let logoUrl = values.logo;
+            const fileData = new FormData();
+            fileData.append("file", values.logo);
 
-            // Upload the logo file if it's a new file
-            if (values.logo instanceof File) {
-                const fileData = new FormData();
-                fileData.append("file", values.logo);
-                const fileResponse = await createSingleFile(fileData).unwrap();
-                logoUrl = fileResponse.name; // Assuming the response contains the URL of the uploaded file
-            } else if (values.logo === logo) {
-                // If the logo hasn't changed, set logoUrl to null
-                logoUrl = null;
-            }
+            const fileResponse = await createSingleFile(fileData).unwrap();
+            console.log(fileResponse)
 
-            const edtStuProByAlias: StudyProgramType = {
-                alias: values.alias,
-                studyProgramName: values.studyProgramName,
-                degreeAlias: values.degreeAlias,
-                facultyAlias: values.facultyAlias,
-                description: values.description,
-                logo: logoUrl,
-                isDeleted: values.isDeleted,
-                isDraft: values.isDraft,
-            };
-
-            await editStuProgram(edtStuProByAlias).unwrap();
-            console.log("Original", initialAlias)
-
-            // Now update the alias if it has changed
-            if (values.alias !== initialAlias) {
-                await editStuProgram({
+            if (fileResponse) {
+                const newStuProgram: StudyProgramType = {
                     alias: values.alias,
-                    updatedData: {...edtStuProByAlias, alias: values.alias}
-                }).unwrap();
-            }
+                    studyProgramName: values.studyProgramName,
+                    degreeAlias: values.degreeAlias,
+                    facultyAlias: values.facultyAlias,
+                    description: values.description,
+                    logo: fileResponse.name,
+                    isDeleted: values.isDeleted,
+                    isDraft: values.isDraft,
+                };
 
-            resetForm();
-            refetchStuPrograms();
-            console.log("Create successfully")
-            setIsOpen(false)
+                await createStuProgram(newStuProgram).unwrap();
+                resetForm();
+                refetchStuPrograms();
+                console.log("Create successfully")
+                setIsOpen(false)
+            }
         } catch (error) {
             console.error("Error creating study program: ", error);
         } finally {
             setSubmitting(false);
         }
     };
+
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[920px]items-center justify-center bg-white">
+        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
+
+            <DialogTrigger asChild>
+                <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
+                    <FiPlus className="mr-2 h-4 w-4"/> Add Study Program
+                </Button>
+            </DialogTrigger>
+
+            <DialogContent className="w-[920px] items-center justify-center bg-white">
                 <DialogHeader>
-                    <DialogTitle>Edit Study Program</DialogTitle>
+                    <DialogTitle>Add Study Program</DialogTitle>
                 </DialogHeader>
 
                 <Formik
-                    enableReinitialize
                     initialValues={initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
-
                 >
                     {({setFieldValue}) => (
-                        <Form className="py-4 rounded-lg w-full ">
+                        <Form className="py-4 rounded-lg w-full">
                             <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
-
-                                <div className="flex">
-                                    <Field
-                                        name="logo"
-                                        component={CustomInput}
-                                        setFieldValue={setFieldValue}
-                                        previewUrl={initialValues.logo}
-                                    />
-                                </div>
 
                                 {/* alias */}
                                 <div className={`${style.inputContainer}`}>
@@ -318,16 +272,19 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                     </div>
                                 </div>
 
+                                {/* logo */}
+                                <div className="mb-4">
+                                    <label htmlFor="logo" className="block text-sm font-medium text-gray-700 my-2">Faculty
+                                        Logo</label>
+                                    <Field type="file" name="logo" id="logo" component={CustomInput}
+                                           setFieldValue={setFieldValue} className="mt-1"/>
+                                </div>
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
-                                <Button
-                                    type="submit"
-                                    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                                >
-                                    Add
-                                </Button>
+                                <Button type="submit"
+                                        className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">Add</Button>
                             </DialogFooter>
                         </Form>
                     )}

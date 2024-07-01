@@ -1,11 +1,17 @@
-import { CardLogin } from '@/components/card/cartAuth/CardLogin'
-import { ModeToggle } from '@/components/theme/ModeToggle'
-import React from 'react'
+import { CardLogin } from '@/components/card/cartAuth/CardLogin';
+import React from 'react';
 
 export default function page() {
-  return (
-    <main className=' grid content-center h-[100vh] justify-center items-center '>
-      <CardLogin/>
-    </main>
-  )
+    return (
+        <main className='w-full h-screen relative flex items-center justify-center'>
+            <section
+                className="h-full w-full bg-cover bg-center"
+                style={{ backgroundImage: "url('/form.jpg')", filter: "blur(5px)" }}
+            >
+            </section>
+            <section className="absolute">
+                <CardLogin />
+            </section>
+        </main>
+    );
 }

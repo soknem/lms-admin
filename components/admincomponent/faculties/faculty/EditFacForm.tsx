@@ -9,32 +9,18 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-
 import {FacultyType} from "@/lib/types/admin/faculty";
-import {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Image from "next/image";
-import {FaCamera} from "react-icons/fa6";
 import {useRouter} from "next/navigation";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
-
-const initialValues = {
-    alias: "",
-    name: "",
-    description: "",
-    address: "",
-    logo: "",
-    isDeleted: true,
-    isDraft: true
-};
-
-// const validationSchema = Yup.object().shape({
-//     alias: Yup.string().required('Alias is required'),
-//     name: Yup.string().required('Title is required'),
-//     address: Yup.string().required('Address is required'),
-//     isDraft: Yup.boolean().required('Visibility is required'),
-//
-// });
+import {
+    useEditFacultyByAliasMutation,
+    useGetFacultiesQuery,
+    useGetFacultyByAliasQuery
+} from "@/lib/features/admin/faculties/faculty/faculty";
+import {IoCameraOutline} from "react-icons/io5";
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -42,91 +28,199 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                // checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
     );
 };
 
-
-export function EditFacForm() {
-    const router = useRouter();
-    const [open, setOpen] = useState(true);
-
-    const handleClose = () => {
-        setOpen(false);
+const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
+    const [imagePreview, setImagePreview] = useState(previewUrl);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const handleContainerClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
     };
 
-    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
-        // const [createSingleFile] = useCreateSingleFileMutation();
-        //
-        // try {
-        //     // Upload the logo file
-        //     const fileData = new FormData();
-        //     fileData.append("file", values.logo);
-        //
-        //     const fileResponse = await createSingleFile(fileData).unwrap();
-        //     console.log(fileResponse)
-        //
-        //     if (fileResponse) {
-        //         // File uploaded successfully, now create the faculty
-        //         const newFaculty: FacultyType = {
-        //             alias: values.alias,
-        //             name: values.name,
-        //             description: values.description,
-        //             address: values.address,
-        //             logo: fileResponse.name, // Assuming the response contains the URL of the uploaded file
-        //             isDeleted: values.isDeleted,
-        //             isDraft: values.isDraft,
-        //         };
-        //
-        //         // const res = await createFaculty(newFaculty).unwrap();
-        //         resetForm();
-        //         // Handle success (e.g., show a success message or close the dialog)
-        //     }
-        // } catch (error) {
-        //     // Handle error (e.g., show an error message)
-        //     console.error("Error creating faculty: ", error);
-        // } finally {
-        //     setSubmitting(false);
-        // }
+    const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const localUrl = URL.createObjectURL(file);
+            setImagePreview(localUrl);
+            setFieldValue(field.name, file);
+        }
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="w-[480px] bg-white ">
+        <div className="w-full">
+            <div
+                className={`flex items-center justify-center relative ${style.imageContainer}`}
+                onClick={handleContainerClick}
+            >
+                {imagePreview ? (
+                    <Image
+                        src={imagePreview}
+                        alt="preview"
+                        fill
+                        style={{objectFit: "contain"}}
+                    />
+                ) : (
+                    <img
+                        src={previewUrl}
+                        alt="faculty"
+                        className="w-full h-full rounded-full"
+                    />
+                )}
+                <div
+                    className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2"
+                >
+                    <IoCameraOutline className="w-5 h-5"/>
+                </div>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleUploadFile}
+                />
+            </div>
+        </div>
+    );
+};
 
+export function EditFacForm({alias}: { alias: string }) {
+    const router = useRouter();
+    const [open, setOpen] = useState(true);
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [editFaculty] = useEditFacultyByAliasMutation();
+    const [initialAlias, setInitialAlias] = useState("");
+    const [logo, setLogo] = useState(null);
+    // const [updateLogo, setUpdateLogo] = useState(null);
+    const {data: facultyData, isSuccess} = useGetFacultyByAliasQuery(alias);
+    const {refetch: refetchFaculties} = useGetFacultiesQuery({page: 0, pageSize: 10});
+    const [initialValues, setInitialValues] = useState({
+        alias: "",
+        name: "",
+        description: "",
+        address: "",
+        logo: "",
+        isDeleted: false,
+        isDraft: false
+    });
+
+    useEffect(() => {
+        if (isSuccess && facultyData) {
+            setInitialValues({
+                alias: facultyData.alias,
+                name: facultyData.name,
+                description: facultyData.description,
+                address: facultyData.address,
+                logo: facultyData.logo,
+                isDeleted: facultyData.isDeleted,
+                isDraft: facultyData.isDraft,
+            });
+            setInitialAlias(facultyData.alias);
+            setLogo(facultyData.logo)
+        }
+    }, [isSuccess, facultyData]);
+
+    const handleClose = () => {
+        setOpen(false);
+        // router.back(); // or any other navigation action
+    };
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            let logoUrl = values.logo;
+
+            // Upload the logo file if it's a new file
+            if (values.logo instanceof File) {
+                const fileData = new FormData();
+                fileData.append("file", values.logo);
+                const fileResponse = await createSingleFile(fileData).unwrap();
+                logoUrl = fileResponse.name; // Assuming the response contains the URL of the uploaded file
+            } else if (values.logo === logo) {
+                // If the logo hasn't changed, set logoUrl to null
+                logoUrl = null;
+            }
+
+            // if (logo === values.logo) {
+            //     setLogo("");
+            // } else {
+            //     setLogo(logoUrl);
+            // }
+            // console.log("Logo", logo)
+
+            const edtFacultyByAlias: FacultyType = {
+                alias: values.alias, // Use the initial alias
+                name: values.name,
+                description: values.description,
+                address: values.address,
+                // logo: logo,
+                logo: logoUrl,
+                isDeleted: values.isDeleted,
+                isDraft: values.isDraft,
+
+
+                // ...values,
+                // logo: logoUrl
+            };
+
+            await editFaculty({alias: initialAlias, updatedData: edtFacultyByAlias}).unwrap();
+            console.log("Original", initialAlias)
+
+            // Now update the alias if it has changed
+            if (values.alias !== initialAlias) {
+                await editFaculty({
+                    alias: values.alias,
+                    updatedData: {...edtFacultyByAlias, alias: values.alias}
+                }).unwrap();
+            }
+
+
+            resetForm();
+            refetchFaculties();
+            console.log("Update successfully")
+            // router.refresh(); // or any other navigation action
+            handleClose()
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error updating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={handleClose} modal={true}>
+            <DialogContent className="w-[480px] bg-white">
                 <DialogHeader>
                     <DialogTitle>Edit Faculty</DialogTitle>
                 </DialogHeader>
 
                 <Formik
+                    enableReinitialize
                     initialValues={initialValues}
-                    // validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
-                        <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-1">
-                                {/* faculty logo */}
-                                <div
-                                    className={`flex items-center justify-center relative ${style.imageContainer}`}
-                                >
-                                    <img
-                                        src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ-d1OG0v3Iyah3hRWqN-Ik9aKcKe-hDk66ZSCftzYOfmI3z-Mk"
-                                        alt="faculty"
-                                        className="w-full h-full rounded-full"
+                        <Form className="py-4 rounded-lg w-full">
+                            <div className="flex flex-col gap-1 items-center justify-center">
+                                {/* Faculty logo */}
+                                <div className="flex">
+                                    <Field
+                                        name="logo"
+                                        component={CustomInput}
+                                        setFieldValue={setFieldValue}
+                                        previewUrl={initialValues.logo}
                                     />
-                                    <div
-                                        className="w-8 h-8 bg-lms-background rounded-full flex items-center justify-center absolute right-0 bottom-1">
-                                        <FaCamera/>
-                                    </div>
                                 </div>
+
 
                                 {/* Faculty Alias */}
                                 <div className={`${style.inputContainer}`}>
@@ -134,14 +228,14 @@ export function EditFacForm() {
                                         <label className={`${style.label}`} htmlFor="alias">
                                             Alias
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
 
                                     <Field
                                         type="text"
-                                        placeholder="Faculty of Engineering"
                                         name="alias"
                                         id="alias"
+                                        // setFieldValue={setFieldValue}
                                         className={`${style.input}`}
                                     />
                                     <ErrorMessage
@@ -157,12 +251,11 @@ export function EditFacForm() {
                                         <label className={`${style.label}`} htmlFor="name">
                                             Title
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
 
                                     <Field
                                         type="text"
-                                        placeholder="Faculty of Engineering"
                                         name="name"
                                         id="name"
                                         className={`${style.input}`}
@@ -180,8 +273,8 @@ export function EditFacForm() {
                                         Description
                                     </label>
                                     <Field
-                                        type="text"
-                                        placeholder="This is main description of our academic"
+                                        as="textarea"
+                                        rows={3}
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}
@@ -194,12 +287,11 @@ export function EditFacForm() {
                                         <label className={`${style.label}`} htmlFor="address">
                                             Address
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
 
                                     <Field
                                         type="text"
-                                        placeholder="123 University Ave"
                                         name="address"
                                         id="address"
                                         className={`${style.input}`}
@@ -217,27 +309,27 @@ export function EditFacForm() {
                                         <label className={`${style.label}`} htmlFor="isDraft">
                                             Visibility
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
 
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
+                                            value={true}
                                             label="Public"
                                         />
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="false"
+                                            value={false}
                                             label="Draft"
                                         />
                                     </div>
 
                                     <ErrorMessage
                                         name="isDraft"
-                                        component={RadioButton}
+                                        component="div"
                                         className={`${style.error}`}
                                     />
                                 </div>
@@ -248,31 +340,30 @@ export function EditFacForm() {
                                         <label className={`${style.label}`} htmlFor="isDeleted">
                                             Status
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
 
                                     <div className="flex gap-4 h-[40px] items-center">
                                         <Field
                                             name="isDeleted"
                                             component={RadioButton}
-                                            value="true"
-                                            label="Public"
+                                            value={true}
+                                            label="Active"
                                         />
                                         <Field
                                             name="isDeleted"
                                             component={RadioButton}
-                                            value="false"
-                                            label="Draft"
+                                            value={false}
+                                            label="Inactive"
                                         />
                                     </div>
 
                                     <ErrorMessage
                                         name="isDeleted"
-                                        component={RadioButton}
+                                        component="div"
                                         className={`${style.error}`}
                                     />
                                 </div>
-
                             </div>
 
                             {/* button submit */}

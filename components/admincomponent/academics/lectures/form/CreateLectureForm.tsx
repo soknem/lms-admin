@@ -28,7 +28,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Check, ChevronsUpDown } from "lucide-react"
+
 
 import { cn } from "@/lib/utils"
 import {useDispatch, useSelector} from "react-redux";
@@ -38,15 +38,11 @@ import {
     setClasses,
 } from "@/lib/features/admin/academic-management/classes/classSlice";
 import {useGetClassByUuidQuery, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
-import {setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";
 import {CreateGenerationType, FormLectureType, ShortCourseType} from "@/lib/types/admin/academics";
-import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
 import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
-import {addLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {Class} from "@/lib/types/admin/academics";
 import Select, {ActionMeta, SingleValue} from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
-import { MdError } from "react-icons/md";
 
 
 type OptionType  = {

@@ -23,10 +23,10 @@ type LogoutItem = {
     title: string;
 };
 
-export default function InstructorSidebarComponent({
-                                                       activePath,
-                                                       setActivePath,
-                                                   }: any) {
+export default function AdminSidebarComponent({
+                                                  activePath,
+                                                  setActivePath,
+                                              }: any) {
     const [menuList, setMenuList] = useState<MenuItem[]>(MenuList);
     const [logout, setLogout] = useState<LogoutItem[]>(Logout);
     const pathname = usePathname();
