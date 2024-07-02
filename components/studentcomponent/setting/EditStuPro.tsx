@@ -1,20 +1,15 @@
 "use client";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import style from "../style.module.css";
 import { format } from "date-fns";
 import { useState } from "react";
 import Image from "next/image";
-import { UserStudentType } from "@/lib/types/admin/user";
 import { IoCameraOutline } from "react-icons/io5";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { IoIosArrowDown } from "react-icons/io";
-import {TbAsterisk} from "react-icons/tb";
+import { TbAsterisk } from "react-icons/tb";
+import style from "../style.module.css";
+import { FieldInputProps, FormikHelpers } from 'formik';
+
 
 const initialValues = {
   card_id: 0,
@@ -26,19 +21,18 @@ const initialValues = {
   ph_number: "098456723",
   fam_ph_number: "098456723",
   pob: "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
-  address:
-      "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
+  address: "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
   bio: "Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private blushes removed an in equally totally if. Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do.",
   status: "Active" || "Drop" || "Disable" || "Hiatus",
   high_school: "",
   guaedian_rel: "",
   know_istad: "",
   class_stu: "",
-  diploma:"",
-  grade:"",
-  shift:"",
-  degree:"",
-  study_pro:""
+  diploma: "",
+  grade: "",
+  shift: "",
+  degree: "",
+  study_pro: ""
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -46,100 +40,59 @@ const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 const validationSchema = Yup.object().shape({
   card_id: Yup.number(),
-  earl: Yup.string(),
+  email: Yup.string(),
   name_en: Yup.string(),
   name_kh: Yup.string(),
   ph_number: Yup.number(),
-  profile: Yup.mixed()
-    .test("fileFormat", "Unsupported Format", (value: any) => {
-      if (!value) {
-        return true;
-      }
-      return SUPPORTED_FORMATS.includes(value.type);
-    })
-    .test("fileSize", "Fsile Size is too large", (value: any) => {
-      if (!value) {
-        true;
-      }
-      return value.size <= FILE_SIZE;
-    })
-    .required("Required"),
-  status: Yup.string().required("A selection is required"),
+  profile: Yup.string()
+      .nullable()
+      .test("fileFormat", "Unsupported Format", (value: string | null | undefined) => {
+        if (!value) {
+          return true;
+        }
+        // Ensure value is of type File before accessing 'type' property
+        if (typeof value === 'object' && 'type' in value) {
+          return SUPPORTED_FORMATS.includes(value);
+        }
+        return false;
+      })
+      .test("fileSize", "File Size is too large", (value: string | null | undefined) => {
+        if (!value) {
+          return true;
+        }
+        // Ensure value is of type File before accessing 'size' property
+        if (typeof value === 'object' && 'size' in value) {
+          return value <= FILE_SIZE;
+        }
+        return false;
+      })
+      .required("Required"),
 });
 
-const handleSubmit = async (value: UserStudentType) => {
-  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(value),
-  // });
-  // const data = await res.json()
-  // console.log("degree upload: ", data)
-};
-
-const RadioButton = ({ field, value, label }: any) => {
-  return (
-    <div>
-      <input
-        type="radio"
-        {...field}
-        id={value}
-        value={value}
-        checked={field.value === value}
-      />
-      <label className="pl-2" htmlFor={value}>
-        {label}
-      </label>
-    </div>
-  );
-};
-
-const CustomInput = ({ field, setFieldValue }: any) => {
+const CustomInput = () => {
   const [imagePreview, setImagePreview] = useState("");
 
-  const handleUploadFile = (e: any) => {
-    const file = e.target.files[0];
-    const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
-    setImagePreview(localUrl);
 
-    setFieldValue(field.name, file);
-  };
   return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
-    </div>
+      <div>
+        <input type="file" />
+        {imagePreview && <Image src={imagePreview} alt="preview" width={200} height={200} />}
+      </div>
   );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
 
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
-
 export function EditStuProForm() {
   return (
-      <section>
+      <section className="w-full">
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={async (values) => {
               // create degree post
-              const studenttPost: UserStudentType = {
+              const studentPost = {
                 card_id: values.card_id,
                 email: values.email,
                 name_en: values.name_en,
@@ -162,14 +115,11 @@ export function EditStuProForm() {
                 degree: values.degree,
                 study_pro: values.study_pro
               };
-
-              // post product
-              handleSubmit(studenttPost);
             }}
         >
           {() => (
               <Form className="py-4 rounded-lg w-full flex flex-col justify-center items-center">
-                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-center items-center">
                   {/* image */}
                   <div className="h-[170px] w-[164px] relative rounded-[10px] grid row-span-2">
                     <img
@@ -181,40 +131,6 @@ export function EditStuProForm() {
                         className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
                       <IoCameraOutline className="w-5 h-5"/>
                     </div>
-                  </div>
-
-                  {/* name english */}
-                  <div className={` ${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="name_en">
-                        FullName(EN)
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="text"
-                        name="name_en"
-                        id="name_en"
-                        className={` ${style.input}`}
-                    />
-                  </div>
-
-                  {/* name khmer */}
-                  <div className={` ${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="name_kh">
-                        FullName(KH)
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="text"
-                        name="name_kh"
-                        id="level"
-                        className={`khmer-font ${style.input}`}
-                    />
                   </div>
 
                   {/* gender */}
@@ -240,37 +156,16 @@ export function EditStuProForm() {
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                       </Field>
-                      <div
-                          className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <IoIosArrowDown
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                        />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <IoIosArrowDown className="h-5 w-5 text-gray-400" aria-hidden="true"/>
                       </div>
                     </div>
                   </div>
 
-                  {/* dob */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="dob">
-                        Date of birth
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="date"
-                        name="dob"
-                        id="dob"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
                   {/* Personal Number */}
-                  <div className={`${style.inputContainer}`}>
+                  <div className={style.inputContainer}>
                     <div className="flex">
-                      <label className={`${style.label}`} htmlFor="fam_ph_number">
+                      <label className={style.label} htmlFor="fam_ph_number">
                         Personal Number
                       </label>
                       <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -280,15 +175,14 @@ export function EditStuProForm() {
                         type="fam_ph_number"
                         name="fam_ph_number"
                         id="fam_ph_number"
-                        className={`${style.input}`}
+                        className={style.input}
                     />
                   </div>
 
                   {/* Family Number */}
-
-                  <div className={`${style.inputContainer}`}>
+                  <div className={style.inputContainer}>
                     <div className="flex">
-                      <label className={`${style.label}`} htmlFor="ph_number">
+                      <label className={style.label} htmlFor="ph_number">
                         Family Number
                       </label>
                       <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -298,114 +192,65 @@ export function EditStuProForm() {
                         type="ph_number"
                         name="ph_number"
                         id="ph_number"
-                        className={`${style.input}`}
+                        className={style.input}
                     />
-                    <ErrorMessage
-                        name="ph_number"
-                        component="div"
-                        className={`${style.error}`}
-                    />
+                    <ErrorMessage name="ph_number" component="div" className={style.error}/>
                   </div>
 
-                  {/* email */}
-                  <div className={`${style.inputContainer}`}>
+                  {/* Place Of Birth */}
+                  <div className={style.inputContainer}>
                     <div className="flex">
-                      <label className={`${style.label}`} htmlFor="email">
-                        Email
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="email"
-                        name="email"
-                        id="email"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
-                  {/* pob */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="pob">
+                      <label className={style.label} htmlFor="pob">
                         Place Of Birth
                       </label>
                       <TbAsterisk className='w-2 h-2 text-lms-error'/>
                     </div>
 
                     <Field
-                        type="address"
+                        as="textarea"
                         name="pob"
                         id="pob"
-                        className={`${style.input}`}
+                        className={style.input}
+                        rows="2"
+                        cols="30"
                     />
                   </div>
 
-                  {/* address */}
-                  <div className={`${style.inputContainer}`}>
+                  {/* Address */}
+                  <div className={style.inputContainer}>
                     <div className="flex">
-                      <label className={`${style.label}`} htmlFor="address">
+                      <label className={style.label} htmlFor="address">
                         Current Address
                       </label>
                       <TbAsterisk className='w-2 h-2 text-lms-error'/>
                     </div>
 
                     <Field
-                        type="address"
+                        as="textarea"
                         name="address"
                         id="address"
-                        className={`${style.input}`}
+                        className={style.input}
+                        rows="2"
+                        cols="30"
                     />
                   </div>
 
-                  {/* status */}
-                  <div className={`${style.inputContainer}  `}>
+                  {/* Bio */}
+                  <div className={style.inputContainer}>
                     <div className="flex">
-                      <label className={`${style.label}`} htmlFor="status">
-                        Visibility
+                      <label className={style.label} htmlFor="bio">
+                        Bio
                       </label>
                       <TbAsterisk className='w-2 h-2 text-lms-error'/>
                     </div>
 
-                    <div className="flex gap-9 h-[40px] items-center text-[16px] font-normal">
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="1"
-                          label="Active"
-                      />
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="2"
-                          label="Drop"
-                      />
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="1"
-                          label="Disable"
-                      />
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="2"
-                          label="Hiatus"
-                      />
-                    </div>
-                  </div>
-
-                  {/* bio */}
-                  <div className={`${style.inputContainer}`}>
-                    <label className={`${style.label}`} htmlFor="bio">
-                      Bio
-                    </label>
                     <Field
-                        type="text"
                         as="textarea"
                         name="bio"
                         id="bio"
-                        className={`${style.input}`}
+                        className={style.input}
+                        rows="4"
+                        cols="30"
                     />
                   </div>
                 </div>

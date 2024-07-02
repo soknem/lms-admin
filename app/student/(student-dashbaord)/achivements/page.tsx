@@ -5,7 +5,7 @@ import {FaBook} from "react-icons/fa6";
 import {labelsTitle} from "@/lib/types/student/achievement/achievement";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {useGetStudentAchievementQuery} from "@/lib/features/student/achievement/achievement";
+import {useGetStudentAchievementQuery} from "@/lib/features/student/Student";
 import {
     selectLoading,
     setLoading,
