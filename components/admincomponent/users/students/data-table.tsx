@@ -132,12 +132,12 @@ export function UserStudentTable<TData, TValue>({
                 <div className="flex items-center py-4 w-full">
                     <div className="flex items-center w-full relative">
                         <Input
-                            placeholder="Search Curriculum"
+                            placeholder="Search Student Name"
                             value={
-                                (table.getColumn("name_en")?.getFilterValue() as string) ?? ""
+                                (table.getColumn("nameEn")?.getFilterValue() as string) ?? ""
                             }
                             onChange={(event) =>
-                                table.getColumn("name_en")?.setFilterValue(event.target.value)
+                                table.getColumn("nameEn")?.setFilterValue(event.target.value)
                             }
 
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
@@ -212,12 +212,12 @@ export function UserStudentTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary"
-                        onClick={() => router.push("/admin/users/student/add-student")}
-                >
-                    <FiPlus className="mr-2 h-4 w-4"/>
-                    Add Student
-                </Button>
+                {/*<Button className="bg-lms-primary text-white hover:bg-lms-primary"*/}
+                {/*        onClick={() => router.push("/admin/users/student/add-student")}*/}
+                {/*>*/}
+                {/*    <FiPlus className="mr-2 h-4 w-4"/>*/}
+                {/*    Add Student*/}
+                {/*</Button>*/}
             </div>
 
             {/* Table */}

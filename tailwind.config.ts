@@ -27,7 +27,7 @@ const config = {
                     background: "#F5F5F5",
                     secondary: "#F20A14",
                     accent: "#FCB920",
-                    "gray-80": "#808897",
+                    "gray-80": "#555B6D",
                     success: "#008000",
                     error: "#F73030",
                     black90: "#000000",

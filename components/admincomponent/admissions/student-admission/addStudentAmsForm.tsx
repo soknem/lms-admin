@@ -38,12 +38,7 @@ const initialValues = {
     study_pro: "",
 };
 
-const validationSchema = Yup.object().shape({
-    academic_year: Yup.string().required("Required"),
-    start_dater: Yup.string().required("Required"),
-    end_dater: Yup.string().required("Required"),
-    status: Yup.string().required("A selection is required"),
-});
+const validationSchema = Yup.object().shape({});
 
 const handleSubmit = async (value: UserStudentType) => {
     // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
@@ -324,7 +319,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                        <Field
+                                            <Field
                                                 as="select"
                                                 name="gender"
                                                 id="gender"
@@ -647,7 +642,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                        <Field
+                                            <Field
                                                 as="select"
                                                 name="class_stu"
                                                 id="class_stu"
@@ -707,7 +702,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="flex flex-wrap justify-between items-center">
-                                        <Field
+                                            <Field
                                                 name="grade"
                                                 component={RadioButton}
                                                 value="1"
@@ -879,7 +874,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                        <Field
+                                            <Field
                                                 as="select"
                                                 name="shift"
                                                 id="shift"
@@ -918,7 +913,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                        <Field
+                                            <Field
                                                 as="select"
                                                 name="degree"
                                                 id="degree"
@@ -960,7 +955,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                        <Field
+                                            <Field
                                                 as="select"
                                                 name="study_pro"
                                                 id="study_pro"

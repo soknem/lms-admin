@@ -1,4 +1,4 @@
-
+'use client'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Breadcrumb,
@@ -17,6 +17,7 @@ import { StudentDataTable } from "@/components/admincomponent/academics/classes/
 import { StuColumns } from "@/components/admincomponent/academics/classes/enrolledStudents/columns";
 import { CourseDataTable } from "@/components/admincomponent/academics/classes/courses/data-table";
 import { CourseColumns } from "@/components/admincomponent/academics/classes/courses/columns";
+import {useGetClassCourseByUuidQuery} from "@/lib/features/admin/academic-management/classes/classApi";
 
 
 
@@ -40,12 +41,21 @@ async function getCourses(): Promise<CourseType[]> {
   return data
 }
 
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 
-export default async function ClassDetail() {
-  const stuData = await getStudents()
 
-  const courseData = await getCourses()
+export default function ClassDetail(props: Props) {
+  // const stuData = await getStudents()
+  //
+  // const courseData = await getCourses();
+
+  const { data: coursesData, isLoading: isCourseLoading, isError: isCourseError, error: courseError } = useGetClassCourseByUuidQuery(props.params.id);
+
+  console.log("course of class: ",coursesData)
 
 
   return (
@@ -74,7 +84,7 @@ export default async function ClassDetail() {
             </TabsList>
 
             <TabsContent value="enrolledStudent">
-              <StudentDataTable columns={StuColumns} data={stuData} />
+              {/*<StudentDataTable columns={StuColumns} data={stuData} />*/}
             </TabsContent>
 
             <TabsContent value="course" className="bg-white p-6 space-y-4 rounded-lg">
@@ -120,7 +130,7 @@ export default async function ClassDetail() {
                   <AccordionTrigger>SEMESTER I</AccordionTrigger>
                   <AccordionContent>
 
-                    <CourseDataTable columns={CourseColumns} data={courseData} />
+                    {/*<CourseDataTable columns={CourseColumns} data={courseData} />*/}
 
                   </AccordionContent>
                 </AccordionItem>
@@ -128,7 +138,7 @@ export default async function ClassDetail() {
                   <AccordionTrigger>SEMESTER II</AccordionTrigger>
                   <AccordionContent>
 
-                    <CourseDataTable columns={CourseColumns} data={courseData} />
+                    {/*<CourseDataTable columns={CourseColumns} data={courseData} />*/}
 
                   </AccordionContent>
                 </AccordionItem>
