@@ -2,10 +2,10 @@
 
 import React, {useEffect, useState} from "react";
 import {FaBook} from "react-icons/fa6";
-import {labelsTitle} from "@/lib/types/student/achievement/achievement";
+import {labelsTitle} from "@/lib/types/student/achievement";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {useGetStudentAchievementQuery} from "@/lib/features/student/Student";
+import {useGetStudentAchievementQuery} from "@/lib/features/student/achievement/achievement";
 import {
     selectLoading,
     setLoading,
@@ -16,7 +16,7 @@ import {
 
 
 import AchievementTable from "@/components/studentcomponent/achievements/AchievementComponent";
-import type {Achievement, YearOfStudy} from "@/lib/types/student/achievement/achievement";
+import type {Achievement, YearOfStudy} from "@/lib/types/student/achievement";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 
 export default function Achievement() {
@@ -89,6 +89,7 @@ export default function Achievement() {
                     </div>
                 </section>
             </section>
+
 
             {/* Transcript */}
             <section

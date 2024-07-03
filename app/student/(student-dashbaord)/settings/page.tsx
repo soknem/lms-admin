@@ -1,6 +1,4 @@
-import {Button} from "@/components/ui/button";
 import React from "react";
-import {PiCertificateFill} from "react-icons/pi";
 import {EditStuProForm} from "@/components/studentcomponent/setting/EditStuPro";
 
 export default function Setting() {
