@@ -67,7 +67,7 @@ import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/ge
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  onFilterChange: (filters: any) => void;
+  // onFilterChange: (filters: any) => void;
 }
 
 type optionType = {
@@ -78,7 +78,7 @@ type optionType = {
 export function TranscriptDataTable<TData, TValue>({
   columns,
   data,
-  onFilterChange,
+  // onFilterChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -242,39 +242,7 @@ export function TranscriptDataTable<TData, TValue>({
 
         </div>
 
-        <Popover open={openProgram} onOpenChange={setOpenProgram}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
-              <TbFilter className='mr-2 h-4 w-4' />
-              {selectedGeneration.label ? <>{selectedGeneration.label}</> : <> Filter by Generation</>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0 bg-white" align="start">
-            <Command>
-              <CommandInput placeholder="Filter Generation..." />
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup>
-                  {generations.map((generation : any, index) => (
-                      <CommandItem
-                          key={index}
-                          value={generation.alias}
-                          onSelect={() => {
-                            handleGenChange(generation);
-                            setOpenProgram(false);
-                          }}
-                      >
-                        {generation.label}
-                      </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-            {selectedGeneration.label && (
-                <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none' onClick={() => handleReset()}>Reset</Button>
-            )}
-          </PopoverContent>
-        </Popover>
+
 
 
 

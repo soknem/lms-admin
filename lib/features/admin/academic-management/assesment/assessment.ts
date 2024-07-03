@@ -10,6 +10,17 @@ export const assessmentApi = istadLmsApi.injectEndpoints({
             studyProgramAlias: string;
             generationAlias: string;
             year: number;
+        }>({
+            query: (body) => ({
+                url: '/scores/transcripts',
+                method: 'POST',
+                body,
+            }),
+        }),
+        getSemesters: builder.mutation<any, {
+            studyProgramAlias: string;
+            generationAlias: string;
+            year: number;
             semester: number;
         }>({
             query: (body) => ({
@@ -24,5 +35,6 @@ export const assessmentApi = istadLmsApi.injectEndpoints({
 
 export const {
     useGetAssessmentQuery,
-    useGetTranscriptsMutation
+    useGetTranscriptsMutation,
+    useGetSemestersMutation
 } = assessmentApi;

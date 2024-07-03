@@ -138,15 +138,15 @@ export type CourseType = {
 
 
 export type TranscriptType = {
+    uuid: string,
   cardId: string,
   nameEn: string,
   gender: string,
   dob: string,
-  class: string,
   studyProgram: string,
   year: number,
-  semester1: number,
-  semester2: number,
+  semester1Score: number,
+  semester2Score: number,
   gpa: number,
   total: number,
   status: number
@@ -344,3 +344,13 @@ export type ShiftResponseType = {
     isDeleted: string;
     isDraft: string;
 }
+
+// Assessment Student Response
+// export type StudentAssessmentType = {
+//     uuid: string;
+//     cardId: string;
+//     studentStatus: string;
+//     nameEn: string;
+//
+//
+// }
