@@ -16,8 +16,6 @@ import {
 } from "@/lib/features/admin/admission-management/students-admission-management/stuAdmission";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {useGetShiftsQuery} from "@/lib/features/admin/faculties/shift/shift";
-import {selectShift, setShifts} from "@/lib/features/admin/faculties/shift/shiftSlice";
 import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
@@ -29,6 +27,8 @@ import {
     setFaculties
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
 import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
+import {selectShift, setShift} from "@/lib/features/admin/faculties/shift/shiftSlice";
 
 const initialValues = {
     uuid: "",
@@ -107,7 +107,7 @@ export function AddStudentAmsForm() {
     const [uploadedFile, setUploadedFile] = useState(null);
     const [uploadedFileIdentity, setUploadedFileIdentity] = useState(null);
 
-    const shifts = useFetchData(useGetShiftsQuery, selectShift, setShifts);
+    const shifts = useFetchData(useGetShiftQuery, selectShift, setShift);
 
     const {
         data: StudyProgramData,
