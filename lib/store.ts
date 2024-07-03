@@ -24,6 +24,7 @@ import detailClassesSlice from "@/lib/features/admin/academic-management/detail-
 import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
 import coursedetailSlice from "@/lib/features/student/coursedetail/coursedetailSlice";
 import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
+import InstructorSlice from "@/lib/features/instructor/coursedetail/InstructorSlice";
 
 
 export const makeStore = () => {
@@ -54,6 +55,8 @@ export const makeStore = () => {
             courseDetail: coursedetailSlice,
             schedule: scheduleSlice,
             shift: shiftSlice,
+            instructorCourseDetail:InstructorSlice,
+
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),

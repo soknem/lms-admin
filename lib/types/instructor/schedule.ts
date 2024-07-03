@@ -6,10 +6,9 @@ export type ScheduleType = {
   description: string;
   lectureDate: string;
   status: number;
-  teachingType: "lecture" | "lab" | "seminar" | "workshop"; // Add other types if necessary
+  teachingType: string;
   courseTitle: string;
   classCode: string;
-
 };
 
 export type StatusOption = {

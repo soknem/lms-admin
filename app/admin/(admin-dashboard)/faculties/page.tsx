@@ -27,6 +27,7 @@ import {
     setFaculties
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
 import CourseFilterComponent from "@/components/card/filter/FIlterCourseCardComponent";
+import Error404 from "@/components/errorPage/Error404Component";
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();
@@ -152,6 +153,7 @@ export default function Page() {
                 </Tabs>
 
             </section>
+
         </section>
     );
 }

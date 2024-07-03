@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { scheduleColumns } from "@/components/instructorcomponent/schedules/columns";
 import { ScheduleTable } from "@/components/instructorcomponent/schedules/data-table";
 import React, { useEffect } from "react";
@@ -6,22 +6,31 @@ import { FaBook } from "react-icons/fa6";
 import { useGetScheduleQuery } from "@/lib/features/instructor/schedule/schedule";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
-import { selectSchedule, setSchedule } from "@/lib/features/instructor/schedule/scheduleSlice";
+import { selectSchedule} from "@/lib/features/instructor/schedule/scheduleSlice";
+import { setSchedule} from "@/lib/features/instructor/schedule/scheduleSlice";
+import {ScheduleType} from "@/lib/types/instructor/schedule";
+
 
 export default function Schedule() {
   const dispatch = useDispatch<AppDispatch>();
-  const scheduleData = useSelector((state: RootState) => selectSchedule(state));
+  const {data, error, isLoading} = useGetScheduleQuery({page: 0, pageSize: 25});
 
-  const { data, error, isLoading } = useGetScheduleQuery({ page: 0, pageSize: 25 });
+  const schedules = useSelector((state: RootState) => selectSchedule(state));
+
 
   useEffect(() => {
     if (data) {
       dispatch(setSchedule(data.content));
     }
     if (error) {
-      console.error("Failed to load schedule", error);
+      console.error("failed to load generation", error);
     }
   }, [data, error, dispatch]);
+
+
+
+  const scheduleData: ScheduleType[] = schedules;
+
 
   return (
       <main className="flex flex-col h-full w-full p-9">
@@ -66,7 +75,7 @@ export default function Schedule() {
           </div>
 
           {/* name and course */}
-          <div className="flex flex-col justify-center ">
+          <div className="flex flex-col justify-center">
             <h3 className="text-lg lg:text-3xl font-bold">Chan Tida</h3>
             <div className="flex items-center gap-3">
               <FaBook className="w-4 h-4 text-lms-primary" />
