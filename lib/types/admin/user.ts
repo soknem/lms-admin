@@ -27,7 +27,8 @@ export type UserStudentType = {
 };
 
 export type UserStudentDetailType = {
-  card_id: number;
+  uuid: string;
+  cardId: string;
   nameEn: string;
   nameKh: string;
   username: string;
@@ -35,11 +36,25 @@ export type UserStudentDetailType = {
   phoneNumber: string;
   dob: string;
   gender: string;
+  studentStatus: number;
   profileImage: string;
   currentAddress: string;
   birthPlace: string;
   classes : ShortClassType[];
   courses: ShortCourseStudentType[];
+}
+
+export type UserStuType = {
+  uuid: string;
+  cardId: string;
+  nameEn: string;
+  nameKh: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  dob: string;
+  gender: string;
+  studentStatus: number;
 }
 
 export type StatusOption = {

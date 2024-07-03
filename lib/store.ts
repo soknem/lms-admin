@@ -21,7 +21,6 @@ import staffSlice from "@/lib/features/admin/user-management/staff/staffSlice";
 import fileSlice from "@/lib/features/uploadfile/fileSlice";
 import instructorcourseSlice from "@/lib/features/instructor/course/instructorcourseSlice";
 import detailClassesSlice from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
-import yearOfStudySlice from "@/lib/features/admin/yearOfStudy-management/yearOfStudySlice";
 import yearStuProSlice from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuProSlice";
 import academicYearSlice from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
 import stuAdmissionSlice

@@ -29,7 +29,6 @@ export type OptionType = {
 };
 
 // **** Class *****
-
 export type ClassTableFormType = {
     uuid: string;
     classCode: string;
@@ -55,6 +54,20 @@ export type Class = {
     students: any[]; // Assuming students are an array of objects
     courses: CourseInfo[];
 };
+
+export type ClassCreateType = {
+    classCode: string,
+    description: string,
+    year: number,
+    generationAlias: string,
+    studyProgramAlias: string,
+    shiftAlias: string,
+    instructorUuid: string,
+    studentUuid: any,
+    academicYearAlias: string,
+    isDraft: boolean,
+    status: number,
+}
 
 export type ShortClassType = {
     uuid: string;
@@ -118,7 +131,8 @@ export type CourseType = {
     instructor: string,
     semester: number,
     year: number,
-    visibility: boolean
+    visibility: boolean,
+    isDeleted: boolean,
 }
 
 
@@ -292,6 +306,10 @@ export type ShiftType = {
     startTime: string;
     endTime: string;
     name: string;
+    weekday: boolean;
+    description: string;
+    isDeleted: boolean;
+    isDraft: boolean;
 }
 
 export type StudyProgramShortType = {
@@ -313,4 +331,16 @@ export type ClassDetailResponseType = {
     students: any[];
     studyProgram: StudyProgramShortType;
 
+}
+
+// === Shift ====
+export type ShiftResponseType = {
+    alias: string;
+    name: string;
+    startTime: string;
+    endTime: string;
+    weekday: string;
+    description: string;
+    isDeleted: string;
+    isDraft: string;
 }

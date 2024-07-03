@@ -46,6 +46,7 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
     const [selectedCourseUUID, setSelectedCourseUUID] = useState('');
     const [selectedTeachingType, setSelectedTeachingType] = useState('');
     const [selectedStatus, setSelectedStatus] = useState(1);
+
     const [date, setDate] = useState<Date>();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -97,6 +98,7 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
             setSelectedTeachingType(lectureToUpdate.teachingType);
             setSelectedStatus(lectureToUpdate.status);
             setDate(new Date(lectureToUpdate.lectureDate));
+            formik.setFieldValue("isDraft", lectureToUpdate.isDraft);
         }
     }, [lectureToUpdate]);
 
@@ -138,16 +140,6 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
         }
     };
 
-    const handleChange = (selectedOption: any) => {
-        const uuid = selectedOption?.value;
-        setSelectedClassUUID(uuid);
-    };
-
-    const handleCourseChange = (selectedOption: any) => {
-        const uuid = selectedOption?.value;
-        setSelectedCourseUUID(uuid);
-    };
-
     const handleTeachingChange = (selectedOption: any) => {
         const value = selectedOption?.value;
         setSelectedTeachingType(value);
@@ -157,6 +149,8 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
         const value = selectedOption?.value;
         setSelectedStatus(value);
     };
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -281,6 +275,34 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
                             defaultValue={{ value: lectureToUpdate?.status, label: lectureToUpdate?.status === 1 ? "Started" : lectureToUpdate?.status === 2 ? "Pending" : "Ended" }}
                             value={{ value: selectedStatus, label: selectedStatus === 1 ? "Started" : selectedStatus === 2 ? "Pending" : "Ended" }}
                         />
+                    </div>
+
+                    {/* Visibility */}
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Visibility"
+                                                     labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
+
+                        <input
+                            type="radio"
+                            id="isDraftFalse"
+                            name="isDraft"
+                            value="true"
+                            checked={formik.values.isDraft}
+                            onChange={() => formik.setFieldValue("isDraft", true)}
+                        />
+                        <label htmlFor="isDraftTrue" className="px-2 pr-4">Draft</label>
+
+                        <input
+                            type="radio"
+                            id="isDraftFalse"
+                            name="isDraft"
+                            value="false"
+                            checked={!formik.values.isDraft}
+                            onChange={() => formik.setFieldValue("isDraft", false)}
+                        />
+                        <label htmlFor="isDraftFalse" className="px-2 pr-4">Public</label>
+
+                        {formik.errors.isDraft && <p className="text-red-700">{formik.errors.isDraft}</p>}
                     </div>
 
                     <div className="flex justify-end">

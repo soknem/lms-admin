@@ -1,40 +1,29 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import type {RootState} from "@/lib/store";
-import {ShiftType} from "@/lib/types/admin/faculty";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "@/lib/store";
+import {LectureRespondType,ShiftResponseType} from "@/lib/types/admin/academics";
 
-type ShiftState = {
-    shifts: ShiftType[];
-    isLoading: boolean;
-    error: string | null;
+type shiftState = {
+    shifts: ShiftResponseType[];
 }
 
-const initialState: ShiftState = {
-    shifts: [],
-    isLoading: false,
-    error: null,
+const initialState: shiftState = {
+    shifts: [] ,
 }
 
 const shiftSlice = createSlice({
     name: "shiftSlice",
     initialState,
     reducers: {
-        setShifts: (state, action: PayloadAction<ShiftType[]>) => {
+        setShift: (state, action: PayloadAction<ShiftResponseType[]>) => {
             state.shifts = action.payload;
-            state.isLoading = false;
-            state.error = null;
         },
-        addShift: (state, action: PayloadAction<ShiftType>) => {
-            state.shifts.push(action.payload);
-            state.isLoading = false;
-            state.error = null;
-        },
+
+
     }
 })
 
-export const {setShifts, addShift} = shiftSlice.actions;
-export const selectShift = (state: RootState) => state.shift.shifts;
-export const selectLoading = (state: RootState) => state.shift.isLoading;
-export const selectError = (state: RootState) => state.shift.error;
+export const { setShift } = shiftSlice.actions;
 
+export const selectShift = (state: RootState) => state.shift.shifts;
 
 export default shiftSlice.reducer;

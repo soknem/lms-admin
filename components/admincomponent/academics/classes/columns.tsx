@@ -5,8 +5,8 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { TbArchive } from "react-icons/tb";
-import { TbFileIsr } from "react-icons/tb";
+import {TbArchive, TbEye, TbEyeCancel,TbFileImport } from "react-icons/tb";
+
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,22 @@ import { OptionType, ClassTableFormType } from "@/lib/types/admin/academics";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import StatusBadge from "@/components/common/StatusBadge";
+import {
+  useDisableLectureMutation,
+  useEnableLectureMutation, useGetLectureQuery
+} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {useSelector} from "react-redux";
+import {selectLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import UpdateLectureForm from "@/components/admincomponent/academics/lectures/form/UpdateLectureForm";
+import {useRouter} from "next/navigation";
+import {
+  useDisableClassMutation,
+  useEnableClassMutation, useGetClassesQuery
+} from "@/lib/features/admin/academic-management/classes/classApi";
+import {selectClasses} from "@/lib/features/admin/academic-management/classes/classSlice";
+import {selectDetailClasses} from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
+
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -120,6 +136,100 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   return <span>{value}</span>;
 };
 
+const ActionCell = ({ row } : any) => {
+
+  const router = useRouter();
+
+  const [isCardVisible, setIsCardVisible] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
+  
+  const [enableClass] = useEnableClassMutation();
+  const [disableClass] = useDisableClassMutation();
+
+  // edit form
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
+  const classes = useSelector(selectDetailClasses);
+
+  const { refetch: refetchClasses } = useGetClassesQuery({ page: 0, pageSize: 10 });
+
+  const handleOpenCard = () => {
+    setIsCardVisible(true);
+  };
+
+  const handleConfirm = async   (classUuid : string) => {
+    if(isDeleted){
+      await enableClass(classUuid).unwrap();
+      setIsDeleted((prev :any) => !prev);
+      console.log('Class enabled successfully');
+      refetchClasses();
+    }else{
+      await disableClass(classUuid).unwrap();
+      setIsDeleted((prev : any) => !prev);
+      console.log('Class disable successfully');
+      refetchClasses();
+    }
+    setIsCardVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsCardVisible(false);
+  };
+
+  const handleEditClick = () => {
+    setIsFormVisible(true);
+  };
+
+  const handleCloseForm = () => {
+    setIsFormVisible(false);
+  };
+
+  return (
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
+              <MoreHorizontal className='h-4 w-4' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end' className="bg-white">
+            <DropdownMenuItem onClick={() => router.push(`classes/${row.original.uuid}`)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+              <TbFileImport  size={20} className="text-gray-30 mr-2"  /> View
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleEditClick} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+              <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+                className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                onClick={handleOpenCard}
+            >
+              {isDeleted ? (
+                  <>
+                    <TbEye size={20} className="text-green-600 mr-2" /> Enable
+                  </>
+              ) : (
+                  <>
+                    <TbEyeCancel size={20} className="text-red-600 mr-2" /> Disable
+                  </>
+              )}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {isCardVisible && (
+            <CardDisableComponent
+                message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                onConfirm={() => handleConfirm(row.original.uuid)}
+                onCancel={handleCancel}
+                buttonTitle={isDeleted ? "Enable" : "Disable"}
+            />
+        )}
+        {/*{isFormVisible && (*/}
+        {/*    <UpdateLectureForm uuid={row.original.uuid} onClose={handleCloseForm} lectureData={lectures} />*/}
+        {/*)}*/}
+      </div>
+  );
+};
 
 export const columns: ColumnDef<ClassTableFormType>[] = [
   {
@@ -127,8 +237,6 @@ export const columns: ColumnDef<ClassTableFormType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          //to  customize the size of each column
-          className="w-[200px] flex justify-start items-start"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -234,34 +342,8 @@ export const columns: ColumnDef<ClassTableFormType>[] = [
     cell: TableCell,
   },
   {
-    id: "actions",
-    cell: ({ row }) => {
-      const classes = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white">
-            {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-            {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-            <DropdownMenuItem className="text-lms-gray-30 focus:text-gray-30 focus:bg-background font-medium">
-
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
-              <TbPencil size={20} className="text-lms-gray-30 mr-2"  /> Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600 focus:text-red-600 font-medium focus:bg-background">
-              <TbArchive size={20} className="text-red-600 mr-2 " />
-              Disable
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    id: 'actions',
+    cell: ActionCell,
   },
+
 ];

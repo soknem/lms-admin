@@ -22,94 +22,90 @@ export default function Materials() {
     const [filterSlides] = useFilterFilesMutation();
     const [filterVideos] = useFilterFilesMutation();
     const [curriculumData, setCurriculumData] = useState({content: []});
-    const [slideDate, setSlideData] = useState({content: []});
+    const [slideData, setSlideData] = useState({content: []});
     const [videoData, setVideoData] = useState({content: []});
+    const [activeTab, setActiveTab] = useState('curriculums');
 
 
-    const applyFilterCurriculum = useCallback(async () => {
-        const {globalOperator, specsDto} = curriculumFilterState;
-        const body = {globalOperator, specsDto};
+    //get curriculum
+    // Function to apply the filter and fetch data
+    const applyFilterCurriculums = async () => {
+        const { globalOperator, specsDto } = curriculumFilterState;
+        const body = { globalOperator, specsDto };
 
         try {
-            const curriculumData = await filterCurriculums({pageNumber: 0, pageSize: 25, body}).unwrap();
+            const curriculumData = await filterCurriculums({ pageNumber: 0, pageSize: 25, body }).unwrap();
             setCurriculumData(curriculumData);
-            console.log(body)
+            console.log("curriculum body= ",body);
         } catch (err) {
-            console.error('Failed to filter courses from API:', err);
+            console.error('Failed to filter curriculum from API:', err);
         }
+    };
 
-        const value = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-        dispatch(addOrUpdateFilter({
-            filterType: 'curriculum',
-            filter: {column: 'contentType', value, operation: 'EQUAL', joinTable: null}
-        }));
-        console.log("Curriculum", value)
-
-    }, [curriculumFilterState, filterCurriculums]);
-
+    // Update the filter state when the component mounts
     useEffect(() => {
-        applyFilterCurriculum();
-    }, [applyFilterCurriculum]);
-
-    const handleCurriculumChange = useCallback(() => {
-        const value = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-        dispatch(addOrUpdateFilter({
-            filterType: 'curriculums',
-            filter: {column: 'contentType', value, operation: 'EQUAL', joinTable: null}
-        }));
-        console.log("Curriculum", value)
-    }, [dispatch]);
-
-    useEffect(() => {
-        handleCurriculumChange();
-    }, []);
-
-
-    const applyFilter = useCallback(async () => {
-        const {globalOperator, specsDto} = slideFilterState;
-        const body = {globalOperator, specsDto};
-
-        try {
-            const slideDate = await filterSlides({pageNumber: 0, pageSize: 25, body}).unwrap();
-            setSlideData(slideDate);
-            console.log("slides", body)
-        } catch (err) {
-            console.error('Failed to filter courses from API:', err);
-        }
-    }, [slideFilterState, filterSlides]);
-
-    useEffect(() => {
-        applyFilter();
-    }, [applyFilter]);
-
-    const handleChange = useCallback(() => {
         const value = "application/pdf";
         dispatch(addOrUpdateFilter({
-            filterType: 'slides',
-            filter: {column: 'contentType', value, operation: 'EQUAL', joinTable: null}
+            filterType: 'curriculums',
+            filter: { column: 'contentType', value, operation: 'EQUAL', joinTable: null }
         }));
     }, [dispatch]);
 
+    // Apply the filter when the filter state changes
     useEffect(() => {
-        handleChange();
-    }, []);
+        if (curriculumFilterState.specsDto.length > 0) {
+            applyFilterCurriculums();
+        }
+    }, [curriculumFilterState]);
+
+
+
+    //get slide
+    // Function to apply the filter and fetch data
+    const applyFilterSlide = async () => {
+        const { globalOperator, specsDto } = slideFilterState;
+        const body = { globalOperator, specsDto };
+
+        try {
+            const slideData = await filterSlides({ pageNumber: 0, pageSize: 25, body }).unwrap();
+            setSlideData(slideData)
+            console.log("slide body = ",body);
+        } catch (err) {
+            console.error('Failed to filter slide from API:', err);
+        }
+    };
+
+    // Update the filter state when the component mounts
+    useEffect(() => {
+        const value = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        dispatch(addOrUpdateFilter({
+            filterType: 'slides',
+            filter: { column: 'contentType', value, operation: 'EQUAL', joinTable: null }
+        }));
+    }, [dispatch]);
+
+    // Apply the filter when the filter state changes
+    useEffect(() => {
+        if (slideFilterState.specsDto.length > 0) {
+            applyFilterSlide();
+        }
+    }, [slideFilterState]);
 
 
     return (
         <main className="flex flex-col h-full w-full p-9">
             <h2 className="mb-6 text-4xl text-lms-primary font-bold">Materials</h2>
-            <Tabs defaultValue="curriculum" className="w-full">
+            <Tabs defaultValue="curriculums" className="w-full">
                 <TabsList>
-                    <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
+                    <TabsTrigger value="curriculums">Curriculum</TabsTrigger>
                     <TabsTrigger value="slide">Slide</TabsTrigger>
                     <TabsTrigger value="video">Video</TabsTrigger>
                 </TabsList>
-                <TabsContent value="curriculum">
-                    <CurriculumTable columns={curriculumColumns} data={curriculumData.content}/>
-
+                <TabsContent value="curriculums">
+                    <CurriculumTable columns={curriculumColumns} data={curriculumData.content} />
                 </TabsContent>
                 <TabsContent value="slide">
-                    <SlideTable columns={slideColumns} data={slideDate.content}/>
+                    <SlideTable columns={slideColumns} data={slideData.content}/>
                 </TabsContent>
                 <TabsContent value="video">
                     {/*<VideoTable columns={videoColumns} data={videoData}/>*/}
@@ -118,4 +114,3 @@ export default function Materials() {
         </main>
     );
 }
-

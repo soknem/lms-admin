@@ -19,7 +19,6 @@ export default function CreateGenForm() {
     const dispatch = useDispatch<AppDispatch>();
     const [createGeneration] = useCreateGenerationMutation();
     const [isLoading, setIsLoading] = useState(false);
-    const {refetch: refetchGenerations} = useGetGenerationQuery({page: 0, pageSize: 10});
     const currentYear = new Date().getFullYear();
 
     // Regex pattern
@@ -40,7 +39,6 @@ export default function CreateGenForm() {
             const result = await createGeneration(newGeneration).unwrap();
 
             console.log('Generation created successfully');
-            refetchGenerations();
 
 
         } catch (err: any) {
