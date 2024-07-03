@@ -12,7 +12,7 @@ import semesterAssessments from "@/app/admin/(admin-dashboard)/academics/assessm
 //each course import
 import {courseAssessmentType , courseAssessmentTableType} from "@/lib/types/admin/academics";
 import courseAssesment from "@/app/admin/(admin-dashboard)/academics/assessments/data/courseAssesment.json"
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {TranscriptDataTable} from "@/components/admincomponent/academics/assesments/transcript/data-table";
 import {TranscriptColumns} from "@/components/admincomponent/academics/assesments/transcript/columns";
 import {CourseAssesmentDataTable} from "@/components/admincomponent/academics/assesments/eachCourse/data-table";
@@ -24,20 +24,23 @@ import {
     from "@/components/admincomponent/academics/assesments/eachSemester/columns";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {useGetAssessmentQuery} from "@/lib/features/admin/academic-management/assesment/assessment";
+import {
+    useGetAssessmentQuery,
+    useGetTranscriptsMutation
+} from "@/lib/features/admin/academic-management/assesment/assessment";
 import {
     selectAssessment,setAssessment
 } from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 
 export default function Assessment() {
 
-    const { data : courseScoreData, error: courseScoreError, isLoading } = useGetAssessmentQuery({ page: 0, pageSize: 10 });
+    // const { data : courseScoreData, error: courseScoreError, isLoading } = useGetAssessmentQuery({ page: 0, pageSize: 10 });
 
     // console.log("courseScoreData", data);
 
     // console.log("assessment from page: " , CourseAssessmentData)
 
-    const transcriptData: TranscriptType[] = transcripts;
+    const transcriptList: TranscriptType[] = transcripts;
 
     const semesterData: semesterAssessementType[] = semesterAssessments;
 
@@ -65,6 +68,57 @@ export default function Assessment() {
 
     // console.log("data after filter: " , courseData)
 
+
+
+    // const fetchData = async () => {
+    //     try {
+    //         const result = await getTranscripts({
+    //             studyProgramAlias: 'software-engineering-bachelor',
+    //             generationAlias: 'generation-1',
+    //             year: 1,
+    //             semester: 1,
+    //         });
+    //
+    //         console.log('Fetched data:', result);
+    //     } catch (err) {
+    //         console.error('Failed to fetch transcripts', err);
+    //     }
+    // };
+
+    const [getTranscripts, { data, error, isLoading }] = useGetTranscriptsMutation();
+    const [transcriptData, setTranscriptData] = useState([]); // Initialize state for transcript data
+    const [filters, setFilters] = useState({
+        generationAlias: '',
+        year: '',
+        semester: '',
+        studyProgramAlias: '',
+    });
+
+
+
+    const fetchData = async (filters : any) => {
+        try {
+            const result = await getTranscripts({
+                studyProgramAlias: 'software-engineering-bachelor',
+                generationAlias: filters.generationAlias,
+                year: 1,
+                semester: 1,
+            }).unwrap();
+
+            setTranscriptData(result);
+        } catch (err) {
+            console.error('Failed to fetch transcripts', err);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(filters);
+    }, [filters]);
+
+    const handleFilterChange = (newFilters : any) => {
+        setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
+    };
+
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
             <h2 className="text-3xl text-lms-primary font-bold">Assesments</h2>
@@ -77,7 +131,9 @@ export default function Assessment() {
                 </TabsList>
 
                 <TabsContent value="transcript">
-                    <TranscriptDataTable columns={TranscriptColumns} data={transcriptData}/>
+                    <TranscriptDataTable onFilterChange={handleFilterChange} columns={TranscriptColumns} data={transcriptList}
+
+                    />
                 </TabsContent>
 
                 <TabsContent value="semester">
