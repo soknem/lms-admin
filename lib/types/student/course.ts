@@ -17,5 +17,6 @@ export type StudentCourseType = {
     nameKh: string;
     username: string;
     gender: string;
+    avatar: string;
     courses: CourseType[];
 };

@@ -86,7 +86,7 @@ export default function Course() {
                 <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
                     <div className="w-[150px] h-[150px] rounded-full shadow-lg">
                         <img
-                            src="https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"
+                            src={allData.avatar || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                             alt="student"
                             className="h-full w-full object-cover rounded-full"
                         />

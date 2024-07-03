@@ -13,10 +13,18 @@ export const studentSettingApi = istadLmsApi.injectEndpoints({
         getStudents: builder.query<any, { pageNumber: number, pageSize: number }>({
             query: ({ pageNumber, pageSize }) => `/students?pageNumber=${pageNumber}&pageSize=${pageSize}`,
         }),
+        uploadProfileImage: builder.mutation<any, any>({
+            query: (image) => ({
+                url: `/medias/upload-single`,
+                method: 'POST',
+                body: image,
+            }),
+        })
     }),
 });
 
 export const {
     useGetStudentSettingsMutation,
+    useUploadProfileImageMutation,
     useGetStudentsQuery,
 } = studentSettingApi;
