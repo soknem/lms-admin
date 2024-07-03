@@ -80,10 +80,11 @@ export type UserStaffType = {
 };
 
 export type UserStaffDetailType = {
-  card_id: number;
+  uuid: number;
   nameEn: string;
   nameKh: string;
   username: string;
+  position: string;
   email: string;
   phoneNumber: string;
   dob: string;
