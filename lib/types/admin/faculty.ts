@@ -50,15 +50,13 @@ export type StudyProgramType = {
 
 
 export type SetupStudyProgramType = {
-    id: string;
-    subject: string;
-    study_program: string;
-    semester: string;
-    hour: number;
-    theory: number;
-    practice: number;
-    internship: number;
-    status: string;
+    year: number;
+    uuid: string;
+    subjects: SubjectType[];
+    studyProgram: string;
+    semester: number;
+    isDraft: boolean;
+    isDeleted: boolean;
 };
 
 // **** Subjects *****
@@ -72,9 +70,28 @@ export type SubjectType = {
     internship: number;
     description: string;
     isDraft: boolean;
+    // semester: number;
 };
 
 export type StatusOption = {
     label: string;
     value: string;
 };
+
+export type AcademicYearType = {
+    alias: string,
+    academicYear: string,
+    status: number,
+    isDraft: boolean,
+    isDeleted: boolean,
+}
+
+export type ShiftType = {
+    alias: string,
+    name: string,
+    startTime: string,
+    endTime: string,
+    weekday: boolean,
+    isDraft: boolean,
+    description: string
+}

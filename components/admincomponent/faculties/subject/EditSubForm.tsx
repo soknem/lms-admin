@@ -199,9 +199,9 @@ export function EditSubjectForm({alias}: { alias: string }) {
 
     return (
         <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[540px] bg-white ">
+            <DialogContent className="w-[480px]  bg-white ">
                 <DialogHeader>
-                    <DialogTitle>Edit Subject</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Edit Subject</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -213,37 +213,12 @@ export function EditSubjectForm({alias}: { alias: string }) {
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col items-center justify-center gap-1">
 
-
                                 <div className="flex">
                                     <Field
                                         name="logo"
                                         component={CustomInput}
                                         setFieldValue={setFieldValue}
                                         previewUrl={initialValues.logo}
-                                    />
-                                </div>
-
-
-                                {/* Subject Alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">
-                                            Alias
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-
-                                    <Field
-                                        type="text"
-                                        placeholder="Faculty of Engineering"
-                                        name="alias"
-                                        id="alias"
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="alias"
-                                        component="div"
-                                        className={`${style.error}`}
                                     />
                                 </div>
 
@@ -264,6 +239,29 @@ export function EditSubjectForm({alias}: { alias: string }) {
                                     />
                                     <ErrorMessage
                                         name="title"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* Subject Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Slug
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        placeholder="Faculty of Engineering"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
                                         component="div"
                                         className={`${style.error}`}
                                     />
@@ -316,13 +314,12 @@ export function EditSubjectForm({alias}: { alias: string }) {
                                     </div>
                                 </div>
 
-
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">
                                         Description
                                     </label>
                                     <Field
-                                        type="text"
+                                        as="textarea"
                                         placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"

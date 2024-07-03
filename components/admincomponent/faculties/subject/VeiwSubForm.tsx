@@ -111,9 +111,9 @@ export function ViewSubjectForm({alias}: { alias: string }) {
     };
     return (
         <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[540px] bg-white ">
+            <DialogContent className="w-[480px] bg-white ">
                 <DialogHeader>
-                    <DialogTitle>Subject Information</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Subject Information</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -126,7 +126,6 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col items-center justify-center gap-1">
 
-
                                 <div className="flex">
                                     <Field
                                         name="logo"
@@ -136,33 +135,11 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                     />
                                 </div>
 
-
-                                {/* Subject Alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">
-                                            Alias
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-
-                                    <Field
-                                        disabled
-                                        type="text"
-                                        placeholder="Faculty of Engineering"
-                                        name="alias"
-                                        id="alias"
-                                        className={`${style.input}`}
-                                    />
-
-                                </div>
-
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="title">
                                             Subject
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
 
                                     <Field
@@ -176,6 +153,25 @@ export function ViewSubjectForm({alias}: { alias: string }) {
 
                                 </div>
 
+                                {/* Subject Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Slug
+                                        </label>
+                                    </div>
+
+                                    <Field
+                                        disabled
+                                        type="text"
+                                        placeholder="Faculty of Engineering"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+
+                                </div>
+
                                 <div
                                     className={`flex gap-4 h-[40px] items-center justify-between ${style.inputContainer}`}>
                                     <div className="w-[80px] ">
@@ -183,7 +179,6 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                             <label className={`${style.label}`} htmlFor="duration">
                                                 Hour
                                             </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <Field disabled name="duration" className={` ${style.input}`}/>
@@ -194,7 +189,6 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                             <label className={`${style.label}`} htmlFor="theory">
                                                 Theory
                                             </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <Field disabled name="theory" className={` ${style.input}`}/>
@@ -205,7 +199,6 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                             <label className={`${style.label}`} htmlFor="practice">
                                                 Practice
                                             </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <Field disabled name="practice" className={` ${style.input}`}/>
@@ -223,14 +216,13 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                     </div>
                                 </div>
 
-
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">
                                         Description
                                     </label>
                                     <Field
                                         disabled
-                                        type="text"
+                                        as="textarea"
                                         placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
@@ -245,7 +237,6 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                         <label className={`${style.label}`} htmlFor="isDraft">
                                             Visibility
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
 
                                     <div className="flex gap-4 h-[40px] items-center">
@@ -264,7 +255,7 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                             label="Draft"
                                         />
                                     </div>
-                                    
+
                                 </div>
 
                             </div>

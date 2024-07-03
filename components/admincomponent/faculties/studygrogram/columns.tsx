@@ -6,14 +6,6 @@ import {MdEdit} from "react-icons/md";
 import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal, ArrowUpDown, Link} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
 
 import {

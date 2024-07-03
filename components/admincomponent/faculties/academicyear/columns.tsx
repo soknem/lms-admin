@@ -1,16 +1,16 @@
 "use client";
 import {RxCross2} from "react-icons/rx";
 import {IoCheckmarkSharp} from "react-icons/io5";
-import {MdEdit} from "react-icons/md";
 
 import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
+
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
 
-import {SetupStudyProgramType, StatusOption} from "@/lib/types/admin/faculty";
-import ActionsCell from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/SetUpStuActioncell";
+import {AcademicYearType, DegreeType, StatusOption} from "@/lib/types/admin/faculty";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
+import ActionsCell from "@/components/admincomponent/faculties/academicyear/AcademicYearActionCell";
 
 const TableCell = ({getValue, row, column, table}: any) => {
     const initialValue = getValue();
@@ -27,20 +27,13 @@ const TableCell = ({getValue, row, column, table}: any) => {
     };
 
     const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newValue = e.target.value === "true";
+        const newValue = e.target.value;
         setValue(newValue);
         tableMeta?.updateData(row.index, column.id, newValue);
     };
-
+    // Ensure the "id" column is not editable
     if (column.id === "id") {
         return <span>{value}</span>;
-    }
-
-    if (column.id === "description") {
-        const words = value.split(" ");
-        const firstFiveWords = words.slice(0, 5).join(" ");
-        const displayText = words.length > 5 ? `${firstFiveWords}...` : firstFiveWords;
-        return <span>{displayText}</span>;
     }
 
     if (column.id === "logo") {
@@ -56,7 +49,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
             <select
-                className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
+                className="border-1 border-gray-300 rounded-md focus:to-primary"
                 onChange={onSelectChange}
                 value={value}
             >
@@ -68,7 +61,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
             </select>
         ) : (
             <input
-                className="w-full p-2 border-1 border-gray-300 "
+                className="w-full p-2 border-1 border-gray-300 rounded-md"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -91,15 +84,34 @@ const TableCell = ({getValue, row, column, table}: any) => {
             {value === true
                 ? "Public"
                 : value === false
-                    ? "Draft"
+                    ? "Disable"
                     : ""}
         </span>
         );
     }
 
-    // Handling subjects column
-    if (column.id === "subjects") {
-
+    if (column.id === "status") {
+        return (
+            <span
+                className={
+                    value === 1
+                        ? "Starting text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                        : value === 2
+                            ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            : value === 3
+                                ? "Achieved text-white bg-gray-500 px-3 py-1 rounded-[10px]"
+                                : ""
+                }
+            >
+            {value === 1
+                ? "Starting"
+                : value === 2
+                    ? "Ended"
+                    : value === 3
+                        ? "Achieved"
+                        : ""}
+        </span>
+        );
     }
 
     return <span>{value}</span>;
@@ -151,17 +163,16 @@ const EditCell = ({row, table}: any) => {
     );
 };
 
-export const setupStudyProgramColumns: ColumnDef<SetupStudyProgramType>[] = [
+export const academicYearColumns: ColumnDef<AcademicYearType>[] = [
     {
-        accessorFn: (row) => row.subjects[length]?.title || "N/A",
-        id: "subjects.title",
+        accessorKey: "alias",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    SUBJECT
+                    ALIAS
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -170,98 +181,14 @@ export const setupStudyProgramColumns: ColumnDef<SetupStudyProgramType>[] = [
     },
 
     {
-        accessorKey: "study_program",
+        accessorKey: "academicYear",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    STUDY PROGRAM
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorKey: "semester",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    SEMESTER
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorFn: (row) => row.subjects[length]?.duration || "N/A",
-        id: "subjects.duration",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    HOUR
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorFn: (row) => row.subjects[length]?.theory || "N/A",
-        id: "subjects.theory",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    THEORY
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorFn: (row) => row.subjects[length]?.practice || "N/A",
-        id: "subjects.practice",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    PRACTICE
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorFn: (row) => row.subjects[length]?.internship || "N/A",
-        id: "subjects.internship",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    INTERNSHIP
+                    ACADEMIC YEAR
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -277,17 +204,45 @@ export const setupStudyProgramColumns: ColumnDef<SetupStudyProgramType>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    STATUS
+                    VISIBILITY
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
+
+
         cell: TableCell,
         meta: {
             type: "select",
             options: [
                 {value: true, label: "Public"},
                 {value: false, label: "Draft"},
+            ],
+        },
+    },
+
+    {
+        accessorKey: "status",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    STATUS
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+
+
+        cell: TableCell,
+        meta: {
+            type: "select",
+            options: [
+                {value: 1, label: "Starting"},
+                {value: 2, label: "Ended"},
+                {value: 3, label: "Achieved"},
             ],
         },
     },

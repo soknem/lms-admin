@@ -15,12 +15,17 @@ import {
 
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateAdmissionMutation, useGetAdmissionsQuery} from "@/lib/features/admin/admission-management/admission";
-import {useState} from "react";
-import {FacultyType} from "@/lib/types/admin/faculty";
+import React, {useState} from "react";
 import {AdmissionType} from "@/lib/types/admin/admission";
+import {useSelector} from "react-redux";
+import {RootState} from "@/lib/store";
+import {useGetAcademicYearsQuery} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
+import {selectAcademicYear} from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
+import {IoIosArrowDown} from "react-icons/io";
 
 const initialValues = {
-    academicYear: "",
+    uuid: "",
+    academicYearAlias: "",
     openDate: "",
     endDate: "",
     telegramLink: "",
@@ -30,10 +35,9 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-    academicYear: Yup.string().required("Academic year is required"),
+    academicYearAlias: Yup.string().required("Academic year is required"),
     openDate: Yup.date().required("Start date is required"),
     endDate: Yup.date().required("End date is required"),
-    telegramLink: Yup.string().required("Telegram group is required"),
     remark: Yup.string(),
     status: Yup.string(),
     isDeleted: Yup.boolean(),
@@ -61,11 +65,16 @@ export function CreateAmsForm() {
     const [createAdmission] = useCreateAdmissionMutation();
     const {refetch: refetchAdms} = useGetAdmissionsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
+    const {
+        data
+    } = useGetAcademicYearsQuery({page: 0, pageSize: 10});
+    const academicYears = useSelector((state: RootState) => selectAcademicYear(state));
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
             const newAdmission: AdmissionType = {
-                academicYear: values.academicYear,
+                uuid: values.uuid,
+                academicYearAlias: values.academicYearAlias,
                 openDate: values.openDate,
                 endDate: values.endDate,
                 telegramLink: values.telegramLink,
@@ -90,7 +99,6 @@ export function CreateAmsForm() {
         }
     };
 
-
     return (
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
 
@@ -103,7 +111,7 @@ export function CreateAmsForm() {
             <DialogContent className="w-[480px] bg-white ">
 
                 <DialogHeader>
-                    <DialogTitle>Add Admission</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Add Admission</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -113,28 +121,40 @@ export function CreateAmsForm() {
                 >
                     {() => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col">
 
                                 {/*academicYear*/}
-                                <div className={style.inputContainer}>
+                                <div className={`${style.inputContainer} relative w-full`}>
 
                                     <div className="flex">
-                                        <label className={style.label} htmlFor="academicYear">
-                                            Academic Year
+                                        <label className={`${style.label}`} htmlFor="academicYearAlias">Academic
+                                            Year
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
-                                        type="text"
-                                        name="academicYear"
-                                        id="academicYear"
-                                        className={style.input}
-                                    />
+                                        as="select" name="academicYearAlias"
+                                        id="academicYearAlias"
+                                        className={`${style.input} appearance-none`}
+                                    >
+                                        <option value="" label="Select degree"/>
+                                        {Array.isArray(academicYears) && academicYears.map(academicYear => (
+                                            <option key={academicYear.alias} value={academicYear.alias}
+                                                    label={academicYear.alias}/>
+                                        ))}
+                                    </Field>
                                     <ErrorMessage
                                         name="academicYear"
                                         component="div"
                                         className={style.error}
                                     />
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-2 pt-6 pointer-events-none">
+                                        <IoIosArrowDown
+                                            className="h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                        />
+                                    </div>
                                 </div>
 
                                 {/*openDate*/}
@@ -217,68 +237,70 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
-                                {/* status */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={style.label} htmlFor="status">
-                                            Visibility
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                <div className={`flex w-full justify-between`}>
+                                    {/* status */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="status">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value="1"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value="2"
+                                                label="Draft"
+                                            />
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value="3"
+                                                label="Disabled"
+                                            />
+                                        </div>
+                                        <ErrorMessage
+                                            name="status"
+                                            component="div"
+                                            className={style.error}
+                                        />
                                     </div>
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="1"
-                                            label="Public"
-                                        />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="2"
-                                            label="Draft"
-                                        />
-                                        <Field
-                                            name="status"
-                                            component={RadioButton}
-                                            value="3"
-                                            label="Disabled"
-                                        />
-                                    </div>
-                                    <ErrorMessage
-                                        name="status"
-                                        component="div"
-                                        className={style.error}
-                                    />
-                                </div>
 
-                                {/*isDeleted*/}
-                                <div className={style.inputContainer}>
-                                    <div className="flex">
-                                        <label className={style.label} htmlFor="isDeleted">
-                                            Status
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
+                                    {/*isDeleted*/}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={style.label} htmlFor="isDeleted">
+                                                Status
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Yes"
+                                            />
+                                            <Field
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="No"
+                                            />
+                                        </div>
+                                        <ErrorMessage
                                             name="isDeleted"
-                                            component={RadioButton}
-                                            value="true"
-                                            label="Yes"
-                                        />
-                                        <Field
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            value="false"
-                                            label="No"
+                                            component="div"
+                                            className={style.error}
                                         />
                                     </div>
-                                    <ErrorMessage
-                                        name="isDeleted"
-                                        component="div"
-                                        className={style.error}
-                                    />
                                 </div>
                             </div>
 

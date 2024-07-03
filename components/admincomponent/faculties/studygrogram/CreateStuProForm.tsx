@@ -132,24 +132,11 @@ export function CreateStudyProForm() {
     } = useGetFacultiesQuery({page: 0, pageSize: 10});
     const faculties = useSelector((state: RootState) => selectFaculty(state));
 
-    useEffect(() => {
-        if (facultiesData) {
-            dispatch(setFaculties(facultiesData.content));
-        }
-
-    }, [facultiesData, dispatch]);
-
     const {
         data: degreesData,
     } = useGetDegreesQuery({page: 0, pageSize: 10});
     const degrees = useSelector((state: RootState) => selectDegree(state));
 
-    useEffect(() => {
-        if (degreesData) {
-            dispatch(setDegrees(degreesData.content));
-        }
-
-    }, [degreesData, dispatch]);
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
@@ -195,7 +182,7 @@ export function CreateStudyProForm() {
 
             <DialogContent className="w-[920px] items-center justify-center bg-white">
                 <DialogHeader>
-                    <DialogTitle>Add Study Program</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Add Study Program</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -207,22 +194,25 @@ export function CreateStudyProForm() {
                         <Form className="py-4 rounded-lg w-full">
                             <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
 
-                                {/* alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">Alias</label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field type="text" name="alias" id="alias" className={`${style.input}`}/>
-                                </div>
-
                                 {/* studyProgramName */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="studyProgramName">Title</label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field type="text" name="studyProgramName" id="studyProgramName"
+                                    <Field placeholder={`Master of Computer Science`} type="text"
+                                           name="studyProgramName"
+                                           id="studyProgramName"
+                                           className={`${style.input}`}/>
+                                </div>
+
+                                {/* alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">Slug</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <Field placeholder={`computer-science-master`} type="text" name="alias" id="alias"
                                            className={`${style.input}`}/>
                                 </div>
 
@@ -256,8 +246,13 @@ export function CreateStudyProForm() {
                                 {/* description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">Description</label>
-                                    <Field type="text" name="description" id="description"
-                                           className={`${style.input}`}/>
+                                    <Field
+                                        placeholder={`The Master of Computer Science program offers advanced studies in computer science theory, algorithms, and practical applications.`}
+                                        as="textarea"
+                                        name="description"
+                                        id="description"
+                                        className={`${style.input}`}
+                                    />
                                 </div>
 
                                 {/* isDraft */}
