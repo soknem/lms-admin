@@ -19,28 +19,23 @@ import {useGetStaffQuery} from "@/lib/features/admin/user-management/staff/staff
 import {setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {selectStaff, setStaff} from "@/lib/features/admin/user-management/staff/staffSlice";
 import {RootState} from "@/lib/store";
+import {UserStaffDetailType} from "@/lib/types/admin/user";
+import placeholderImage from "@/public/common/placeholderPf.png";
 
 export default function StaffList() {
 
     // ===== get all staff =======
     const dispatch = useDispatch();
 
-    const { data : staffData , error : staffError } = useGetStaffQuery({ page: 0, pageSize: 10 })
+    const { data : staffList , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffQuery({ page: 0, pageSize: 10 })
 
-    const staffListData = useSelector((state: RootState) => selectStaff(state));
+    // console.log("staffData: ", staffList);
 
-    useEffect(() => {
-        if(staffData) {
-            // console.log("staff data: ", staffData.content)
-            dispatch(setStaff(staffData.content))
-
-        }
-        if(staffError){
-            console.error("failed to load staff", staffError);
-        }
-    }, [staffData, staffError, dispatch]);
-
-    console.log("staffData: ", staffListData);
+    let staffData: UserStaffDetailType[]  = [];
+    if(isStaffSuccess){
+        staffData = staffList.content;
+        console.log("staff data from stafflist page: ", staffData)
+    }
 
     const router = useRouter();
     // State for search query and selected position filters
@@ -48,11 +43,17 @@ export default function StaffList() {
     const [selectedPosition, setSelectedPosition] = useState("");
 
     // Filtered card data based on search query and selected position
-    const filteredCardData = InsData.filter(
-        (ins) =>
-            ins.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    // const filteredCardData : UserStaffDetailType[]  = staffData.filter(
+    //     (st : UserStaffDetailType) =>
+    //         st.nameEn.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    //         (selectedPosition === "" ||
+    //             st.position.toLowerCase() === selectedPosition.toLowerCase())
+    // );
+    const filteredCardData: UserStaffDetailType[] = staffData.filter(
+        (st: UserStaffDetailType) =>
+            (st.nameEn && st.nameEn.toLowerCase().includes(searchQuery.toLowerCase())) &&
             (selectedPosition === "" ||
-                ins.position.toLowerCase() === selectedPosition.toLowerCase())
+                (st.position && st.position.toLowerCase() === selectedPosition.toLowerCase()))
     );
 
     // Event handler for search input change
@@ -66,93 +67,103 @@ export default function StaffList() {
     };
 
 
-    return (
-        <>
-            <div className="flex flex-row gap-x-4 mt-6">
-                {/* Search */}
-                <div className="flex items-center w-full relative">
-                    <Input
-                        placeholder="Search by name...."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="border-[#E6E6E6] bg-white pl-10 "
-                    />
+    return <>
+        <div className="flex flex-row gap-x-4 mt-6">
+            {/* Search */}
+            <div className="flex items-center w-full relative">
+                <Input
+                    placeholder="Search by name...."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className="border-[#E6E6E6] bg-white pl-10 "
+                />
 
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <FaSearch className="text-gray-400"/>
-                    </div>
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaSearch className="text-gray-400"/>
                 </div>
+            </div>
 
-                {/*filters type of staff*/}
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            variant="outline"
-                            className="border-[#E6E6E6] bg-white rounded-[10px] ml-auto hover:bg-gray-50 "
-                        >
-                            {selectedPosition || "All Staff Type"}
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                        align="end"
-                        className="border-[#E6E6E6] bg-white "
+            {/*filters type of staff*/}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className="border-[#E6E6E6] bg-white rounded-[10px] ml-auto hover:bg-gray-50 "
                     >
-                        <DropdownMenuItem onClick={() => handlePositionFilterChange("")}>
-                            All Staff Type
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => handlePositionFilterChange("instructor")}
-                        >
+                        {selectedPosition || "All Staff Type"}
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                    align="end"
+                    className="border-[#E6E6E6] bg-white "
+                >
+                    <DropdownMenuItem onClick={() => handlePositionFilterChange("")}>
+                        All Staff Type
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => handlePositionFilterChange("instructor")}
+                    >
+                        Instructor
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => handlePositionFilterChange("admin")}
+                    >
+                        Admin
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => handlePositionFilterChange("academic manager")}
+                    >
+                        Academic Manager
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/*filters type of staff*/}
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button className="text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90">
+                        <FiPlus className="mr-2 h-4 w-4"/> Add
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                    align="end"
+                    className="border-[#E6E6E6] bg-white "
+                >
+                    <DropdownMenuItem
+                        onClick={() => router.push(`/admin/users/staff/add-instructor`)}
+                    >
+                        <Button className="flex justify-start bg-transparent w-full hover:bg-gray-50">
                             Instructor
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => handlePositionFilterChange("staff")}
-                        >
-                            Staff
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-
-                {/*filters type of staff*/}
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button className="text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90">
-                            <FiPlus className="mr-2 h-4 w-4"/> Add
                         </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                        align="end"
-                        className="border-[#E6E6E6] bg-white "
-                    >
-                        <DropdownMenuItem
-                            onClick={() => router.push(`/admin/users/staff/add-instructor`)}
-                        >
-                            <Button className="flex justify-start bg-transparent w-full hover:bg-gray-50">
-                                Instructor
-                            </Button>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => router.push(`/admin/users/staff/add-staff`)}>
-                            <Button className="flex justify-start bg-transparent w-full hover:bg-gray-50">
-                                Staff
-                            </Button>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
-            <div className="grid grid-cols-2 gap-6 mt-6">
-                {filteredCardData.map((card) => (
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push(`/admin/users/staff/add-staff`)}>
+                        <Button className="flex justify-start bg-transparent w-full hover:bg-gray-50">
+                            Staff
+                        </Button>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
+        <div className="grid grid-cols-2 gap-6 mt-6">
+            {isStaffLoading ? (
+                <div className="mx-auto" >Loading...</div>
+            ) : isStaffSuccess && filteredCardData.length > 0 ? (
+                filteredCardData.map((card: UserStaffDetailType) => (
                     <InstructorCardComponent
-                        key={card.id}
-                        imageSrc={card.imageSrc}
-                        name={card.name}
-                        education={card.education}
-                        position={card.position}
-                        linkedin={card.linkedin}
-                        github={card.github}
-                        onClick={() => router.push(`/admin/users/staff/${card.id}`)}
+                        key={card?.uuid || 'N/A'}
+                        imageSrc={card?.profileImage || placeholderImage} // Use a default image if profileImage is empty or null
+                        name={card.nameEn}
+                        education={card.email}
+                        position={card.position || "No position"}
+                        linkedin={card.email}
+                        github={card.email}
+                        onClick={() => router.push(`/admin/users/staff/${card.uuid}`)}
                     />
-                ))}
-            </div>
-        </>
-    );
+                ))
+            ) : (
+                <div className="col-span-2 text-center text-gray-500">No match found for the selected position</div>
+            )}
+
+        </div>
+    </>;
 }

@@ -131,7 +131,7 @@ export function CreateFacForm() {
                     name: values.name,
                     description: values.description,
                     address: values.address,
-                    logo: fileResponse.name, // Assuming the response contains the URL of the uploaded file
+                    logo: fileResponse.name,
                     isDeleted: values.isDeleted,
                     isDraft: values.isDraft,
                 };
@@ -162,7 +162,7 @@ export function CreateFacForm() {
 
             <DialogContent className="w-[480px] bg-white ">
                 <DialogHeader>
-                    <DialogTitle>Add Faculty</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Add Faculty</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -173,28 +173,6 @@ export function CreateFacForm() {
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1">
-                                {/* Faculty Alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">
-                                            Alias
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-
-                                    <Field
-                                        type="text"
-                                        placeholder="Faculty of Engineering"
-                                        name="alias"
-                                        id="alias"
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="alias"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
 
                                 {/* Faculty Title */}
                                 <div className={`${style.inputContainer}`}>
@@ -219,13 +197,36 @@ export function CreateFacForm() {
                                     />
                                 </div>
 
+                                {/* Faculty Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Slug
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <Field
+                                        type="text"
+                                        placeholder="Faculty of Engineering"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
                                 {/* Faculty Description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">
                                         Description
                                     </label>
                                     <Field
-                                        type="text"
+                                        as="textarea"
                                         placeholder="This is main description of our academic"
                                         name="description"
                                         id="description"
@@ -256,66 +257,68 @@ export function CreateFacForm() {
                                     />
                                 </div>
 
-                                {/* isDraft */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDraft">
-                                            Visibility
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
+                                <div className={`flex w-full justify-between`}>
+                                    {/* isDraft */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
 
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
-                                            label="Public"
-                                        />
-                                        <Field
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            value="false"
-                                            label="Draft"
+                                            className={`${style.error}`}
                                         />
                                     </div>
 
-                                    <ErrorMessage
-                                        name="isDraft"
-                                        component={RadioButton}
-                                        className={`${style.error}`}
-                                    />
-                                </div>
+                                    {/* isDeleted */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDeleted">
+                                                Status
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
 
-                                {/* isDeleted */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDeleted">
-                                            Status
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
 
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
+                                        <ErrorMessage
                                             name="isDeleted"
                                             component={RadioButton}
-                                            value="true"
-                                            label="Public"
-                                        />
-                                        <Field
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            value="false"
-                                            label="Draft"
+                                            className={`${style.error}`}
                                         />
                                     </div>
-
-                                    <ErrorMessage
-                                        name="isDeleted"
-                                        component={RadioButton}
-                                        className={`${style.error}`}
-                                    />
                                 </div>
 
                                 {/* Faculty Image */}

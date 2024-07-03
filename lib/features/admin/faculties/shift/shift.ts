@@ -6,7 +6,7 @@ export const shiftApi = istadLmsApi.injectEndpoints({
             query: ({ page = 0, pageSize = 10 }) =>
                 `/shifts?pageNumber=${page}&pageSize=${pageSize}`,
         }),
-      
+
 
     })
 })

@@ -8,15 +8,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
 import {MoreHorizontal} from "lucide-react";
-import {useRouter} from "next/navigation";
+import {EditAcademicYearForm} from "@/components/admincomponent/faculties/academicyear/EditAcademicYearForm";
+import {ViewAcademicYeaForm} from "@/components/admincomponent/faculties/academicyear/ViewAcademicYearForm";
 
 const ActionsCell = ({row}: any) => {
     const [isEditFormVisible, setEditFormVisible] = useState(false);
-    const study_program = row.original;
-    const router = useRouter();
+    const [isViewFormVisible, setViewFormVisible] = useState(false);
+    const academicYear = row.original;
 
     const handleEditClick = () => {
         setEditFormVisible(true);
+        setViewFormVisible(false); // Close view form if open
+    };
+
+    const handleViewClick = () => {
+        setViewFormVisible(true);
+        setEditFormVisible(false); // Close edit form if open
     };
 
     return (
@@ -32,14 +39,13 @@ const ActionsCell = ({row}: any) => {
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem
                         className="focus:bg-background"
-                        onClick={() => navigator.clipboard.writeText(study_program.subject)}
+                        onClick={() => navigator.clipboard.writeText(academicYear.academicYear)}
                     >
                         Copy ID
                     </DropdownMenuItem>
-                    {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
                     <DropdownMenuItem
                         className="focus:bg-background"
-                        onClick={() => router.push("/admin/faculties/studyprogram-detail")}
+                        onClick={handleViewClick}
                     >
                         View
                     </DropdownMenuItem>
@@ -49,12 +55,15 @@ const ActionsCell = ({row}: any) => {
                     >
                         Edit
                     </DropdownMenuItem>
+                    {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
+                    {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
                     <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
                         Disable
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            {/*{isEditFormVisible && <EditSetStuProForm />}*/}
+            {isViewFormVisible && <ViewAcademicYeaForm alias={`${academicYear.alias}`}/>}
+            {isEditFormVisible && <EditAcademicYearForm alias={`${academicYear.alias}`}/>}
         </div>
     );
 };

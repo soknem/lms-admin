@@ -3,45 +3,30 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../../style.module.css";
-import {FiPlus} from "react-icons/fi";
+
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {DegreeType} from "@/lib/types/admin/faculty";
+import React, {useEffect, useState} from "react";
 import {TbAsterisk} from "react-icons/tb";
-import {useCreateDegreeMutation} from "@/lib/features/admin/faculties/degree/degree";
-
-const initialValues = {
-    alias: "",
-    level: "",
-    description: "",
-    isDeleted: false,
-    isDraft: false
-};
+import {
+    useEditAcademicYearByAliasMutation,
+    useGetAcademicYearByAliasQuery, useGetAcademicYearsQuery
+} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
+import {AcademicYearType} from "@/lib/types/admin/faculty";
 
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required('Alias is required'),
-    level: Yup.string().required('Level is required'),
-    description: Yup.string(),
+    academicYear: Yup.string().required('Academic Year is required'),
+    status: Yup.string().required('Status is required'),
     isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
     isDraft: Yup.boolean().required('Please specify if the degree is a draft'),
 });
-
-const handleSubmit = async (values: DegreeType, createDegree: any) => {
-    try {
-        const response = await createDegree(values).unwrap();
-        console.log('Degree created successfully:', response);
-        // Optionally, reset the form or close the dialog here
-    } catch (error) {
-        console.error('Failed to create degree:', error);
-    }
-};
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -49,67 +34,118 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
     );
 };
 
-export function CreateDeForm() {
-    const [createDegree] = useCreateDegreeMutation();
+export function EditAcademicYearForm({alias}: { alias: string }) {
+    const [open, setOpen] = useState(true);
+    const [editAcademicYear] = useEditAcademicYearByAliasMutation();
+    const [initialAlias, setInitialAlias] = useState("");
+    const {data: academicYearData, isSuccess} = useGetAcademicYearByAliasQuery(alias);
+    const {refetch: refetchAcademicYear} = useGetAcademicYearsQuery({page: 0, pageSize: 10});
+    const [initialValues, setInitialValues] = useState({
+        alias: "",
+        academicYear: "",
+        status: 0,
+        isDeleted: false,
+        isDraft: false
+    });
+
+    useEffect(() => {
+        if (isSuccess && academicYearData) {
+            setInitialValues({
+                alias: academicYearData.alias,
+                academicYear: academicYearData.academicYear,
+                status: academicYearData.status,
+                isDeleted: academicYearData.isDeleted,
+                isDraft: academicYearData.isDraft
+            });
+            setInitialAlias(academicYearData.alias);
+        }
+    }, [isSuccess, academicYearData]);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            const editAcademicYearDataByAlias: AcademicYearType = {
+                alias: values.alias,
+                academicYear: values.academicYear,
+                status: values.status,
+                isDeleted: values.isDeleted,
+                isDraft: values.isDraft,
+            };
+
+            await editAcademicYear({alias: initialAlias, updatedData: editAcademicYearDataByAlias}).unwrap();
+
+            // Now update the alias if it has changed
+            if (values.alias !== initialAlias) {
+                await editAcademicYear({
+                    alias: values.alias,
+                    updatedData: {...editAcademicYearDataByAlias, alias: values.alias}
+                }).unwrap();
+            }
+
+            resetForm();
+            refetchAcademicYear();
+            handleClose();
+        } catch (error) {
+            console.error("Error updating degree: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
-        <Dialog>
-
-            <DialogTrigger asChild>
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary">
-                    <FiPlus className="mr-2 h-4 w-4"/> Add degree
-                </Button>
-            </DialogTrigger>
-
-            <DialogContent className="w-[480px] bg-white ">
-
+        <Dialog open={open} onOpenChange={handleClose}>
+            <DialogContent className="w-[480px] bg-white">
                 <DialogHeader>
-                    <DialogTitle className={`text-2xl font-semibold`}>Add Degree</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Edit Academic Year</DialogTitle>
                 </DialogHeader>
 
                 <Formik
+                    enableReinitialize
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={(values) => handleSubmit(values, createDegree)}
+                    onSubmit={handleSubmit}
                 >
-                    {() => (
-                        <Form className="py-4 rounded-lg w-full ">
+                    {({setFieldValue}) => (
+                        <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-1">
 
-                                {/* Degree Level*/}
+                                {/* academicYear*/}
                                 <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="level">
-                                            Level
+                                        <label className={`${style.label}`} htmlFor="academicYear">
+                                            Academic Year
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
                                         type="text"
-                                        placeholder="Associated Degree"
-                                        name="level"
-                                        id="level"
+                                        placeholder="academicYear"
+                                        name="academicYear"
+                                        id="academicYear"
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
-                                        name="level"
+                                        name="academicYear"
                                         component="div"
                                         className={`${style.error}`}
                                     />
                                 </div>
 
-                                {/* Degree Alias*/}
+                                {/* Academic Year Alias*/}
                                 <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="alias">
@@ -119,7 +155,6 @@ export function CreateDeForm() {
                                     </div>
                                     <Field
                                         type="text"
-                                        placeholder="Associated Degree"
                                         name="alias"
                                         id="alias"
                                         className={` ${style.input}`}
@@ -131,27 +166,9 @@ export function CreateDeForm() {
                                     />
                                 </div>
 
-                                {/* Degree Description*/}
-                                <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="description">
-                                        Description
-                                    </label>
-                                    <Field
-                                        as="textarea"
-                                        name="description"
-                                        placeholder="This is main degree of Engineering faculty"
-                                        id="description"
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="description"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
+                                <div className={`flex w-full justify-between flex-wrap space-y-2`}>
 
-                                <div className={`flex w-full justify-between`}>
-                                    {/* Visibility */}
+                                    {/* isDraft */}
                                     <div className={``}>
                                         <div className="flex">
                                             <label className={`${style.label}`} htmlFor="isDraft">
@@ -181,7 +198,6 @@ export function CreateDeForm() {
                                         />
                                     </div>
 
-                                    {/* status */}
                                     <div className={``}>
                                         <div className="flex">
                                             <label className={`${style.label}`} htmlFor="isDeleted">
@@ -210,17 +226,53 @@ export function CreateDeForm() {
                                             className={`${style.error}`}
                                         />
                                     </div>
+
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="status">
+                                                Starting
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value="1"
+                                                label="Starting"
+                                            />
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value="2"
+                                                label="Ended"
+                                            />
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value="3"
+                                                label="Achieved"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDeleted"
+                                            component={RadioButton}
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
                                 </div>
 
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >
-                                    Add
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>

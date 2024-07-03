@@ -1,7 +1,6 @@
 "use client";
 import {RxCross2} from "react-icons/rx";
 import {IoCheckmarkSharp} from "react-icons/io5";
-import {MdEdit} from "react-icons/md";
 
 import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal, ArrowUpDown} from "lucide-react";
@@ -49,11 +48,11 @@ const TableCell = ({getValue, row, column, table}: any) => {
         return (
             <div className="flex items-center">
                 <img
-                    src={studentData.profile_image}
+                    src={studentData.avatar}
                     alt={studentData.name}
                     className="w-8 h-8 rounded-full mr-2"
                 />
-                <span>{studentData.name}</span>
+                <span>{studentData.nameEn}</span>
             </div>
         );
     }
@@ -110,7 +109,7 @@ const EditCell = ({row, table}: any) => {
 
         meta?.setEditedRows((old: any) => ({
             ...old,
-            [row.id]: action === "edit" ? true : false,
+            [row.id]: action === "edit",
         }));
 
         if (action === "cancel") {
@@ -163,6 +162,7 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
         accessorKey: "email",
         header: () => {
@@ -170,8 +170,9 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "degree",
+        accessorKey: "degree.level",
         header: ({column}) => {
             return (
                 <Button
@@ -185,8 +186,9 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "shift",
+        accessorKey: "shift.name",
         header: ({column}) => {
             return (
                 <Button
@@ -200,13 +202,15 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
         },
         cell: TableCell,
     },
+
     {
-        accessorKey: "study_program",
+        accessorKey: "studyProgram.studyProgramName",
         header: () => {
             return <div>STUDY PROGRAM</div>;
         },
         cell: TableCell,
     },
+
     {
         accessorKey: "status",
         header: ({column}) => {
@@ -229,17 +233,20 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
             ],
         },
     },
-    {
-        accessorKey: "generation",
-        header: () => {
-            return <div>GENERATION</div>;
-        },
-        cell: TableCell,
-    },
+
+    // {
+    //     accessorKey: "generation",
+    //     header: () => {
+    //         return <div>GENERATION</div>;
+    //     },
+    //     cell: TableCell,
+    // },
+
     {
         id: "edit",
         cell: EditCell,
     },
+
     {
         id: "actions",
         cell: ({row}) => {

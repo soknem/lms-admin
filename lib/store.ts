@@ -17,11 +17,15 @@ import paymentSlice from '@/lib/features/admin/payment-management/paymentSlice';
 import materialsSlice from '@/lib/features/admin/materials/materialsSlice';
 import lectureSlice from '@/lib/features/admin/academic-management/lecture/lectureSlice';
 import classSlice from '@/lib/features/admin/academic-management/classes/classSlice';
-import staffSlice from '@/lib/features/admin/user-management/staff/staffSlice';
-import fileSlice from '@/lib/features/uploadfile/fileSlice';
-import instructorcourseSlice from '@/lib/features/instructor/course/instructorcourseSlice';
-import detailClassesSlice from '@/lib/features/admin/academic-management/detail-classes/detailClassesSlice';
-import shiftSlice from '@/lib/features/admin/faculties/shift/shiftSlice';
+import staffSlice from "@/lib/features/admin/user-management/staff/staffSlice";
+import fileSlice from "@/lib/features/uploadfile/fileSlice";
+import instructorcourseSlice from "@/lib/features/instructor/course/instructorcourseSlice";
+import detailClassesSlice from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
+import yearStuProSlice from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuProSlice";
+import academicYearSlice from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
+import stuAdmissionSlice
+    from "@/lib/features/admin/admission-management/students-admission-management/stuAdmissionSlice";
+import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
 
 
@@ -40,8 +44,12 @@ export const makeStore = () => {
             studentCourse: studentCourseSlice,
             achievement: achievementSlice,
             studyProgram: studyProgramSlice,
+            setupStudyProgram: yearStuProSlice,
             subject: subjectSlice,
+            academicYear: academicYearSlice,
             admission: admissionSlice,
+            studentAdmission: stuAdmissionSlice,
+            shift: shiftSlice,
             payment: paymentSlice,
             course: courseSlice,
             material: materialsSlice,
@@ -50,8 +58,8 @@ export const makeStore = () => {
             file: fileSlice,
             instructorCourse: instructorcourseSlice,
             detailClasses: detailClassesSlice,
-            shift: shiftSlice,
             studentSetting: StudentProfileSlice,
+
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     });

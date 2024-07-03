@@ -200,7 +200,7 @@ export function EditFacForm({alias}: { alias: string }) {
         <Dialog open={open} onOpenChange={handleClose} modal={true}>
             <DialogContent className="w-[480px] bg-white">
                 <DialogHeader>
-                    <DialogTitle>Edit Faculty</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Edit Faculty</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -211,6 +211,7 @@ export function EditFacForm({alias}: { alias: string }) {
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-1 items-center justify-center">
+
                                 {/* Faculty logo */}
                                 <div className="flex">
                                     <Field
@@ -221,12 +222,11 @@ export function EditFacForm({alias}: { alias: string }) {
                                     />
                                 </div>
 
-
                                 {/* Faculty Alias */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="alias">
-                                            Alias
+                                            Slug
                                         </label>
                                         <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
@@ -303,67 +303,72 @@ export function EditFacForm({alias}: { alias: string }) {
                                     />
                                 </div>
 
-                                {/* isDraft */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDraft">
-                                            Visibility
-                                        </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                <div className={`flex w-full justify-between`}>
+
+                                    {/* isDraft */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value={true}
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value={false}
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
 
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            value={true}
-                                            label="Public"
-                                        />
-                                        <Field
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            value={false}
-                                            label="Draft"
+                                    {/* isDeleted */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDeleted">
+                                                Status
+                                            </label>
+                                            <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value={true}
+                                                label="Active"
+                                            />
+                                            <Field
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value={false}
+                                                label="Inactive"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDeleted"
+                                            component="div"
+                                            className={`${style.error}`}
                                         />
                                     </div>
 
-                                    <ErrorMessage
-                                        name="isDraft"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
                                 </div>
 
-                                {/* isDeleted */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDeleted">
-                                            Status
-                                        </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
-                                    </div>
-
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            value={true}
-                                            label="Active"
-                                        />
-                                        <Field
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            value={false}
-                                            label="Inactive"
-                                        />
-                                    </div>
-
-                                    <ErrorMessage
-                                        name="isDeleted"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
                             </div>
 
                             {/* button submit */}

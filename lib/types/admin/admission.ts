@@ -1,57 +1,40 @@
 // **** Admissions *****
 export type AdmissionType = {
-    academicYear: string;
+    uuid: string;
+    status: number;
+    remark: string;
     openDate: string;
     endDate: string;
+    academicYearAlias: string;
     telegramLink: string;
-    remark: string;
-    status: number;
     isDeleted: boolean;
 };
 
 // ****Student Admissions *****
 export type StudentAdmissionType = {
-    // profile: {
-    //     name: string;
-    //     profile: string;
-    // };
-    // email: string;
-    // degree: string;
-    // shift: string;
-    // study_program: string;
-    // status: string;
-    // generation: string;
-
-
-    "uuid": "26a45336-d612-46e6-906e-1fd7696c7c06",
-    "nameEn": "rothana1",
-    "nameKh": "រតនា",
-    "email": "rothana1@gmail.com",
-    "highSchool": "takeo highSchool",
-    "phoneNumber": "021456894",
-    "dob": "2002-10-22",
-    "birthPlace": null,
-    "bacIiGrade": "A",
-    "gender": "Male",
-    "avatar": "",
-    "address": "123 Main Street",
-    "guardianContact": "+1987654321",
-    "guardianRelationShip": "Parent",
-    "knownIstad": "By social media",
-    "identity": "",
-    "biography": "ដោយសារខ្ញុំចង់ចឹង teacher , ពេល disabled ចឹងខ្ញុំអោយវា draft  ដែរ, ព្រោះយើងអត់អាច public  degree ដែល disabled",
-    "isDeleted": false,
-    "shift": string,
-    "studyProgram": string,
-    "degree": {
-        "alias": "Bachelor-Degree",
-        "level": "Bachelor Degree"
-    },
-    "admission": {
-        "uuid": "e3d77f25-97f4-4294-88c3-2738eb9225ef",
-        "status": 2
-    }
-};
+    uuid: string,
+    nameEn: string,
+    nameKh: string,
+    email: string,
+    highSchool: string,
+    phoneNumber: string,
+    dob: string,
+    birthPlace: string,
+    bacIiGrade: string,
+    gender: string,
+    avatar: string,
+    address: string,
+    guardianContact: string,
+    guardianRelationShip: string,
+    knownIstad: string,
+    identity: string,
+    biography: string,
+    isDeleted: boolean,
+    shift: string,
+    studyProgram: string,
+    degree: string,
+    admission: string
+}
 
 export type StatusOption = {
     label: string;

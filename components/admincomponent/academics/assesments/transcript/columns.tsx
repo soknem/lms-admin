@@ -54,6 +54,11 @@ const TableCell = ({ getValue, row, column, table }: any) => {
           }
     }
 
+    if(accessorKey === 'average' || accessorKey === 'gpa' || accessorKey === 'semester1Score' || accessorKey === 'semester2Score') {
+        let formattedNumber = parseFloat(value.toFixed(2));
+        return formattedNumber
+    }
+
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -161,24 +166,7 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
         cell: TableCell
 
     },
-    {
-        accessorKey: 'class',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    //to  customize the size of each column
-                    className="w-[130px] flex justify-start items-start"
-                >
-                    CLASS
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell
 
-    },
     {
         accessorKey: 'year',
         header: ({ column }) => {
@@ -195,7 +183,7 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'semester1',
+        accessorKey: 'semester1Score',
         header: ({ column }) => {
             return (
                 <Button
@@ -210,7 +198,7 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'semester2',
+        accessorKey: 'semester2Score',
         header: ({ column }) => {
             return (
                 <Button
@@ -240,7 +228,7 @@ export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
 
     },
     {
-        accessorKey: 'total',
+        accessorKey: 'average',
         header: ({ column }) => {
             return (
                 <Button
