@@ -54,6 +54,11 @@ const TableCell = ({ getValue, row, column, table }: any) => {
           }
     }
 
+    if(accessorKey === 'average' || accessorKey === 'gpa' || accessorKey === 'semester1Score' || accessorKey === 'semester2Score') {
+        let formattedNumber = parseFloat(value.toFixed(2));
+        return formattedNumber
+    }
+
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -93,7 +98,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const TranscriptColumns: ColumnDef<any>[] = [
+export const TranscriptColumns: ColumnDef<TranscriptType>[] = [
     {
         accessorKey: 'cardId',
         header: ({ column }) => {
@@ -223,7 +228,7 @@ export const TranscriptColumns: ColumnDef<any>[] = [
 
     },
     {
-        accessorKey: 'total',
+        accessorKey: 'average',
         header: ({ column }) => {
             return (
                 <Button

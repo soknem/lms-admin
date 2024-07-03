@@ -148,24 +148,26 @@ export type TranscriptType = {
   semester1Score: number,
   semester2Score: number,
   gpa: number,
-  total: number,
+ average: number,
   status: number
 }
 
 export type semesterAssessementType = {
-  cardId: string,
-  nameEn: string,
-  gender: string,
-  dob: string,
-  class: string,
-  subjects: SubjectType[],
-  grade: string,
-  total: number,
-  status: number
+    cardId: string;
+    nameEn: string;
+    gender: string;
+    dob: string;
+    classCode: string; // changed from "class" to "classCode" to match data
+    academicYear: string | null; // added to match data
+    courses: CourseShortType[]; // changed from "subjects" to "courses" to match data
+    grade: string;
+    gpa: number; // added to match data
+    total: number;
+    status: number;
 }
 
-export type SubjectType = {
-  subjectName: string,
+export type CourseShortType = {
+    title: string,
   score: number
 };
 
