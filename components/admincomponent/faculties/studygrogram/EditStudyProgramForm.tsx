@@ -229,7 +229,7 @@ export function EditStudyProForm({alias}: { alias: string }) {
     };
     return (
         <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[920px]items-center justify-center bg-white">
+            <DialogContent className="w-[920px] items-center justify-center bg-white">
                 <DialogHeader>
                     <DialogTitle>Edit Study Program</DialogTitle>
                 </DialogHeader>
@@ -244,22 +244,15 @@ export function EditStudyProForm({alias}: { alias: string }) {
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
 
-                                <div className="flex">
-                                    <Field
-                                        name="logo"
-                                        component={CustomInput}
-                                        setFieldValue={setFieldValue}
-                                        previewUrl={initialValues.logo}
-                                    />
-                                </div>
-
-                                {/* alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">Alias</label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                <div className="w-full grid col-span-2 ">
+                                    <div className={`w-full flex items-center justify-between`}>
+                                        <Field
+                                            name="logo"
+                                            component={CustomInput}
+                                            setFieldValue={setFieldValue}
+                                            previewUrl={initialValues.logo}
+                                        />
                                     </div>
-                                    <Field type="text" name="alias" id="alias" className={`${style.input}`}/>
                                 </div>
 
                                 {/* studyProgramName */}
@@ -270,6 +263,15 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                     </div>
                                     <Field type="text" name="studyProgramName" id="studyProgramName"
                                            className={`${style.input}`}/>
+                                </div>
+
+                                {/* alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">Slug</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <Field type="text" name="alias" id="alias" className={`${style.input}`}/>
                                 </div>
 
                                 {/* facultyAlias */}
@@ -302,7 +304,7 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                 {/* description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">Description</label>
-                                    <Field type="text" name="description" id="description"
+                                    <Field as={`textarea`} name="description" id="description"
                                            className={`${style.input}`}/>
                                 </div>
 

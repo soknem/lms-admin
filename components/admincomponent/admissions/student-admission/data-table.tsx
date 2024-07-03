@@ -128,10 +128,10 @@ export function StudentAdmissionTable<TData, TValue>({
                         <Input
                             placeholder="Search Admission"
                             value={
-                                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                                (table.getColumn("profile")?.getFilterValue() as string) ?? ""
                             }
                             onChange={(event) =>
-                                table.getColumn("name")?.setFilterValue(event.target.value)
+                                table.getColumn("profile")?.setFilterValue(event.target.value)
                             }
 
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "

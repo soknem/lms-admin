@@ -156,8 +156,9 @@ const EditCell = ({row, table}: any) => {
 };
 
 export const admissionColumns: ColumnDef<AdmissionType>[] = [
+
     {
-        accessorKey: "academicYear",
+        accessorKey: "academicYear.academicYear",
         header: ({column}) => {
             return (
                 <Button
@@ -266,7 +267,7 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
                         <DropdownMenuItem
                             className="focus:bg-background"
                             onClick={() =>
-                                navigator.clipboard.writeText(admission.academicYear)
+                                navigator.clipboard.writeText(admission.academicYearAlias)
                             }
                         >
                             Copy ID
