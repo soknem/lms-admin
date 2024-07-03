@@ -10,7 +10,7 @@ import Error from "@/app/error";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 
-import { toast, Toaster, ToastBar } from 'react-hot-toast';
+import {toast, Toaster, ToastBar} from 'react-hot-toast';
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -28,7 +28,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         >
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
-                <nav className="w-full h-[72px] shadow-md">
+                <nav className="w-full h-[72px] shadow-md z-10">
                     <NavbarComponent/>
                 </nav>
 
