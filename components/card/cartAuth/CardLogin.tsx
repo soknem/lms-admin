@@ -94,7 +94,7 @@ export function CardLogin() {
                             // Check user role and navigate accordingly
                             if (decoded.roles.includes("admin")) {
                                 console.log("decoded Token from login: ", "admin");
-                                router.push("/admin/faculties");
+                                router.push("/admin/summary-dashboard");
                             } else if (decoded.roles.includes("student")) {
                                 console.log("decoded Token from login: ", "student");
                                 router.push("/student/courses");

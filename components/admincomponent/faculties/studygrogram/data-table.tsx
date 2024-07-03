@@ -1,8 +1,4 @@
-"use client";
-
 import React, {useState} from "react";
-
-//import from shad cn
 import {
     ColumnDef,
     flexRender,
@@ -15,7 +11,6 @@ import {
     getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-
 import {
     Table,
     TableBody,
@@ -24,14 +19,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
-    DropdownMenuContent, DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {useRouter} from "next/navigation";
@@ -39,25 +33,29 @@ import {CreateStudyProForm} from "./CreateStuProForm";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 import {FaSearch} from "react-icons/fa";
 
-//custom component import
+interface StudyProgramType {
+    alias: string;
+    studyProgramName: string;
+    isDraft: boolean;
+}
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends StudyProgramType, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function StudyProgramTable<TData, TValue>({
-                                                     columns,
-                                                     data,
-                                                 }: DataTableProps<TData, TValue>) {
+export function StudyProgramTable<TData extends StudyProgramType, TValue>({
+                                                                              columns,
+                                                                              data,
+                                                                          }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [editedRows, setEditedRows] = useState({});
     const [allData, setData] = useState(() => [...data]);
     const [originalData, setOriginalData] = useState(() => [...data]);
-    const [editedRows, setEditedRows] = useState({});
-    const router = useRouter();
     const [selectedFilter, setSelectedFilter] = useState("All");
+    const router = useRouter();
 
     const table = useReactTable({
         data,
@@ -106,25 +104,26 @@ export function StudyProgramTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
-
-    const filterOptions = ["All", "Public", "Disable", "Draft"];
+    const filterOptions = ["All", "Public", "Draft"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
         const filterValue =
             value === "All"
                 ? ""
                 : value === "Public"
-                    ? "true"
-                    : value === "Disable"
-                        ? "false"
-                        : "draft";
-        table.getColumn("status")?.setFilterValue(filterValue);
+                    ? true
+                    : value === "Draft"
+                        ? false
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
+    };
+
+    const handleRowClick = (row: StudyProgramType) => {
+        router.push(`/admin/faculties/setup-studyprogram/${row.alias}`);
     };
 
     return (
         <>
-
             <div className="flex items-center justify-between gap-4 ">
                 {/* Search */}
                 <div className="flex items-center py-4 w-full">
@@ -132,14 +131,16 @@ export function StudyProgramTable<TData, TValue>({
                         <Input
                             placeholder="Search Study Program"
                             value={
-                                (table.getColumn("studyProgramName")?.getFilterValue() as string) ?? ""
+                                (table.getColumn("studyProgramName")?.getFilterValue() as string) ??
+                                ""
                             }
                             onChange={(event) =>
-                                table.getColumn("studyProgramName")?.setFilterValue(event.target.value)
+                                table
+                                    .getColumn("studyProgramName")
+                                    ?.setFilterValue(event.target.value)
                             }
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30 "
                         />
-
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <FaSearch className="text-gray-400"/>
                         </div>
@@ -153,14 +154,11 @@ export function StudyProgramTable<TData, TValue>({
                             variant="outline"
                             className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
-                            <TbFilter className='mr-2 h-4 w-4'/>
+                            <TbFilter className="mr-2 h-4 w-4"/>
                             {selectedFilter}
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                        align="end"
-                        className="border-[#E6E6E6] bg-white "
-                    >
+                    <DropdownMenuContent align="end" className="border-[#E6E6E6] bg-white ">
                         {filterOptions.map((option) => (
                             <DropdownMenuItem
                                 key={option}
@@ -180,9 +178,10 @@ export function StudyProgramTable<TData, TValue>({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
+                            variant="outline"
+                            className="border-[#E6E6E6] bg-white ml-auto text-lms-gray-30"
                         >
-                            <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
+                            <TbAdjustmentsHorizontal className="mr-2 h-4 w-4"/>
                             Table View
                         </Button>
                     </DropdownMenuTrigger>
@@ -190,26 +189,22 @@ export function StudyProgramTable<TData, TValue>({
                         {table
                             .getAllColumns()
                             .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize focus:bg-background"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                );
-                            })}
+                            .map((column) => (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className="capitalize focus:bg-background"
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) =>
+                                        column.toggleVisibility(!!value)
+                                    }
+                                >
+                                    {column.id}
+                                </DropdownMenuCheckboxItem>
+                            ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
 
                 <CreateStudyProForm/>
-
-
             </div>
 
             {/* Table */}
@@ -218,18 +213,16 @@ export function StudyProgramTable<TData, TValue>({
                     <TableHeader className="text-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    );
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
@@ -240,14 +233,7 @@ export function StudyProgramTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     className="hover:bg-lms-background cursor-pointer"
-                                    onClick={(e) => {
-                                        // Cast e.target to HTMLElement to access closest method
-                                        const target = e.target as HTMLElement;
-                                        const isActionButton = target.closest('.action-button');
-                                        if (!isActionButton) {
-                                            router.push(`/admin/faculties/setup-studyprogram`);
-                                        }
-                                    }}
+                                    onClick={() => handleRowClick(row.original)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

@@ -151,8 +151,6 @@ const ActionCell = ({ row } : any) => {
 
   const classes = useSelector(selectDetailClasses);
 
-  console.log("classes: ",classes)
-
   const { refetch: refetchClasses } = useGetClassesQuery({ page: 0, pageSize: 10 });
 
   const handleOpenCard = () => {

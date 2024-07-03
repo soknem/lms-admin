@@ -330,7 +330,7 @@ export default function CreateLectureForm() {
                     <FiPlus className="mr-2 h-4 w-4 " /> Add Lecture
                 </Button>
             </DialogTrigger>
-            <DialogContent className="bg-white w-[500px] ">
+            <DialogContent className="bg-white w-[500px] h-[700px] overflow-y-scroll ">
                 <DialogHeader>
                     <DialogTitle>Add Lecture</DialogTitle>
                 </DialogHeader>

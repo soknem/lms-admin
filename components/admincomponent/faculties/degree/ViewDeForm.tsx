@@ -71,7 +71,7 @@ export function ViewDeForm({alias}: { alias: string }) {
         <Dialog open={open} onOpenChange={handleClose}>
             <DialogContent className="w-[480px] bg-white ">
                 <DialogHeader>
-                    <DialogTitle>Degree Information</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Degree Information</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -83,22 +83,6 @@ export function ViewDeForm({alias}: { alias: string }) {
                     {() => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1">
-                                {/* Degree Alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">
-                                            Alias
-                                        </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
-                                    </div>
-                                    <Field
-                                        type="text"
-                                        disabled
-                                        name="alias"
-                                        id="alias"
-                                        className={`${style.input}`}
-                                    />
-                                </div>
 
                                 {/* Degree Level */}
                                 <div className={`${style.inputContainer}`}>
@@ -106,7 +90,6 @@ export function ViewDeForm({alias}: { alias: string }) {
                                         <label className={`${style.label}`} htmlFor="level">
                                             Level
                                         </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                     </div>
                                     <Field
                                         disabled
@@ -117,13 +100,29 @@ export function ViewDeForm({alias}: { alias: string }) {
                                     />
                                 </div>
 
+                                {/* Degree Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Slug
+                                        </label>
+                                    </div>
+                                    <Field
+                                        type="text"
+                                        disabled
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                </div>
+
                                 {/* Degree Description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">
                                         Description
                                     </label>
                                     <Field
-                                        type="text"
+                                        as="textarea"
                                         disabled
                                         name="description"
                                         id="description"
@@ -136,57 +135,60 @@ export function ViewDeForm({alias}: { alias: string }) {
                                     />
                                 </div>
 
-                                {/* Visibility */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDraft">
-                                            Visibility
-                                        </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                <div className={`flex w-full justify-between`}>
+
+                                    {/* Visibility */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                disabled
+                                                component={RadioButton}
+                                                value={true}
+                                                label="Public"
+                                            />
+                                            <Field
+                                                disabled
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value={false}
+                                                label="Draft"
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
-                                            name="isDraft"
-                                            disabled
-                                            component={RadioButton}
-                                            value={true}
-                                            label="Public"
-                                        />
-                                        <Field
-                                            disabled
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            value={false}
-                                            label="Draft"
-                                        />
+
+                                    {/* Status */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDeleted">
+                                                Status
+                                            </label>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                disabled
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value={true}
+                                                label="Public"
+                                            />
+                                            <Field
+                                                disabled
+                                                name="isDeleted"
+                                                component={RadioButton}
+                                                value={false}
+                                                label="Draft"
+                                            />
+                                        </div>
                                     </div>
+
                                 </div>
 
-                                {/* Status */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDeleted">
-                                            Status
-                                        </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
-                                    </div>
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
-                                            disabled
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            value={true}
-                                            label="Public"
-                                        />
-                                        <Field
-                                            disabled
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            value={false}
-                                            label="Draft"
-                                        />
-                                    </div>
-                                </div>
                             </div>
                         </Form>
                     )}

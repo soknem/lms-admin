@@ -22,9 +22,6 @@ import fileSlice from "@/lib/features/uploadfile/fileSlice";
 import instructorcourseSlice from "@/lib/features/instructor/course/instructorcourseSlice";
 import detailClassesSlice from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
 import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
-import coursedetailSlice from "@/lib/features/student/coursedetail/coursedetailSlice";
-import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
-import InstructorSlice from "@/lib/features/instructor/coursedetail/InstructorSlice";
 
 
 export const makeStore = () => {
@@ -52,11 +49,7 @@ export const makeStore = () => {
             file: fileSlice,
             instructorCourse: instructorcourseSlice,
             detailClasses: detailClassesSlice,
-            courseDetail: coursedetailSlice,
-            schedule: scheduleSlice,
             shift: shiftSlice,
-            instructorCourseDetail:InstructorSlice,
-
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),

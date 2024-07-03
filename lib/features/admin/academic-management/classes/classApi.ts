@@ -5,6 +5,7 @@ export const classApi = istadLmsApi.injectEndpoints({
         getClasses: builder.query<any, { page: number; pageSize: number }>({
             query: ({ page = 0, pageSize = 10 }) =>
                 `/classes?page=${page}&page_size=${pageSize}`,
+            providesTags: [{ type: 'Classes', id: 'LIST' }],
         }),
         filterClasses: builder.mutation<any, { pageNumber: number, pageSize: number, body: any }>({
             query: ({ pageNumber, pageSize, body }) => ({
@@ -34,6 +35,17 @@ export const classApi = istadLmsApi.injectEndpoints({
                 method: 'PATCH',
             }),
         }),
+        addClass: builder.mutation({
+            query: (newClass) => ({
+                url: '/classes',
+                method: 'POST',
+                body: newClass,
+            }),
+            invalidatesTags: [{ type: 'Classes', id: 'LIST' }],
+        }),
+        getClassCourseByUuid: builder.query({
+            query: (uuid) => `/classes/${uuid}/courses`,
+        }),
 
     })
 });
@@ -45,4 +57,6 @@ export const {
     useGetClassByUuidQuery,
     useEnableClassMutation,
     useDisableClassMutation,
+    useAddClassMutation,
+    useGetClassCourseByUuidQuery
 } = classApi;

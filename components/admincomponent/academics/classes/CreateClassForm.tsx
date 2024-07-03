@@ -7,13 +7,19 @@ import Modal from "@/components/common/ModalComponent"; // Adjust the path as ne
 import RequiredFieldLabelComponent from "@/components/common/RequiredFieldLabelComponent";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {Generation, selectClasses} from "@/lib/features/admin/academic-management/classes/classSlice";
+import {Generation, selectClasses, Shift} from "@/lib/features/admin/academic-management/classes/classSlice";
 import {selectGeneration, setGenerations} from "@/lib/features/admin/academic-management/generation/generationSlice";
-import {useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
+import {useAddClassMutation, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
 import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
-import {Class, GenerationType} from "@/lib/types/admin/academics";
+import {Class, ClassCreateType, GenerationType, ShiftType} from "@/lib/types/admin/academics";
 import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {StudyProgramType} from "@/lib/types/admin/faculty";
+import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
+import {useGetInstructorQuery} from "@/lib/features/admin/user-management/instructor/instructor";
+import {useGetAcademicYearQuery} from "@/lib/features/admin/faculties/academic-year/academicYear";
+import {toast} from "react-hot-toast";
+import {initialize} from "next/client";
+import {format} from "date-fns";
 
 type PropsType = {
   isVisible: boolean;
@@ -47,14 +53,11 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     },
   ];
 
-  const dispatch = useDispatch<AppDispatch>();
 
   // *** Generation ***
-  const {data: generationData, error: generationError} = useGetGenerationQuery({page: 0, pageSize: 10});
+  const {data: generationData, error: generationError, isLoading: isGenerationsLoading} = useGetGenerationQuery({page: 0, pageSize: 10});
 
   const [generations, setGenerations] = useState([]);
-
-  const [selectedGenAlias, setSelectedGenAlias] = useState('');
 
   useEffect(() => {
     if (generationData) {
@@ -67,21 +70,19 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     if (generationError) {
       console.error("failed to load generation", generationError);
     }
-  }, [generationData, generationError, dispatch]);
+  }, [generationData, generationError]);
 
-  const handleGenChange = (selectedOption : any) => {
+  const handleGenChange = (selectedOption: any) => {
     const alias = selectedOption?.value;
-    setSelectedGenAlias(alias);
+    formik.setFieldValue('generationAlias', alias);
   };
 
-  console.log("generations", generations);
+
 
   // *** Study Program ***
-  const {data: studyProgramData, error: studyProgramError} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
+  const {data: studyProgramData, error: studyProgramError, isLoading: isStudyProgramsLoading} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
 
   const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const [selectedProgramAlias, setSelectedProgramAlias] = useState('');
 
   useEffect(() => {
     if (studyProgramData) {
@@ -90,31 +91,139 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
         label: `${sp.studyProgramName}`,
       }));
       setStudyPrograms(formattedProgram);
-      console.log("study program: ",formattedProgram)
+      console.log("study program: ", formattedProgram)
     }
     if (studyProgramError) {
       console.error("failed to load study program", studyProgramError);
     }
-  }, [studyProgramData, studyProgramError, dispatch]);
+  }, [studyProgramData, studyProgramError]);
 
-  const handleProgramChange = (selectedOption : any) => {
+  const handleProgramChange = (selectedOption: any) => {
     const alias = selectedOption?.value;
-    setSelectedProgramAlias(alias);
+    formik.setFieldValue('studyProgramAlias', alias);
   };
 
   // *** Shift ***
-  const {data: shiftData, error: shiftError} = useGetGenerationQuery({page: 0, pageSize: 10});
 
+  const { data: shiftData, error: shiftError, isLoading: isShiftsLoading } = useGetShiftQuery({ page: 0, pageSize: 10 });
+
+  const [shifts, setShifts] = useState([]);
+
+  console.log("Shift from create: ", shiftData);
+
+  useEffect(() => {
+    if (shiftData) {
+      const formattedShift = shiftData.content.map((sp: any) => ({
+        value: sp.alias,
+        label: `${sp.name}`,
+      }));
+      setShifts(formattedShift);
+      console.log("Shift Formatted: ", formattedShift);
+    }
+    if (shiftError) {
+      console.error("failed to load shift error", shiftError);
+    }
+  }, [shiftData, shiftError]);
+
+  const handleShiftChange = (selectedOption: any) => {
+    const alias = selectedOption?.value;
+    formik.setFieldValue('shiftAlias', alias);
+    console.log("Selected Shift Alias:", alias);
+  };
+
+
+  // *** Instructor ***
+  const {data: InsData, error: InsError, isLoading: isInsLoading, isSuccess: isInsSuccess} = useGetInstructorQuery({page: 0, pageSize: 10});
+
+  const [instructors, setInstructors] = useState([]);
+
+  const [selectInstructorUuid, setSelectedInstructorUuid] = useState('');
+
+  useEffect(() => {
+    if (InsData) {
+      const formattedIns = InsData.content.map((ins: any) => ({
+        value: ins.uuid,
+        label: `${ins.username}`,
+      }));
+      setInstructors(formattedIns);
+      console.log("instructor from create class: ",formattedIns)
+    }
+    if (InsError) {
+      console.error("failed to load instructor error", InsError);
+    }
+  }, [InsData, InsError]);
+
+  const handleInstructorChange = (selectedOption : any) => {
+    const uuid = selectedOption?.value;
+    setSelectedInstructorUuid(uuid);
+  };
+
+  // *** academic year ****
+  const {data: academicData, error: academicError, isLoading: isAcademicLoading, isSuccess: isAcademicSuccess} = useGetAcademicYearQuery({page: 0, pageSize: 10});
+
+  const [academicYears, setAcademicYears] = useState([]);
+
+  useEffect(() => {
+    if (academicData) {
+      const formattedAca = academicData.content.map((aca: any) => ({
+        value: aca.alias,
+        label: `${aca.academicYear}`,
+      }));
+      setAcademicYears(formattedAca);
+      console.log("academic year from create class: ", formattedAca)
+    }
+    if (InsError) {
+      console.error("failed to load academic year error", academicError);
+    }
+  }, [academicData, academicError]);
+
+  const handleAcademicYearChange = (selectedOption: any) => {
+    const alias = selectedOption?.value;
+    formik.setFieldValue('academicYearAlias', alias);
+  };
+
+
+  // handle create class
+  const [createClass, { isLoading : isClassLoading, isSuccess : isClassSucess, error: isClassError }] = useAddClassMutation();
+
+  const handleCreateClass = async (values : ClassCreateType) => {
+    const newClass = {
+      classCode: values.classCode,
+      year: values.year,
+      generationAlias: values.generationAlias ,
+      studyProgramAlias: values.studyProgramAlias,
+      instructorUuid: selectInstructorUuid,
+      studentUuid: [],
+      academicYearAlias: values.academicYearAlias ,
+      isDraft: values.isDraft,
+      status: selectedStatus,
+      description: "Class Description",
+      shiftAlias: values.shiftAlias,
+    };
+
+    console.log("New Class Data: ", newClass); // Debugging the new class data
+
+    try {
+      await createClass(newClass).unwrap();
+      toast.success('Successfully created!');
+      console.log("Class created successfully"); // Debugging successful creation
+    } catch (error) {
+      toast.error('Failed to create Class!');
+      console.error("Error creating class: ", error); // Debugging the error
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
       classCode: "",
       year: 1,
+      description: "Class Description",
       generationAlias: "",
       studyProgramAlias: "",
       shiftAlias: "",
       instructorUuid: "",
-      studentUuid: [],
+      studentUuid: null,
+      academicYearAlias: "",
       isDraft: true,
       status: 1,
     },
@@ -129,19 +238,25 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
       studyProgramAlias: Yup.string().required("Study program is required"),
       shiftAlias: Yup.string().required("Shift is required"),
       instructorUuid: Yup.string().nullable(),
-      studentUuid: Yup.array().of(Yup.string()).nullable(),
+      studentUuid: Yup.string().nullable(),
+      academicYearAlias: Yup.string().required("academic year is required"),
       isDraft: Yup.boolean().required("Visibility is required"),
       status: Yup.number().required("Status is required"),
     }),
+    // onSubmit: (values) => {
+    //   console.log("Create Class Form Values: ", values);
+    //   handleCreateClass(values);
+    // },
     onSubmit: (values) => {
-      console.log("Create Class Form Values: ", values);
-    },
+      console.log("form values: ",values);
+      handleCreateClass(values);
+    }
   });
 
   return (
       <Modal isVisible={isVisible} onClose={onClose}>
         <h2 className="text-xl text-lms-black-90 font-bold mb-4">Create Class</h2>
-        <form className="space-y-4 md:space-y-6" onSubmit={formik.handleSubmit}>
+        <form className="h-[500px] space-y-4 md:space-y-6 overflow-y-scroll" onSubmit={formik.handleSubmit}>
 
           {/* Class Code */}
           <div>
@@ -163,7 +278,7 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
 
           {/* Year */}
           <div>
-            <RequiredFieldLabelComponent labelText="Class Code"
+            <RequiredFieldLabelComponent labelText="Year"
                                          labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
             <input
                 type="number"
@@ -180,47 +295,83 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
           </div>
 
           {/* Generation */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Generation"
-                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
 
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Generation
+            </label>
             <Select
-                className="basic-single"
-                classNamePrefix="select"
-                isClearable={true}
-                isSearchable={true}
                 name="generationAlias"
                 options={generations}
-                onChange={handleGenChange}
+                value={generations.find(
+                    (option: any) => option.value === formik.values.generationAlias
+                )}
+                onChange={(option) => handleGenChange(option)}
+                onBlur={formik.handleBlur}
+                className={`w-full ${
+                    formik.touched.generationAlias && formik.errors.generationAlias
+                        ? "border-red-500"
+                        : "border-gray-300"
+                } `}
             />
+            {formik.touched.generationAlias && formik.errors.generationAlias && (
+                <p className="text-red-500 text-sm mt-1">{formik.errors.generationAlias}</p>
+            )}
           </div>
 
           {/* Study Program */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Shift"
-                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
 
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Study Program
+            </label>
             <Select
-                className="basic-single"
-                classNamePrefix="select"
-                isClearable={true}
-                isSearchable={true}
-                name="generationAlias"
+                name="studyProgramAlias"
                 options={studyPrograms}
-                onChange={handleProgramChange}
+                value={studyPrograms.find(
+                    (option: any) => option.value === formik.values.studyProgramAlias
+                )}
+                onChange={(option) => handleProgramChange(option)}
+                onBlur={formik.handleBlur}
+                className={`w-full ${
+                    formik.touched.studyProgramAlias && formik.errors.studyProgramAlias
+                        ? "border-red-500"
+                        : "border-gray-300"
+                }`}
             />
+            {formik.touched.studyProgramAlias && formik.errors.studyProgramAlias && (
+                <p className="text-red-500 text-sm mt-1">{formik.errors.studyProgramAlias}</p>
+            )}
           </div>
 
           {/* Shift */}
 
-
-
-
-
-
-
           <div>
-            <RequiredFieldLabelComponent labelText="Study Program"
+            <label className="block text-gray-700 font-semibold mb-2">
+              Shift
+            </label>
+            <Select
+                name="shiftAlias"
+                options={shifts}
+                value={shifts.find(
+                    (option: any) => option.value === formik.values.shiftAlias
+                )}
+                onChange={(option) => handleShiftChange(option)}
+                onBlur={formik.handleBlur}
+                className={`w-full  ${
+                    formik.touched.shiftAlias && formik.errors.shiftAlias
+                        ? "border-red-500"
+                        : "border-gray-300"
+                } `}
+            />
+            {formik.touched.shiftAlias && formik.errors.shiftAlias && (
+                <p className="text-red-500 text-sm mt-1">{formik.errors.shiftAlias}</p>
+            )}
+          </div>
+
+          {/* Instructor */}
+          <div>
+            <RequiredFieldLabelComponent labelText="Instructor"
                                          labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
 
             <Select
@@ -228,10 +379,38 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
                 classNamePrefix="select"
                 isClearable={true}
                 isSearchable={true}
-                name="shiftAlias"
-                options={studyPrograms}
-                onChange={handleProgramChange}
+                name="instructorUuid"
+                options={instructors}
+                onChange={handleInstructorChange}
             />
+            {
+              formik.errors.instructorUuid ? <p className="text-red-700">{formik.errors.instructorUuid}</p> : null
+            }
+          </div>
+
+          {/* Academic Year */}
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Academic Year
+            </label>
+            <Select
+                name="academicYearAlias"
+                options={academicYears}
+                value={academicYears.find(
+                    (option: any) => option.value === formik.values.academicYearAlias
+                )}
+                onChange={(option) => handleAcademicYearChange(option)}
+                onBlur={formik.handleBlur}
+                className={`w-full  ${
+                    formik.touched.academicYearAlias && formik.errors.academicYearAlias
+                        ? "border-red-500"
+                        : "border-gray-300"
+                }`}
+            />
+            {formik.touched.academicYearAlias && formik.errors.academicYearAlias && (
+                <p className="text-red-500 text-sm mt-1">{formik.errors.academicYearAlias}</p>
+            )}
           </div>
 
           {/* Status */}
@@ -243,10 +422,13 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
             <Select
                 className="basic-single"
                 classNamePrefix="select"
-                name="teachingType"
+                name="status"
                 options={statusList}
                 onChange={handleStatusChange}
             />
+            {
+              formik.errors.status ? <p className="text-red-700">{formik.errors.status}</p> : null
+            }
           </div>
 
           {/* Visibility */}
@@ -276,15 +458,17 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
             {formik.errors.isDraft && (
                 <p className="text-red-700">{formik.errors.isDraft}</p>
             )}
+
           </div>
+
 
           <div className="flex justify-end">
             <button
                 type="submit"
                 className="mt-2 bg-lms-primary hover:bg-lms-primary/80 text-white font-bold py-2 px-4 rounded"
-                disabled={isLoading}
+                disabled={isClassLoading}
             >
-              {isLoading ? "Creating..." : "Create"}
+              {isClassLoading ? "Creating..." : "Create"}
             </button>
           </div>
         </form>

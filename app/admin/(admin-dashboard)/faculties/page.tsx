@@ -7,7 +7,6 @@ import {DegreeTable} from "@/components/admincomponent/faculties/degree/data-tab
 import {degreeColumns} from "@/components/admincomponent/faculties/degree/columns";
 import {StudyProgramTable} from "@/components/admincomponent/faculties/studygrogram/data-table";
 import {studyProgramColumns} from "@/components/admincomponent/faculties/studygrogram/columns";
-import {selectToken} from "@/lib/features/auth/authSlice";
 import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
@@ -26,8 +25,6 @@ import {
     selectLoading,
     setFaculties
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
-import CourseFilterComponent from "@/components/card/filter/FIlterCourseCardComponent";
-import Error404 from "@/components/errorPage/Error404Component";
 
 export default function Page() {
     const dispatch = useDispatch<AppDispatch>();
@@ -153,7 +150,6 @@ export default function Page() {
                 </Tabs>
 
             </section>
-
         </section>
     );
 }

@@ -73,7 +73,7 @@ export default function AdminSidebarComponent({
                 router.push("/login");
             }).catch((error) => {
             console.error("Error:", error);
-            alert("LogOut Failed");
+            alert("Logout Failed");
         });
     }
 

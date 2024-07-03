@@ -55,6 +55,20 @@ export type Class = {
     courses: CourseInfo[];
 };
 
+export type ClassCreateType = {
+    classCode: string,
+    description: string,
+    year: number,
+    generationAlias: string,
+    studyProgramAlias: string,
+    shiftAlias: string,
+    instructorUuid: string,
+    studentUuid: any,
+    academicYearAlias: string,
+    isDraft: boolean,
+    status: number,
+}
+
 export type ShortClassType = {
     uuid: string;
     classCode: string;
@@ -117,40 +131,43 @@ export type CourseType = {
     instructor: string,
     semester: number,
     year: number,
-    visibility: boolean
+    visibility: boolean,
+    isDeleted: boolean,
 }
 
 
 
 export type TranscriptType = {
+    uuid: string,
   cardId: string,
   nameEn: string,
   gender: string,
   dob: string,
-  class: string,
   studyProgram: string,
   year: number,
-  semester1: number,
-  semester2: number,
+  semester1Score: number,
+  semester2Score: number,
   gpa: number,
-  total: number,
+ average: number,
   status: number
 }
 
 export type semesterAssessementType = {
-  cardId: string,
-  nameEn: string,
-  gender: string,
-  dob: string,
-  class: string,
-  subjects: SubjectType[],
-  grade: string,
-  total: number,
-  status: number
+    cardId: string;
+    nameEn: string;
+    gender: string;
+    dob: string;
+    classCode: string; // changed from "class" to "classCode" to match data
+    academicYear: string | null; // added to match data
+    courses: CourseShortType[]; // changed from "subjects" to "courses" to match data
+    grade: string;
+    gpa: number; // added to match data
+    total: number;
+    status: number;
 }
 
-export type SubjectType = {
-  subjectName: string,
+export type CourseShortType = {
+    title: string,
   score: number
 };
 
@@ -291,6 +308,10 @@ export type ShiftType = {
     startTime: string;
     endTime: string;
     name: string;
+    weekday: boolean;
+    description: string;
+    isDeleted: boolean;
+    isDraft: boolean;
 }
 
 export type StudyProgramShortType = {
@@ -325,3 +346,13 @@ export type ShiftResponseType = {
     isDeleted: string;
     isDraft: string;
 }
+
+// Assessment Student Response
+// export type StudentAssessmentType = {
+//     uuid: string;
+//     cardId: string;
+//     studentStatus: string;
+//     nameEn: string;
+//
+//
+// }

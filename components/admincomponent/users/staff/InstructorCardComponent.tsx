@@ -6,7 +6,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
 type CardProps = {
-  imageSrc: StaticImageData;
+  imageSrc: string | StaticImageData;
   name: string;
   education: string;
   position: string;

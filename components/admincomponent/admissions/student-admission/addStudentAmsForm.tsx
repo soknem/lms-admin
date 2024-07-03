@@ -4,53 +4,67 @@ import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "./style.module.css";
 import {FiUploadCloud} from "react-icons/fi";
-
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
-
 import {IoIosArrowDown} from "react-icons/io";
-import {MdAddToPhotos} from "react-icons/md";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {UserStudentType} from "@/lib/types/admin/user";
 import {TbAsterisk} from "react-icons/tb";
+import {StudentAdmissionType} from "@/lib/types/admin/admission";
+import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
+import {
+    useCreateStudentAdmissionMutation, useGetStuAdmissionsQuery
+} from "@/lib/features/admin/admission-management/students-admission-management/stuAdmission";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
+import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
+import {selectStudyProgram} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
+import {
+    selectError,
+    selectFaculty,
+    selectLoading,
+    setFaculties
+} from "@/lib/features/admin/faculties/faculty/facultySlice";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
+import {selectShift, setShift} from "@/lib/features/admin/faculties/shift/shiftSlice";
 
 const initialValues = {
-    card_id: 0,
+    uuid: "",
+    nameEn: "",
+    nameKh: "",
     email: "",
-    name_en: "",
-    name_kh: "",
-    gender: "",
+    highSchool: "",
+    phoneNumber: "",
     dob: "",
-    ph_number: "",
-    fam_ph_number: "",
-    pob: "",
+    birthPlace: "",
+    bacIiGrade: "",
+    gender: "",
+    avatar: "",
     address: "",
-    bio: "",
-    status: "",
-    high_school: "",
-    guaedian_rel: "",
-    know_istad: "",
-    class_stu: "",
-    diploma: "",
-    grade: "",
+    guardianContact: "",
+    guardianRelationShip: "",
+    knownIstad: "",
+    identity: "",
+    biography: "",
+    isDeleted: false,
     shift: "",
+    studyProgram: "",
     degree: "",
-    study_pro: "",
+    admission: ""
 };
 
-const validationSchema = Yup.object().shape({});
-
-const handleSubmit = async (value: UserStudentType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
-};
+const validationSchema = Yup.object().shape({
+    nameEn: Yup.string().required("Name is required"),
+    nameKh: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    highSchool: Yup.string().required("High School is required"),
+    phoneNumber: Yup.string().required("Phone Number is required"),
+    dob: Yup.string().required("Date of Birth is required"),
+    birthPlace: Yup.string().required("Place of Birth is required"),
+    bacIiGrade: Yup.string().required("Bac II Grade"),
+});
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -69,69 +83,42 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-// const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
+const useFetchData = (queryHook: any, selector: any, action: any) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const {data, error, isLoading} = queryHook({page: 0, pageSize: 10});
+    const stateData = useSelector((state: RootState) => selector(state));
+    const loading = useSelector(selectLoading);
+    const err = useSelector(selectError);
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
+    useEffect(() => {
+        if (data) {
+            dispatch(action(data.content));
+        }
+    }, [data, err, dispatch]);
 
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
-    };
-
-    return (
-        <div className="w-full">
-            <input
-                type="file"
-                onChange={handleUploadFile}
-                className="hidden "
-                id="file"
-            />
-            <label
-                htmlFor="file"
-                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[215px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
-            >
-                {!imagePreview ? (
-                    <div className="flex flex-col items-center justify-center gap-4">
-                        <FiUploadCloud className="text-lms-primary text-[34px]"/>
-                        <p className="text-center text-md text-black">
-                            Select a file or drag and drop here
-                        </p>
-                        <p className="text-center text-md text-lms-gray-30">
-                            JPG, PNG or PDF, file size no more than 10MB
-                        </p>
-                    </div>
-                ) : (
-                    <Image
-                        src={imagePreview}
-                        alt="preview"
-                        layout="fill"
-                        objectFit="cover"
-                    />
-                )}
-            </label>
-        </div>
-    );
+    return {stateData, loading, error};
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 export function AddStudentAmsForm() {
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [createStuAdmission] = useCreateStudentAdmissionMutation();
+    const {refetch: refetchStuAdmissions} = useGetStuAdmissionsQuery({page: 0, pageSize: 10});
     const [activeTab, setActiveTab] = useState("personal_info");
+    const [uploadedFile, setUploadedFile] = useState(null);
+    const [uploadedFileIdentity, setUploadedFileIdentity] = useState(null);
+
+    const shifts = useFetchData(useGetShiftQuery, selectShift, setShift);
+
+    const {
+        data: StudyProgramData,
+    } = useGetStudyProgramsQuery({page: 0, pageSize: 10});
+    const studyPrograms = useSelector((state: RootState) => selectStudyProgram(state));
+
+    const {
+        data: degreesData,
+    } = useGetDegreesQuery({page: 0, pageSize: 10});
+    const degrees = useSelector((state: RootState) => selectDegree(state));
+
     const handleNext = (currentTab: any) => {
         if (currentTab === "personal_info") {
             setActiveTab("edu_info");
@@ -140,110 +127,181 @@ export function AddStudentAmsForm() {
         }
     };
 
+    const CustomInput = ({field, form: {setFieldValue}}: any) => {
+        const [imagePreview, setImagePreview] = useState("");
+
+        useEffect(() => {
+            if (uploadedFile) {
+                setImagePreview(URL.createObjectURL(uploadedFile));
+            }
+        }, [uploadedFile]);
+
+        const handleUploadFile = (e: any) => {
+            const file = e.target.files[0];
+            const localUrl = URL.createObjectURL(file);
+            setImagePreview(localUrl);
+            setUploadedFile(file); // Update the file at the form level
+            setFieldValue(field.name, file); // Set the field value in Formik
+        };
+
+        return (
+            <div className="w-full">
+                <input
+                    type="file"
+                    onChange={handleUploadFile}
+                    className="hidden"
+                    id="file"
+                />
+                <label
+                    htmlFor="file"
+                    className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[215px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+                >
+                    {!imagePreview ? (
+                        <div className="flex flex-col items-center justify-center gap-4">
+                            <FiUploadCloud className="text-lms-primary text-[34px]"/>
+                            <p className="text-center text-md text-black">
+                                Select a file or drag and drop here
+                            </p>
+                            <p className="text-center text-md text-lms-gray-30">
+                                JPG, PNG or PDF, file size no more than 10MB
+                            </p>
+                        </div>
+                    ) : (
+                        <img
+                            src={imagePreview}
+                            alt="preview"
+                            className="object-cover h-full w-full"
+                        />
+                    )}
+                </label>
+            </div>
+        );
+    };
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            // Upload the logo file
+            const avatarData = new FormData();
+            avatarData.append("file", values.avatar);
+            const avatarResponse = await createSingleFile(avatarData).unwrap();
+
+            // Upload identity file
+            const identityData = new FormData();
+            identityData.append("file", values.identity);
+            const identityResponse = await createSingleFile(identityData).unwrap();
+
+
+            // File uploaded successfully, now create the faculty
+            const newStuAdmission: StudentAdmissionType = {
+                nameEn: values.nameEn,
+                nameKh: values.nameKh,
+                email: values.email,
+                highSchool: values.highSchool,
+                phoneNumber: values.phoneNumber,
+                dob: values.dob,
+                birthPlace: values.birthPlace,
+                bacIiGrade: values.bacIiGrade,
+                studyProgram: values.studyProgram,
+                degree: values.degree,
+                admission: values.admission,
+                shift: values.shift,
+                avatar: avatarResponse.name,
+                address: values.address,
+                biography: values.biography,
+                gender: values.gender,
+                guardianContact: values.guardianContact,
+                guardianRelationShip: values.guardianRelationShip,
+                knownIstad: values.knownIstad,
+                identity: identityResponse.name,
+                isDeleted: values.isDeleted,
+                uuid: values.uuid,
+            }
+            const res = await createStuAdmission(newStuAdmission).unwrap();
+            resetForm();
+            refetchStuAdmissions();
+            console.log("Update successfully")
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error creating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <section
-            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] h-[1350px] 2xl:h-[1020px] items-center-center rounded-[10px]">
+            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] items-center-center rounded-[10px]">
+
             <section className="h-[90px] flex items-center mx-10 ">
-                <h1 className="text-3xl font-bold text-lms-black-90">
-                    Student Admission
-                </h1>
+                <h1 className="text-3xl font-bold text-lms-black-90">Student Admission</h1>
             </section>
 
-            <Tabs
-                value={activeTab}
-                onValueChange={setActiveTab}
-                defaultValue="personal_info"
-                className="w-full py-0 my-0 "
-            >
-                <TabsList className="dark:bg-gray-800 bg-lms-background w-full h-[150px]  rounded-none -px-10 ">
-                    <div className="flex items-center justify-center container gap-[20px]">
+            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                {({setFieldValue}) => (
+                    <Form className="py-4 rounded-lg w-full flex justify-center items-center">
 
+                        <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="personal_info"
+                              className="w-full py-0 my-0">
 
-                        <div className={`flex flex-col justify-center items-center gap-4`}>
-                            <TabsTrigger
-                                value="personal_info"
-                                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-                            >
-                                1
-                            </TabsTrigger>
-                            <span className="text-lms-primary text-lg ">Personal Information</span>
-                        </div>
+                            <TabsList
+                                className="dark:bg-gray-800 bg-lms-background w-full h-[150px]  rounded-none px-10 ">
 
+                                <div className="flex items-center justify-center container gap-[20px]">
 
-                        {/* <div className="border-l border-lms-primary h-full mx-2"></div> Vertical line */}
-                        <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
+                                    <div className={`flex flex-col justify-center items-center gap-4`}>
+                                        <TabsTrigger
+                                            value="personal_info"
+                                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                                        >
+                                            1
+                                        </TabsTrigger>
+                                        <span className="text-lms-primary text-lg ">Personal Information</span>
+                                    </div>
 
-                        <div className={`flex flex-col justify-center items-center gap-4`}>
-                            <TabsTrigger
-                                value="edu_info"
-                                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-                            >
-                                2
-                            </TabsTrigger>
-                            <span className="text-lms-primary text-lg ">Education Information</span>
-                        </div>
+                                    {/* <div className="border-l border-lms-primary h-full mx-2"></div> Vertical line */}
+                                    <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
 
+                                    <div className={`flex flex-col justify-center items-center gap-4`}>
+                                        <TabsTrigger
+                                            value="edu_info"
+                                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                                        >
+                                            2
+                                        </TabsTrigger>
+                                        <span className="text-lms-primary text-lg ">Education Information</span>
+                                    </div>
 
-                        <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
+                                    <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
 
+                                    <div className={`flex flex-col justify-center items-center gap-4`}>
+                                        <TabsTrigger
+                                            value="school_info"
+                                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                                        >
+                                            3
+                                        </TabsTrigger> <span
+                                        className="text-lms-primary text-lg ">Institude Information</span>
+                                    </div>
 
-                        <div className={`flex flex-col justify-center items-center gap-4`}>
-                            <TabsTrigger
-                                value="school_info"
-                                className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
-                            >
-                                3
-                            </TabsTrigger> <span className="text-lms-primary text-lg ">Institude Information</span>
-                        </div>
+                                </div>
+                            </TabsList>
 
-                    </div>
-                </TabsList>
+                            {/* Personal Information */}
+                            <TabsContent value="personal_info"
+                                         className={`flex justify-center h-full items-center flex-col gap-9 mx-10  py-0 my-0`}>
 
-                {/* Personal Information */}
-                <TabsContent value="personal_info">
-                    <div className="border-b-2 mx-10  py-6">
-                        <h1 className="text-2xl font-bold text-lms-black-90 ">Personal Information</h1>
-                    </div>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            // create degree post
-                            const studentPost: UserStudentType = {
-                                card_id: values.card_id,
-                                email: values.email,
-                                name_en: values.name_en,
-                                name_kh: values.name_en,
-                                gender: values.gender,
-                                dob: values.dob,
-                                ph_number: values.ph_number,
-                                fam_ph_number: values.fam_ph_number,
-                                pob: values.pob,
-                                address: values.address,
-                                bio: values.bio,
-                                status: values.status,
-                                high_school: values.high_school,
-                                guaedian_rel: values.guaedian_rel,
-                                know_istad: values.know_istad,
-                                class_stu: values.class_stu,
-                                diploma: values.diploma,
-                                grade: values.degree,
-                                shift: values.shift,
-                                degree: values.degree,
-                                study_pro: values.study_pro,
-                            };
+                                {/* Personal Information Form Fields */}
+                                <div className="w-full border-b-2 py-6">
+                                    <h1 className="text-2xl font-bold text-lms-black-90 ">Personal Information</h1>
+                                </div>
 
-                            // post product
-                            handleSubmit(studentPost);
-                        }}
-                    >
-                        {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full h-[920px] 2xl:h-[605px] flex  justify-center ">
-                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
+                                {/* Add your form fields for personal information here */}
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-x-9 justify-center items-center">
+
                                     {/*name_en */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="name_en">
+                                            <label className={`${style.label}`} htmlFor="nameEn">
                                                 Name ( EN )
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -251,22 +309,22 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="text"
-                                            name="name_en"
+                                            name="nameEn"
                                             placeholder="Chan Tola"
-                                            id="name_en"
+                                            id="nameEn"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="name_en"
+                                            name="nameEn"
                                             component="div"
                                             className={`${style.error}`}
                                         />
                                     </div>
 
-                                    {/*name_en */}
+                                    {/*name KH */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="name_kh">
+                                            <label className={`${style.label}`} htmlFor="nameKh">
                                                 Name ( EN )
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -274,13 +332,13 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="text"
-                                            name="name_kh"
+                                            name="nameKh"
                                             placeholder="Chan Tola"
-                                            id="name_kh"
+                                            id="nameKh"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="name_kh"
+                                            name="nameKh"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -289,7 +347,7 @@ export function AddStudentAmsForm() {
                                     {/* formal image */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="file">
+                                            <label className={`${style.label}`} htmlFor="avatar">
                                                 Upload Formal Picture
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -297,13 +355,15 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
+                                            name="avatar"
+                                            id="avatar"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
+                                            uploadedFile={uploadedFile}
+                                            setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="avatar"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -373,7 +433,7 @@ export function AddStudentAmsForm() {
                                     {/* Contact */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="ph_number">
+                                            <label className={`${style.label}`} htmlFor="phoneNumber">
                                                 Contact Number
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -381,13 +441,13 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="text"
-                                            name="ph_number"
+                                            name="phoneNumber"
                                             placeholder="+855 12 345 678"
-                                            id="ph_number"
+                                            id="phoneNumber"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="ph_number"
+                                            name="phoneNumber"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -403,7 +463,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <Field
-                                            type="email"
+                                            type="text"
                                             name="email"
                                             placeholder="student.istad@gmail.com"
                                             id="email"
@@ -419,21 +479,21 @@ export function AddStudentAmsForm() {
                                     {/* High school */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="high_school">
+                                            <label className={`${style.label}`} htmlFor="highSchool">
                                                 High School
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <Field
-                                            type="high_school"
-                                            name="high_school"
-                                            placeholder="  Chea Sim Takeo High School"
-                                            id="high_school"
+                                            type="text"
+                                            name="highSchool"
+                                            placeholder="Chea Sim Takeo High School"
+                                            id="highSchool"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="high_school"
+                                            name="highSchool"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -449,7 +509,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <Field
-                                            type="address"
+                                            type="text"
                                             name="pob"
                                             placeholder="Takeo Province"
                                             id="pob"
@@ -465,21 +525,23 @@ export function AddStudentAmsForm() {
                                     {/* Upload Identity */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="file">
-                                                Upload Identity{" "}
+                                            <label className={`${style.label}`} htmlFor="identity">
+                                                Upload Identity
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
+                                            name="identity"
+                                            id="identity"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
+                                            uploadedFile={uploadedFileIdentity}
+                                            setUploadedFile={setUploadedFileIdentity}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="identity"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -495,7 +557,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <Field
-                                            type="address"
+                                            type="text"
                                             name="address"
                                             placeholder="Chamkar Mon, Phnom Penh, Cambodia"
                                             id="address"
@@ -511,21 +573,21 @@ export function AddStudentAmsForm() {
                                     {/* Guardian Contact */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="fam_ph_number">
+                                            <label className={`${style.label}`} htmlFor="guardianContact">
                                                 Guardian Contact
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <Field
-                                            type="fam_ph_number"
-                                            name="fam_ph_number"
+                                            type="text"
+                                            name="guardianContact"
                                             placeholder="+855 12 345 678"
-                                            id="fam_ph_number"
+                                            id="guardianContact"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="fam_ph_number"
+                                            name="guardianContact"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -534,7 +596,7 @@ export function AddStudentAmsForm() {
                                     {/* Guardian Relationship */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="guaedian_rel">
+                                            <label className={`${style.label}`} htmlFor="guardianRelationShip">
                                                 Guardian Relationship
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -542,13 +604,13 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="text"
-                                            name="guaedian_rel"
+                                            name="guardianRelationShip"
                                             placeholder="Mother, Father, Brother..."
-                                            id="guaedian_rel"
+                                            id="guardianRelationShip"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="guaedian_rel"
+                                            name="guardianRelationShip"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -557,7 +619,7 @@ export function AddStudentAmsForm() {
                                     {/* Get to know ISTAD through: */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="know_istad">
+                                            <label className={`${style.label}`} htmlFor="knownIstad">
                                                 Get to know ISTAD through:
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -565,73 +627,40 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="text"
-                                            name="know_istad"
+                                            name="knownIstad"
                                             placeholder="Social Media Announcement "
-                                            id="know_istad"
+                                            id="knownIstad"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="know_istad"
+                                            name="knownIstad"
                                             component="div"
                                             className={`${style.error}`}
                                         />
                                     </div>
                                 </div>
-                            </Form>
-                        )}
-                    </Formik>
-                    <div className="flex justify-end w-full container">
-                        <Button
-                            type="submit"
-                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                            onClick={() => handleNext(activeTab)}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                </TabsContent>
 
-                {/* Education Information */}
-                <TabsContent value="edu_info">
-                    <div className="border-b-2 mx-10  py-6">
-                        <h1 className="text-2xl font-bold text-lms-black-90 ">Education Information</h1>
-                    </div>
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            // create degree post
-                            const studentPost: UserStudentType = {
-                                card_id: values.card_id,
-                                email: values.email,
-                                name_en: values.name_en,
-                                name_kh: values.name_en,
-                                gender: values.gender,
-                                dob: values.dob,
-                                ph_number: values.ph_number,
-                                fam_ph_number: values.fam_ph_number,
-                                pob: values.pob,
-                                address: values.address,
-                                bio: values.bio,
-                                status: values.status,
-                                high_school: values.high_school,
-                                guaedian_rel: values.guaedian_rel,
-                                know_istad: values.know_istad,
-                                class_stu: values.class_stu,
-                                diploma: values.diploma,
-                                grade: values.grade,
-                                shift: values.shift,
-                                degree: values.degree,
-                                study_pro: values.study_pro,
-                            };
+                                <div className="flex justify-end w-full container mx-auto">
+                                    <Button
+                                        type="button"
+                                        className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                        onClick={() => handleNext(activeTab)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </TabsContent>
 
-                            // post product
-                            handleSubmit(studentPost);
-                        }}
-                    >
-                        {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full  flex  justify-center ">
-                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
+                            {/* Education Information */}
+                            <TabsContent value="edu_info"
+                                         className={`flex h-full justify-center items-center flex-col gap-9  mx-10 py-0 my-0`}>
+                                <div className="border-b-2 w-full py-6">
+                                    <h1 className="text-2xl font-bold text-lms-black-90 ">Education Information</h1>
+                                </div>
+
+                                {/* Add your form fields for education information here */}
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-x-9 justify-center items-center">
+
                                     {/* Class Student */}
                                     <div className={style.inputContainer}>
                                         <div className="flex">
@@ -695,7 +724,7 @@ export function AddStudentAmsForm() {
                                     {/* Grade */}
                                     <div className={`${style.inputContainer}  grid col-span-2 2xl:col-span-1`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="grade">
+                                            <label className={`${style.label}`} htmlFor="bacIiGrade">
                                                 Diploma Grade
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -703,37 +732,37 @@ export function AddStudentAmsForm() {
 
                                         <div className="flex flex-wrap justify-between items-center">
                                             <Field
-                                                name="grade"
+                                                name="bacIiGrade"
                                                 component={RadioButton}
                                                 value="1"
                                                 label="A"
                                             />
                                             <Field
-                                                name="grade"
+                                                name="bacIiGrade"
                                                 component={RadioButton}
                                                 value="2"
                                                 label="B"
                                             />
                                             <Field
-                                                name="grade"
+                                                name="bacIiGrade"
                                                 component={RadioButton}
                                                 value="3"
                                                 label="C"
                                             />
                                             <Field
-                                                name="grade"
+                                                name="bacIiGrade"
                                                 component={RadioButton}
                                                 value="4"
                                                 label="D"
                                             />
                                             <Field
-                                                name="grade"
+                                                name="bacIiGrade"
                                                 component={RadioButton}
                                                 value="5"
                                                 label="E"
                                             />
                                             <Field
-                                                name="grade"
+                                                name="bacIiGrade"
                                                 component={RadioButton}
                                                 value="6"
                                                 label="Other/Wait for result"
@@ -741,7 +770,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <ErrorMessage
-                                            name="grade"
+                                            name="bacIiGrade"
                                             component={RadioButton}
                                             className={`${style.error}`}
                                         />
@@ -762,6 +791,8 @@ export function AddStudentAmsForm() {
                                             id="file"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
+                                            uploadedFile={uploadedFile}
+                                            setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
                                             name="file"
@@ -781,6 +812,8 @@ export function AddStudentAmsForm() {
                                             id="file"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
+                                            uploadedFile={uploadedFile}
+                                            setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
                                             name="file"
@@ -800,6 +833,8 @@ export function AddStudentAmsForm() {
                                             id="file"
                                             component={CustomInput}
                                             setFieldValue={setFieldValue}
+                                            uploadedFile={uploadedFile}
+                                            setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
                                             name="file"
@@ -808,88 +843,48 @@ export function AddStudentAmsForm() {
                                         />
                                     </div>
                                 </div>
-                            </Form>
-                        )}
-                    </Formik>
-                    <div className="flex justify-end w-full container mx-auto">
-                        <Button
-                            type="submit"
-                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                            onClick={() => handleNext(activeTab)}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                </TabsContent>
 
-                {/* School Information */}
-                <TabsContent value="school_info">
-                    <div className="border-b-2 mx-10  py-6">
-                        <h1 className="text-2xl font-bold text-lms-black-90 ">Institude Information</h1>
-                    </div>
+                                <div className="flex justify-end w-full container mx-auto">
+                                    <Button
+                                        type="button"
+                                        className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                        onClick={() => handleNext(activeTab)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </TabsContent>
 
-                    <Formik
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            // create degree post
-                            const studentPost: UserStudentType = {
-                                card_id: values.card_id,
-                                email: values.email,
-                                name_en: values.name_en,
-                                name_kh: values.name_en,
-                                gender: values.gender,
-                                dob: values.dob,
-                                ph_number: values.ph_number,
-                                fam_ph_number: values.fam_ph_number,
-                                pob: values.pob,
-                                address: values.address,
-                                bio: values.bio,
-                                status: values.status,
-                                high_school: values.high_school,
-                                guaedian_rel: values.guaedian_rel,
-                                know_istad: values.know_istad,
-                                class_stu: values.class_stu,
-                                diploma: values.diploma,
-                                grade: values.grade,
-                                shift: values.shift,
-                                degree: values.degree,
-                                study_pro: values.study_pro,
-                            };
+                            {/* School Information */}
+                            <TabsContent value="school_info"
+                                         className={`flex justify-center items-center flex-col gap-9 mx-10 py-0 my-0`}>
 
-                            // post product
-                            handleSubmit(studentPost);
-                        }}
-                    >
-                        {({setFieldValue}) => (
-                            <Form className="py-4 rounded-lg w-full flex justify-center ">
-                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center ">
+                                <div className="border-b-2 w-full py-6">
+                                    <h1 className="text-2xl font-bold text-lms-black-90 ">Institute Information</h1>
+                                </div>
+
+                                {/* Add your form fields for school information here */}
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-x-9 justify-center ">
+
                                     {/* Shift */}
                                     <div className={style.inputContainer}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="shift">
+                                            <label className={style.label} htmlFor="shiftAlias">
                                                 Shift
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field
-                                                as="select"
-                                                name="shift"
-                                                id="shift"
-                                                className={`${style.input} appearance-none`}
-                                            >
-                                                <option value="" disabled hidden>
-                                                    Shift
-                                                </option>
-                                                <option value="Morning">Morning</option>
-                                                <option value="Afternoon">Afternoon</option>
-                                                <option value="Evening">Evening</option>
-                                                <option value="Weekend">Weekend</option>
+                                            <Field as="select" name="shiftAlias" id="shiftAlias"
+                                                   className={`${style.input} appearance-none`}>
+                                                <option value="" label="Select Shift"/>
+                                                {Array.isArray(shifts) && shifts.map(shift => (
+                                                    <option key={shift.alias} value={shift.alias} label={shift.alias}/>
+                                                ))}
                                             </Field>
                                             <ErrorMessage
-                                                name="shift"
+                                                name="shiftAlias"
                                                 component="div"
                                                 className={`${style.error}`}
                                             />
@@ -906,32 +901,23 @@ export function AddStudentAmsForm() {
                                     {/* Degree */}
                                     <div className={style.inputContainer}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="degree">
+                                            <label className={style.label} htmlFor="degreeAlias">
                                                 Degree
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field
-                                                as="select"
-                                                name="degree"
-                                                id="degree"
-                                                className={`${style.input} appearance-none`}
-                                            >
-                                                <option value="" disabled hidden>
-                                                    Degree
-                                                </option>
-
-                                                <option value="Associated Degree">
-                                                    Associated Degree
-                                                </option>
-                                                <option value="Bachelor Degree">Bachelor Degree</option>
-                                                <option value="Master Degree">Master Degree</option>
-                                                <option value="Ph.D Degree">Ph.D Degree</option>
+                                            <Field as="select" name="facultyAlias" id="degreeAlias"
+                                                   className={`${style.input} appearance-none`}>
+                                                <option value="" label="Select Degree"/>
+                                                {Array.isArray(degrees) && degrees.map(degree => (
+                                                    <option key={degree.alias} value={degree.alias}
+                                                            label={degree.alias}/>
+                                                ))}
                                             </Field>
                                             <ErrorMessage
-                                                name="degree"
+                                                name="degreeAlias"
                                                 component="div"
                                                 className={`${style.error}`}
                                             />
@@ -948,28 +934,23 @@ export function AddStudentAmsForm() {
                                     {/* Study Program */}
                                     <div className={style.inputContainer}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="study_pro">
+                                            <label className={style.label} htmlFor="studyProgramAlias">
                                                 Study Program
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field
-                                                as="select"
-                                                name="study_pro"
-                                                id="study_pro"
-                                                className={`${style.input} appearance-none`}
-                                            >
-                                                <option value="" disabled hidden>
-                                                    Study Program
-                                                </option>
-                                                <option value="Spring Framework">Spring Framework</option>
-                                                <option value="Web Design">Web Design</option>
-                                                <option value="C++ Programming">C++ Programming</option>
+                                            <Field as="select" name="studyProgramAlias" id="studyProgramAlias"
+                                                   className={`${style.input} appearance-none`}>
+                                                <option value="" label="Select Study Program"/>
+                                                {Array.isArray(studyPrograms) && studyPrograms.map(studyProgram => (
+                                                    <option key={studyProgram.alias} value={studyProgram.alias}
+                                                            label={studyProgram.alias}/>
+                                                ))}
                                             </Field>
                                             <ErrorMessage
-                                                name="study_pro"
+                                                name="studyProgramAlias"
                                                 component="div"
                                                 className={`${style.error}`}
                                             />
@@ -981,23 +962,23 @@ export function AddStudentAmsForm() {
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
 
-                    <div className="flex justify-end w-full container">
-                        <Button
-                            type="submit"
-                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                            onClick={() => handleNext(activeTab)}
-                        >
-                            Register
-                        </Button>
-                    </div>
-                </TabsContent>
-            </Tabs>
+                                    </div>
+
+                                </div>
+
+                                <div className="flex justify-end w-full container mx-auto">
+                                    <Button type="submit"
+                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">
+                                        Register
+                                    </Button>
+                                </div>
+
+                            </TabsContent>
+                        </Tabs>
+                    </Form>
+                )}
+            </Formik>
         </section>
     );
 }

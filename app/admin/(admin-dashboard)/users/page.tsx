@@ -10,28 +10,20 @@ import {useGetStudentQuery} from "@/lib/features/admin/user-management/student/s
 import {selectStudent, setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
 import {useEffect} from "react";
 import {setAssessment} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
+import {useGetStaffQuery} from "@/lib/features/admin/user-management/staff/staff";
 
 
 export default function Users() {
-  const dispatch = useDispatch<AppDispatch>();
 
-  const { data, error, isLoading } = useGetStudentQuery({ page: 0, pageSize: 10 });
+  // === student ===
+  const { data: studentData, error: studentError, isLoading: studentLoading, isSuccess: isStudentSuccess } = useGetStudentQuery({ page: 0, pageSize: 10 });
 
-  const StudentData = useSelector((state: RootState) => selectStudent(state));
+  let stuData = [];
 
-  useEffect(() => {
-    if(data) {
-      dispatch(setStudent(data.content))
-    }
-    if(error){
-      console.error("failed to load students", error);
-    }
-  }, [data, error, dispatch]);
-
-  console.log("student data: ", StudentData)
-
-  // const userStuData = await getStudent();
-
+  if(isStudentSuccess){
+    stuData = studentData.content;
+    console.log("student data: ", stuData)
+  }
 
   return (
     <main className="flex flex-col h-fullw-full p-9">
@@ -44,7 +36,7 @@ export default function Users() {
           </TabsList>
 
           <TabsContent value="student">
-            <UserStudentTable columns={userStudentColumns} data={StudentData}/>
+            <UserStudentTable columns={userStudentColumns} data={stuData}/>
           </TabsContent>
 
           <TabsContent value="staff">
