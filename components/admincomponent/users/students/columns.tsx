@@ -73,6 +73,22 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     }
   }
 
+  if(column.id === "nameEn"){
+    return (
+        <span className=" uppercase">
+        {value}
+      </span>
+    );
+  }
+
+  if (column.id === "gender") {
+    return (
+        <span className={value === "Female" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "Female" ? "Female" : value === "Male" ? "Male" : ""}
+      </span>
+    );
+  }
+
   if (column.id === "nameKh") {
     return <span className="khmer-font">{value}</span>;
   }
@@ -171,6 +187,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     header: ({ column }) => {
       return (
           <Button
+              className="w-[120px] flex justify-start items-start"
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -204,7 +221,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          PERSONAL NUMBER
+          TELEPHONE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -219,7 +236,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          FAMILY NUMBER
+          FAMILY TEL
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

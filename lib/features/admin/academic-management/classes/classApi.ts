@@ -22,18 +22,22 @@ export const classApi = istadLmsApi.injectEndpoints({
                 url: `/classes/${classUuid}/enable`,
                 method: 'PUT',
             }),
+            invalidatesTags: [{ type: 'Classes', id: 'LIST' }],
         }),
         disableClass: builder.mutation<void, string>({
             query: (classUuid) => ({
                 url: `/classes/${classUuid}/disable`,
                 method: 'PUT',
             }),
+            invalidatesTags: [{ type: 'Classes', id: 'LIST' }],
         }),
-        updateClasses: builder.mutation<void, string>({
-            query: (classUuid) => ({
-                url: `/classes/${classUuid}`,
+        updateClasses: builder.mutation<any, { uuid: string, updatedData: any }>({
+            query: ({uuid, updatedData}) => ({
+                url: `/classes/${uuid}`,
                 method: 'PATCH',
+                body: updatedData,
             }),
+            invalidatesTags: [{ type: 'Classes', id: 'LIST' }],
         }),
         addClass: builder.mutation({
             query: (newClass) => ({

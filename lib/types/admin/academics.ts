@@ -32,9 +32,13 @@ export type OptionType = {
 export type ClassTableFormType = {
     uuid: string;
     classCode: string;
+    classStart: string;
+    classEnd: string;
     shift: string;
     studyProgram: string;
     generation: string;
+    academicYear: string;
+    instructor: string;
     isDraft: boolean;
     isDeleted: boolean;
     status: number;
@@ -58,6 +62,8 @@ export type Class = {
 export type ClassCreateType = {
     classCode: string,
     description: string,
+    classStart: string,
+    classEnd: string,
     year: number,
     generationAlias: string,
     studyProgramAlias: string,
@@ -65,6 +71,15 @@ export type ClassCreateType = {
     instructorUuid: string,
     studentUuid: any,
     academicYearAlias: string,
+    isDraft: boolean,
+    status: number,
+}
+
+export type ClassUpdateType = {
+    classCode: string,
+    classStart: string,
+    classEnd: string,
+    instructorUuid: string,
     isDraft: boolean,
     status: number,
 }
