@@ -1,6 +1,6 @@
 // studentApi.ts
 import {istadLmsApi} from "@/lib/api";
-import {Achievement} from "@/lib/types/student/achievement/achievement";
+import {Achievement} from "@/lib/types/student/achievement";
 
 export const studentApi = istadLmsApi.injectEndpoints({
     endpoints: (builder) => ({
