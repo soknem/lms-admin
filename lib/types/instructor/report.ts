@@ -1,3 +1,49 @@
+export type AttendanceT = {
+    uuid: string;
+    status: number;
+    note: string;
+    // student: {
+    //     uuid: string;
+    //     cardId: string;
+    //     studentStatus: number;
+    //     profileImage: string;
+    //     nameEn: string;
+    //     nameKh: string;
+    //     gender: string;
+    //     email: string;
+    //     username: string;
+    //     phoneNumber: string;
+    //     guardianRelationShip: string;
+    //     familyPhoneNumber: string;
+    //     birthPlace: string;
+    //     currentAddress: string;
+    //     biography: string;
+    //     dob: string;
+    //     bacIiGrade: string;
+    //     highSchoolCertificate: string | null;
+    //     vocationTrainingCertificate: string | null;
+    //     anyValuableCertificate: string | null;
+    // };
+    // lecture: {
+    //     uuid: string;
+    //     startTime: string;
+    //     endTime: string;
+    //     description: string;
+    //     lectureDate: string;
+    //     isDeleted: boolean;
+    //     isDraft: boolean;
+    //     status: number;
+    //     teachingType: string;
+    //     classCode: string | null;
+    // };
+    student: string;
+    lecture:string
+};
+
+
+
+
+
 export type AttendanceType = {
   startTime: string;
   endTime: string;
