@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
 import { useRouter } from "next/navigation";
-import { CourseType } from "@/lib/types/student/course/course";
+import {CourseType} from "@/lib/types/student/course";
 
 type CourseCardProps = CourseType;
 

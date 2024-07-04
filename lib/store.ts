@@ -26,6 +26,9 @@ import academicYearSlice from "@/lib/features/admin/faculties/acdemicYear-manage
 import stuAdmissionSlice
     from "@/lib/features/admin/admission-management/students-admission-management/stuAdmissionSlice";
 import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
+import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
+import attendanceSlice from "@/lib/features/instructor/report/attendance/attendanceSlice";
+import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
 
 
 export const makeStore = () => {
@@ -39,6 +42,7 @@ export const makeStore = () => {
             lecture: lectureSlice,
             degree: degreeSlice,
             faculty: facultySlice,
+            student: studentSlice,
             studentCourse: studentCourseSlice,
             achievement: achievementSlice,
             studyProgram: studyProgramSlice,
@@ -49,7 +53,6 @@ export const makeStore = () => {
             studentAdmission: stuAdmissionSlice,
             shift: shiftSlice,
             payment: paymentSlice,
-            student: studentSlice,
             course: courseSlice,
             material: materialsSlice,
             class: classSlice,
@@ -57,6 +60,9 @@ export const makeStore = () => {
             file: fileSlice,
             instructorCourse: instructorcourseSlice,
             detailClasses: detailClassesSlice,
+            studentSetting: StudentProfileSlice,
+            schedule: scheduleSlice,
+            attendance: attendanceSlice,
 
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
