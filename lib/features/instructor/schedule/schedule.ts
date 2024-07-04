@@ -7,9 +7,14 @@ export const scheduleApi = istadLmsApi.injectEndpoints({
             query: ({ page = 0, pageSize = 25 }) =>
                 `/instructors/schedule?pageNumber=${page}&pageSize=${pageSize}`,
         }),
+        getInstructorCourses: builder.query<any, { page: number; pageSize: number }>({
+            query: ({ page = 0, pageSize = 25 }) =>
+                `/instructors/courses?pageNumber=${page}&pageSize=${pageSize}`,
+        }),
     }),
 });
 
 export const {
     useGetScheduleQuery,
+    useGetInstructorCoursesQuery,
 } = scheduleApi;
