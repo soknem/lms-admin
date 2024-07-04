@@ -10,9 +10,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import {CourseType} from "@/lib/types/student/course";
-
 
 type CourseCardProps = CourseType;
 
@@ -24,20 +23,25 @@ export function CardCourseComponent({
                                         description,
                                         uuid,
                                     }: CourseCardProps) {
-
-
     const router = useRouter();
 
+    const truncateDescription = (text: string, maxLength: number) => {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + '...';
+    };
+
+    const maxLength = 120; // Adjust this value based on your needs
 
     return (
-
         <Card className="w-[566px] h-[299px] bg-white">
             <CardHeader className="mx-[40px]">
-                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1 ">
+                <CardTitle className="text-lms-primary font-bold text-[24px] ">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px]  line-clamp-3 ">
-                    {description.toUpperCase()}
+                <CardDescription className="text-lms-black90 text-[16px]">
+                    {truncateDescription(description, maxLength).toLowerCase()}
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex mx-[40px]">
@@ -59,14 +63,13 @@ export function CardCourseComponent({
                         <p>Year: {year}</p>
                         <p>Semester : {semester}</p>
                     </div>
-
                     <p>Credit : {credit} credits</p>
                     <div className="flex items-center gap-4 ">
                         <p>Progress :</p>
                         <div className="relative pt-3 flex-1">
                             <div className="overflow-hidden h-2 w-[85px] mb-2 text-xs flex rounded bg-gray-200">
                                 <div
-                                    style={{width: "50%"}}
+                                    style={{ width: "50%" }}
                                     className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lms-success"
                                 ></div>
                             </div>

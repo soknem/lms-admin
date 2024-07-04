@@ -28,17 +28,15 @@ export async function POST() {
     if(refreshToken){
         cookieStore.delete(cookieName)
 
-        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_LMS_URL}/login`);
+        return NextResponse.json(
+            {
+                message: "Logout successful",
 
-        // return NextResponse.json(
-        //     {
-        //         message: "Logout successful",
-        //
-        //     },
-        //     {
-        //         status: 200,
-        //     }
-        // );
+            },
+            {
+                status: 200,
+            }
+        );
     }
 
     // If the refresh token is not found, return an error message to the client-side

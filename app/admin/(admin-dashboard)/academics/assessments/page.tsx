@@ -44,6 +44,12 @@ import FilterSemesterPopover from "@/components/common/filter/FilterSemesterPopo
 import FilterYearPopover from "@/components/common/filter/FilterYearPopover";
 import {FiPlus} from "react-icons/fi";
 
+type TranscriptFilterType = {
+    generationAlias: string;
+    year: number;
+    studyProgramAlias: string;
+}
+
 export default function Assessment() {
 
     // === Fetch Each Course data ====
@@ -136,9 +142,9 @@ export default function Assessment() {
 
     const [getTranscripts, { data: transcriptData, error: transcriptError, isLoading: isTranscriptLoading }] = useGetTranscriptsMutation();
 
-    const [transcripts , setTranscripts] = useState({})
+    const [transcripts , setTranscripts] = useState<TranscriptType[]>([])
 
-    const fetchTranscriptData = async (filters: any) => {
+    const fetchTranscriptData = async (filters: TranscriptFilterType) => {
         try {
             const result = await getTranscripts({
                 studyProgramAlias: selectedProgram.alias,
@@ -174,48 +180,47 @@ export default function Assessment() {
         setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
     };
 
-    const transcriptList: any = transcripts;
 
 
     // === semester ===
-    // const [getSemesters, { data: semesterData, error: semesterError, isLoading: isSemesterLoading }] = useGetSemestersMutation();
-    //
-    // const [semesters , setSemesters] = useState({})
-    //
-    // const fetchSemesterData = async (filters: any) => {
-    //     try {
-    //         const result = await getSemesters({
-    //             studyProgramAlias: selectedProgram.alias,
-    //             generationAlias: selectedGeneration.alias,
-    //             year: selectedYear.alias,
-    //             semester: selectedSemester.alias
-    //         }).unwrap();
-    //
-    //         console.log('Fetched data:', result);
-    //         setSemesters(result.content)
-    //
-    //     } catch (err) {
-    //         console.error('Failed to fetch semester', err);
-    //     }
-    // };
-    //
-    // const [semesterfilters, setSemesterFilters] = useState({
-    //     generationAlias: '',
-    //     year: 1,
-    //     studyProgramAlias: '',
-    //     semester: 1
-    // });
-    //
-    // useEffect(() => {
-    //     // Fetch initial data when component mounts
-    //     fetchSemesterData(semesterfilters);
-    // }, []); // Empty dependency array to run once on mount
-    //
-    // const handleSemesterFilter = () => {
-    //     fetchSemesterData(semesterfilters); // Call fetch function on filter button click
-    // };
-    //
-    // console.log("semester filters", semesters);
+    const [getSemesters, { data: semesterData, error: semesterError, isLoading: isSemesterLoading }] = useGetSemestersMutation();
+
+    const [semesters , setSemesters] = useState([])
+
+    const fetchSemesterData = async (filters: any) => {
+        try {
+            const result = await getSemesters({
+                studyProgramAlias: selectedProgram.alias,
+                generationAlias: selectedGeneration.alias,
+                year: selectedYear.alias,
+                semester: selectedSemester.alias
+            }).unwrap();
+
+            console.log('Fetched data:', result);
+            setSemesters(result.content)
+
+        } catch (err) {
+            console.error('Failed to fetch semester', err);
+        }
+    };
+
+    const [semesterfilters, setSemesterFilters] = useState({
+        generationAlias: '',
+        year: 1,
+        studyProgramAlias: '',
+        semester: 1
+    });
+
+    useEffect(() => {
+        // Fetch initial data when component mounts
+        fetchSemesterData(semesterfilters);
+    }, []); // Empty dependency array to run once on mount
+
+    const handleSemesterFilter = () => {
+        fetchSemesterData(semesterfilters); // Call fetch function on filter button click
+    };
+
+    console.log("semester filters", semesters);
 
 
     // ==== fetch generation ====
@@ -322,7 +327,7 @@ export default function Assessment() {
                     </div>
 
 
-                    {/*<TranscriptDataTable columns={TranscriptColumns} data={transcriptList}/>*/}
+                    <TranscriptDataTable columns={TranscriptColumns} data={transcripts}/>
                 </TabsContent>
 
                 <TabsContent value="semester">
@@ -361,14 +366,14 @@ export default function Assessment() {
                             handleReset={handleSemesterReset}
                         />
 
-                        {/*<Button onClick={handleSemesterFilter}*/}
-                        {/*        className=' text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>*/}
-                        {/*    Filter*/}
-                        {/*</Button>*/}
+                        <Button onClick={handleSemesterFilter}
+                                className=' text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
+                            Filter
+                        </Button>
 
                     </div>
 
-                    {/*<SemesterDataTable columns={eachSemesterColumn} data={semesters}/>*/}
+                    <SemesterDataTable columns={eachSemesterColumn} data={semesters}/>
                 </TabsContent>
 
                 <TabsContent value="course">

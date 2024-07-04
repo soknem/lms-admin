@@ -3,16 +3,37 @@ import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect, ChangeEvent } from 'react';
-import { OptionType, SubjectType, semesterAssessementType } from "@/lib/types/admin/academics";
+import {OptionType, semesterAssessementType, CourseShortType} from "@/lib/types/admin/academics";
 import StatusBadge from "@/components/common/StatusBadge";
+
+// const getUniqueSubjects = (data: semesterAssessementType[]) => {
+//     const subjectsSet = new Set<string>();
+//     data.forEach((item) => {
+//         item.subjects.forEach((subject) => {
+//             subjectsSet.add(subject.subjectName);
+//         });
+//     });
+//     return Array.from(subjectsSet);
+// };
+
+// const getUniqueSubjects = (data: semesterAssessementType[]) => {
+//     const subjectsSet = new Set<string>();
+//     data.forEach((item) => {
+//         item.courses.forEach((course) => {
+//             subjectsSet.add(course.title);
+//         });
+//     });
+//     return Array.from(subjectsSet);
+// };
 
 const getUniqueSubjects = (data: semesterAssessementType[]) => {
     const subjectsSet = new Set<string>();
     data.forEach((item) => {
-        item.subjects.forEach((subject) => {
-            subjectsSet.add(subject.subjectName);
+        item.courses.forEach((course) => {
+            subjectsSet.add(course.title);
         });
     });
+    console.log("subject set: ",subjectsSet)
     return Array.from(subjectsSet);
 };
 
@@ -83,27 +104,87 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 const initialData: semesterAssessementType[] = [
+    // {
+    //     cardId: "istad-1000",
+    //     nameEn: "Alice Johnson",
+    //     gender: "Female",
+    //     dob: "2001-03-15",
+    //     class: "FY2025 - M1",
+    //     subjects: [
+    //         { subjectName: "Introduction to IT", score: 85 },
+    //         { subjectName: "Programming Fundamental", score: 92 },
+    //         { subjectName: "Intensive English Program I", score: 88 },
+    //         { subjectName: "Academic Skill Development", score: 90 },
+    //         { subjectName: "Mathematics I", score: 95 }
+    //     ],
+    //     grade: "A",
+    //     total: 450,
+    //     status: 1
+    // }
     {
         cardId: "istad-1000",
         nameEn: "Alice Johnson",
         gender: "Female",
         dob: "2001-03-15",
-        class: "FY2025 - M1",
-        subjects: [
-            { subjectName: "Introduction to IT", score: 85 },
-            { subjectName: "Programming Fundamental", score: 92 },
-            { subjectName: "Intensive English Program I", score: 88 },
-            { subjectName: "Academic Skill Development", score: 90 },
-            { subjectName: "Mathematics I", score: 95 }
+        classCode: "FY2025 - M1",
+        academicYear: null,
+        courses: [
+            { title: "Introduction to IT", score: 85 },
+            { title: "Programming Fundamental", score: 92 },
+            { title: "Intensive English Program I", score: 88 },
+            { title: "Academic Skill Development", score: 90 },
+            { title: "Mathematics I", score: 95 }
         ],
         grade: "A",
+        gpa: 0.0,
         total: 450,
         status: 1
     }
 ];
 
 // Dynamically generate subject columns
+// const uniqueSubjects = getUniqueSubjects(initialData);
+// const subjectColumns = uniqueSubjects.map((subject) => ({
+//     accessorKey: subject.replace(/\s+/g, ''),
+//     header: ({ column } : any) => (
+//         <Button
+//             variant='ghost'
+//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+//         >
+//             {subject.toUpperCase()}
+//             <ArrowUpDown className='ml-2 h-4 w-4' />
+//         </Button>
+//     ),
+//     cell: ({ row }: any) => {
+//         const subjectScore = row.original.subjects.find(
+//             (sub: SubjectType) => sub.subjectName === subject
+//         )?.score;
+//         return subjectScore ?? '-';
+//     }
+// }));
+
+// const uniqueSubjects = getUniqueSubjects(initialData);
+// const subjectColumns = uniqueSubjects.map((subject) => ({
+//     accessorKey: subject.replace(/\s+/g, ''),
+//     header: ({ column } : any) => (
+//         <Button
+//             variant='ghost'
+//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+//         >
+//             {subject.toUpperCase()}
+//             <ArrowUpDown className='ml-2 h-4 w-4' />
+//         </Button>
+//     ),
+//     cell: ({ row }: any) => {
+//         const subjectScore = row.original.courses.find(
+//             (course: CourseShortType) => course.title === subject
+//         )?.score;
+//         return subjectScore ?? '-';
+//     }
+// }));
+
 const uniqueSubjects = getUniqueSubjects(initialData);
+
 const subjectColumns = uniqueSubjects.map((subject) => ({
     accessorKey: subject.replace(/\s+/g, ''),
     header: ({ column } : any) => (
@@ -116,12 +197,13 @@ const subjectColumns = uniqueSubjects.map((subject) => ({
         </Button>
     ),
     cell: ({ row }: any) => {
-        const subjectScore = row.original.subjects.find(
-            (sub: SubjectType) => sub.subjectName === subject
+        const subjectScore = row.original.courses.find(
+            (course: CourseShortType) => course.title === subject
         )?.score;
         return subjectScore ?? '-';
     }
 }));
+
 
 export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     {

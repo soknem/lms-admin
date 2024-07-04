@@ -4,8 +4,10 @@
 
 export type Course = {
     uuid: string;
+    score : number;
     title: string;
-    credit: number | null;
+    credit: number;
+    grade: string;
 }
 
 
