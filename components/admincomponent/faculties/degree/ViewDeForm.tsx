@@ -20,31 +20,14 @@ import {create} from "domain";
 import {useGetDegreeByAliasQuery, useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {TbAsterisk} from "react-icons/tb";
 
-
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
-            />
-            <label className="pl-2" htmlFor={value.toString()}>
-                {label}
-            </label>
-        </div>
-    );
-};
-
-export function ViewDeForm({alias}: { alias: string }) {
+export function ViewDeForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [initialAlias, setInitialAlias] = useState("");
     const {data: degreeData, isSuccess} = useGetDegreeByAliasQuery(alias);
     const [initialValues, setInitialValues] = useState({
         alias: "",
         level: "",
+        numberOfYears: 0,
         description: "",
         isDeleted: false,
         isDraft: false
@@ -55,6 +38,7 @@ export function ViewDeForm({alias}: { alias: string }) {
             setInitialValues({
                 alias: degreeData.alias,
                 level: degreeData.level,
+                numberOfYears: degreeData.numberOfYears,
                 description: degreeData.description,
                 isDeleted: degreeData.isDeleted,
                 isDraft: degreeData.isDraft
@@ -63,13 +47,9 @@ export function ViewDeForm({alias}: { alias: string }) {
         }
     }, [isSuccess, degreeData]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="w-[480px] bg-white ">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Degree Information</DialogTitle>
                 </DialogHeader>
@@ -133,60 +113,6 @@ export function ViewDeForm({alias}: { alias: string }) {
                                         component="div"
                                         className={`${style.error}`}
                                     />
-                                </div>
-
-                                <div className={`flex w-full justify-between`}>
-
-                                    {/* Visibility */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDraft">
-                                                Visibility
-                                            </label>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDraft"
-                                                disabled
-                                                component={RadioButton}
-                                                value={true}
-                                                label="Public"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="isDraft"
-                                                component={RadioButton}
-                                                value={false}
-                                                label="Draft"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/* Status */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                disabled
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value={true}
-                                                label="Public"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value={false}
-                                                label="Draft"
-                                            />
-                                        </div>
-                                    </div>
-
                                 </div>
 
                             </div>

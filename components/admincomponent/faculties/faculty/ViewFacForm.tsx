@@ -58,7 +58,7 @@ const CustomInput = ({previewUrl}: any) => {
     );
 };
 
-export function ViewFacForm({alias}: { alias: string }) {
+export function ViewFacForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [initialAlias, setInitialAlias] = useState("");
     const [logo, setLogo] = useState(null);
@@ -88,13 +88,10 @@ export function ViewFacForm({alias}: { alias: string }) {
             setLogo(facultyData.logo)
         }
     }, [isSuccess, facultyData]);
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[480px] bg-white ">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Faculty Information</DialogTitle>
                 </DialogHeader>
@@ -186,63 +183,6 @@ export function ViewFacForm({alias}: { alias: string }) {
                                     />
 
                                 </div>
-
-                                <div className={`flex w-full justify-between`}>
-                                    {/* isDraft */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDraft">
-                                                Visibility
-                                            </label>
-                                        </div>
-
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDraft"
-                                                disabled
-                                                component={RadioButton}
-                                                value={true}
-                                                label="Public"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="isDraft"
-                                                component={RadioButton}
-                                                value={false}
-                                                label="Draft"
-                                            />
-                                        </div>
-
-
-                                    </div>
-
-                                    {/* isDeleted */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                        </div>
-
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                disabled
-                                                component={RadioButton}
-                                                value={true}
-                                                label="Active"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                disabled
-                                                component={RadioButton}
-                                                value={false}
-                                                label="Inactive"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
 
                             </div>
                         </Form>

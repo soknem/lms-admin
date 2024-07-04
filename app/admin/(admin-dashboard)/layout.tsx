@@ -1,6 +1,5 @@
 "use client";
 import "@/app/globals.css";
-import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import {ReactNode, useState, useEffect} from "react";
 import {inter, suwannaphum} from "@/app/font";

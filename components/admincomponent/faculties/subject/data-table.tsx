@@ -113,9 +113,9 @@ export function SubjectTable<TData, TValue>({
             value === "All"
                 ? ""
                 : value === "Public"
-                    ? true
+                    ? false
                     : value === "Draft"
-                        ? false
+                        ? true
                         : "";
         table.getColumn("isDraft")?.setFilterValue(filterValue);
     };

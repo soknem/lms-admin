@@ -6,8 +6,26 @@ export const setupStudyProgramApi = istadLmsApi.injectEndpoints({
             query: (alias) =>
                 `study-programs/${alias}/year-of-studies`,
         }),
+        getYearOfStudyUUID: builder.mutation({
+            query: (newStuProgram) => ({
+                url: '/semester',
+                method: 'POST',
+                // StuProAlias, Year(static), Semester,
+                body: newStuProgram,
+            }),
+        }),
+        addSubjectToYearOfStudy: builder.mutation({
+            query: (newStuProgram) => ({
+                url: '/year-of-studies/uuid/subjects',
+                method: 'POST',
+                // StuProAlias, Year(static), Semester,
+                body: newStuProgram,
+            }),
+        }),
     })
 })
 export const {
-    useGetYearStuProsQuery
+    useGetYearStuProsQuery,
+    useGetYearOfStudyUUIDMutation,
+    useAddSubjectToYearOfStudyMutation
 } = setupStudyProgramApi;

@@ -5,6 +5,7 @@ export const academicYearApi = istadLmsApi.injectEndpoints({
         getAcademicYears: builder.query<any, { page: number; pageSize: number }>({
             query: ({page = 0, pageSize = 10}) =>
                 `/academic-years?pageNumber=${page}&pageSize=${pageSize}`,
+            providesTags: [{type: 'AcademicYears', id: 'LIST'}],
         }),
         createAcademicYear: builder.mutation({
             query: (newAcademicYear) => ({
@@ -26,6 +27,21 @@ export const academicYearApi = istadLmsApi.injectEndpoints({
                 body: updatedData,
             }),
         }),
+        enableAcademicYearByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/academic-years/${alias}/enable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'AcademicYears', id: 'LIST'}],
+        }),
+
+        disableAcademicYearByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/academic-years/${alias}/disable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'AcademicYears', id: 'LIST'}],
+        }),
     }),
 
 })
@@ -33,5 +49,7 @@ export const {
     useGetAcademicYearsQuery,
     useCreateAcademicYearMutation,
     useGetAcademicYearByAliasQuery,
-    useEditAcademicYearByAliasMutation
+    useEditAcademicYearByAliasMutation,
+    useEnableAcademicYearByAliasMutation,
+    useDisableAcademicYearByAliasMutation,
 } = academicYearApi;
