@@ -8,7 +8,7 @@ export default function coursedetail() {
   return (
     <main>
       <div className="bg-white py-[35px]">
-        <CourseDetailHeader />
+        {/*<CourseDetailHeader />*/}
       </div>
       <div className="p-5 mx-[100px]">
         <BreadcrumbWithCustomSeparator />

@@ -1,17 +1,19 @@
-// courseSlice.ts
+// src/lib/features/student/course/courseSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
-import { StudentCourseType } from "@/lib/types/student/course";
+import { StudentCourseType, CourseType } from "@/lib/types/student/course";
 
 type CourseState = {
     courses: StudentCourseType[];
-    loading: boolean;
+    courseDetail: CourseType | null;
+    isLoading: boolean;
     error: string | null;
 };
 
 const initialState: CourseState = {
     courses: [],
-    loading: false,
+    courseDetail: null,
+    isLoading: false,
     error: null,
 };
 
@@ -21,21 +23,26 @@ const courseSlice = createSlice({
     reducers: {
         setCourses: (state, action: PayloadAction<StudentCourseType[]>) => {
             state.courses = action.payload;
-            state.loading = false;
+            state.isLoading = false;
+            state.error = null;
+        },
+        setCourseDetail: (state, action: PayloadAction<CourseType>) => {
+            state.courseDetail = action.payload;
+            state.isLoading = false;
             state.error = null;
         },
         setLoading: (state) => {
-            state.loading = true;
+            state.isLoading = true;
             state.error = null;
         },
         setError: (state, action: PayloadAction<string>) => {
-            state.loading = false;
+            state.isLoading = false;
             state.error = action.payload;
         },
     },
 });
 
-export const { setCourses, setLoading, setError } = courseSlice.actions;
+export const { setCourses, setCourseDetail, setLoading, setError } = courseSlice.actions;
 
 export const selectCourses = (state: RootState) => state.course.courses;
 export const selectLoading = (state: RootState) => state.course.isLoading;

@@ -27,12 +27,14 @@ import stuAdmissionSlice
     from "@/lib/features/admin/admission-management/students-admission-management/stuAdmissionSlice";
 import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
+import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
 
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
+            studentCourseApi: studentCourseApi.reducer,
             auth: authSlice,
             generation: generationSlice,
             filter: filterSlice,

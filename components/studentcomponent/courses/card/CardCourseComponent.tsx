@@ -1,3 +1,4 @@
+'use client'
 import * as React from "react";
 import Image from "next/image";
 
@@ -14,7 +15,7 @@ import {useRouter} from "next/navigation";
 import {CourseType} from "@/lib/types/student/course";
 
 
-type CourseCardProps = CourseType;
+type CourseCardProps = CourseType & { onClick: () => void };
 
 export function CardCourseComponent({
                                         title,
@@ -22,21 +23,16 @@ export function CardCourseComponent({
                                         semester,
                                         year,
                                         description,
-                                        uuid,
+                                        onClick,
                                     }: CourseCardProps) {
-
-
     const router = useRouter();
-
-
     return (
-
-        <Card className="w-[566px] h-[299px] bg-white">
+        <Card className="w-[566px] h-[299px] bg-white" onClick={onClick}>
             <CardHeader className="mx-[40px]">
-                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1 ">
+                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px]  line-clamp-3 ">
+                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3">
                     {description.toUpperCase()}
                 </CardDescription>
             </CardHeader>
@@ -54,15 +50,15 @@ export function CardCourseComponent({
                         />
                     ))}
                 </div>
+                {/* Add content here */}
                 <div className="mt-4 ml-[100px]">
                     <div className="flex gap-4">
                         <p>Year: {year}</p>
-                        <p>Semester : {semester}</p>
+                        <p>Semester: {semester}</p>
                     </div>
-
-                    <p>Credit : {credit} credits</p>
-                    <div className="flex items-center gap-4 ">
-                        <p>Progress :</p>
+                    <p>Credit: {credit} credits</p>
+                    <div className="flex items-center gap-4">
+                        <p>Progress:</p>
                         <div className="relative pt-3 flex-1">
                             <div className="overflow-hidden h-2 w-[85px] mb-2 text-xs flex rounded bg-gray-200">
                                 <div

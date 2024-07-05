@@ -15,17 +15,13 @@ export default function TabComponent() {
   return (
     <div>
       <Tabs defaultValue="curriculum">
-        <div className="flex items-center justify-between " onClick={() => router.push(`/instructor/courses/coursedetail/lectures`)}>
+        <div className="flex items-center justify-between " >
           <TabsList>
             <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
             <TabsTrigger value="Slide">Slide</TabsTrigger>
             <TabsTrigger value="Video">Video</TabsTrigger>
             <TabsTrigger value="Mini Project">Mini Project</TabsTrigger>
           </TabsList>
-          <Button className="border-2 bg-white flex items-center hover:bg-white/80">
-            Lecture
-            <TbArrowNarrowRight className="w-6 h-6 ml-2" />
-          </Button>
         </div>
 
           <TabsContent value="curriculum">

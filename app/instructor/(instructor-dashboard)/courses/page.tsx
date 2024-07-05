@@ -160,6 +160,9 @@ export default function Course() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4 w-full">
                     {filteredCourses.map((course: CourseType, index: number) => (
                         <CardCourseComponent
+                            onClick={
+                                () => {}
+                            }
                             key={index}
                             title={course.title}
                             credit={course.credit}

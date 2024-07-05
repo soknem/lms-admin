@@ -10,30 +10,6 @@ export default function Setting() {
         <EditInsProForm />
       </section>
 
-      <div className="flex flex-col items-start w-full gap-2 ml-4">
-        <p className="font-bold text-2xl">Documents</p>
-
-        <div className="flex justify-start w-full gap-16">
-          <div className="flex items-center justify-center gap-3 bg-white border rounded-[10px] px-9">
-            <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary" />
-            <p className="font-medium text-xl">Certificate</p>
-          </div>
-          <div className="flex items-center justify-center gap-3 bg-white border rounded-[10px] px-9">
-            <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary" />
-            <p className="font-medium text-xl">Certificate</p>
-          </div>
-          <div className="flex items-center justify-center gap-3 bg-white border rounded-[10px] px-9">
-            <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary" />
-            <p className="font-medium text-xl">Certificate</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col items-end w-full">
-        <Button className="text-sm font-bold p-4 bg-lms-primary text-white hover:bg-lms-primary rounded-[10px]">
-          Update
-        </Button>
-      </div>
     </main>
   );
 }

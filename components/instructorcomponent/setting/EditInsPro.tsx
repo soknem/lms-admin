@@ -17,66 +17,28 @@ import {IoIosArrowDown} from "react-icons/io";
 import {TbAsterisk} from "react-icons/tb";
 
 const initialValues = {
-    card_id: 0,
-    email: "NounSovanthorn@istad.com",
-    name_en: "Noun Sovanthorn",
-    name_kh: "នួន សុវណ្ណថន",
-    gender: "Male" || "Female" || "Other",
-    dob: format(new Date(2000, 11, 5), "yyyy-MM-dd"),
-    ph_number: "098456723",
-    fam_ph_number: "098456723",
-    pob: "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
-    address:
-        "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
-    bio: "Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private blushes removed an in equally totally if. Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do.",
-    status: "Active" || "Drop" || "Disable" || "Hiatus",
-    high_school: "",
-    guaedian_rel: "",
-    know_istad: "",
-    class_stu: "",
-    diploma: "",
-    grade: "",
-    shift: "",
-    degree: "",
-    study_pro: ""
+
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 const validationSchema = Yup.object().shape({
-    card_id: Yup.number(),
-    earl: Yup.string(),
-    name_en: Yup.string(),
-    name_kh: Yup.string(),
-    ph_number: Yup.number(),
-    profile: Yup.mixed()
-        .test("fileFormat", "Unsupported Format", (value: any) => {
-            if (!value) {
-                return true;
-            }
-            return SUPPORTED_FORMATS.includes(value.type);
-        })
-        .test("fileSize", "Fsile Size is too large", (value: any) => {
-            if (!value) {
-                true;
-            }
-            return value.size <= FILE_SIZE;
-        })
-        .required("Required"),
-    status: Yup.string().required("A selection is required"),
+    gender: Yup.string().required("Gender is required"),
+    phoneNumber: Yup.string()
+        .required("Personal Number is required")
+        .matches(/^[\d\s]+$/, "Personal Number must be a number"),
+    bio: Yup.string().required("Bio is required"),
+    currentAddress: Yup.string().required("Current Address is required"),
+    birthPlace: Yup.string().required("Place of Birth is required"),
+    fam_ph_number: Yup.string()
+        .required("Family Number is required")
+        .matches(/^[\d\s]+$/, "Family Number must be a number"),
+    guardianRelationShip: Yup.string().required("Guardian Relationship is required"),
 });
 
 const handleSubmit = async (value: UserStudentType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
+
 };
 
 const RadioButton = ({field, value, label}: any) => {
@@ -117,19 +79,10 @@ const CustomInput = ({field, setFieldValue}: any) => {
     );
 };
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
+
 const currentYear = new Date().getFullYear();
 const years = Array.from(new Array(40), (val, index) => currentYear - index);
 
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
 
 export function EditInsProForm() {
     return (
@@ -138,40 +91,20 @@ export function EditInsProForm() {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
-                    // create degree post
-                    const studenttPost: UserStudentType = {
-                        card_id: values.card_id,
-                        email: values.email,
-                        name_en: values.name_en,
-                        name_kh: values.name_kh,
-                        dob: values.dob,
-                        ph_number: values.ph_number,
-                        fam_ph_number: values.fam_ph_number,
-                        pob: values.pob,
-                        address: values.address,
-                        bio: values.bio,
-                        gender: values.gender,
-                        status: values.status,
-                        high_school: values.high_school,
-                        guaedian_rel: values.guaedian_rel,
-                        know_istad: values.know_istad,
-                        class_stu: values.class_stu,
-                        diploma: values.diploma,
-                        grade: values.grade,
-                        shift: values.shift,
-                        degree: values.degree,
-                        study_pro: values.study_pro
-                    };
+
 
                     // post product
-                    handleSubmit(studenttPost);
+                    handleSubmit();
                 }}
             >
                 {() => (
                     <Form className="py-4 rounded-lg w-full flex flex-col justify-center items-center">
+
                         <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
+
+
                             {/* image */}
-                            <div className="h-[170px] w-[164px] relative rounded-[10px] grid row-span-2">
+                            <div className="h-[200px] w-[200px] relative rounded-[10px] grid row-span-2">
                                 <img
                                     src="https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"
                                     alt="banner"
@@ -183,39 +116,6 @@ export function EditInsProForm() {
                                 </div>
                             </div>
 
-                            {/* name english */}
-                            <div className={` ${style.inputContainer}`}>
-                                <div className="flex">
-                                    <label className={`${style.label}`} htmlFor="name_en">
-                                        FullName(EN)
-                                    </label>
-                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                </div>
-
-                                <Field
-                                    type="text"
-                                    name="name_en"
-                                    id="name_en"
-                                    className={` ${style.input}`}
-                                />
-                            </div>
-
-                            {/* name khmer */}
-                            <div className={` ${style.inputContainer}`}>
-                                <div className="flex">
-                                    <label className={`${style.label}`} htmlFor="name_kh">
-                                        FullName(KH)
-                                    </label>
-                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                </div>
-
-                                <Field
-                                    type="text"
-                                    name="name_kh"
-                                    id="level"
-                                    className={`khmer-font ${style.input}`}
-                                />
-                            </div>
 
                             {/* gender */}
                             <div className={style.inputContainer}>
@@ -250,22 +150,6 @@ export function EditInsProForm() {
                                 </div>
                             </div>
 
-                            {/* dob */}
-                            <div className={`${style.inputContainer}`}>
-                                <div className="flex">
-                                    <label className={`${style.label}`} htmlFor="dob">
-                                        Date of birth
-                                    </label>
-                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                </div>
-
-                                <Field
-                                    type="date"
-                                    name="dob"
-                                    id="dob"
-                                    className={`${style.input}`}
-                                />
-                            </div>
 
                             {/* Personal Number */}
                             <div className={`${style.inputContainer}`}>
@@ -284,8 +168,8 @@ export function EditInsProForm() {
                                 />
                             </div>
 
-                            {/* Family Number */}
 
+                            {/* Family Number */}
                             <div className={`${style.inputContainer}`}>
                                 <div className="flex">
                                     <label className={`${style.label}`} htmlFor="ph_number">
@@ -307,22 +191,27 @@ export function EditInsProForm() {
                                 />
                             </div>
 
-                            {/* email */}
-                            <div className={`${style.inputContainer}`}>
-                                <div className="flex">
-                                    <label className={`${style.label}`} htmlFor="email">
-                                        Email
-                                    </label>
-                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                </div>
 
+
+                            {/*Guardian Relationship*/}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="guardianRelationShip">Guardian
+                                        Relationship</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
                                 <Field
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    className={`${style.input}`}
-                                />
+                                    type="text"
+                                    placeholder="Parents"
+                                    name="guardianRelationShip"
+                                    id="guardianRelationShip"
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "/>
+                                <ErrorMessage
+                                    name="guardianRelationShip"
+                                    component="div"
+                                    className={style.error}/>
                             </div>
+
 
                             {/* pob */}
                             <div className={`${style.inputContainer}`}>
@@ -341,6 +230,7 @@ export function EditInsProForm() {
                                 />
                             </div>
 
+
                             {/* address */}
                             <div className={`${style.inputContainer}`}>
                                 <div className="flex">
@@ -358,42 +248,6 @@ export function EditInsProForm() {
                                 />
                             </div>
 
-                            {/* status */}
-                            <div className={`${style.inputContainer}  `}>
-                                <div className="flex">
-                                    <label className={`${style.label}`} htmlFor="status">
-                                        Visibility
-                                    </label>
-                                    <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                </div>
-
-                                <div className="flex gap-9 h-[40px] items-center text-[16px] font-normal">
-                                    <Field
-                                        name="status"
-                                        component={RadioButton}
-                                        value="1"
-                                        label="Active"
-                                    />
-                                    <Field
-                                        name="status"
-                                        component={RadioButton}
-                                        value="2"
-                                        label="Drop"
-                                    />
-                                    <Field
-                                        name="status"
-                                        component={RadioButton}
-                                        value="1"
-                                        label="Disable"
-                                    />
-                                    <Field
-                                        name="status"
-                                        component={RadioButton}
-                                        value="2"
-                                        label="Hiatus"
-                                    />
-                                </div>
-                            </div>
 
                             {/* bio */}
                             <div className={`${style.inputContainer}`}>
@@ -408,7 +262,11 @@ export function EditInsProForm() {
                                     className={`${style.input}`}
                                 />
                             </div>
+
+
                         </div>
+
+
                     </Form>
                 )}
             </Formik>
