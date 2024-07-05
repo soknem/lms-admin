@@ -7,54 +7,95 @@ import {DegreeTable} from "@/components/admincomponent/faculties/degree/data-tab
 import {degreeColumns} from "@/components/admincomponent/faculties/degree/columns";
 import {StudyProgramTable} from "@/components/admincomponent/faculties/studygrogram/data-table";
 import {studyProgramColumns} from "@/components/admincomponent/faculties/studygrogram/columns";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {
-    selectFaculty,
-    setFaculties,
-    selectLoading,
-    selectError
-} from "@/lib/features/admin/faculties/faculty/facultySlice";
+
+import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {selectStudyProgram, setStudyPrograms} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {SubjectTable} from "@/components/admincomponent/faculties/subject/data-table";
 import {subjectColumns} from "@/components/admincomponent/faculties/subject/columns";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
-import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
-import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
-import {useGetAcademicYearsQuery} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import {
-    selectAcademicYear,
-    setAcademicYears
-} from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
-import {academicYearColumns} from "@/components/admincomponent/faculties/academicyear/columns";
-import {AcademicYearTable} from "@/components/admincomponent/faculties/academicyear/data-table";
-
-const useFetchData = (queryHook: any, selector: any, action: any) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const {data, error, isLoading} = queryHook({page: 0, pageSize: 10});
-    const stateData = useSelector((state: RootState) => selector(state));
-    const loading = useSelector(selectLoading);
-    const err = useSelector(selectError);
-
-    useEffect(() => {
-        if (data) {
-            dispatch(action(data.content));
-        }
-    }, [data, err, dispatch]);
-
-    return {stateData, loading, error};
-};
+    selectError,
+    selectFaculty,
+    selectLoading,
+    setFaculties
+} from "@/lib/features/admin/faculties/faculty/facultySlice";
 
 export default function Page() {
-    const faculties = useFetchData(useGetFacultiesQuery, selectFaculty, setFaculties);
-    const degrees = useFetchData(useGetDegreesQuery, selectDegree, setDegrees);
-    const studyPrograms = useFetchData(useGetStudyProgramsQuery, selectStudyProgram, setStudyPrograms);
-    const subjects = useFetchData(useGetSubjectsQuery, selectSubject, setSubjects);
-    const academicYears = useFetchData(useGetAcademicYearsQuery, selectAcademicYear, setAcademicYears);
-    console.log(academicYears.stateData)
+    const dispatch = useDispatch<AppDispatch>();
+
+    // Faculty data
+    const {
+        data: facultiesData,
+        error: facultiesError,
+        isLoading: facultiesLoading,
+    } = useGetFacultiesQuery({page: 0, pageSize: 10});
+    const faculties = useSelector((state: RootState) => selectFaculty(state));
+    const facLoading = useSelector(selectLoading);
+    const fecError = useSelector(selectError);
+
+    useEffect(() => {
+        if (facultiesData) {
+            dispatch(setFaculties(facultiesData.content));
+        }
+    }, [facultiesData, fecError, dispatch]);
+
+
+    // Degree data
+    const {
+        data: degreesData,
+        error: degreesError,
+        isLoading: degreesLoading,
+    } = useGetDegreesQuery({page: 0, pageSize: 10});
+    const degrees = useSelector((state: RootState) => selectDegree(state));
+    const deLoading = useSelector(selectLoading);
+    const deError = useSelector(selectError);
+
+    useEffect(() => {
+        if (degreesData) {
+            dispatch(setDegrees(degreesData.content));
+        }
+    }, [degreesData, deError, dispatch]);
+
+    // Study Program data
+    const {
+        data: studyProgramsData,
+        error: studyProgramsError,
+        isLoading: studyProgramsLoading,
+    } = useGetStudyProgramsQuery({page: 0, pageSize: 10});
+    const studyPrograms = useSelector((state: RootState) => selectStudyProgram(state));
+    const stuProLoading = useSelector(selectLoading);
+    const stuProError = useSelector(selectError);
+
+    useEffect(() => {
+        if (studyProgramsData) {
+            dispatch(setStudyPrograms(studyProgramsData.content));
+        }
+
+    }, [studyProgramsData, stuProError, dispatch]);
+
+    // Subject data
+    const {
+        data: subjectsData,
+        error: subjectsError,
+        isLoading: subjectsLoading,
+    } = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const subjects = useSelector((state: RootState) => selectSubject(state));
+    const subLoading = useSelector(selectLoading);
+    const subError = useSelector(selectError);
+
+    useEffect(() => {
+        if (subjectsData) {
+            dispatch(setSubjects(subjectsData.content));
+        }
+
+    }, [subjectsData, subError, dispatch]);
+
 
     return (
         <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">
@@ -65,39 +106,49 @@ export default function Page() {
 
                 <Tabs defaultValue="faculty" className="w-full">
                     <TabsList className="dark:bg-gray-800">
-                        <TabsTrigger value="faculty"
-                                     className="dark:text-gray-300 dark:hover:text-white">Faculty</TabsTrigger>
-                        <TabsTrigger value="degree"
-                                     className="dark:text-gray-300 dark:hover:text-white">Degree</TabsTrigger>
-                        <TabsTrigger value="study-program" className="dark:text-gray-300 dark:hover:text-white">Study
-                            Program</TabsTrigger>
-                        <TabsTrigger value="subject"
-                                     className="dark:text-gray-300 dark:hover:text-white">Subject</TabsTrigger>
-                        <TabsTrigger value="academic-year"
-                                     className="dark:text-gray-300 dark:hover:text-white">Academic Year</TabsTrigger>
+                        <TabsTrigger
+                            value="faculty"
+                            className="dark:text-gray-300 dark:hover:text-white"
+                        >
+                            Faculty
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="degree"
+                            className="dark:text-gray-300 dark:hover:text-white"
+                        >
+                            Degree
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="study-program"
+                            className="dark:text-gray-300 dark:hover:text-white"
+                        >
+                            Study Program
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="subject"
+                            className="dark:text-gray-300 dark:hover:text-white"
+                        >
+                            Subject
+                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="faculty">
-                        <FacultyTable columns={facultyColumns} data={faculties.stateData}/>
+                        <FacultyTable columns={facultyColumns} data={faculties}/>
                     </TabsContent>
 
                     <TabsContent value="degree">
-                        <DegreeTable columns={degreeColumns} data={degrees.stateData}/>
+                        <DegreeTable columns={degreeColumns} data={degrees}/>
                     </TabsContent>
 
                     <TabsContent value="study-program">
-                        <StudyProgramTable columns={studyProgramColumns} data={studyPrograms.stateData}/>
+                        <StudyProgramTable columns={studyProgramColumns} data={studyPrograms}/>
                     </TabsContent>
 
                     <TabsContent value="subject">
-                        <SubjectTable columns={subjectColumns} data={subjects.stateData}/>
-                    </TabsContent>
-
-                    <TabsContent value="academic-year">
-                        <AcademicYearTable columns={academicYearColumns} data={academicYears.stateData}/>
-
+                        <SubjectTable columns={subjectColumns} data={subjects}/>
                     </TabsContent>
                 </Tabs>
+
             </section>
         </section>
     );

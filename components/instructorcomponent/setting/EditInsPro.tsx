@@ -41,22 +41,7 @@ const handleSubmit = async (value: UserStudentType) => {
 
 };
 
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
-            />
-            <label className="pl-2" htmlFor={value}>
-                {label}
-            </label>
-        </div>
-    );
-};
+
 
 const CustomInput = ({field, setFieldValue}: any) => {
     const [imagePreview, setImagePreview] = useState("");
@@ -92,9 +77,6 @@ export function EditInsProForm() {
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
 
-
-                    // post product
-                    handleSubmit();
                 }}
             >
                 {() => (

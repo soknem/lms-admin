@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect} from "react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {
     Breadcrumb,
@@ -20,6 +20,7 @@ import {
 } from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuProSlice";
 import {selectLoading} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import {useGetYearStuProsQuery} from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuPro";
+import {useGetStuProByAliasQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 
 type PropsParams = {
     params: {
@@ -28,8 +29,14 @@ type PropsParams = {
 };
 
 export default function SetupStuPro(props: PropsParams) {
+
+    console.log("props", props)
+
     const alias = props.params.alias;
     const dispatch = useDispatch<AppDispatch>();
+
+    const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
+    console.log("stuProData", stuProData?.studyProgramName)
 
     const {
         data: setupStuProsData,
@@ -47,7 +54,7 @@ export default function SetupStuPro(props: PropsParams) {
     }, [setupStuProsData, setupStuProError, dispatch]);
 
     const filterDataByYear = (year: number) => {
-        return setupStuPros.filter((item: any) => item.year === year);
+        return setupStuPros.filter((item: any) => item.yearOfStudy.year === year);
     };
 
     return (
@@ -62,7 +69,7 @@ export default function SetupStuPro(props: PropsParams) {
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator/>
-                    <h3 className="font-semibold text-lms-primary">{alias}</h3>
+                    <h3 className="font-semibold text-lms-primary">{stuProData?.studyProgramName}</h3>
                 </BreadcrumbList>
             </Breadcrumb>
             <div>
@@ -82,12 +89,14 @@ export default function SetupStuPro(props: PropsParams) {
                             data={filterDataByYear(1)}
                         />
                     </TabsContent>
+
                     <TabsContent value="second-year">
                         <SetupStudyProgramTable
                             columns={setupStudyProgramColumns}
                             data={filterDataByYear(2)}
                         />
                     </TabsContent>
+
                     <TabsContent value="third-year">
                         <SetupStudyProgramTable
                             columns={setupStudyProgramColumns}

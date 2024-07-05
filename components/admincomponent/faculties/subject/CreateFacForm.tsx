@@ -156,7 +156,7 @@ export function CreateSubjectForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[480px]  bg-white ">
+            <DialogContent className="w-[480px]  bg-white" onInteractOutside={(e) => e.preventDefault()}>
 
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Subject</DialogTitle>

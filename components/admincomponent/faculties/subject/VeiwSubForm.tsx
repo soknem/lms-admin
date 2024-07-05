@@ -62,7 +62,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
                     <img
                         src={previewUrl}
                         alt="faculty"
-                        className="w-full h-full rounded-full"
+                        className="w-full object-coverl"
                     />
                 )}
 
@@ -71,7 +71,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     );
 };
 
-export function ViewSubjectForm({alias}: { alias: string }) {
+export function ViewSubjectForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [initialAlias, setInitialAlias] = useState("");
     const [logo, setLogo] = useState(null);
@@ -106,12 +106,10 @@ export function ViewSubjectForm({alias}: { alias: string }) {
         }
     }, [isSuccess, subjectData]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[480px] bg-white ">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Subject Information</DialogTitle>
                 </DialogHeader>
@@ -126,7 +124,7 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col items-center justify-center gap-1">
 
-                                <div className="flex">
+                                <div className="flex ">
                                     <Field
                                         name="logo"
                                         component={CustomInput}
@@ -223,6 +221,7 @@ export function ViewSubjectForm({alias}: { alias: string }) {
                                     <Field
                                         disabled
                                         as="textarea"
+                                        rows={4}
                                         placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
@@ -231,32 +230,6 @@ export function ViewSubjectForm({alias}: { alias: string }) {
 
                                 </div>
 
-                                {/* status */}
-                                <div className={`${style.inputContainer}  `}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="isDraft">
-                                            Visibility
-                                        </label>
-                                    </div>
-
-                                    <div className="flex gap-4 h-[40px] items-center">
-                                        <Field
-                                            disabled
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            value="true"
-                                            label="Public"
-                                        />
-                                        <Field
-                                            disabled
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            value="false"
-                                            label="Draft"
-                                        />
-                                    </div>
-
-                                </div>
 
                             </div>
                         </Form>

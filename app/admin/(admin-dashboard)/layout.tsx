@@ -1,6 +1,5 @@
 "use client";
 import "@/app/globals.css";
-import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import {ReactNode, useState, useEffect} from "react";
 import {inter, suwannaphum} from "@/app/font";
@@ -10,7 +9,7 @@ import Error from "@/app/error";
 import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent";
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 
-import { toast, Toaster, ToastBar } from 'react-hot-toast';
+import {toast, Toaster, ToastBar} from 'react-hot-toast';
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -28,7 +27,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         >
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
-                <nav className="w-full h-[72px] shadow-md">
+                <nav className="w-full h-[72px] shadow-md z-10">
                     <NavbarComponent/>
                 </nav>
 

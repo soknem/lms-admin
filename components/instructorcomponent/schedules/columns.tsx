@@ -36,16 +36,28 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   const accessorKey = column.columnDef.accessorKey;
 
   // Custom status
-  if (accessorKey === 'status') {
-
-    switch (value) {
-      case "true":
-        return <StatusBadge type="success" status="Started" />
-      case "false":
-        return <StatusBadge type="warning" status="Pending" />
-      case "draft":
-        return <StatusBadge type="error" status="Ended" />
-    }
+  if (column.id === "status") {
+    return (
+        <span
+            className={
+              value === 1
+                  ? "Starting text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                  : value === 2
+                      ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                      : value === 3
+                          ? "Pending text-white bg-gray-500 px-3 py-1 rounded-[10px]"
+                          : ""
+            }
+        >
+            {value === 1
+                ? "Starting"
+                : value === 2
+                    ? "Ended"
+                    : value === 3
+                        ? "Pending"
+                        : ""}
+        </span>
+    );
   }
 
   // Ensure the "id" column is not editable
@@ -151,7 +163,7 @@ const EditCell = ({ row, table }: any) => {
 
 export const scheduleColumns: ColumnDef<ScheduleType>[] = [
   {
-    accessorKey: "date",
+    accessorKey: "lectureDate",
     header: ({ column }) => {
       return (
         <Button
@@ -167,7 +179,7 @@ export const scheduleColumns: ColumnDef<ScheduleType>[] = [
   },
 
   {
-    accessorKey: "session",
+    accessorKey: "timeRange",
     header: ({ column }) => {
       return (
           <Button
@@ -179,11 +191,18 @@ export const scheduleColumns: ColumnDef<ScheduleType>[] = [
           </Button>
       );
     },
-    cell: TableCell,
+    cell: ({ row }) => {
+      const { startTime, endTime } = row.original;
+      return (
+          <span>{`${startTime} - ${endTime}`}</span>
+      );
+    },
+
+
   },
 
   {
-    accessorKey: "class",
+    accessorKey: "classCode",
     header: ({ column }) => {
       return (
           <Button
@@ -199,7 +218,7 @@ export const scheduleColumns: ColumnDef<ScheduleType>[] = [
   },
 
   {
-    accessorKey: "subject",
+    accessorKey: "courseTitle",
     header: ({ column }) => {
       return (
         <Button

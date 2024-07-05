@@ -1,8 +1,9 @@
 
-// courseSlice.ts
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
 import {InstructorCourseType} from "@/lib/types/instructor/course";
+
 
 type CourseState = {
     courses: InstructorCourseType[];

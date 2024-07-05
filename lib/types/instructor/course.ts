@@ -1,5 +1,5 @@
 // types.ts
-export type CourseType = {
+export type InCourseType = {
     uuid: string;
     title: string;
     credit: number;
@@ -17,5 +17,5 @@ export type InstructorCourseType = {
     nameKh: string;
     username: string;
     gender: string;
-    courses: CourseType[];
+    courses: InCourseType[];
 };

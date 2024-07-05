@@ -11,6 +11,9 @@ import {StatusOption, SubjectType} from "@/lib/types/admin/faculty";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 import ActionsCell from "@/components/admincomponent/faculties/subject/SubActionCell";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import {Label} from "@/components/ui/label";
+import StatusBadge from "@/components/common/StatusBadge";
 
 
 const TableCell = ({getValue, row, column, table}: any) => {
@@ -34,25 +37,20 @@ const TableCell = ({getValue, row, column, table}: any) => {
     };
 
 
-    // Ensure the "id" column is not editable
-    if (column.id === "id") {
-        return <span>{value}</span>;
-    }
-
     if (column.id === "description") {
         const words = value.split(" ");
         const firstFiveWords = words.slice(0, 5).join(" ");
         const displayText = words.length > 5 ? `${firstFiveWords}...` : firstFiveWords;
-        return <span>{displayText}</span>;
+        return <span>{displayText || "No Description"}</span>;
     }
 
     if (column.id === "logo") {
         return (
-            <div className={`w-full`}>
+            <div>
                 <img
-                    src={value}
-                    alt="Logo"
-                    className="w-12 h-12 rounded-full object-cover"
+                    src={value || "https://via.placeholder.com/150"}
+                    // alt="Logo"
+                    className="w-12 h-12 rounded-full object-contain"
                 />
             </div>
 
@@ -87,70 +85,53 @@ const TableCell = ({getValue, row, column, table}: any) => {
         return (
             <span
                 className={
-                    value === true
+                    value === false
                         ? "Public text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
-                        : value === false
+                        : value === true
                             ? "Draft text-white bg-red-500 px-3 py-1 rounded-[10px]"
                             : ""
                 }
             >
             {value === true
-                ? "Public"
+                ? "Draft"
                 : value === false
-                    ? "Draft"
+                    ? "Public"
                     : ""}
         </span>
         );
     }
 
+    // Custom rendering for specific columns
+    if (column.id === 'isDeleted') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="false" id="active"/>
+                        <Label htmlFor="active">Active</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="disable"/>
+                        <Label htmlFor="disable">Disable</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Active"/>
+            } else {
+                return <StatusBadge type="error" status="Disabled"/>
+            }
+        }
+    }
+
     return <span>{value}</span>;
 };
 
-// Dynamic Edit on cell
-const EditCell = ({row, table}: any) => {
-    const meta = table.options.meta;
-
-    const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-        const action = e.currentTarget.name;
-
-        meta?.setEditedRows((old: any) => ({
-            ...old,
-            [row.id]: action === "edit",
-        }));
-
-        if (action === "cancel") {
-            meta?.revertData(row.index, true);
-        }
-    };
-
-    return (
-        <div>
-            {meta?.editedRows[row.id] ? (
-                <div>
-                    <button
-                        className="mr-3 bg-red-100 rounded-full p-1"
-                        onClick={setEditedRows}
-                        name="cancel"
-                    >
-                        <RxCross2 size={20} className="text-red-500"/>
-                    </button>
-
-                    <button
-                        onClick={setEditedRows}
-                        name="done"
-                        className="bg-green-100 rounded-full p-1"
-                    >
-                        <IoCheckmarkSharp size={20} className="text-green-500"/>
-                    </button>
-                </div>
-            ) : (
-                <button onClick={setEditedRows} name="edit">
-                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
-                </button>
-            )}
-        </div>
-    );
-};
 
 export const subjectColumns: ColumnDef<SubjectType>[] = [
     {
@@ -263,18 +244,23 @@ export const subjectColumns: ColumnDef<SubjectType>[] = [
             );
         },
         cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                {value: true, label: "Public"},
-                {value: false, label: "Draft"},
-            ],
-        },
     },
 
+
     {
-        id: "edit",
-        cell: EditCell,
+        accessorKey: "isDeleted",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    STATUS
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: TableCell,
     },
 
     {

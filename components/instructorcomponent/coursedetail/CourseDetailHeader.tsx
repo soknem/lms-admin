@@ -1,16 +1,42 @@
-// CourseDetailHeader.tsx
 "use client";
 import React from "react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
-import {CourseDetail} from "@/lib/types/student/course"
 
-// Assuming you pass `allData` as a prop to this component
-interface CourseDetailHeaderProps {
-    allData: CourseDetail;
-}
+// Data structure for course details
+const courseData = {
+    // Course metadata
+    semester: "Semester 1",
+    title: "C++ PROGRAMMING",
+    description:
+        "C++ is one of the world's most popular programming languages. C++ can be found in today's operating systems, Graphical User Interfaces, and embedded systems",
+    credits: {
+        total: 3,
+        theory: 2,
+        practice: 1,
+    },
+    instructor: {
+        name: "Chan Samangrathnana",
+        title: "IT Instructor",
+        image: "/intructor.jpg",
+    },
+    studentsJoined: 30,
+    classStart: "Oct 26, 2024",
+    logo: "/logocourse.png",
+    studentImages: [
+        "/admin.png",
+        "/student3.jpg",
+        "/student2.jpg",
+        "/student3.jpg",
+        "/student2.jpg",
+        "/student2.jpg",
+    ],
+};
+/**
+ * Component to display detailed information about a course.
+ */
 
-export default function CourseDetailHeader({allData}: CourseDetailHeaderProps) {
+export default function CourseDetailHeader() {
     const router = useRouter();
     const handleNavigate = () => {
         router.push("/instructor/courses/int-profile");
@@ -18,39 +44,39 @@ export default function CourseDetailHeader({allData}: CourseDetailHeaderProps) {
 
     return (
         <main>
+            {/* Course Overview Section */}
             <section className="mx-[90px] flex flex-col-2 ">
                 <div className="h-[250px]">
-                    <span className="px-[25px] mx-2 py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
-                        Year {allData.year}
-                    </span>
-
-
-                    <span className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
-                        Semester {allData.semester}
-                    </span>
-
-
+                    {/* Semester Badge */}
+                    <span
+                        className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
+            {courseData.semester}
+          </span>
+                    {/* Course Title */}
                     <h2 className="text-[40px] font-bold text-lms-black90 mt-[14px]">
-                        {allData.courseTitle.toUpperCase()}
+                        {courseData.title}
                     </h2>
+                    {/* Course Description */}
                     <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
-                        {allData.courseDescription}
+                        {courseData.description}
                     </p>
+                    {/* Credits Information */}
                     <div className="flex items-center mt-[20px]">
             <span className="mr-4 font-semibold">
-              Credit: {allData.credit}
+              Credit: {courseData.credits.total}
             </span>
                         <span className="mr-4 font-semibold">
-              | Theory: {allData.theory}
+              | Theory: {courseData.credits.theory}
             </span>
                         <span className="mr-4 font-semibold">
-              | Practice: {allData.practice}
+              | Practice: {courseData.credits.practice}
             </span>
                     </div>
                 </div>
+                {/* Course Logo */}
                 <div className="ml-[88px]">
                     <Image
-                        src={`/path/to/course/logos/${allData.courseLogo}`}
+                        src={courseData.logo}
                         alt="Course Logo"
                         width={215}
                         height={215}
@@ -58,29 +84,31 @@ export default function CourseDetailHeader({allData}: CourseDetailHeaderProps) {
                     />
                 </div>
             </section>
+            {/* Instructor and Students Section */}
             <div className="flex items-center -[20px]  mx-[90px]">
                 <Image
                     className="w-[60px] h-[60px] rounded-full  mr-4"
                     onClick={handleNavigate}
-                    src={`/path/to/instructor/images/${allData.userProfileImage || 'default.jpg'}`}
+                    src={courseData.instructor.image}
                     alt="Instructor"
                     width={60}
                     height={60}
                 />
                 <div>
                     <p className="font-bold text-[20px] text-lms-primary">
-                        {allData.instructorName || 'Unknown Instructor'}
+                        {courseData.instructor.name}
                     </p>
                     <p className="text-lms-gray-80 text-[18px]">
-                        {allData.position || 'Unknown Position'}
+                        {courseData.instructor.title}
                     </p>
                 </div>
+                {/* Student Images and Class Details */}
                 <div className="flex items-center ml-[88px]">
                     <div className="flex -space-x-6 items-center">
-                        {allData.studentProfileImage.map((src, index) => (
+                        {courseData.studentImages.map((src, index) => (
                             <Image
                                 key={index}
-                                src={src ? `/path/to/student/images/${src}` : '/default-student.jpg'}
+                                src={src}
                                 alt={`Student ${index + 1}`}
                                 width={40}
                                 height={40}
@@ -90,15 +118,15 @@ export default function CourseDetailHeader({allData}: CourseDetailHeaderProps) {
                     </div>
                     <div className="flex items-center ml-2">
                         <div className="mr-2 font-bold">
-                            {/* Assuming you have studentsJoined data somewhere */}
+                            {courseData.studentsJoined}
                             <div className="text-lms-gray-80">Students Joined</div>
                         </div>
                     </div>
+
+
                     <div className="mx-[100px] mt-5">
                         <span className="text-lms-gray-80 font-bold">Class Start:</span>
-                        <span className="ml-2 font-bold ">
-                            {allData.classesStart?.toLocaleDateString() || 'Unknown'}
-                        </span>
+                        <span className="ml-2 font-bold ">{courseData.classStart}</span>
                     </div>
                 </div>
             </div>

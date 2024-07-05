@@ -10,11 +10,43 @@ import {Button} from "@/components/ui/button";
 import {MoreHorizontal} from "lucide-react";
 import {EditAcademicYearForm} from "@/components/admincomponent/faculties/academicyear/EditAcademicYearForm";
 import {ViewAcademicYeaForm} from "@/components/admincomponent/faculties/academicyear/ViewAcademicYearForm";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import {
+    useDisableAcademicYearByAliasMutation,
+    useEnableAcademicYearByAliasMutation
+} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
+import {TbCopy, TbEye, TbEyeCancel, TbFileImport, TbPencil} from "react-icons/tb";
 
 const ActionsCell = ({row}: any) => {
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
     const [isEditFormVisible, setEditFormVisible] = useState(false);
     const [isViewFormVisible, setViewFormVisible] = useState(false);
     const academicYear = row.original;
+
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
+    };
+
+    const [enableAcademicYear, setEnableFaculty] = useEnableAcademicYearByAliasMutation();
+    const [disableAcademicYear, setDisableFaculty] = useDisableAcademicYearByAliasMutation();
+
+    const handleConfirm = async (alias: string) => {
+        if (isDeleted) {
+            await enableAcademicYear(alias).unwrap();
+            setIsDeleted((prev: any) => !prev);
+            console.log('Faculty enabled successfully');
+        } else {
+            await disableAcademicYear(alias).unwrap();
+            setIsDeleted((prev: any) => !prev);
+            console.log('Faculty disable successfully');
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
+    };
 
     const handleEditClick = () => {
         setEditFormVisible(true);
@@ -24,6 +56,11 @@ const ActionsCell = ({row}: any) => {
     const handleViewClick = () => {
         setViewFormVisible(true);
         setEditFormVisible(false); // Close edit form if open
+    };
+
+    const handleCloseForm = () => {
+        setEditFormVisible(false);
+        setViewFormVisible(false);
     };
 
     return (
@@ -38,32 +75,54 @@ const ActionsCell = ({row}: any) => {
                 <DropdownMenuContent align="end" className="bg-white">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem
-                        className="focus:bg-background"
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
                         onClick={() => navigator.clipboard.writeText(academicYear.academicYear)}
                     >
-                        Copy ID
+                        <TbCopy size={20} className="text-gray-30 mr-2  "/> Copy Faculty Name
+                        Copy Academic Year
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        className="focus:bg-background"
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
                         onClick={handleViewClick}
                     >
+                        <TbFileImport size={20} className="text-gray-30 mr-2"/>
                         View
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        className="focus:bg-background"
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
                         onClick={handleEditClick}
                     >
+                        <TbPencil size={20} className="text-gray-30 mr-2"/>
                         Edit
                     </DropdownMenuItem>
-                    {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                    {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                    <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-                        Disable
+
+                    <DropdownMenuItem
+                        className={` text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2 "/> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2 "/> Disable
+                            </>
+                        )}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            {isViewFormVisible && <ViewAcademicYeaForm alias={`${academicYear.alias}`}/>}
-            {isEditFormVisible && <EditAcademicYearForm alias={`${academicYear.alias}`}/>}
+            {isViewFormVisible && <ViewAcademicYeaForm alias={`${academicYear.alias}`} onClose={handleCloseForm}/>}
+            {isEditFormVisible && <EditAcademicYearForm alias={`${academicYear.alias}`} onClose={handleCloseForm}/>}
+
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                    onConfirm={() => handleConfirm(academicYear.alias)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
+            )}
         </div>
     );
 };

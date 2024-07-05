@@ -113,7 +113,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     );
 };
 
-export function EditStudyProForm({alias}: { alias: string }) {
+export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const dispatch = useDispatch<AppDispatch>();
     const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
@@ -123,7 +123,6 @@ export function EditStudyProForm({alias}: { alias: string }) {
     const [logo, setLogo] = useState(null);
     const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
     const {refetch: refetchStuPrograms} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
-    const [isOpen, setIsOpen] = useState(false);
     const [initialValues, setInitialValues] = useState({
         alias: "",
         studyProgramName: "",
@@ -158,11 +157,6 @@ export function EditStudyProForm({alias}: { alias: string }) {
         }
 
     }, [degreesData, dispatch]);
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
 
     useEffect(() => {
         if (isSuccess && stuProData) {
@@ -206,8 +200,9 @@ export function EditStudyProForm({alias}: { alias: string }) {
                 isDraft: values.isDraft,
             };
 
+            console.log("Submitting values:", edtStuProByAlias);
+
             await editStuProgram(edtStuProByAlias).unwrap();
-            console.log("Original", initialAlias)
 
             // Now update the alias if it has changed
             if (values.alias !== initialAlias) {
@@ -219,17 +214,19 @@ export function EditStudyProForm({alias}: { alias: string }) {
 
             resetForm();
             refetchStuPrograms();
-            console.log("Create successfully")
-            setIsOpen(false)
+            onClose();
+            console.log("Edit successfully");
         } catch (error) {
-            console.error("Error creating study program: ", error);
+            console.error("Error Editing study program: ", error);
         } finally {
-            setSubmitting(false);
+            setSubmitting(true);
         }
     };
+
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[920px] items-center justify-center bg-white">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[920px] items-center justify-center bg-white"
+                           onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle>Edit Study Program</DialogTitle>
                 </DialogHeader>
@@ -328,7 +325,7 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >
-                                    Add
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>

@@ -1,13 +1,12 @@
-// CourseDetail.tsx
 "use client";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
-import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
 import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
 import { useGetCourseDetailQuery } from "@/lib/features/student/course/studentCourse";
 import { AppDispatch } from "@/lib/store";
-
+import type { CourseDetail } from "@/lib/types/student/course";
+import CourseDetailHeaderStudent from "@/components/studentcomponent/coursedetail/CourseDetailHeaderStudent";
 
 type CourseDetailProps = {
     params: {
@@ -18,21 +17,17 @@ type CourseDetailProps = {
     };
 };
 
-export default function CourseDetail(props: CourseDetailProps) {
-    const { uuid } = props.params;
+export default function CourseDetail({ params }: CourseDetailProps) {
+    const { uuid } = params;
     const dispatch = useDispatch<AppDispatch>();
-    const { data, isLoading } = useGetCourseDetailQuery({ uuid });
+    const { data } = useGetCourseDetailQuery({ uuid });
 
     useEffect(() => {}, [dispatch, uuid]);
-
-    if (isLoading) {
-        return <div>Loading...</div>; // Or your preferred loading state
-    }
 
     return (
         <main>
             <div className="bg-white py-[35px]">
-                <CourseDetailHeader allData={data} />
+                <CourseDetailHeaderStudent allData={data as CourseDetail} />
             </div>
             <div className="p-5 mx-[100px]">
                 <BreadcrumbWithCustomSeparator />
@@ -43,3 +38,6 @@ export default function CourseDetail(props: CourseDetailProps) {
         </main>
     );
 }
+
+// Compare this snippet from components/studentcomponent/coursedetail/CurriculumComponent.tsx:
+// "use client";
