@@ -5,6 +5,7 @@ export const subjectApi = istadLmsApi.injectEndpoints({
         getSubjects: builder.query<any, { page: number; pageSize: number }>({
             query: ({page = 0, pageSize = 10}) =>
                 `/subjects?pageNumber=${page}&pageSize=${pageSize}`,
+            providesTags: [{type: 'Subjects', id: 'LIST'}],
         }),
         createSubject: builder.mutation({
             query: (newSubject) => ({
@@ -26,6 +27,21 @@ export const subjectApi = istadLmsApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        enableSubjectByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/subjects/${alias}/enable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'Subjects', id: 'LIST'}],
+        }),
+
+        disableSubjectByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/subjects/${alias}/disable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'Subjects', id: 'LIST'}],
+        }),
     })
 })
 
@@ -33,5 +49,7 @@ export const {
     useGetSubjectsQuery,
     useCreateSubjectMutation,
     useEditSubjectByAliasMutation,
-    useGetSubjectByAliasQuery
+    useGetSubjectByAliasQuery,
+    useEnableSubjectByAliasMutation,
+    useDisableSubjectByAliasMutation,
 } = subjectApi;

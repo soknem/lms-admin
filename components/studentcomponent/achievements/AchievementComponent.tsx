@@ -21,7 +21,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import {YearSemesterTableProps ,AchievementTableProps } from "@/lib/types/student/achievement/achievement";
+import {YearSemesterTableProps ,AchievementTableProps } from "@/lib/types/student/achievement";
 
 
 function YearSemesterTable({ year, semester, courses }: YearSemesterTableProps) {
@@ -66,7 +66,7 @@ function YearSemesterTable({ year, semester, courses }: YearSemesterTableProps) 
                                 {headerGroup.headers.map(header => (
                                     <TableHead
                                         key={header.id}
-                                        className="border-none text-center"
+                                        className="border-none text-center px-3 font-semibold"
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -88,7 +88,7 @@ function YearSemesterTable({ year, semester, courses }: YearSemesterTableProps) 
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map(cell => (
-                                        <TableCell key={cell.id} className="py-3 px-10">
+                                        <TableCell key={cell.id}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()
@@ -128,9 +128,9 @@ export default function AchievementTable({ data }: AchievementTableProps) {
             courses: yearOfStudy.courses.map(course => ({
                 NO: rowNumber++,
                 courseTitle: course.title,
-                score: 100,
-                credit: course.credit || 0,
-                grade: "A",
+                score: course.score,
+                credit: course.credit,
+                grade: course.grade,
             }))
         };
     });

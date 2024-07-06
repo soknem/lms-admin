@@ -160,7 +160,7 @@ export function CreateFacForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[480px] bg-white ">
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Faculty</DialogTitle>
                 </DialogHeader>
@@ -290,35 +290,35 @@ export function CreateFacForm() {
                                     </div>
 
                                     {/* isDeleted */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                        </div>
+                                    {/*<div className={``}>*/}
+                                    {/*    <div className="flex">*/}
+                                    {/*        <label className={`${style.label}`} htmlFor="isDeleted">*/}
+                                    {/*            Status*/}
+                                    {/*        </label>*/}
+                                    {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                    {/*    </div>*/}
 
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Public"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="Draft"
-                                            />
-                                        </div>
+                                    {/*    <div className="flex gap-4 h-[40px] items-center">*/}
+                                    {/*        <Field*/}
+                                    {/*            name="isDeleted"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="true"*/}
+                                    {/*            label="Public"*/}
+                                    {/*        />*/}
+                                    {/*        <Field*/}
+                                    {/*            name="isDeleted"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="false"*/}
+                                    {/*            label="Draft"*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
 
-                                        <ErrorMessage
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
+                                    {/*    <ErrorMessage*/}
+                                    {/*        name="isDeleted"*/}
+                                    {/*        component={RadioButton}*/}
+                                    {/*        className={`${style.error}`}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
                                 </div>
 
                                 {/* Faculty Image */}

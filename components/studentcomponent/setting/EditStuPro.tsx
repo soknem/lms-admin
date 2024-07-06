@@ -1,417 +1,277 @@
 "use client";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useEffect, useState } from "react";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import style from "../style.module.css";
-import { format } from "date-fns";
-import { useState } from "react";
-import Image from "next/image";
-import { UserStudentType } from "@/lib/types/admin/user";
 import { IoCameraOutline } from "react-icons/io5";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { IoIosArrowDown } from "react-icons/io";
-import {TbAsterisk} from "react-icons/tb";
-
-const initialValues = {
-  card_id: 0,
-  email: "NounSovanthorn@istad.com",
-  name_en: "Noun Sovanthorn",
-  name_kh: "នួន សុវណ្ណថន",
-  gender: "Male" || "Female" || "Other",
-  dob: format(new Date(2000, 11, 5), "yyyy-MM-dd"),
-  ph_number: "098456723",
-  fam_ph_number: "098456723",
-  pob: "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
-  address:
-      "No. 24, St. 562, Sangkat Boeung kak I, Khan Toul Kork, Phnom Penh, Cambodia",
-  bio: "Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private blushes removed an in equally totally if. Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do.",
-  status: "Active" || "Drop" || "Disable" || "Hiatus",
-  high_school: "",
-  guaedian_rel: "",
-  know_istad: "",
-  class_stu: "",
-  diploma:"",
-  grade:"",
-  shift:"",
-  degree:"",
-  study_pro:""
-};
+import { TbAsterisk } from "react-icons/tb";
+import style from "../style.module.css";
+import { StudentSetting } from "@/lib/types/student/StudentSetting";
+import { useDispatch } from 'react-redux';
+import { setStudentSetting } from '@/lib/features/student/setting/StudentProfileSlice';
+import { useGetStudentSettingsMutation, useUploadProfileImageMutation } from "@/lib/features/student/setting/StudentSetting";
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 const validationSchema = Yup.object().shape({
-  card_id: Yup.number(),
-  earl: Yup.string(),
-  name_en: Yup.string(),
-  name_kh: Yup.string(),
-  ph_number: Yup.number(),
-  profile: Yup.mixed()
-    .test("fileFormat", "Unsupported Format", (value: any) => {
-      if (!value) {
-        return true;
-      }
-      return SUPPORTED_FORMATS.includes(value.type);
-    })
-    .test("fileSize", "Fsile Size is too large", (value: any) => {
-      if (!value) {
-        true;
-      }
-      return value.size <= FILE_SIZE;
-    })
-    .required("Required"),
-  status: Yup.string().required("A selection is required"),
+    gender: Yup.string().required("Gender is required"),
+    phoneNumber: Yup.string()
+        .required("Personal Number is required")
+        .matches(/^[\d\s]+$/, "Personal Number must be a number"),
+    bio: Yup.string().required("Bio is required"),
+    currentAddress: Yup.string().required("Current Address is required"),
+    birthPlace: Yup.string().required("Place of Birth is required"),
+    fam_ph_number: Yup.string()
+        .required("Family Number is required")
+        .matches(/^[\d\s]+$/, "Family Number must be a number"),
+    guardianRelationShip: Yup.string().required("Guardian Relationship is required"),
 });
 
-const handleSubmit = async (value: UserStudentType) => {
-  // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(value),
-  // });
-  // const data = await res.json()
-  // console.log("degree upload: ", data)
-};
+export function EditStuProForm({
+                                   gender,
+                                   profileImage,
+                                   phoneNumber,
+                                   bio,
+                                   currentAddress,
+                                   fam_ph_number,
+                                   guardianRelationShip,
+                                   birthPlace,
+                               }: StudentSetting) {
+    const dispatch = useDispatch();
+    const [getStudentSettings] = useGetStudentSettingsMutation();
+    const [uploadProfileImage, { isLoading: isUploading, error: uploadError }] = useUploadProfileImageMutation();
 
-const RadioButton = ({ field, value, label }: any) => {
-  return (
-    <div>
-      <input
-        type="radio"
-        {...field}
-        id={value}
-        value={value}
-        checked={field.value === value}
-      />
-      <label className="pl-2" htmlFor={value}>
-        {label}
-      </label>
-    </div>
-  );
-};
+    const initialValues: StudentSetting = {
+        gender: gender,
+        profileImage: profileImage,
+        phoneNumber: phoneNumber,
+        bio: bio,
+        currentAddress: currentAddress,
+        fam_ph_number: fam_ph_number,
+        guardianRelationShip: guardianRelationShip,
+        birthPlace: birthPlace,
+    };
 
-const CustomInput = ({ field, setFieldValue }: any) => {
-  const [imagePreview, setImagePreview] = useState("");
+    const [studentData, setStudentData] = useState<StudentSetting>(initialValues);
 
-  const handleUploadFile = (e: any) => {
-    const file = e.target.files[0];
-    const localUrl = URL.createObjectURL(file);
-    console.log(localUrl);
-    setImagePreview(localUrl);
+    const handleSubmit = async (values: StudentSetting, { resetForm }: FormikHelpers<StudentSetting>) => {
+        try {
+            const response = await getStudentSettings(values).unwrap();
+            console.log(response);
+            dispatch(setStudentSetting(values));
+            resetForm();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    setFieldValue(field.name, file);
-  };
-  return (
-    <div>
-      <input onChange={(e) => handleUploadFile(e)} type="file" />
-      {imagePreview && (
-        <Image src={imagePreview} alt="preview" width={200} height={200} />
-      )}
-    </div>
-  );
-};
+    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.currentTarget.files?.[0];
+        if (file && SUPPORTED_FORMATS.includes(file.type) && file.size <= FILE_SIZE) {
+            const formData = new FormData();
+            formData.append("file", file);
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
+            try {
+                const response = await uploadProfileImage(formData).unwrap();
+                setStudentData((prevData) => ({
+                    ...prevData,
+                    profileImage: response.name,
+                    profileImageName: response.uri
+                }));
+                console.log("Image uploaded successfully: ", response.uri);
+                console.log("Image uploaded successfully: ", response.name);
+            } catch (error) {
+                console.error("Failed to upload the image: ", error);
+            }
+        } else {
+            console.error("Invalid file format or size");
+        }
+    };
 
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
+    return (
+        <section className="w-full py-8 relative">
+            <Formik
+                initialValues={studentData}
+                validationSchema={validationSchema}
+                enableReinitialize={true}
+                onSubmit={handleSubmit}
+            >
+                {({ resetForm }) => (
+                    <Form className="py-2 rounded-lg w-full flex flex-col justify-center items-center ">
+                        <div
+                            className=" w-full grid lg:gap-4 gap-2 lg:grid-cols-3 justify-center md:grid-cols-2 grid-cols-1 ">
+                            {/* image */}
+                            <div className="h-[200px] w-[200px] relative rounded-[10px] grid row-span-2">
+                                <img
+                                    src={studentData.profileImageName || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"}
+                                    alt="profile"
+                                    className="h-full w-full rounded-[10px] object-cover"
+                                />
+                                <div
+                                    className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="absolute w-full h-full opacity-0 cursor-pointer"
+                                        onChange={handleImageUpload}
+                                    />
+                                    <IoCameraOutline className="w-5 h-5"/>
+                                </div>
+                            </div>
 
-export function EditStuProForm() {
-  return (
-      <section>
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={async (values) => {
-              // create degree post
-              const studenttPost: UserStudentType = {
-                card_id: values.card_id,
-                email: values.email,
-                name_en: values.name_en,
-                name_kh: values.name_kh,
-                dob: values.dob,
-                ph_number: values.ph_number,
-                fam_ph_number: values.fam_ph_number,
-                pob: values.pob,
-                address: values.address,
-                bio: values.bio,
-                gender: values.gender,
-                status: values.status,
-                high_school: values.high_school,
-                guaedian_rel: values.guaedian_rel,
-                know_istad: values.know_istad,
-                class_stu: values.class_stu,
-                diploma: values.diploma,
-                grade: values.grade,
-                shift: values.shift,
-                degree: values.degree,
-                study_pro: values.study_pro
-              };
+                            {/* gender */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="gender">Gender</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <div className="relative w-full">
+                                    <Field
+                                        as="select"
+                                        name="gender"
+                                        id="gender"
+                                        className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none ">
+                                        <option value="" disabled hidden>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </Field>
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                        <IoIosArrowDown className="h-5 w-5 text-gray-400" aria-hidden="true"/>
+                                    </div>
+                                </div>
+                                <ErrorMessage
+                                    name="gender"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
 
-              // post product
-              handleSubmit(studenttPost);
-            }}
-        >
-          {() => (
-              <Form className="py-4 rounded-lg w-full flex flex-col justify-center items-center">
-                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 justify-center items-center">
-                  {/* image */}
-                  <div className="h-[170px] w-[164px] relative rounded-[10px] grid row-span-2">
-                    <img
-                        src="https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"
-                        alt="banner"
-                        className="h-full w-full rounded-[10px] object-cover"
-                    />
-                    <div
-                        className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
-                      <IoCameraOutline className="w-5 h-5"/>
-                    </div>
-                  </div>
+                            {/* Personal Number */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="phoneNumber">Personal Number</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <Field
+                                    type="text"
+                                    name="phoneNumber"
+                                    id="phoneNumber"
+                                    placeholder="086 341 985"
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "/>
+                                <ErrorMessage
+                                    name="phoneNumber"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
 
-                  {/* name english */}
-                  <div className={` ${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="name_en">
-                        FullName(EN)
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
+                            {/* Family Number */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="fam_ph_number">Family Number</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <Field
+                                    type="text"
+                                    name="fam_ph_number"
+                                    id="fam_ph_number"
+                                    placeholder="016 359 615"
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "/>
+                                <ErrorMessage
+                                    name="fam_ph_number"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
 
-                    <Field
-                        type="text"
-                        name="name_en"
-                        id="name_en"
-                        className={` ${style.input}`}
-                    />
-                  </div>
+                            {/* Guardian Relationship */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="guardianRelationShip">Guardian
+                                        Relationship</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <Field
+                                    type="text"
+                                    placeholder="Parents"
+                                    name="guardianRelationShip"
+                                    id="guardianRelationShip"
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "/>
+                                <ErrorMessage
+                                    name="guardianRelationShip"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
 
-                  {/* name khmer */}
-                  <div className={` ${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="name_kh">
-                        FullName(KH)
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
+                            {/* Birth Place */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="birthPlace">Place Of Birth</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <Field
+                                    as="textarea"
+                                    name="birthPlace"
+                                    placeholder="House 123 , Street 310 , Phum 4 , Boeung Keng Kang 1 , Chamkarmon , Phnom Penh , Cambodia"
+                                    id="birthPlace"
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "
+                                    rows="2"
+                                    cols="30"/>
+                                <ErrorMessage
+                                    name="birthPlace"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
 
-                    <Field
-                        type="text"
-                        name="name_kh"
-                        id="level"
-                        className={`khmer-font ${style.input}`}
-                    />
-                  </div>
+                            {/* Address */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="currentAddress">Current Address</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <Field
+                                    as="textarea"
+                                    name="currentAddress"
+                                    id="currentAddress"
+                                    placeholder="House 123 , Street 310 , Phum 4 , Boeung Keng Kang 1 , Chamkarmon , Phnom Penh , Cambodia"
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "
+                                    rows="2"
+                                    cols="30"/>
+                                <ErrorMessage
+                                    name="currentAddress"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
 
-                  {/* gender */}
-                  <div className={style.inputContainer}>
-                    <div className="flex">
-                      <label className={style.label} htmlFor="gender">
-                        Gender
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
+                            {/* Bio */}
+                            <div className="mb-5 ">
+                                <div className="flex">
+                                    <label className={style.label} htmlFor="bio">Bio</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                </div>
+                                <Field
+                                    as="textarea"
+                                    name="bio"
+                                    id="bio"
+                                    placeholder="I am a student at Liger Leadership Academy. I am studying in the foundation program. I am 15 years old."
+                                    className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none "
+                                    rows="2"
+                                    cols="30"/>
+                                <ErrorMessage
+                                    name="bio"
+                                    component="div"
+                                    className={style.error}/>
+                            </div>
+                        </div>
 
-                    <div className="relative w-full">
-                      <Field
-                          as="select"
-                          name="gender"
-                          id="gender"
-                          className={`${style.input} appearance-none`}
-                      >
-                        <option value="" disabled hidden>
-                          Select Gender
-                        </option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                      </Field>
-                      <div
-                          className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <IoIosArrowDown
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* dob */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="dob">
-                        Date of birth
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="date"
-                        name="dob"
-                        id="dob"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
-                  {/* Personal Number */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="fam_ph_number">
-                        Personal Number
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="fam_ph_number"
-                        name="fam_ph_number"
-                        id="fam_ph_number"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
-                  {/* Family Number */}
-
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="ph_number">
-                        Family Number
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="ph_number"
-                        name="ph_number"
-                        id="ph_number"
-                        className={`${style.input}`}
-                    />
-                    <ErrorMessage
-                        name="ph_number"
-                        component="div"
-                        className={`${style.error}`}
-                    />
-                  </div>
-
-                  {/* email */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="email">
-                        Email
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="email"
-                        name="email"
-                        id="email"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
-                  {/* pob */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="pob">
-                        Place Of Birth
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="address"
-                        name="pob"
-                        id="pob"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
-                  {/* address */}
-                  <div className={`${style.inputContainer}`}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="address">
-                        Current Address
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <Field
-                        type="address"
-                        name="address"
-                        id="address"
-                        className={`${style.input}`}
-                    />
-                  </div>
-
-                  {/* status */}
-                  <div className={`${style.inputContainer}  `}>
-                    <div className="flex">
-                      <label className={`${style.label}`} htmlFor="status">
-                        Visibility
-                      </label>
-                      <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                    </div>
-
-                    <div className="flex gap-9 h-[40px] items-center text-[16px] font-normal">
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="1"
-                          label="Active"
-                      />
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="2"
-                          label="Drop"
-                      />
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="1"
-                          label="Disable"
-                      />
-                      <Field
-                          name="status"
-                          component={RadioButton}
-                          value="2"
-                          label="Hiatus"
-                      />
-                    </div>
-                  </div>
-
-                  {/* bio */}
-                  <div className={`${style.inputContainer}`}>
-                    <label className={`${style.label}`} htmlFor="bio">
-                      Bio
-                    </label>
-                    <Field
-                        type="text"
-                        as="textarea"
-                        name="bio"
-                        id="bio"
-                        className={`${style.input}`}
-                    />
-                  </div>
-                </div>
-              </Form>
-          )}
-        </Formik>
-      </section>
-  );
+                        <button
+                            type="submit"
+                            className=" absolute bottom-0 right-0 mt-4 px-4 py-2 bg-lms-primary hover:bg-blue-700 text-white rounded-xl  ">
+                            Submit
+                        </button>
+                    </Form>
+                )}
+            </Formik>
+        </section>
+    );
 }

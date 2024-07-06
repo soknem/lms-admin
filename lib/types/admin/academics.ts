@@ -213,22 +213,22 @@ export type CourseShortType = {
   score: number
 };
 
-// export type courseAssessmentType = {
-//   uuid: string
-//   cardId: string,
-//   nameEn: string,
-//   gender: string,
-//   dob: string,
-//   class: string,
-//   course: string,
-//   midtermExamScore: number,
-//   finalExamScore: number,
-//   attendanceScore: number,
-//   assignmentScore: number,
-//   miniProjectScore: number,
-//   activityScore: number,
-//   status: number
-// }
+export type IntcourseAssessmentType = {
+  uuid: string
+  cardId: string,
+  nameEn: string,
+  gender: string,
+  dob: string,
+  class: string,
+  course: string,
+  midtermExamScore: number,
+  finalExamScore: number,
+  attendanceScore: number,
+  assignmentScore: number,
+  miniProjectScore: number,
+  activityScore: number,
+  status: number
+}
 
 //response course assessment
 export type courseAssessmentType = {
@@ -274,6 +274,7 @@ export type courseAssessmentTableType = {
     miniProjectScore: number;
     activityScore: number;
     status: number;
+
 };
 
 

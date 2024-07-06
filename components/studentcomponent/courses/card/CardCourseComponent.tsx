@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
 import {useRouter} from "next/navigation";
-import {CourseType} from "@/lib/types/student/course/course";
+import {CourseType} from "@/lib/types/student/course";
 
 
 type CourseCardProps = CourseType;
@@ -33,10 +33,10 @@ export function CardCourseComponent({
 
         <Card className="w-[566px] h-[299px] bg-white">
             <CardHeader className="mx-[40px]">
-                <CardTitle className="text-lms-primary font-bold text-[24px] ">
+                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1 ">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px]">
+                <CardDescription className="text-lms-black90 text-[16px]  line-clamp-3 ">
                     {description.toUpperCase()}
                 </CardDescription>
             </CardHeader>

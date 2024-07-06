@@ -180,7 +180,8 @@ export function CreateStudyProForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[920px] items-center justify-center bg-white">
+            <DialogContent className="w-[920px] items-center justify-center bg-white"
+                           onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Study Program</DialogTitle>
                 </DialogHeader>

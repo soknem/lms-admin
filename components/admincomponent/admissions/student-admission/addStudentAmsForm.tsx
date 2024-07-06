@@ -5,7 +5,6 @@ import {Button} from "@/components/ui/button";
 import style from "./style.module.css";
 import {FiUploadCloud} from "react-icons/fi";
 import React, {useEffect, useState} from "react";
-import Image from "next/image";
 import {IoIosArrowDown} from "react-icons/io";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {TbAsterisk} from "react-icons/tb";
@@ -22,23 +21,19 @@ import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProg
 import {selectStudyProgram} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import {
     selectError,
-    selectFaculty,
     selectLoading,
-    setFaculties
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
 import {selectShift, setShift} from "@/lib/features/admin/faculties/shift/shiftSlice";
 
 const initialValues = {
-    uuid: "",
     nameEn: "",
     nameKh: "",
     email: "",
     highSchool: "",
     phoneNumber: "",
     dob: "",
-    birthPlace: "",
+    pob: "",
     bacIiGrade: "",
     gender: "",
     avatar: "",
@@ -48,66 +43,78 @@ const initialValues = {
     knownIstad: "",
     identity: "",
     biography: "",
-    isDeleted: false,
-    shift: "",
-    studyProgram: "",
-    degree: "",
-    admission: ""
+    shiftAlias: "",
+    studyProgramAlias: "",
+    degreeAlias: "",
+    admission: "",
+    diplomaSession: "",
+    classStudent: "",
+    highSchoolCertificate: "",
+    vocationTrainingIiiCertificate: "",
+    anyValuableCertificate: "",
 };
 
 const validationSchema = Yup.object().shape({
-    nameEn: Yup.string().required("Name is required"),
-    nameKh: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    nameEn: Yup.string()
+        .matches(/^[a-zA-Z ]*$/, 'Invalid format with English name')
+        .required('Name (EN) is required'),
+    nameKh: Yup.string()
+        .matches(/^[\u1780-\u17FF\s]+$/, 'Invalid format with Khmer name')
+        .required('Name (KH) is required'),
+    email: Yup.string()
+        .email('Invalid email format')
+        .required('Email is required'),
+    gender: Yup.string()
+        .required('Gender is required')
+        .matches(/^(male|female|other)$/i, 'Invalid gender format'),
     highSchool: Yup.string().required("High School is required"),
-    phoneNumber: Yup.string().required("Phone Number is required"),
-    dob: Yup.string().required("Date of Birth is required"),
-    birthPlace: Yup.string().required("Place of Birth is required"),
-    bacIiGrade: Yup.string().required("Bac II Grade"),
+    phoneNumber: Yup.string()
+        .matches(/^\+?\d{8,15}$/, 'Phone number is not valid')
+        .required('Phone Number is required'),
+    pob: Yup.string().required("Place of Birth is required"),
+    bacIiGrade: Yup.string().required("Bac II Grade is required"),
+    guardianContact: Yup.string()
+        .matches(/^\+?\d{8,15}$/, 'Phone number is not valid')
+        .required('Phone Number is required'),
+    guardianRelationShip: Yup.string().nullable().notRequired(),
+    knownIstad: Yup.string().nullable().notRequired(),
+    address: Yup.string().required('Address is required'),
+    highSchoolCertificate: Yup.string().required('High School Certificate is required'),
+    vocationTrainingIiiCertificate: Yup.string().required('Vocation Training III Certificate is required'),
+    anyValuableCertificate: Yup.string().required('Any Valuable Certificate is required'),
+    avatar: Yup.string().required('Avatar is required'),
+    identity: Yup.string().required('Identity is required'),
+    dob: Yup.string().matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format (YYYY-MM-DD)').required('Date of Birth is required'),
 });
 
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
-            />
-            <label className="pl-2" htmlFor={value}>
-                {label}
-            </label>
-        </div>
-    );
-};
-
-const useFetchData = (queryHook: any, selector: any, action: any) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const {data, error, isLoading} = queryHook({page: 0, pageSize: 10});
-    const stateData = useSelector((state: RootState) => selector(state));
-    const loading = useSelector(selectLoading);
-    const err = useSelector(selectError);
-
-    useEffect(() => {
-        if (data) {
-            dispatch(action(data.content));
-        }
-    }, [data, err, dispatch]);
-
-    return {stateData, loading, error};
-};
-
 export function AddStudentAmsForm() {
-    const [createSingleFile] = useCreateSingleFileMutation();
+    const dispatch = useDispatch<AppDispatch>();
+    const [createAvatar] = useCreateSingleFileMutation();
+    const [createIdentity] = useCreateSingleFileMutation();
+    const [createHighSchoolCertificate] = useCreateSingleFileMutation();
+    const [createVocationTrainingIiiCertificate] = useCreateSingleFileMutation();
+    const [createAnyValuableCertificate] = useCreateSingleFileMutation();
     const [createStuAdmission] = useCreateStudentAdmissionMutation();
     const {refetch: refetchStuAdmissions} = useGetStuAdmissionsQuery({page: 0, pageSize: 10});
     const [activeTab, setActiveTab] = useState("personal_info");
-    const [uploadedFile, setUploadedFile] = useState(null);
-    const [uploadedFileIdentity, setUploadedFileIdentity] = useState(null);
 
-    const shifts = useFetchData(useGetShiftQuery, selectShift, setShift);
+    const {
+        data: shiftsData
+    } = useGetShiftQuery({page: 0, pageSize: 10});
+    // const shifts = useSelector((state: RootState) => selectShift(state));
+
+    const shifts = useSelector((state: RootState) => selectShift(state));
+    const shiftsLoading = useSelector(selectLoading);
+    const shiftsError = useSelector(selectError);
+
+    useEffect(() => {
+        if (shiftsData) {
+            dispatch(setShift(shiftsData.content));
+        }
+        if (shiftsError) {
+            console.error("failed to load admission", shiftsError);
+        }
+    }, [shiftsData, shiftsError, dispatch]);
 
     const {
         data: StudyProgramData,
@@ -127,21 +134,13 @@ export function AddStudentAmsForm() {
         }
     };
 
-    const CustomInput = ({field, form: {setFieldValue}}: any) => {
-        const [imagePreview, setImagePreview] = useState("");
 
-        useEffect(() => {
-            if (uploadedFile) {
-                setImagePreview(URL.createObjectURL(uploadedFile));
-            }
-        }, [uploadedFile]);
-
+    const CustomInputFile = ({field, form: {setFieldValue, values}, label, placeholder, previewField}: any) => {
         const handleUploadFile = (e: any) => {
             const file = e.target.files[0];
             const localUrl = URL.createObjectURL(file);
-            setImagePreview(localUrl);
-            setUploadedFile(file); // Update the file at the form level
             setFieldValue(field.name, file); // Set the field value in Formik
+            setFieldValue(previewField, localUrl); // Set the preview URL in Formik
         };
 
         return (
@@ -150,13 +149,13 @@ export function AddStudentAmsForm() {
                     type="file"
                     onChange={handleUploadFile}
                     className="hidden"
-                    id="file"
+                    id={field.name}
                 />
                 <label
-                    htmlFor="file"
+                    htmlFor={field.name}
                     className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[215px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
                 >
-                    {!imagePreview ? (
+                    {!values[previewField] ? (
                         <div className="flex flex-col items-center justify-center gap-4">
                             <FiUploadCloud className="text-lms-primary text-[34px]"/>
                             <p className="text-center text-md text-black">
@@ -168,7 +167,7 @@ export function AddStudentAmsForm() {
                         </div>
                     ) : (
                         <img
-                            src={imagePreview}
+                            src={values[previewField]}
                             alt="preview"
                             className="object-cover h-full w-full"
                         />
@@ -178,18 +177,33 @@ export function AddStudentAmsForm() {
         );
     };
 
+
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            // Upload the logo file
+            // Upload avatar file
             const avatarData = new FormData();
-            avatarData.append("file", values.avatar);
-            const avatarResponse = await createSingleFile(avatarData).unwrap();
+            avatarData.append('file', values.avatar);
+            const avatarResponse = await createAvatar(avatarData).unwrap();
 
             // Upload identity file
             const identityData = new FormData();
-            identityData.append("file", values.identity);
-            const identityResponse = await createSingleFile(identityData).unwrap();
+            identityData.append('file', values.identity);
+            const identityResponse = await createIdentity(identityData).unwrap();
 
+            // Upload identity file
+            const highSchoolCertificateData = new FormData();
+            highSchoolCertificateData.append('file', values.highSchoolCertificate);
+            const highSchoolCertificateResponse = await createHighSchoolCertificate(highSchoolCertificateData).unwrap();
+
+            // Upload identity file
+            const vocationTrainingIiiCertificateData = new FormData();
+            vocationTrainingIiiCertificateData.append('file', values.vocationTrainingIiiCertificate);
+            const vocationTrainingIiiCertificateDataResponse = await createVocationTrainingIiiCertificate(vocationTrainingIiiCertificateData).unwrap();
+
+            // Upload identity file
+            const anyValuableCertificateData = new FormData();
+            anyValuableCertificateData.append('file', values.anyValuableCertificate);
+            const anyValuableCertificateResponse = await createAnyValuableCertificate(anyValuableCertificateData).unwrap();
 
             // File uploaded successfully, now create the faculty
             const newStuAdmission: StudentAdmissionType = {
@@ -199,27 +213,31 @@ export function AddStudentAmsForm() {
                 highSchool: values.highSchool,
                 phoneNumber: values.phoneNumber,
                 dob: values.dob,
-                birthPlace: values.birthPlace,
+                pob: values.pob,
                 bacIiGrade: values.bacIiGrade,
-                studyProgram: values.studyProgram,
-                degree: values.degree,
-                admission: values.admission,
-                shift: values.shift,
-                avatar: avatarResponse.name,
-                address: values.address,
-                biography: values.biography,
-                gender: values.gender,
                 guardianContact: values.guardianContact,
                 guardianRelationShip: values.guardianRelationShip,
                 knownIstad: values.knownIstad,
+                biography: values.biography,
+                shiftAlias: values.shiftAlias,
+                studyProgramAlias: values.studyProgramAlias,
+                degreeAlias: values.degreeAlias,
+                admission: values.admission,
+                diplomaSession: values.diplomaSession,
+                classStudent: values.classStudent,
+                gender: values.gender,
+                address: values.address,
+                highSchoolCertificate: highSchoolCertificateResponse.name,
+                vocationTrainingIiiCertificate: vocationTrainingIiiCertificateDataResponse.name,
+                anyValuableCertificate: anyValuableCertificateResponse.name,
+                avatar: avatarResponse.name,
                 identity: identityResponse.name,
-                isDeleted: values.isDeleted,
-                uuid: values.uuid,
-            }
+            };
+
             const res = await createStuAdmission(newStuAdmission).unwrap();
             resetForm();
             refetchStuAdmissions();
-            console.log("Update successfully")
+            console.log("Update successfully");
         } catch (error) {
             // Handle error (e.g., show an error message)
             console.error("Error creating faculty: ", error);
@@ -228,16 +246,21 @@ export function AddStudentAmsForm() {
         }
     };
 
+
     return (
         <section
-            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] items-center-center rounded-[10px]">
+            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] items-center-center rounded-[10px] none-scroll-bar">
 
             <section className="h-[90px] flex items-center mx-10 ">
                 <h1 className="text-3xl font-bold text-lms-black-90">Student Admission</h1>
             </section>
 
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                {({setFieldValue}) => (
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {() => (
                     <Form className="py-4 rounded-lg w-full flex justify-center items-center">
 
                         <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="personal_info"
@@ -325,7 +348,7 @@ export function AddStudentAmsForm() {
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
                                             <label className={`${style.label}`} htmlFor="nameKh">
-                                                Name ( EN )
+                                                Name ( KH )
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
@@ -357,10 +380,11 @@ export function AddStudentAmsForm() {
                                             type="file"
                                             name="avatar"
                                             id="avatar"
-                                            component={CustomInput}
-                                            setFieldValue={setFieldValue}
-                                            uploadedFile={uploadedFile}
-                                            setUploadedFile={setUploadedFile}
+                                            component={CustomInputFile}
+                                            previewField="avatarPreview"
+                                            // setFieldValue={setFieldValue}
+                                            // uploadedFile={uploadedFileAvatar}
+                                            // setUploadedFile={setUploadedFileAvatar}
                                         />
                                         <ErrorMessage
                                             name="avatar"
@@ -535,10 +559,11 @@ export function AddStudentAmsForm() {
                                             type="file"
                                             name="identity"
                                             id="identity"
-                                            component={CustomInput}
-                                            setFieldValue={setFieldValue}
-                                            uploadedFile={uploadedFileIdentity}
-                                            setUploadedFile={setUploadedFileIdentity}
+                                            component={CustomInputFile}
+                                            // setFieldValue={setFieldValue}
+                                            // uploadedFile={uploadedFileIdentity}
+                                            // setUploadedFile={setUploadedFileIdentity}
+                                            previewField="identityPreview"
                                         />
                                         <ErrorMessage
                                             name="identity"
@@ -664,7 +689,7 @@ export function AddStudentAmsForm() {
                                     {/* Class Student */}
                                     <div className={style.inputContainer}>
                                         <div className="flex">
-                                            <label className={style.label} htmlFor="class_stu">
+                                            <label className={style.label} htmlFor="classStudent">
                                                 Class Student
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -673,8 +698,8 @@ export function AddStudentAmsForm() {
                                         <div className="relative w-full">
                                             <Field
                                                 as="select"
-                                                name="class_stu"
-                                                id="class_stu"
+                                                name="classStudent"
+                                                id="classStudent"
                                                 className={`${style.input} appearance-none`}
                                             >
                                                 <option value="" disabled hidden>
@@ -684,7 +709,7 @@ export function AddStudentAmsForm() {
                                                 <option value="Female">Social Science Class</option>
                                             </Field>
                                             <ErrorMessage
-                                                name="class_stu"
+                                                name="classStudent"
                                                 component="div"
                                                 className={`${style.error}`}
                                             />
@@ -701,7 +726,7 @@ export function AddStudentAmsForm() {
                                     {/*Diploma Session */}
                                     <div className={`${style.inputContainer}`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="diploma">
+                                            <label className={`${style.label}`} htmlFor="diplomaSession">
                                                 Diploma Session
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -709,77 +734,116 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="text"
-                                            name="diploma"
+                                            name="diplomaSession"
                                             placeholder="2023-2024"
-                                            id="diploma"
+                                            id="diplomaSession"
                                             className={`${style.input}`}
                                         />
                                         <ErrorMessage
-                                            name="diploma"
+                                            name="diplomaSession"
                                             component="div"
                                             className={`${style.error}`}
                                         />
                                     </div>
 
                                     {/* Grade */}
-                                    <div className={`${style.inputContainer}  grid col-span-2 2xl:col-span-1`}>
+                                    {/*<div className={`${style.inputContainer}  grid col-span-2 2xl:col-span-1`}>*/}
+                                    {/*    <div className="flex">*/}
+                                    {/*        <label className={`${style.label}`} htmlFor="bacIiGrade">*/}
+                                    {/*            Diploma Grade*/}
+                                    {/*        </label>*/}
+                                    {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                    {/*    </div>*/}
+
+                                    {/*    <div className="flex flex-wrap justify-between items-center">*/}
+                                    {/*        <Field*/}
+                                    {/*            name="bacIiGrade"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="A"*/}
+                                    {/*            label="A"*/}
+                                    {/*        />*/}
+                                    {/*        <Field*/}
+                                    {/*            name="bacIiGrade"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="B"*/}
+                                    {/*            label="B"*/}
+                                    {/*        />*/}
+                                    {/*        <Field*/}
+                                    {/*            name="bacIiGrade"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="C"*/}
+                                    {/*            label="C"*/}
+                                    {/*        />*/}
+                                    {/*        <Field*/}
+                                    {/*            name="bacIiGrade"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="D"*/}
+                                    {/*            label="D"*/}
+                                    {/*        />*/}
+                                    {/*        <Field*/}
+                                    {/*            name="bacIiGrade"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="E"*/}
+                                    {/*            label="E"*/}
+                                    {/*        />*/}
+                                    {/*        <Field*/}
+                                    {/*            name="bacIiGrade"*/}
+                                    {/*            component={RadioButton}*/}
+                                    {/*            value="F"*/}
+                                    {/*            label="Other/Wait for result"*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*    <ErrorMessage*/}
+                                    {/*        name="bacIiGrade"*/}
+                                    {/*        component={`div`}*/}
+                                    {/*        className={`${style.error}`}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+
+                                    <div className={style.inputContainer}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="bacIiGrade">
-                                                Diploma Grade
+                                            <label className={style.label} htmlFor="bacIiGrade">
+                                                Grade
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <div className="flex flex-wrap justify-between items-center">
+                                        <div className="relative w-full">
                                             <Field
+                                                as="select"
                                                 name="bacIiGrade"
-                                                component={RadioButton}
-                                                value="1"
-                                                label="A"
-                                            />
-                                            <Field
+                                                id="bacIiGrade"
+                                                className={`${style.input} appearance-none`}
+                                            >
+                                                <option value="" disabled hidden>
+                                                    Grade
+                                                </option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="O">Other</option>
+                                            </Field>
+                                            <ErrorMessage
                                                 name="bacIiGrade"
-                                                component={RadioButton}
-                                                value="2"
-                                                label="B"
+                                                component="div"
+                                                className={`${style.error}`}
                                             />
-                                            <Field
-                                                name="bacIiGrade"
-                                                component={RadioButton}
-                                                value="3"
-                                                label="C"
-                                            />
-                                            <Field
-                                                name="bacIiGrade"
-                                                component={RadioButton}
-                                                value="4"
-                                                label="D"
-                                            />
-                                            <Field
-                                                name="bacIiGrade"
-                                                component={RadioButton}
-                                                value="5"
-                                                label="E"
-                                            />
-                                            <Field
-                                                name="bacIiGrade"
-                                                component={RadioButton}
-                                                value="6"
-                                                label="Other/Wait for result"
-                                            />
+                                            <div
+                                                className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                                <IoIosArrowDown
+                                                    className="h-5 w-5 text-gray-400"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
                                         </div>
-
-                                        <ErrorMessage
-                                            name="bacIiGrade"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
                                     </div>
 
                                     {/* High Certificate */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
                                         <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="file">
+                                            <label className={`${style.label}`} htmlFor="highSchoolCertificate">
                                                 High Certificate
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
@@ -787,15 +851,15 @@ export function AddStudentAmsForm() {
 
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
-                                            component={CustomInput}
-                                            setFieldValue={setFieldValue}
-                                            uploadedFile={uploadedFile}
-                                            setUploadedFile={setUploadedFile}
+                                            name="highSchoolCertificate"
+                                            id="highSchoolCertificate"
+                                            component={CustomInputFile}
+                                            previewField="highSchoolCertificatePreview"
+                                            // uploadedFile={uploadedFile}
+                                            // setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="highSchoolCertificate"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -803,20 +867,22 @@ export function AddStudentAmsForm() {
 
                                     {/* Vocation Training III Certificate */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
-                                        <label className={`${style.label}`} htmlFor="file">
+                                        <label className={`${style.label}`} htmlFor="vocationTrainingIiiCertificate">
                                             Vocation Training III Certificate
                                         </label>
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
-                                            component={CustomInput}
-                                            setFieldValue={setFieldValue}
-                                            uploadedFile={uploadedFile}
-                                            setUploadedFile={setUploadedFile}
+                                            name="vocationTrainingIiiCertificate"
+                                            id="vocationTrainingIiiCertificate"
+                                            component={CustomInputFile}
+                                            previewField="vocationTrainingIiiCertificatePreview"
+                                            // component={CustomInput}
+                                            // setFieldValue={setFieldValue}
+                                            // uploadedFile={uploadedFile}
+                                            // setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="vocationTrainingIiiCertificate"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -824,20 +890,22 @@ export function AddStudentAmsForm() {
 
                                     {/* Any Valuable Certificate */}
                                     <div className={`${style.inputContainer} grid row-span-3`}>
-                                        <label className={`${style.label}`} htmlFor="file">
+                                        <label className={`${style.label}`} htmlFor="anyValuableCertificate">
                                             Any Valuable Certificate
                                         </label>
                                         <Field
                                             type="file"
-                                            name="file"
-                                            id="file"
-                                            component={CustomInput}
-                                            setFieldValue={setFieldValue}
-                                            uploadedFile={uploadedFile}
-                                            setUploadedFile={setUploadedFile}
+                                            name="anyValuableCertificate"
+                                            id="anyValuableCertificate"
+                                            component={CustomInputFile}
+                                            previewField="anyValuableCertificatePreview"
+                                            // component={CustomInput}
+                                            // setFieldValue={setFieldValue}
+                                            // uploadedFile={uploadedFile}
+                                            // setUploadedFile={setUploadedFile}
                                         />
                                         <ErrorMessage
-                                            name="file"
+                                            name="anyValuableCertificate"
                                             component="div"
                                             className={`${style.error}`}
                                         />
@@ -908,7 +976,7 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field as="select" name="facultyAlias" id="degreeAlias"
+                                            <Field as="select" name="degreeAlias" id="degreeAlias"
                                                    className={`${style.input} appearance-none`}>
                                                 <option value="" label="Select Degree"/>
                                                 {Array.isArray(degrees) && degrees.map(degree => (
@@ -963,6 +1031,29 @@ export function AddStudentAmsForm() {
                                             </div>
                                         </div>
 
+                                    </div>
+
+                                    {/* biography */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="biography">
+                                                Biography
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            as="textarea"
+                                            name="biography"
+                                            placeholder="ដោយសារខ្ញុំចង់ចឹង teacher , ពេល disabled ចឹងខ្ញុំអោយវា draft  ដែរ, ព្រោះយើងអត់អាច public  degree ដែល disabled"
+                                            id="biography"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="biography"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
 
                                 </div>

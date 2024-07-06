@@ -1,7 +1,7 @@
 // achievementSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
-import { Achievement } from "@/lib/types/student/achievement/achievement";
+import { Achievement } from "@/lib/types/student/achievement";
 
 type AchievementState = {
     achievements: Achievement[];

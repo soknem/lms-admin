@@ -47,7 +47,7 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-export function EditDeForm({alias}: { alias: string }) {
+export function EditDeForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [editDegree] = useEditDegreeByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -57,6 +57,7 @@ export function EditDeForm({alias}: { alias: string }) {
         alias: "",
         level: "",
         description: "",
+        numberOfYear: 0,
         isDeleted: false,
         isDraft: false
     });
@@ -66,6 +67,7 @@ export function EditDeForm({alias}: { alias: string }) {
             setInitialValues({
                 alias: degreeData.alias,
                 level: degreeData.level,
+                numberOfYear: degreeData.numberOfYear,
                 description: degreeData.description,
                 isDeleted: degreeData.isDeleted,
                 isDraft: degreeData.isDraft
@@ -74,15 +76,13 @@ export function EditDeForm({alias}: { alias: string }) {
         }
     }, [isSuccess, degreeData]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
             const editDegreeByAlias: DegreeType = {
                 alias: values.alias,
                 level: values.level,
+                numberOfYear: values.numberOfYear,
                 description: values.description,
                 isDeleted: values.isDeleted,
                 isDraft: values.isDraft,
@@ -100,7 +100,7 @@ export function EditDeForm({alias}: { alias: string }) {
 
             resetForm();
             refetchDegree();
-            handleClose();
+            onClose();
         } catch (error) {
             console.error("Error updating degree: ", error);
         } finally {
@@ -109,8 +109,8 @@ export function EditDeForm({alias}: { alias: string }) {
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="w-[480px] bg-white">
+        <Dialog open={open} onOpenChange={onClose}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Edit Degree</DialogTitle>
                 </DialogHeader>
@@ -121,7 +121,7 @@ export function EditDeForm({alias}: { alias: string }) {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {() => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-1">
 
@@ -215,38 +215,8 @@ export function EditDeForm({alias}: { alias: string }) {
                                             className={`${style.error}`}
                                         />
                                     </div>
-
-                                    {/* Status */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className="w-2 h-2 text-lms-error"/>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value={true}
-                                                label="Public"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value={false}
-                                                label="Draft"
-                                            />
-                                        </div>
-                                        <ErrorMessage
-                                            name="isDeleted"
-                                            component="div"
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
+                                    
                                 </div>
-
                             </div>
 
                             {/* Submit Button */}

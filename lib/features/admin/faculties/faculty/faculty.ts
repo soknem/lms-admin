@@ -5,6 +5,7 @@ export const facultyApi = istadLmsApi.injectEndpoints({
         getFaculties: builder.query<any, { page: number; pageSize: number }>({
             query: ({page = 0, pageSize = 10}) =>
                 `/faculties?pageNumber=${page}&pageSize=${pageSize}`,
+            providesTags: [{type: 'Faculties', id: 'LIST'}],
         }),
         createFaculty: builder.mutation({
             query: (newFaculty) => ({
@@ -26,11 +27,28 @@ export const facultyApi = istadLmsApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        enableFacultyByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/faculties/${alias}/enable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'Faculties', id: 'LIST'}],
+        }),
+
+        disableFacultyByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/faculties/${alias}/disable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'Faculties', id: 'LIST'}],
+        }),
     })
 })
 export const {
     useGetFacultiesQuery,
     useCreateFacultyMutation,
     useEditFacultyByAliasMutation,
-    useGetFacultyByAliasQuery
+    useGetFacultyByAliasQuery,
+    useEnableFacultyByAliasMutation,
+    useDisableFacultyByAliasMutation,
 } = facultyApi;

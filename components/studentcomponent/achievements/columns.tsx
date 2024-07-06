@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { AchievementTableType } from "@/lib/types/student/achievement/achievement";
+import { AchievementTableType } from "@/lib/types/student/achievement";
 
 export const columns: ColumnDef<AchievementTableType>[] = [
     {

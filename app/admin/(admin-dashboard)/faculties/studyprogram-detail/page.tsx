@@ -27,7 +27,6 @@ export default function Users() {
                 </BreadcrumbList>
             </Breadcrumb>
 
-            <h2 className="text-4xl text-lms-primary font-bold">Users</h2>
             <section className="flex flex-grow flex-col gap-6 bg-white p-6">
                 <div className="h-[320px] w-full">
                     <img

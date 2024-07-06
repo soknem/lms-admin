@@ -5,6 +5,7 @@ export const degreeApi = istadLmsApi.injectEndpoints({
         getDegrees: builder.query<any, { page: number; pageSize: number }>({
             query: ({page = 0, pageSize = 10}) =>
                 `/degrees?pageNumber=${page}&pageSize=${pageSize}`,
+            providesTags: [{type: 'Degrees', id: 'LIST'}],
         }),
         createDegree: builder.mutation({
             query: (newDegree) => ({
@@ -26,12 +27,28 @@ export const degreeApi = istadLmsApi.injectEndpoints({
                 body: updatedData,
             }),
         }),
+        enableDegreeByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/degrees/${alias}/enable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'Degrees', id: 'LIST'}],
+        }),
 
+        disableDegreeByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/degrees/${alias}/disable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'Degrees', id: 'LIST'}],
+        }),
     })
 })
 export const {
     useGetDegreesQuery,
     useCreateDegreeMutation,
     useGetDegreeByAliasQuery,
-    useEditDegreeByAliasMutation
+    useEditDegreeByAliasMutation,
+    useEnableDegreeByAliasMutation,
+    useDisableDegreeByAliasMutation,
 } = degreeApi;

@@ -93,7 +93,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     );
 };
 
-export function EditFacForm({alias}: { alias: string }) {
+export function EditFacForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const router = useRouter();
     const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
@@ -128,11 +128,6 @@ export function EditFacForm({alias}: { alias: string }) {
             setLogo(facultyData.logo)
         }
     }, [isSuccess, facultyData]);
-
-    const handleClose = () => {
-        setOpen(false);
-        // router.back(); // or any other navigation action
-    };
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
@@ -185,9 +180,9 @@ export function EditFacForm({alias}: { alias: string }) {
 
             resetForm();
             refetchFaculties();
+            onClose();
             console.log("Update successfully")
             // router.refresh(); // or any other navigation action
-            handleClose()
         } catch (error) {
             // Handle error (e.g., show an error message)
             console.error("Error updating faculty: ", error);
@@ -197,8 +192,8 @@ export function EditFacForm({alias}: { alias: string }) {
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[480px] bg-white">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Edit Faculty</DialogTitle>
                 </DialogHeader>
@@ -331,37 +326,6 @@ export function EditFacForm({alias}: { alias: string }) {
 
                                         <ErrorMessage
                                             name="isDraft"
-                                            component="div"
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
-                                    {/* isDeleted */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className="w-2 h-2 text-lms-error"/>
-                                        </div>
-
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value={true}
-                                                label="Active"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value={false}
-                                                label="Inactive"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDeleted"
                                             component="div"
                                             className={`${style.error}`}
                                         />

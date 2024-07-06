@@ -28,7 +28,7 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-export function ViewAcademicYeaForm({alias}: { alias: string }) {
+export function ViewAcademicYeaForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [initialAlias, setInitialAlias] = useState("");
     const {data: academicYearData, isSuccess} = useGetAcademicYearByAliasQuery(alias);
@@ -53,13 +53,9 @@ export function ViewAcademicYeaForm({alias}: { alias: string }) {
         }
     }, [isSuccess, academicYearData]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="w-[480px] bg-white ">
+        <Dialog open={open} onOpenChange={onClose}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Degree Information</DialogTitle>
                 </DialogHeader>
@@ -114,108 +110,6 @@ export function ViewAcademicYeaForm({alias}: { alias: string }) {
                                         component="div"
                                         className={`${style.error}`}
                                     />
-                                </div>
-
-                                <div className={`flex w-full justify-between flex-wrap space-y-2`}>
-
-                                    {/* isDraft */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDraft">
-                                                Visibility
-                                            </label>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                disabled
-                                                name="isDraft"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Public"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="isDraft"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="Draft"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                disabled
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Public"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="Draft"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="status">
-                                                Starting
-                                            </label>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                disabled
-                                                name="status"
-                                                component={RadioButton}
-                                                value="1"
-                                                label="Starting"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="status"
-                                                component={RadioButton}
-                                                value="2"
-                                                label="Ended"
-                                            />
-                                            <Field
-                                                disabled
-                                                name="status"
-                                                component={RadioButton}
-                                                value="3"
-                                                label="Achieved"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDeleted"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
                                 </div>
                             </div>
                         </Form>

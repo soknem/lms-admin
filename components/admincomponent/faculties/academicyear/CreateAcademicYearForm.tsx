@@ -30,7 +30,9 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-    alias: Yup.string().required('Alias is required'),
+    alias: Yup.string()
+        .required("Alias is required")
+        .matches(/^\d{4}-\d{4}$/, "Slug must be in the format year-year (e.g., 2020-2021)"),
     academicYear: Yup.string().required('Academic Year is required'),
     status: Yup.string().required('Status is required'),
     isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
@@ -82,7 +84,7 @@ export function CreateAcademicYearForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[480px] bg-white ">
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
 
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Academic Year</DialogTitle>
@@ -168,35 +170,6 @@ export function CreateAcademicYearForm() {
 
                                         <ErrorMessage
                                             name="isDraft"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Public"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="Draft"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDeleted"
                                             component={RadioButton}
                                             className={`${style.error}`}
                                         />

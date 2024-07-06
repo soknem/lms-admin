@@ -6,7 +6,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {AttendanceType} from "@/lib/types/instructor/report";
+import {AttendanceT, AttendanceType} from "@/lib/types/instructor/report";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import {StatusOption} from "@/lib/types/instructor/schedule";
 
@@ -130,9 +130,9 @@ const EditCell = ({row, table}: any) => {
   );
 };
 
-export const attentdentColumns: ColumnDef<AttendanceType>[] = [
+export const attentdentColumns: ColumnDef<AttendanceT>[] = [
   {
-    accessorKey: "cardId",
+    accessorKey: "student.cardId",
     header: ({column}) => {
       return (
           <Button
@@ -147,7 +147,7 @@ export const attentdentColumns: ColumnDef<AttendanceType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "fullName",
+    accessorKey: "student.nameEn",
     header: ({column}) => {
       return (
           <Button
@@ -162,7 +162,7 @@ export const attentdentColumns: ColumnDef<AttendanceType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "gender",
+    accessorKey: "student.gender",
     header: ({column}) => {
       return (
           <Button
@@ -177,7 +177,7 @@ export const attentdentColumns: ColumnDef<AttendanceType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "class",
+    accessorKey: "lecture.classCode",
     header: ({column}) => {
       return (
           <Button

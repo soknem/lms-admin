@@ -37,6 +37,9 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {FaSearch} from "react-icons/fa";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
+import {
+    CreateStudyProForm
+} from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/addSubjectToStuPro";
 
 
 //custom component import
@@ -107,19 +110,18 @@ export function SetupStudyProgramTable<TData, TValue>({
 
     console.log("data from page: ", data);
 
-    const [isFocused, setIsFocused] = useState(false);
-    const filterOptions = ["All", "Public", "Disable", "Draft"];
+    const filterOptions = ["All", "Public", "Draft"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
         const filterValue =
             value === "All"
                 ? ""
                 : value === "Public"
-                    ? "true"
-                    : value === "Disable"
-                        ? "false"
-                        : "draft";
-        table.getColumn("status")?.setFilterValue(filterValue);
+                    ? false
+                    : value === "Draft"
+                        ? true
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
     };
 
     return (
@@ -132,10 +134,10 @@ export function SetupStudyProgramTable<TData, TValue>({
                         <Input
                             placeholder="Search Study Program"
                             value={
-                                (table.getColumn("subjects.title")?.getFilterValue() as string) ?? ""
+                                (table.getColumn("title")?.getFilterValue() as string) ?? ""
                             }
                             onChange={(event) =>
-                                table.getColumn("subjects.title")?.setFilterValue(event.target.value)
+                                table.getColumn("title")?.setFilterValue(event.target.value)
                             }
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30 "
                         />
@@ -206,6 +208,8 @@ export function SetupStudyProgramTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
+
+                <CreateStudyProForm alias={alias} year={currentYear}/>
             </div>
 
             {/* Table */}

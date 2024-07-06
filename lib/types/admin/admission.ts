@@ -12,14 +12,13 @@ export type AdmissionType = {
 
 // ****Student Admissions *****
 export type StudentAdmissionType = {
-    uuid: string,
     nameEn: string,
     nameKh: string,
     email: string,
     highSchool: string,
     phoneNumber: string,
     dob: string,
-    birthPlace: string,
+    pob: string,
     bacIiGrade: string,
     gender: string,
     avatar: string,
@@ -29,12 +28,17 @@ export type StudentAdmissionType = {
     knownIstad: string,
     identity: string,
     biography: string,
-    isDeleted: boolean,
-    shift: string,
-    studyProgram: string,
-    degree: string,
-    admission: string
-}
+    // isDeleted: boolean,
+    shiftAlias: string,
+    studyProgramAlias: string,
+    degreeAlias: string,
+    admission: string,
+    diplomaSession: string,
+    classStudent: string,
+    highSchoolCertificate: string,
+    vocationTrainingIiiCertificate: string,
+    anyValuableCertificate: string,
+};
 
 export type StatusOption = {
     label: string;
