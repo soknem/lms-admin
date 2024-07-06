@@ -66,7 +66,7 @@ export type SetupStudyProgramType = {
 };
 
 export type AddSubjectType = {
-    studyProgramAlias: string;
+    aliasOfSubjects: string;
     uuid: string;
     semester: number;
     year: number;

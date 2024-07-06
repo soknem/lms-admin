@@ -2,8 +2,8 @@
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
-import style from "../../style.module.css";
-import {FiPlus, FiUploadCloud} from "react-icons/fi";
+import style from "../../../style.module.css";
+import {FiPlus} from "react-icons/fi";
 import {
     Dialog,
     DialogContent,
@@ -13,62 +13,83 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {AddSubjectType, SetupStudyProgramType, StudyProgramType} from "@/lib/types/admin/faculty";
 import React, {useEffect, useState} from "react";
-import Image from "next/image";
-import {TbAsterisk} from "react-icons/tb";
-import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {
-    useCreateStuProgramMutation, useGetByStudyProgramAndYearMutation,
-    useGetStudyProgramsQuery
+    useGetStuProByAliasQuery
 } from "@/lib/features/admin/faculties/studyProgram/studyprogram";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/lib/store";
-import {
-    selectFaculty,
-    setFaculties
-} from "@/lib/features/admin/faculties/faculty/facultySlice";
-import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
-import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import {useSelector} from "react-redux";
+import {RootState} from "@/lib/store";
 import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
 import {selectSubject} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {
+    useAddSubjectToYearOfStudyMutation,
     useGetYearOfStudyUUIDMutation
 } from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuPro";
 
 const initialValues = {
-    studyProgramAlias: "",
+    aliasOfSubjects: "",
     uuid: "",
-    semester: 0,
-    year: 0,
 };
 
-const validationSchema = Yup.object().shape({});
+type UUIDType = {
+    uuid: string;
+    semester: number;
+};
 
-export function CreateStudyProForm() {
-    const dispatch = useDispatch<AppDispatch>();
+const validationSchema = Yup.object().shape({
+    aliasOfSubjects: Yup.string().required("Subject is required"),
+    uuid: Yup.string().required("UUID is required")
+});
+
+export function AddSubjectStudyProForm({alias, year}: { alias: string; year: number }) {
     const [isOpen, setIsOpen] = useState(false);
-    const {
-        data: subjectsData,
-    } = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const [uuids, setUuids] = useState<UUIDType[]>([]); /// State to store UUIDs
+    const {data: subjectsData} = useGetSubjectsQuery({page: 0, pageSize: 10});
     const subjects = useSelector((state: RootState) => selectSubject(state));
-    const stuPrograms = useGetStudyProgramsQuery({page: 0, pageSize: 10});
-    const uuid = useGetByStudyProgramAndYearMutation();
+    const {data: studyPrograms} = useGetStuProByAliasQuery(alias);
+    const [getYearOfStudyUUID] = useGetYearOfStudyUUIDMutation();
+    const [addSubjectToYearOfStudy] = useAddSubjectToYearOfStudyMutation();
 
+    useEffect(() => {
+        // Fetch UUIDs when the form is opened
+        if (isOpen) {
+            fetchUuids();
+        }
+    }, [isOpen, alias, year]);
+
+
+    console.log("Study Program", alias)
+
+    const fetchUuids = async () => {
+        try {
+            const response = await getYearOfStudyUUID({
+                studyProgramAlias: alias,
+                year: year,
+            }).unwrap();
+            setUuids(response);
+            console.log("UUIDs: ", response);
+        } catch (error) {
+            console.error("Error fetching UUIDs: ", error);
+        }
+    };
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            const setupSubjects: AddSubjectType = {
-                studyProgramAlias: values.studyProgramAlias,
-                uuid: values.uuid,
-                semester: values.semester,
-                year: values.year,
+            const setupSubjects = {
+                aliasOfSubjects: [values.aliasOfSubjects],
             };
-            resetForm();
 
-            console.log("Create successfully")
-            setIsOpen(false)
+            await addSubjectToYearOfStudy({
+                uuid: values.uuid,
+                addSubToStuProgram: setupSubjects,
+            });
+
+            resetForm();
+            setIsOpen(false);
+
+            console.log("Subject added to study program", setupSubjects);
+
+            console.log("Subject added to study program");
         } catch (error) {
             console.error("Error creating study program: ", error);
         } finally {
@@ -76,19 +97,19 @@ export function CreateStudyProForm() {
         }
     };
 
+
     return (
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
-
             <DialogTrigger asChild>
                 <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
                     <FiPlus className="mr-2 h-4 w-4"/> Add Study Program
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[920px] items-center justify-center bg-white"
+            <DialogContent className="w-[480px] items-center justify-center bg-white"
                            onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
-                    <DialogTitle className={`text-2xl font-semibold`}>Add Study Program</DialogTitle>
+                    <DialogTitle className="text-2xl font-semibold">Select Subjects</DialogTitle>
                 </DialogHeader>
 
                 <Formik
@@ -98,58 +119,55 @@ export function CreateStudyProForm() {
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full">
-                            <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
+                            <div className="flex flex-col gap-1 items-center justify-center">
 
-                                {/* studyProgramName */}
+                                {/* aliasOfSubjects */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="studyProgramName">Title</label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <label className={`${style.label}`} htmlFor="aliasOfSubjects">Subject</label>
                                     </div>
-                                    <Field placeholder={`Master of Computer Science`} type="text"
-                                           name="studyProgramName"
-                                           id="studyProgramName"
-                                           className={`${style.input}`}/>
+                                    <Field as="select" name="aliasOfSubjects" id="aliasOfSubjects"
+                                           className={`${style.input}`}>
+                                        <option value="" label="Select subject"/>
+                                        {Array.isArray(subjects) && subjects.map(subject => (
+                                            <option key={subject.alias} value={subject.alias} label={subject.alias}/>
+                                        ))}
+                                    </Field>
+                                    <ErrorMessage
+                                        name="aliasOfSubjects"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
                                 </div>
 
-                                {/* alias */}
+                                {/* semester */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">Slug</label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        <label className={`${style.label}`} htmlFor="uuid">UUID</label>
                                     </div>
-                                    <Field placeholder={`computer-science-master`} type="text" name="alias" id="alias"
-                                           className={`${style.input}`}/>
+
+                                    <Field as="select" name="uuid" id="uuid"
+                                           className={`${style.input}`}>
+                                        <option value="" label="Select semester"/>
+                                        {Array.isArray(uuids) && uuids.map(semester => (
+                                            <option key={semester.uuid} value={semester.uuid}
+                                                    label={semester.uuid}/>
+                                        ))}
+                                    </Field>
+                                    <ErrorMessage
+                                        name="uuid"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
                                 </div>
 
-                                {/* facultyAlias */}
+                                {/* semester */}
                                 {/*<div className={`${style.inputContainer}`}>*/}
                                 {/*    <div className="flex">*/}
-                                {/*        <label className={`${style.label}`} htmlFor="facultyAlias">Faculty</label>*/}
+                                {/*        <label className={`${style.label}`} htmlFor="semester">Semester</label>*/}
                                 {/*    </div>*/}
-                                {/*    <Field as="select" name="facultyAlias" id="facultyAlias"*/}
-                                {/*           className={`${style.input}`}>*/}
-                                {/*        <option value="" label="Select faculty"/>*/}
-                                {/*        {Array.isArray(faculties) && faculties.map(faculty => (*/}
-                                {/*            <option key={faculty.alias} value={faculty.alias} label={faculty.alias}/>*/}
-                                {/*        ))}*/}
-                                {/*    </Field>*/}
+                                {/*    <Field type="number" name="semester" id="semester" className={`${style.input}`}/>*/}
                                 {/*</div>*/}
-
-                                {/*/!* degreeAlias *!/*/}
-                                {/*<div className={`${style.inputContainer}`}>*/}
-                                {/*    <div className="flex">*/}
-                                {/*        <label className={`${style.label}`} htmlFor="degreeAlias">Degree</label>*/}
-                                {/*    </div>*/}
-                                {/*    <Field as="select" name="degreeAlias" id="degreeAlias" className={`${style.input}`}>*/}
-                                {/*        <option value="" label="Select degree"/>*/}
-                                {/*        {Array.isArray(degrees) && degrees.map(degree => (*/}
-                                {/*            <option key={degree.alias} value={degree.alias} label={degree.alias}/>*/}
-                                {/*        ))}*/}
-                                {/*    </Field>*/}
-                                {/*</div>*/}
-
-
                             </div>
 
                             {/* Submit Button */}

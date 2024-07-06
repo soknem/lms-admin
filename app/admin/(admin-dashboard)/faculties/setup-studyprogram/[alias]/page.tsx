@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {
     Breadcrumb,
@@ -14,13 +14,14 @@ import {setupStudyProgramColumns} from "@/components/admincomponent/faculties/st
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {
-    selectError,
     selectSetupStuPro,
     setSetupStudyPrograms,
 } from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuProSlice";
-import {selectLoading} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import {useGetYearStuProsQuery} from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuPro";
 import {useGetStuProByAliasQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
+import {
+    AddSubjectStudyProForm
+} from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/addSubjectToStuPro";
 
 type PropsParams = {
     params: {
@@ -36,22 +37,21 @@ export default function SetupStuPro(props: PropsParams) {
     const dispatch = useDispatch<AppDispatch>();
 
     const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
+
     console.log("stuProData", stuProData?.studyProgramName)
 
     const {
         data: setupStuProsData,
-        error: setupStuProsError,
-        isLoading: setupStuProsLoading,
     } = useGetYearStuProsQuery(alias);
     const setupStuPros = useSelector((state: RootState) => selectSetupStuPro(state));
-    const setupStuProLoading = useSelector(selectLoading);
-    const setupStuProError = useSelector(selectError);
+
+    const [currentYear, setCurrentYear] = useState(1);
 
     useEffect(() => {
         if (setupStuProsData) {
             dispatch(setSetupStudyPrograms(setupStuProsData.content));
         }
-    }, [setupStuProsData, setupStuProError, dispatch]);
+    }, [setupStuProsData, dispatch]);
 
     const filterDataByYear = (year: number) => {
         return setupStuPros.filter((item: any) => item.yearOfStudy.year === year);
@@ -78,11 +78,14 @@ export default function SetupStuPro(props: PropsParams) {
                 </h1>
                 <Tabs defaultValue="foundation-year" className="w-full">
                     <TabsList>
-                        <TabsTrigger value="foundation-year">Foundation Year</TabsTrigger>
-                        <TabsTrigger value="second-year">Second Year</TabsTrigger>
-                        <TabsTrigger value="third-year">Third Year</TabsTrigger>
-                        <TabsTrigger value="fourth-year">Fourth Year</TabsTrigger>
+                        <TabsTrigger value="foundation-year" onClick={() => setCurrentYear(1)}>Foundation
+                            Year</TabsTrigger>
+                        <TabsTrigger value="second-year" onClick={() => setCurrentYear(2)}>Second Year</TabsTrigger>
+                        <TabsTrigger value="third-year" onClick={() => setCurrentYear(3)}>Third Year</TabsTrigger>
+                        <TabsTrigger value="fourth-year" onClick={() => setCurrentYear(4)}>Fourth Year</TabsTrigger>
                     </TabsList>
+
+
                     <TabsContent value="foundation-year">
                         <SetupStudyProgramTable
                             columns={setupStudyProgramColumns}
@@ -110,6 +113,7 @@ export default function SetupStuPro(props: PropsParams) {
                         />
                     </TabsContent>
                 </Tabs>
+                <AddSubjectStudyProForm alias={alias} year={currentYear}/>
             </div>
         </section>
     );

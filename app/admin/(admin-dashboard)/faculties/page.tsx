@@ -130,6 +130,13 @@ export default function Page() {
                         >
                             Subject
                         </TabsTrigger>
+
+                        <TabsTrigger
+                            value="academic-year"
+                            className="dark:text-gray-300 dark:hover:text-white"
+                        >
+                            Academic Year
+                        </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="faculty">
@@ -145,6 +152,10 @@ export default function Page() {
                     </TabsContent>
 
                     <TabsContent value="subject">
+                        <SubjectTable columns={subjectColumns} data={subjects}/>
+                    </TabsContent>
+
+                    <TabsContent value="academic-year">
                         <SubjectTable columns={subjectColumns} data={subjects}/>
                     </TabsContent>
                 </Tabs>

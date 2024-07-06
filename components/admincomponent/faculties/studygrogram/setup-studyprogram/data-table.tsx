@@ -37,6 +37,9 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {FaSearch} from "react-icons/fa";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
+import {
+    CreateStudyProForm
+} from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/addSubjectToStuPro";
 
 
 //custom component import
@@ -205,6 +208,8 @@ export function SetupStudyProgramTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
+
+                <CreateStudyProForm alias={alias} year={currentYear}/>
             </div>
 
             {/* Table */}

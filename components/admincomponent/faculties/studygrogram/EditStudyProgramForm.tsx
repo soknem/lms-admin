@@ -30,6 +30,7 @@ import {selectFaculty, setFaculties} from "@/lib/features/admin/faculties/facult
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {IoCameraOutline} from "react-icons/io5";
+import {json} from "next/dist/client/components/react-dev-overlay/server/shared";
 
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required("Required"),
@@ -200,7 +201,10 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                 isDraft: values.isDraft,
             };
 
-            console.log("Submitting values:", edtStuProByAlias);
+
+            const jsonEdtStuProByAlias = JSON.stringify(edtStuProByAlias);
+
+            console.log("Submitting values:", jsonEdtStuProByAlias);
 
             await editStuProgram(edtStuProByAlias).unwrap();
 
