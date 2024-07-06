@@ -13,10 +13,57 @@ export const courseApi = istadLmsApi.injectEndpoints({
                 body,
             }),
         }),
+        enableCourse: builder.mutation<void, string>({
+            query: (courseUuid) => ({
+                url: `/courses/${courseUuid}/enable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{ type: 'Courses', id: 'LIST' }],
+        }),
+        disableCourse: builder.mutation<void, string>({
+            query: (courseUuid) => ({
+                url: `/courses/${courseUuid}/disable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{ type: 'Courses', id: 'LIST' }],
+        }),
+        addInstructorToCourse: builder.mutation({
+            query: ({ courseUuid, instructorUuid }) => ({
+                url: `/courses/${courseUuid}/instructors/${instructorUuid}`,
+                method: 'POST',
+            }),
+            invalidatesTags: [{ type: 'Courses', id: 'LIST' }],
+        }),
+        removeInstructorFromCourse: builder.mutation({
+            query: ({ courseUuid, instructorUuid }) => ({
+                url: `/courses/${courseUuid}/instructors/${instructorUuid}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [{ type: 'Courses', id: 'LIST' }],
+        }),
+        getCourseByUuid: builder.query({
+            query: (uuid) => `/courses/${uuid}`,
+            providesTags: [{ type: 'CoursesByUuid', id: 'LIST' }],
+        }),
+        updateCourse: builder.mutation<any, { uuid: string, updatedData: any }>({
+            query: ({uuid, updatedData}) => ({
+                url: `/courses/${uuid}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+            invalidatesTags: [{ type: 'Courses', id: 'LIST' }],
+        }),
     })
 });
 
 export const {
     useGetCoursesQuery,
     useFilterCoursesMutation,
+    useDisableCourseMutation,
+    useEnableCourseMutation,
+    useAddInstructorToCourseMutation,
+    useRemoveInstructorFromCourseMutation,
+    useGetCourseByUuidQuery,
+    useUpdateCourseMutation
+
 } = courseApi;

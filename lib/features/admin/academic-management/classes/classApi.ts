@@ -16,6 +16,7 @@ export const classApi = istadLmsApi.injectEndpoints({
         }),
         getClassByUuid: builder.query({
             query: (uuid) => `/classes/${uuid}`,
+            providesTags: [{ type: 'SingleClass', id: 'LIST' }],
         }),
         enableClass: builder.mutation<void, string>({
             query: (classUuid) => ({
@@ -49,8 +50,33 @@ export const classApi = istadLmsApi.injectEndpoints({
         }),
         getClassCourseByUuid: builder.query({
             query: (uuid) => `/classes/${uuid}/courses`,
+            providesTags: [{ type: 'Courses', id: 'LIST' }],
         }),
+        deleteStudentFromClass: builder.mutation<void, { classUuid: string, studentUuid: string }>({
+            query: ({ classUuid, studentUuid }) => ({
+                url: `/classes/${classUuid}/students/${studentUuid}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [{ type: 'StudentFromClass', id: 'LIST' }],
+        }),
+        getStudentFromClass: builder.query({
+            query: (uuid) => `/classes/${uuid}/students`,
+            providesTags: [{ type: 'StudentFromClass', id: 'LIST' }],
+        }),
+        addStudentToClass: builder.mutation({
+            query: ({ classUuid, studentAdmissionUuid }) => ({
+                url: `/classes/${classUuid}/students`,
+                method: 'POST',
+                body: {
+                    studentAdmissionUuid,
+                },
+            }),
+            invalidatesTags: [
+                { type: 'StudentFromClass', id: 'LIST' },
+                { type: 'SingleClass', id: 'LIST' },
+            ],
 
+        }),
     })
 });
 
@@ -62,5 +88,8 @@ export const {
     useEnableClassMutation,
     useDisableClassMutation,
     useAddClassMutation,
-    useGetClassCourseByUuidQuery
+    useGetClassCourseByUuidQuery,
+    useDeleteStudentFromClassMutation,
+    useGetStudentFromClassQuery,
+    useAddStudentToClassMutation,
 } = classApi;

@@ -78,6 +78,7 @@ const courseSlice = createSlice({
 });
 
 export const { setCourses, addCourse } = courseSlice.actions;
-
+export const selectCourse = (state: RootState) => state.course.courses;
+export const selectCoursesBySemester = (semester: number) => (state: RootState) => state.course.courses.filter(course => course.yearOfStudy.semester === semester);
 
 export default courseSlice.reducer;

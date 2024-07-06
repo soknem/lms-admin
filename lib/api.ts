@@ -46,6 +46,6 @@ export const istadLmsApi = createApi({
     reducerPath: "istadLmsApi",
     baseQuery: baseQueryWithReAuth,
     endpoints: () => ({}),
-    tagTypes: ['Generations','Classes'],
+    tagTypes: ['Generations','Classes','StudentFromClass','Courses','CoursesByUuid','StudentFromClass',"SingleClass"],
 
 });

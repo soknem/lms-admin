@@ -44,6 +44,7 @@ export default function Class() {
   const transformToClassTableData = (data : any[] )   => {
     return data.map(item => ({
       uuid: item.uuid,
+      year: item.year,
       classStart: item?.classStart || "N/A",
       classEnd: item?.classEnd || "N/A",
       classCode: item?.classCode || "N/A",

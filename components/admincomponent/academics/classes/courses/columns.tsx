@@ -2,6 +2,7 @@
 import { RxCross2 } from "react-icons/rx";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
+import {TbEyeCancel, TbEye, TbPencil, TbFileImport, TbCopy,TbUserPlus ,TbUserX } from "react-icons/tb";
 
 import { ColumnDef } from '@tanstack/react-table'
 
@@ -20,7 +21,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
+import React, { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 
 import { OptionType , CourseType } from "@/lib/types/admin/academics";
 
@@ -29,6 +30,27 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/common/StatusBadge";
 import {DatePicker} from "@/components/ui/DatePicker";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import {
+    useDisableLectureMutation,
+    useEnableLectureMutation, useGetLectureQuery
+} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {useSelector} from "react-redux";
+import {selectLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import {useRouter} from "next/navigation";
+import {
+    useEnableClassMutation,
+    useGetClassCourseByUuidQuery
+} from "@/lib/features/admin/academic-management/classes/classApi";
+import {
+    useDisableCourseMutation, useEnableCourseMutation, useGetCourseByUuidQuery,
+    useRemoveInstructorFromCourseMutation
+} from "@/lib/features/admin/academic-management/courses/courseApi";
+import {selectCoursesBySemester} from "@/lib/features/admin/academic-management/courses/courseSlice";
+import CreateClassForm from "@/components/admincomponent/academics/classes/CreateClassForm";
+import AddInstructorForm from "@/components/admincomponent/academics/classes/courses/form/addInstructor";
+import {toast} from "react-hot-toast";
+import EditCourseForm from "@/components/admincomponent/academics/classes/courses/form/editCourse";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -58,7 +80,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     // Custom rendering for specific columns : customize date which can take pick date time
     if (accessorKey === 'startDate' || accessorKey === 'endDate') {
         const dateValue = new Date(value);
-        const formattedDate = format(dateValue, 'dd/mm/yyyy');
+        const formattedDate = format(dateValue, "yyyy-MM-dd");
 
         if (tableMeta?.editedRows[row.id]) {
             return (
@@ -107,39 +129,30 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         }
     }
 
+    if (accessorKey === 'status') {
 
-     // Custom rendering for specific columns 
-     if (accessorKey === 'status') {
-        const DisplayValue = value.toString();
-
-        if (tableMeta?.editedRows[row.id]) {
-            return (
-                //custom year selector only
-                <RadioGroup defaultValue="comfortable" className="flex">
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="false" id="started" />
-                        <Label htmlFor="started">Started</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="true" id="pending" />
-                        <Label htmlFor="pending">Pending</Label>
-                    </div>
-                </RadioGroup>
-            );
-        } else {
-
-            if (DisplayValue === 'false') {
+        switch (value) {
+            case 1:
                 return <StatusBadge type="success" status="Started" />
-            } else {
+            case 2:
                 return <StatusBadge type="warning" status="Pending" />
-            }
-
-
+            case 3:
+                return <StatusBadge type="error" status="Ended" />
         }
     }
-   
 
-    
+    if (accessorKey === 'isDeleted') {
+        const DisplayValue = value.toString();
+
+        if (DisplayValue === 'false') {
+            return <StatusBadge type="success" status="Active" />
+        } else {
+            return <StatusBadge type="error" status="Disable" />
+        }
+    }
+
+
+
 
     if (tableMeta?.editedRows[row.id]) {
 
@@ -178,46 +191,196 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 };
 
 
-// Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
-    const meta = table.options.meta;
 
-    const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-        const action = e.currentTarget.name;
 
-        meta?.setEditedRows((old: any) => ({
-            ...old,
-            [row.id]: action === "edit" ? true : false,
-        }));
+const ActionCell = ({ row } : any) => {
 
-        if (action === "cancel") {
-            meta?.revertData(row.index, true);
-        }
+    const router = useRouter()
+
+    // disable & Enable
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
+
+    const [isInsEmpty, setIsInsEmpty] = useState(row.original.instructor);
+
+    const [enableCourse] = useEnableCourseMutation()
+    const [disableCourse] = useDisableCourseMutation()
+
+    // remove instructor
+    const [isRemoveInsCardVisible, setIsRemoveInsCardVisible] = useState(false);
+
+    const [removeInsFromCourse] = useRemoveInstructorFromCourseMutation()
+
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
     };
+
+    const handleConfirm = async   (courseUuid : string) => {
+        if(isDeleted){
+            await enableCourse(courseUuid).unwrap();
+            toast.success("Course enabled successfully")
+            setIsDeleted((prev :any) => !prev);
+
+            console.log('Course enabled successfully');
+
+        }else{
+            await disableCourse(courseUuid).unwrap();
+            console.log('Course disable successfully');
+            toast.success("Course enabled successfully")
+            setIsDeleted((prev :any) => !prev);
+
+
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
+    };
+
+    const handleOpenRemoveInsCard = () => {
+        setIsRemoveInsCardVisible(true);
+    };
+
+    const handleRemoveInsConfirm = async   (courseUuid : string,instructorUuid : string) => {
+        await removeInsFromCourse({
+                courseUuid,
+                instructorUuid
+            }).unwrap();
+            toast.success("Add instructor successfully.");
+            console.log('Add instructor successfully');
+        setIsRemoveInsCardVisible(false);
+    };
+
+    const handleRemoveInsCancel = () => {
+        setIsRemoveInsCardVisible(false);
+    };
+
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleOpenModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
+
+    // Edit Course
+    const {data: courseData, error: courseError, isSuccess: isCourseSuccess} = useGetCourseByUuidQuery(row.original.uuid)
+
+    console.log("courseData", courseData);
+
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
+    const handleOpenEditModal = () => {
+        setIsEditModalVisible(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setIsEditModalVisible(false);
+    };
+
+    // make the state synchronize with the refetch
+    useEffect(() => {
+        setIsInsEmpty(row.original.instructor);
+    }, [row.original.instructor]);
+
+    useEffect(() => {
+        setIsDeleted(row.original.isDeleted);
+    }, [row.original.isDeleted]);
 
     return (
         <div>
-            {meta?.editedRows[row.id] ? (
-                <div className="flex flex-row">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' className='h-8 w-8 p-0'>
+                        <span className='sr-only'>Open menu</span>
+                        <MoreHorizontal className='h-4 w-4' />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end' className="bg-white">
 
-                    <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel" >
-                        <RxCross2 size={20}  className="text-red-500"/>
-                    </button>
+                    <DropdownMenuItem onClick={() => router.push(`classes/${row.original.uuid}`)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbFileImport  size={20} className="text-gray-30 mr-2"  /> View
+                    </DropdownMenuItem>
 
-                    <button onClick={setEditedRows} name="done"className="bg-green-100 rounded-full p-1" >
-                        <IoCheckmarkSharp size={20} className="text-green-500" />
-                    </button>
+                    <DropdownMenuItem onClick={handleOpenEditModal} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
+                    </DropdownMenuItem>
 
-                </div>
-            ) : (
+                    <DropdownMenuItem
+                        className={`text-${(isInsEmpty === "N/A") ? 'green-600' : 'red-600'} focus:text-${(isInsEmpty === "N/A") ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={
+                            (isInsEmpty === "N/A") ? (
+                                handleOpenModal
+                            ) : (
+                                handleOpenRemoveInsCard
+                            )
+                        }
+                    >
+                        {(isInsEmpty === "N/A") ? (
+                            <>
+                                <TbUserPlus size={20} className="text-green-600 mr-2"   /> Add Instructor
 
-                <button onClick={setEditedRows} name="edit">
-                    <MdEdit size={18} className="text-gray-30" />
-                </button>
+                            </>
+                        ) : (
+                            <>
+                                <TbUserX  size={20} className="text-red-600 mr-2" /> Remove Instructor
+                            </>
+                        )}
+                    </DropdownMenuItem>
+
+
+
+                    <DropdownMenuItem
+                        className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2" /> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2" /> Disable
+                            </>
+                        )}
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* disable & enable card */}
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                    onConfirm={() => handleConfirm(row.original.uuid)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
             )}
+
+            {/* Remove instructor from course */}
+            {isRemoveInsCardVisible && (
+                <CardDisableComponent
+                    message={"Do you really want to remove instructor from this course?"}
+                    onConfirm={() => handleRemoveInsConfirm(row.original.uuid,row.original.instructorUuid)}
+                    onCancel={handleRemoveInsCancel}
+                    buttonTitle="Remove"
+                />
+            )}
+
+            <AddInstructorForm isVisible={isModalVisible} onClose={handleCloseModal} courseUuid={row.original.uuid} />
+
+            <EditCourseForm isVisible={isEditModalVisible} onClose={handleCloseEditModal} courseData={courseData} />
+
+
+
         </div>
     );
 };
+
 
 
 export const CourseColumns: ColumnDef<CourseType>[] = [
@@ -307,33 +470,27 @@ export const CourseColumns: ColumnDef<CourseType>[] = [
 
     },
 
-
     {
-        id: "edit",
-        cell: EditCell,
+        accessorKey: 'isDeleted',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant='ghost'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    STATE
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
+        cell: TableCell
+
     },
+
+
     {
         id: 'actions',
-        cell: ({ row }) => {
-            const gen = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end' className="bg-white">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                       {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                        {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">Disable</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        }
+        cell: ActionCell,
     },
 
 ]

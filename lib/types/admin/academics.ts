@@ -104,20 +104,26 @@ export type ShortCourseStudentType = {
 }
 
 export type StudentType = {
-    nameEn: string,
-    nameKh: string,
-    alias: string,
-    gender: string,
-    email: string,
-    password: string,
-    profileImage: string,
-    phoneNumber: string,
-    cityOrProvince: string,
-    khanOrDistrict: string,
-    sangkatOrCommune: string,
-    street: string,
-    status: number,
-    cardId: string,
+    uuid: string;
+    cardId: string;
+    studentStatus: number;
+    profileImage: string;
+    nameEn: string;
+    nameKh: string;
+    gender: string;
+    email: string;
+    username: string;
+    phoneNumber: string;
+    guardianRelationShip: string;
+    familyPhoneNumber: string | null;
+    birthPlace: string | null;
+    currentAddress: string | null;
+    biography: string;
+    dob: string;
+    bacIiGrade: string;
+    highSchoolCertificate: string | null;
+    vocationTrainingCertificate: string | null;
+    anyValuableCertificate: string | null;
 }
 
 export type InstructorType = {
@@ -139,6 +145,7 @@ export type InstructorType = {
 }
 
 export type CourseType = {
+    uuid: string
     subject: string,
     startDate: Date,
     endDate: Date,
@@ -150,7 +157,27 @@ export type CourseType = {
     isDeleted: boolean,
 }
 
-
+export type ResCourseType = {
+    uuid: string;
+    isDeleted: boolean;
+    subject: {
+        alias: string;
+        title: string;
+    };
+    instructor: any; // You can replace 'any' with a more specific type if available
+    oneClass: {
+        uuid: string;
+        classCode: string;
+    };
+    courseStart: Date | null; // Adjust 'Date' with the appropriate type if 'courseStart' varies
+    status: number;
+    courseEnd: Date | null; // Adjust 'Date' with the appropriate type if 'courseEnd' varies
+    yearOfStudy: {
+        uuid: string;
+        year: number;
+        semester: number;
+    };
+}
 
 export type TranscriptType = {
     uuid: string,
@@ -344,9 +371,20 @@ export type ClassDetailResponseType = {
     isDeleted: boolean;
     isDraft: boolean;
     status: number;
+    year: number
 
     students: any[];
     studyProgram: StudyProgramShortType;
+
+    academicYear: {
+        alias: string;
+        academicYear: string;
+    }
+
+    shift: {
+        alias: string;
+        name: string;
+    }
 
 }
 

@@ -26,132 +26,107 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-
-const students = [
-    {
-        value: "Noun Sovannthorn",
-        label: "Noun Sovannthorn",
-    },
-    {
-        value: "Pov Soknem",
-        label: "Pov Soknem",
-    },
-    {
-        value: "Sanh Panha",
-        label: "Sanh Panha",
-    },
-]
+import {IoCloseOutline} from "react-icons/io5";
+import Modal from "@/components/common/ModalComponent";
+import AsyncSelect from "react-select/async";
+import {useGetInstructorQuery} from "@/lib/features/admin/user-management/instructor/instructor";
+import {useGetStudentAdmissionsQuery} from "@/lib/features/admin/admission-management/studentAdmission";
+import {useSelector} from "react-redux";
+import {RootState} from "@/lib/store";
+import {selectSingleClass} from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
+import {useAddStudentToClassMutation} from "@/lib/features/admin/academic-management/classes/classApi";
+import {toast} from "react-hot-toast";
 
 
-export default function AddEnrolledStuForm() {
 
-    // combobox
-    const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+type PropsType = {
+    onClose: () => void;
+    isVisible: boolean;
+}
 
-    const [openIns, setOpenIns] = React.useState(false)
-    const [valueIns, setValueIns] = React.useState("")
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
+    const selectedClass = useSelector((state: RootState) => selectSingleClass(state));
+    const {data: stuData, error: stuError, isLoading: isStuLoading, isSuccess: isStuSuccess} = useGetStudentAdmissionsQuery({page: 0, pageSize: 10});
+
+    const [addStudentToClass] = useAddStudentToClassMutation()
+    const classUuid = selectedClass?.uuid
+
+    console.log("Student Data: ",stuData)
+
+    const filterstudent = (inputValue: string) => {
+        if (!stuData) return [];
+        return stuData.content.filter((student: { email: string }) =>
+            student.email.toLowerCase().includes(inputValue.toLowerCase())
+        ).map((student: { uuid: string, email: string }) => ({
+            value: student.uuid,
+            label: student.email
+        }));
+    };
+
+    const loadOptions = (inputValue: string) =>
+        new Promise<any[]>((resolve) => {
+            setTimeout(() => {
+                resolve(filterstudent(inputValue));
+            }, 1000);
+        });
+
+
+
     const formik = useFormik({
         initialValues: {
-            className: "",
-            studyProgramAlias: "",
-            shiftAlias: "",
-            generationAlias: "",
-            academicYear: "",
-            visibility:""
+            studentAdmissionUuid: []
         },
         validationSchema: Yup.object({
-            className: Yup.string()
-                .required("Required"),
-            studyProgramAlias: Yup.string()
-                .required("Required"),
-            shiftAlias: Yup.string()
-                .required("Required"),
-            generationAlias: Yup.string()
-                .required("Required"),
+            studentAdmissionUuid: Yup.array().min(1, 'Select at least one student').required('studentAdmissionUuids are required')
         }),
-        onSubmit: values => {
-            console.log(values)
+
+
+        onSubmit: async (values, { setSubmitting }) => {
+
+            try {
+                await addStudentToClass({
+                    classUuid,
+                    studentAdmissionUuid: values.studentAdmissionUuid.map((option: any) => option.value)
+                }).unwrap();
+                toast.success("Add students successfully.");
+                console.log("student formik: ",values)
+
+                onClose();
+            } catch (error) {
+                toast.error("Failed to add student")
+                console.error('Failed to add studentAdmissionUuids:', error);
+            } finally {
+                setSubmitting(false);
+            }
         }
-    })
+    });
+
     return(
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
-                    <FiPlus className="mr-2 h-4 w-4 " /> Add Students
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-white w-[500px] ">
-                <DialogHeader>
-                    <DialogTitle>Add Students</DialogTitle>
-                </DialogHeader>
-                <form
-                    className="space-y-4 md:space-y-6"
-                    onSubmit={formik.handleSubmit}
-                >
-
-                    <div>
-                        <RequiredFieldLabelComponent labelText="Students"
-                                                     labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    className="w-full bg-white justify-between"
-                                >
-                                    {value
-                                        ? students.find((stu) => stu.value === value)?.label
-                                        : "Select Student..."}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[450px] bg-white p-0">
-                                <Command>
-                                    <CommandInput placeholder="Search Student..."/>
-                                    <CommandList>
-                                        <CommandEmpty>No student found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {students.map((stu) => (
-                                                <CommandItem
-                                                    key={stu.value}
-                                                    value={stu.value}
-                                                    onSelect={(currentValue) => {
-                                                        setValue(currentValue === value ? "" : currentValue)
-                                                        setOpen(false)
-                                                    }}
-                                                >
-                                                    <Check
-                                                        className={cn(
-                                                            "mr-2 h-4 w-4",
-                                                            value === stu.value ? "opacity-100" : "opacity-0"
-                                                        )}
-                                                    />
-                                                    {stu.label}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        {
-                            formik.errors.academicYear ?
-                                <p className="text-red-700">{formik.errors.academicYear}</p> : null
-                        }
-                    </div>
-
-
-                    <div className="flex justify-end">
-                        <Button type="submit"
-                                className=" text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
-                    </div>
-
-                </form>
-            </DialogContent>
-        </Dialog>
+        <Modal isVisible={isVisible} onClose={onClose}>
+            <h2 className="text-xl text-lms-black-90 font-bold mb-4">Add Enrolled Student</h2>
+            <form className="h-[400px] space-y-2 " onSubmit={formik.handleSubmit}>
+                <AsyncSelect
+                    isMulti
+                    cacheOptions
+                    defaultOptions
+                    loadOptions={loadOptions}
+                    onChange={selectedOptions => formik.setFieldValue('studentAdmissionUuid', selectedOptions)}
+                    value={formik.values.studentAdmissionUuid}
+                />
+                {formik.errors.studentAdmissionUuid && formik.touched.studentAdmissionUuid ? (
+                    <div className="text-red-500 text-sm">{formik.errors.studentAdmissionUuid}</div>
+                ) : null}
+                <div className="flex justify-end">
+                    <button
+                        type="submit"
+                        className="mt-2 bg-lms-primary hover:bg-lms-primary/80 text-white font-bold py-2 px-4 rounded"
+                        disabled={isStuLoading}
+                    >
+                        {formik.isSubmitting || isStuLoading ? "Adding..." : "Add"}
+                    </button>
+                </div>
+            </form>
+        </Modal>
     );
 }
