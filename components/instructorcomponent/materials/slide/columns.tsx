@@ -1,11 +1,11 @@
 "use client";
-import { RxCross2 } from "react-icons/rx";
-import { IoCheckmarkSharp } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+import {RxCross2} from "react-icons/rx";
+import {IoCheckmarkSharp} from "react-icons/io5";
+import {MdEdit} from "react-icons/md";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {ColumnDef} from "@tanstack/react-table";
+import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +13,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
-import { SlideType, StatusOption } from "@/lib/types/admin/materials";
+import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
+import {MaterialType, StatusOption} from "@/lib/types/admin/materials";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
-const TableCell = ({ getValue, row, column, table }: any) => {
+const TableCell = ({getValue, row, column, table}: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
@@ -43,35 +43,35 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   if (column.id === "logo") {
     return (
-      <img
-        src={value}
-        alt="Logo"
-        className="w-12 h-12 rounded-full object-cover"
-      />
+        <img
+            src={value}
+            alt="Logo"
+            className="w-12 h-12 rounded-full object-cover"
+        />
     );
   }
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
-      <select
-        className="border-1 border-gray-300 rounded-md focus:to-primary"
-        onChange={onSelectChange}
-        value={value}
-      >
-        {columnMeta?.options?.map((option: StatusOption) => (
-          <option key={option.label} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        <select
+            className="border-1 border-gray-300 rounded-md focus:to-primary"
+            onChange={onSelectChange}
+            value={value}
+        >
+          {columnMeta?.options?.map((option: StatusOption) => (
+              <option key={option.label} value={option.value}>
+                {option.label}
+              </option>
+          ))}
+        </select>
     ) : (
-      <input
-        className="w-full p-2 border-1 border-gray-300 rounded-md"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        type={columnMeta?.type || "text"}
-      />
+        <input
+            className="w-full p-2 border-1 border-gray-300 rounded-md"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={onBlur}
+            type={columnMeta?.type || "text"}
+        />
     );
   }
 
@@ -104,7 +104,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 };
 
 // Dynamic Edit on cell
-const EditCell = ({ row, table }: any) => {
+const EditCell = ({row, table}: any) => {
   const meta = table.options.meta;
 
   const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -129,7 +129,7 @@ const EditCell = ({ row, table }: any) => {
                   onClick={setEditedRows}
                   name="cancel"
               >
-                <RxCross2 size={20} className="text-red-500" />
+                <RxCross2 size={20} className="text-red-500"/>
               </button>
 
               <button
@@ -137,44 +137,45 @@ const EditCell = ({ row, table }: any) => {
                   name="done"
                   className="bg-green-100 rounded-full p-1"
               >
-                <IoCheckmarkSharp size={20} className="text-green-500" />
+                <IoCheckmarkSharp size={20} className="text-green-500"/>
               </button>
             </div>
         ) : (
             <button onClick={setEditedRows} name="edit">
-              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+              <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
             </button>
         )}
       </div>
   );
 };
-export const slideColumns: ColumnDef<SlideType>[] = [
+
+export const slideColumns: ColumnDef<MaterialType>[] = [
   {
     accessorKey: "title",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          TITLE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            TITLE
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "course",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          COURSE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            COURSE
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
@@ -188,39 +189,39 @@ export const slideColumns: ColumnDef<SlideType>[] = [
   },
   {
     accessorKey: "type",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          TYPE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            TYPE
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
     accessorKey: "status",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          STATUS
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            STATUS
+            <ArrowUpDown className="ml-2 h-4 w-4"/>
+          </Button>
       );
     },
     cell: TableCell,
     meta: {
       type: "select",
       options: [
-        { value: 1, label: "Public" },
-        { value: 2, label: "Disable" },
-        { value: 3, label: "Draft" },
+        {value: 1, label: "Public"},
+        {value: 2, label: "Disable"},
+        {value: 3, label: "Draft"},
       ],
     },
   },
@@ -230,33 +231,33 @@ export const slideColumns: ColumnDef<SlideType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({row}) => {
       const slide = row.original;
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              className="focus:bg-background"
-              onClick={() =>
-                navigator.clipboard.writeText(slide.title)
-              }
-            >
-              Copy ID
-            </DropdownMenuItem>
-            {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-            {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-            <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-              Disable
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4"/>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-white">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                  className="focus:bg-background"
+                  onClick={() =>
+                      navigator.clipboard.writeText(slide.title)
+                  }
+              >
+                Copy ID
+              </DropdownMenuItem>
+              {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
+              {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
+              <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
+                Disable
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
       );
     },
   },

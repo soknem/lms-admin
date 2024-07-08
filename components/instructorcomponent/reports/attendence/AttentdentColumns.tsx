@@ -177,7 +177,7 @@ export const attentdentColumns: ColumnDef<AttendanceT>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "lecture.classCode",
+    accessorKey: "classCode",
     header: ({column}) => {
       return (
           <Button
@@ -192,7 +192,7 @@ export const attentdentColumns: ColumnDef<AttendanceT>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "course",
+    accessorKey: "course.title",
     header: ({column}) => {
       return (
           <Button
@@ -222,7 +222,7 @@ export const attentdentColumns: ColumnDef<AttendanceT>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "total",
+    accessorKey: "totalScore",
     header: ({column}) => {
       return (
           <Button
@@ -237,7 +237,7 @@ export const attentdentColumns: ColumnDef<AttendanceT>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "status",
+    accessorKey: "student.status",
     header: ({column}) => {
       return (
           <Button

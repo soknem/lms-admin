@@ -17,5 +17,6 @@ export type InstructorCourseType = {
     nameKh: string;
     username: string;
     gender: string;
+    avatar: string;
     courses: InCourseType[];
 };

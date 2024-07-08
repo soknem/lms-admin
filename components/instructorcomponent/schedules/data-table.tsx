@@ -105,17 +105,17 @@ export function ScheduleTable<TData, TValue>({
 
   console.log("data from page: ", data);
 
-  const filterOptions = ["All", "Public", "Disable", "Draft"];
+  const filterOptions = ["All", "Started", "Pending", "Ended"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     const filterValue =
       value === "All"
         ? ""
-        : value === "Public"
-        ? "active"
-        : value === "Disable"
-        ? "inactive"
-        : "disable";
+        : value === "Started"
+        ? "Started"
+        : value === "Pending"
+        ? "Pending"
+        : "Ended";
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 

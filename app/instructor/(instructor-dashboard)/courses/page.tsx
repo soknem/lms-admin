@@ -25,6 +25,7 @@ export default function Course() {
     const [openCourse, setOpenCourse] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
     const [filteredCourses, setFilteredCourses] = useState<InCourseType[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     useEffect(() => {
         if (Object.keys(data).length > 0) {
@@ -39,14 +40,18 @@ export default function Course() {
     }, [data, error, dispatch]);
 
     useEffect(() => {
+        let filtered = data.courses;
         if (selectedCourse) {
             const selectedCourseNumber = Number(selectedCourse);
-            const filtered = data.courses.filter((course: InCourseType) => course.semester === selectedCourseNumber);
-            setFilteredCourses(filtered);
-        } else {
-            setFilteredCourses(data.courses);
+            filtered = filtered.filter((course: InCourseType) => course.semester === selectedCourseNumber);
         }
-    }, [selectedCourse, data.courses]);
+        if (searchTerm) {
+            filtered = filtered.filter((course: InCourseType) =>
+                course.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+        setFilteredCourses(filtered);
+    }, [selectedCourse, searchTerm, data.courses]);
 
     if (!allData) {
         return <LoadingComponent />;
@@ -63,6 +68,10 @@ export default function Course() {
         setSelectedCourse(null);
     };
 
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
     return (
         <div className="flex flex-col h-full w-full p-9 gap-4">
             <section className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
@@ -77,8 +86,8 @@ export default function Course() {
                 <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
                     <div className="w-[150px] h-[150px] rounded-full shadow-lg">
                         <img
-                            src="https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"
-                            alt="student"
+                            src={allData.avatar || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                            alt="instructor"
                             className="h-full w-full object-cover rounded-full"
                         />
                     </div>
@@ -98,6 +107,8 @@ export default function Course() {
                         <Input
                             placeholder="Search Course"
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30 w-full"
+                            onChange={handleSearch}
+                            value={searchTerm}
                         />
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <FaSearch className="text-gray-400" />
