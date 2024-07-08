@@ -9,38 +9,35 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {FacultyType, StudyProgramType} from "@/lib/types/admin/faculty";
+import {StudyProgramType} from "@/lib/types/admin/faculty";
 import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
-import {FaCamera} from "react-icons/fa6";
 import {TbAsterisk} from "react-icons/tb";
-import {FiUploadCloud} from "react-icons/fi";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {
-    useCreateStuProgramMutation, useEditStuProByAliasMutation,
+    useEditStuProByAliasMutation,
     useGetStudyProgramsQuery, useGetStuProByAliasQuery
 } from "@/lib/features/admin/faculties/studyProgram/studyprogram";
-import {useGetFacultiesQuery, useGetFacultyByAliasQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {selectFaculty, setFaculties} from "@/lib/features/admin/faculties/faculty/facultySlice";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {IoCameraOutline} from "react-icons/io5";
 
-const validationSchema = Yup.object().shape({
-    alias: Yup.string().required("Required"),
-    studyProgramName: Yup.string().required("Required"),
-    logo: Yup.string().required("Required"),
-    description: Yup.string(),
-    isDeleted: Yup.boolean().required("Required"),
-    isDraft: Yup.boolean().required("Required"),
-    degreeAlias: Yup.string().required("Required"),
-    facultyAlias: Yup.string().required("Required")
-});
+// const validationSchema = Yup.object().shape({
+//     alias: Yup.string().required("Required"),
+//     studyProgramName: Yup.string().required("Required"),
+//     logo: Yup.string().required("Required"),
+//     description: Yup.string(),
+//     isDeleted: Yup.boolean().required("Required"),
+//     isDraft: Yup.boolean().required("Required"),
+//     degreeAlias: Yup.string().required("Required"),
+//     facultyAlias: Yup.string().required("Required")
+// });
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -113,7 +110,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     );
 };
 
-export function EditStudyProForm({alias}: { alias: string }) {
+export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const dispatch = useDispatch<AppDispatch>();
     const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
@@ -123,16 +120,15 @@ export function EditStudyProForm({alias}: { alias: string }) {
     const [logo, setLogo] = useState(null);
     const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
     const {refetch: refetchStuPrograms} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
-    const [isOpen, setIsOpen] = useState(false);
     const [initialValues, setInitialValues] = useState({
         alias: "",
         studyProgramName: "",
-        logo: "",
         description: "",
-        isDeleted: false,
+        logo: "",
         isDraft: false,
         degreeAlias: "",
-        facultyAlias: ""
+        isDeleted: false,
+        facultyAlias: "",
     });
 
     const {
@@ -159,11 +155,6 @@ export function EditStudyProForm({alias}: { alias: string }) {
 
     }, [degreesData, dispatch]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-
     useEffect(() => {
         if (isSuccess && stuProData) {
             setInitialValues({
@@ -171,17 +162,20 @@ export function EditStudyProForm({alias}: { alias: string }) {
                 studyProgramName: stuProData.studyProgramName,
                 logo: stuProData.logo,
                 description: stuProData.description,
-                isDeleted: stuProData.isDeleted,
                 isDraft: stuProData.isDraft,
-                degreeAlias: stuProData.degreeAlias,
-                facultyAlias: stuProData.facultyAlias
+                degreeAlias: stuProData.degree.alias,
+                facultyAlias: stuProData.faculty.alias,
+                isDeleted: stuProData.isDeleted,
             });
             setInitialAlias(stuProData.alias);
             setLogo(stuProData.logo)
         }
+
+        console.log("Initial values: ", initialValues);
     }, [isSuccess, stuProData]);
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
+
             let logoUrl = values.logo;
 
             // Upload the logo file if it's a new file
@@ -198,38 +192,45 @@ export function EditStudyProForm({alias}: { alias: string }) {
             const edtStuProByAlias: StudyProgramType = {
                 alias: values.alias,
                 studyProgramName: values.studyProgramName,
+                description: values.description,
                 degreeAlias: values.degreeAlias,
                 facultyAlias: values.facultyAlias,
-                description: values.description,
-                logo: logoUrl,
                 isDeleted: values.isDeleted,
+                logo: logoUrl,
                 isDraft: values.isDraft,
             };
 
-            await editStuProgram(edtStuProByAlias).unwrap();
-            console.log("Original", initialAlias)
+
+            console.log("Edit study program: ", edtStuProByAlias);
+            await editStuProgram({alias: initialAlias, updatedData: edtStuProByAlias}).unwrap();
 
             // Now update the alias if it has changed
             if (values.alias !== initialAlias) {
                 await editStuProgram({
                     alias: values.alias,
-                    updatedData: {...edtStuProByAlias, alias: values.alias}
+                    updatedData: {
+                        ...edtStuProByAlias,
+                        alias: values.alias,
+                    }
                 }).unwrap();
             }
 
+
             resetForm();
             refetchStuPrograms();
-            console.log("Create successfully")
-            setIsOpen(false)
+            onClose();
+            console.log("Edit successfully");
         } catch (error) {
-            console.error("Error creating study program: ", error);
+            console.error("Error Editing study program: ", error);
         } finally {
-            setSubmitting(false);
+            setSubmitting(true);
         }
     };
+
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[920px] items-center justify-center bg-white">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[920px] items-center justify-center bg-white"
+                           onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle>Edit Study Program</DialogTitle>
                 </DialogHeader>
@@ -274,33 +275,6 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                     <Field type="text" name="alias" id="alias" className={`${style.input}`}/>
                                 </div>
 
-                                {/* facultyAlias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="facultyAlias">Faculty</label>
-                                    </div>
-                                    <Field as="select" name="facultyAlias" id="facultyAlias"
-                                           className={`${style.input}`}>
-                                        <option value="" label="Select faculty"/>
-                                        {Array.isArray(faculties) && faculties.map(faculty => (
-                                            <option key={faculty.alias} value={faculty.alias} label={faculty.alias}/>
-                                        ))}
-                                    </Field>
-                                </div>
-
-                                {/* degreeAlias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="degreeAlias">Degree</label>
-                                    </div>
-                                    <Field as="select" name="degreeAlias" id="degreeAlias" className={`${style.input}`}>
-                                        <option value="" label="Select degree"/>
-                                        {Array.isArray(degrees) && degrees.map(degree => (
-                                            <option key={degree.alias} value={degree.alias} label={degree.alias}/>
-                                        ))}
-                                    </Field>
-                                </div>
-
                                 {/* description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">Description</label>
@@ -315,8 +289,8 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <div className="flex gap-4 h-[40px] items-center">
-                                        <Field name="isDraft" component={RadioButton} value="true" label="Public"/>
-                                        <Field name="isDraft" component={RadioButton} value="false" label="Draft"/>
+                                        <Field name="isDraft" component={RadioButton} value={false} label="Public"/>
+                                        <Field name="isDraft" component={RadioButton} value={true} label="Draft"/>
                                     </div>
                                 </div>
 
@@ -328,7 +302,7 @@ export function EditStudyProForm({alias}: { alias: string }) {
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >
-                                    Add
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>

@@ -232,7 +232,7 @@ export function CourseDataTable<TData, TValue>({
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
-              View
+              Table View
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='bg-white '>

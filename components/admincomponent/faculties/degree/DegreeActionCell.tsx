@@ -1,30 +1,68 @@
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {MoreHorizontal} from "lucide-react";
-import {ViewDeForm} from "@/components/admincomponent/faculties/degree/ViewDeForm";
-import {EditDeForm} from "@/components/admincomponent/faculties/degree/EditDeForm";
-
+} from '@/components/ui/dropdown-menu';
+import {Button} from '@/components/ui/button';
+import {MoreHorizontal} from 'lucide-react';
+import {ViewDeForm} from '@/components/admincomponent/faculties/degree/ViewDeForm';
+import {EditDeForm} from '@/components/admincomponent/faculties/degree/EditDeForm';
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import {TbCopy, TbEye, TbEyeCancel, TbFileImport, TbPencil} from "react-icons/tb";
+import {
+    useDisableDegreeByAliasMutation,
+    useEnableDegreeByAliasMutation
+} from "@/lib/features/admin/faculties/degree/degree";
+import {useSelector} from "react-redux";
+import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
 
 const ActionsCell = ({row}: any) => {
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
     const [isEditFormVisible, setEditFormVisible] = useState(false);
     const [isViewFormVisible, setViewFormVisible] = useState(false);
     const degree = row.original;
 
-    const handleEditClick = () => {
-        setEditFormVisible(true);
-        setViewFormVisible(false); // Close view form if open
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
     };
 
+    const [enableDegree, setEnableFaculty] = useEnableDegreeByAliasMutation();
+    const [disableDegree, setDisableFaculty] = useDisableDegreeByAliasMutation();
+
+    useSelector(selectDegree);
+
+    const handleConfirm = async (alias: string) => {
+        if (isDeleted) {
+            await enableDegree(alias).unwrap();
+            setIsDeleted((prev: any) => !prev);
+            console.log('Degree enabled successfully');
+        } else {
+            await disableDegree(alias).unwrap();
+            setIsDeleted((prev: any) => !prev);
+            console.log('Degree disable successfully');
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
+    };
+
+    const handleEditClick = () => {
+        setEditFormVisible(true);
+        setViewFormVisible(false);
+    };
     const handleViewClick = () => {
         setViewFormVisible(true);
-        setEditFormVisible(false); // Close edit form if open
+        setEditFormVisible(false);
+    };
+    const handleCloseForm = () => {
+        setEditFormVisible(false);
+        setViewFormVisible(false);
     };
 
     return (
@@ -39,32 +77,53 @@ const ActionsCell = ({row}: any) => {
                 <DropdownMenuContent align="end" className="bg-white">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem
-                        className="focus:bg-background"
-                        onClick={() => navigator.clipboard.writeText(degree.id)}
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
+                        onClick={() => navigator.clipboard.writeText(degree.level)}
                     >
-                        Copy ID
+                        <TbCopy size={20} className="text-gray-30 mr-2  "/> Copy Degree Level
                     </DropdownMenuItem>
+
                     <DropdownMenuItem
-                        className="focus:bg-background"
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
                         onClick={handleViewClick}
                     >
+                        <TbFileImport size={20} className="text-gray-30 mr-2"/>
                         View
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        className="focus:bg-background"
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
                         onClick={handleEditClick}
                     >
+                        <TbPencil size={20} className="text-gray-30 mr-2"/>
                         Edit
                     </DropdownMenuItem>
-                    {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                    {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                    <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-                        Disable
+                    <DropdownMenuItem
+                        className={` text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2 "/> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2 "/> Disable
+                            </>
+                        )}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            {isViewFormVisible && <ViewDeForm alias={`${degree.alias}`}/>}
-            {isEditFormVisible && <EditDeForm alias={`${degree.alias}`}/>}
+            {isViewFormVisible && <ViewDeForm alias={degree.alias} onClose={handleCloseForm}/>}
+            {isEditFormVisible && <EditDeForm alias={degree.alias} onClose={handleCloseForm}/>}
+
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                    onConfirm={() => handleConfirm(degree.alias)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
+            )}
         </div>
     );
 };

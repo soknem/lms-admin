@@ -1,13 +1,9 @@
-"use client";
-
 import {ColumnDef} from "@tanstack/react-table";
 import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
 
-import {DegreeType, StatusOption} from "@/lib/types/admin/faculty";
-import ActionsCell from "@/components/admincomponent/faculties/degree/DegreeActionCell";
+import {SetupStudyProgramType, StatusOption} from "@/lib/types/admin/faculty";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
@@ -27,20 +23,10 @@ const TableCell = ({getValue, row, column, table}: any) => {
     };
 
     const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newValue = e.target.value;
+        const newValue = e.target.value === "true";
         setValue(newValue);
         tableMeta?.updateData(row.index, column.id, newValue);
     };
-
-    if (column.id === "logo") {
-        return (
-            <img
-                src={value}
-                alt="Logo"
-                className="w-12 h-12 rounded-full object-cover"
-            />
-        );
-    }
 
     if (column.id === "description") {
         const words = value.split(" ");
@@ -49,10 +35,23 @@ const TableCell = ({getValue, row, column, table}: any) => {
         return <span>{displayText || "No Description"}</span>;
     }
 
+    if (column.id === "logo") {
+        return (
+            <div>
+                <img
+                    src={value || "https://via.placeholder.com/150"}
+                    // alt="Logo"
+                    className="w-12 h-12 rounded-full object-contain"
+                />
+            </div>
+
+        );
+    }
+
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
             <select
-                className="border-1 border-gray-300 rounded-md focus:to-primary"
+                className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
                 onChange={onSelectChange}
                 value={value}
             >
@@ -64,7 +63,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
             </select>
         ) : (
             <input
-                className="w-full p-2 border-1 border-gray-300 rounded-md"
+                className="w-full p-2 border-1 border-gray-300 "
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -84,17 +83,13 @@ const TableCell = ({getValue, row, column, table}: any) => {
                             : ""
                 }
             >
-            {value === false
-                ? "Public"
-                : value === true
-                    ? "Draft"
+            {value === true
+                ? "Draft"
+                : value === false
+                    ? "Public"
                     : ""}
         </span>
         );
-    }
-
-    if (column.id === "numberOfYear") {
-        return <span>{value} Years</span>;
     }
 
     // Custom rendering for specific columns
@@ -128,16 +123,18 @@ const TableCell = ({getValue, row, column, table}: any) => {
     return <span>{value}</span>;
 };
 
-export const degreeColumns: ColumnDef<DegreeType>[] = [
+
+export const studyProgramDetailColumns: ColumnDef<SetupStudyProgramType>[] = [
+
     {
-        accessorKey: "level",
+        accessorKey: "title",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    LEVEL
+                    SUBJECT
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -146,22 +143,22 @@ export const degreeColumns: ColumnDef<DegreeType>[] = [
     },
 
     {
-        accessorKey: "description",
+        accessorKey: "logo",
         header: () => {
-            return <div>DESCRIPTION</div>;
+            return <div>LOGO</div>;
         },
         cell: TableCell,
     },
 
     {
-        accessorKey: "numberOfYear",
+        accessorKey: "practice",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    NUMBER OF YEARS
+                    PRACTICE
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -170,43 +167,67 @@ export const degreeColumns: ColumnDef<DegreeType>[] = [
     },
 
     {
-        accessorKey: "isDraft",
+        accessorKey: "internship",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    VISIBILITY
+                    INTERNSHIP
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-
-
         cell: TableCell,
     },
 
     {
-        accessorKey: "isDeleted",
+        accessorKey: "theory",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    STATUS
+                    THEAORY
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-
-
         cell: TableCell,
     },
 
     {
-        id: "actions",
-        cell: ActionsCell,
+        accessorKey: "duration",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    DURATION
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: TableCell,
     },
+
+    {
+        accessorKey: "credit",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    CREDIT
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: TableCell,
+    },
+
 ];

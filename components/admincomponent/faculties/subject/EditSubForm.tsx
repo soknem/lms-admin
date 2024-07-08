@@ -75,7 +75,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
                     <img
                         src={previewUrl}
                         alt="faculty"
-                        className="w-full h-full rounded-full"
+                        className="w-full object-coverl"
                     />
                 )}
                 <div
@@ -94,7 +94,7 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     );
 };
 
-export function EditSubjectForm({alias}: { alias: string }) {
+export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -113,10 +113,6 @@ export function EditSubjectForm({alias}: { alias: string }) {
         description: "",
         isDraft: false,
     });
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     useEffect(() => {
         if (isSuccess && subjectData) {
@@ -188,7 +184,7 @@ export function EditSubjectForm({alias}: { alias: string }) {
             refetchSubjects();
             console.log("Update successfully")
             // router.refresh(); // or any other navigation action
-            handleClose()
+            onClose()
         } catch (error) {
             // Handle error (e.g., show an error message)
             console.error("Error updating faculty: ", error);
@@ -198,8 +194,8 @@ export function EditSubjectForm({alias}: { alias: string }) {
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose} modal={true}>
-            <DialogContent className="w-[480px]  bg-white ">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[480px]  bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Edit Subject</DialogTitle>
                 </DialogHeader>
@@ -345,13 +341,13 @@ export function EditSubjectForm({alias}: { alias: string }) {
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
+                                            value={false}
                                             label="Public"
                                         />
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="false"
+                                            value={true}
                                             label="Draft"
                                         />
                                     </div>

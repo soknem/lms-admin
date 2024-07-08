@@ -31,6 +31,7 @@ import {
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import slugify from "slugify";
 
 const initialValues = {
     alias: "",
@@ -180,7 +181,8 @@ export function CreateStudyProForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[920px] items-center justify-center bg-white">
+            <DialogContent className="w-[920px] items-center justify-center bg-white"
+                           onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Study Program</DialogTitle>
                 </DialogHeader>
@@ -203,6 +205,18 @@ export function CreateStudyProForm() {
                                     <Field placeholder={`Master of Computer Science`} type="text"
                                            name="studyProgramName"
                                            id="studyProgramName"
+                                           onChange={(e: any) => {
+                                               setFieldValue(
+                                                   "studyProgramName",
+                                                   e.target.value
+                                               );
+                                               setFieldValue(
+                                                   "alias",
+                                                   slugify(e.target.value, {
+                                                       lower: true,
+                                                   })
+                                               );
+                                           }}
                                            className={`${style.input}`}/>
                                 </div>
 
@@ -212,7 +226,7 @@ export function CreateStudyProForm() {
                                         <label className={`${style.label}`} htmlFor="alias">Slug</label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field placeholder={`computer-science-master`} type="text" name="alias" id="alias"
+                                    <Field disabled type="text" name="alias" id="alias"
                                            className={`${style.input}`}/>
                                 </div>
 
@@ -225,7 +239,7 @@ export function CreateStudyProForm() {
                                            className={`${style.input}`}>
                                         <option value="" label="Select faculty"/>
                                         {Array.isArray(faculties) && faculties.map(faculty => (
-                                            <option key={faculty.alias} value={faculty.alias} label={faculty.alias}/>
+                                            <option key={faculty.alias} value={faculty.alias} label={faculty.name}/>
                                         ))}
                                     </Field>
                                 </div>
@@ -238,7 +252,7 @@ export function CreateStudyProForm() {
                                     <Field as="select" name="degreeAlias" id="degreeAlias" className={`${style.input}`}>
                                         <option value="" label="Select degree"/>
                                         {Array.isArray(degrees) && degrees.map(degree => (
-                                            <option key={degree.alias} value={degree.alias} label={degree.alias}/>
+                                            <option key={degree.alias} value={degree.alias} label={degree.level}/>
                                         ))}
                                     </Field>
                                 </div>
@@ -262,8 +276,8 @@ export function CreateStudyProForm() {
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <div className="flex gap-4 h-[40px] items-center">
-                                        <Field name="isDraft" component={RadioButton} value="true" label="Public"/>
-                                        <Field name="isDraft" component={RadioButton} value="false" label="Draft"/>
+                                        <Field name="isDraft" component={RadioButton} value="false" label="Public"/>
+                                        <Field name="isDraft" component={RadioButton} value="true" label="Draft"/>
                                     </div>
                                 </div>
 

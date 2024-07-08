@@ -19,6 +19,7 @@ import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {useCreateSubjectMutation, useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
+import slugify from "slugify";
 
 const initialValues = {
     title: "",
@@ -119,17 +120,25 @@ export function CreateSubjectForm() {
 
             if (fileResponse) {
                 // File uploaded successfully, now create the faculty
+
+                const theoryValue = values.theory;
+                const practiceValue = values.practice;
+                const internshipValue = values.practice;
+                const durationValue = (theoryValue * 15) + (practiceValue * 30) + (internshipValue * 45);
+
+
                 const newSubject: SubjectType = {
                     alias: values.alias,
                     title: values.title,
-                    duration: values.duration,
-                    theory: values.theory,
-                    practice: values.practice,
-                    internship: values.internship,
+                    duration: durationValue,
+                    theory: theoryValue,
+                    practice: practiceValue,
+                    internship: internshipValue,
                     description: values.description,
                     logo: fileResponse.name,
                     isDraft: values.isDraft,
                 };
+
 
                 const res = await createSubject(newSubject).unwrap();
                 resetForm();
@@ -147,6 +156,7 @@ export function CreateSubjectForm() {
         }
     };
 
+
     return (
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
 
@@ -156,7 +166,7 @@ export function CreateSubjectForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[480px]  bg-white ">
+            <DialogContent className="w-[480px]  bg-white" onInteractOutside={(e) => e.preventDefault()}>
 
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Subject</DialogTitle>
@@ -168,6 +178,8 @@ export function CreateSubjectForm() {
                     onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
+
+
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col items-center gap-1">
 
@@ -184,6 +196,18 @@ export function CreateSubjectForm() {
                                         placeholder="Introduction to IT"
                                         name="title"
                                         id="title"
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "title",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
@@ -203,8 +227,8 @@ export function CreateSubjectForm() {
                                     </div>
 
                                     <Field
+                                        disabled
                                         type="text"
-                                        placeholder="Faculty of Engineering"
                                         name="alias"
                                         id="alias"
                                         className={`${style.input}`}
@@ -226,7 +250,7 @@ export function CreateSubjectForm() {
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="duration" className={` ${style.input}`}/>
+                                        <Field disabled name="duration" className={` ${style.input}`}/>
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -295,13 +319,13 @@ export function CreateSubjectForm() {
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
+                                            value="false"
                                             label="Public"
                                         />
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="false"
+                                            value="true"
                                             label="Draft"
                                         />
                                     </div>

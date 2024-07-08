@@ -49,7 +49,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
             <div className="flex items-center">
                 <img
                     src={studentData.avatar}
-                    alt={studentData.name}
+                    alt={studentData.avatar}
                     className="w-8 h-8 rounded-full mr-2"
                 />
                 <span>{studentData.nameEn}</span>
@@ -161,6 +161,10 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
             );
         },
         cell: TableCell,
+        filterFn: (row, columnId, filterValue) => {
+            const profileName = row.original.nameEn.toLowerCase();
+            return profileName.includes(filterValue.toLowerCase());
+        },
     },
 
     {
@@ -264,7 +268,7 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
                         <DropdownMenuItem
                             className="focus:bg-background"
                             onClick={() =>
-                                navigator.clipboard.writeText(admission.shift)
+                                navigator.clipboard.writeText(admission.nameEn)
                             }
                         >
                             Copy ID

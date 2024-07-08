@@ -111,15 +111,11 @@ export function StudyProgramTable<TData extends StudyProgramType, TValue>({
             value === "All"
                 ? ""
                 : value === "Public"
-                    ? true
+                    ? false
                     : value === "Draft"
-                        ? false
+                        ? true
                         : "";
         table.getColumn("isDraft")?.setFilterValue(filterValue);
-    };
-
-    const handleRowClick = (row: StudyProgramType) => {
-        router.push(`/admin/faculties/setup-studyprogram/${row.alias}`);
     };
 
     return (
@@ -232,8 +228,6 @@ export function StudyProgramTable<TData extends StudyProgramType, TValue>({
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className="hover:bg-lms-background cursor-pointer"
-                                    onClick={() => handleRowClick(row.original)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

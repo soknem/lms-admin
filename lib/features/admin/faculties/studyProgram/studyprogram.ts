@@ -5,6 +5,8 @@ export const studyProgramApi = istadLmsApi.injectEndpoints({
         getStudyPrograms: builder.query<any, { page: number; pageSize: number }>({
             query: ({page = 0, pageSize = 10}) =>
                 `/study-programs?pageNumber=${page}&page_size=${pageSize}`,
+            providesTags: [{type: 'StudyPrograms', id: 'LIST'}],
+
         }),
         createStuProgram: builder.mutation({
             query: (newStuProgram) => ({
@@ -26,11 +28,38 @@ export const studyProgramApi = istadLmsApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        getByStudyProgramAndYear: builder.mutation({
+            query: ({studyProgramAlias, year}) => ({
+                url: `year-of-studies/study-programs/years`,
+                method: 'POST',
+                body: {studyProgramAlias, year},
+            }),
+        }),
+
+        enableStudyProgramByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/study-programs/${alias}/enable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'StudyPrograms', id: 'LIST'}],
+        }),
+
+        disableStudyProgramByAlias: builder.mutation<void, string>({
+            query: (alias) => ({
+                url: `/study-programs/${alias}/disable`,
+                method: 'PUT',
+            }),
+            invalidatesTags: [{type: 'StudyPrograms', id: 'LIST'}],
+        }),
+
     })
 })
 export const {
     useGetStudyProgramsQuery,
     useCreateStuProgramMutation,
     useEditStuProByAliasMutation,
-    useGetStuProByAliasQuery
+    useGetStuProByAliasQuery,
+    useGetByStudyProgramAndYearMutation,
+    useEnableStudyProgramByAliasMutation,
+    useDisableStudyProgramByAliasMutation,
 } = studyProgramApi;

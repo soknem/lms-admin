@@ -14,6 +14,7 @@ export type FacultyType = {
 export type DegreeType = {
     alias: string,
     level: string,
+    numberOfYear: number,
     description: string,
     isDeleted: boolean,
     isDraft: boolean
@@ -48,15 +49,35 @@ export type StudyProgramType = {
     degreeAlias: string,
 };
 
+// export type EditStudyProgramType = {
+//     alias: string,
+//     studyProgramName: string,
+//     description: string,
+//     logo: string,
+//     isDraft: boolean,
+// };
+
 
 export type SetupStudyProgramType = {
-    year: number;
-    uuid: string;
-    subjects: SubjectType[];
-    studyProgram: string;
-    semester: number;
+    alias: string;
+    title: string;
+    description: string;
+    logo: string;
+    practice: number;
+    internship: number;
+    theory: number;
+    duration: number;
+    credit: number;
     isDraft: boolean;
     isDeleted: boolean;
+    yearOfStudy: string;
+};
+
+export type AddSubjectType = {
+    aliasOfSubjects: string;
+    uuid: string;
+    semester: number;
+    year: number;
 };
 
 // **** Subjects *****

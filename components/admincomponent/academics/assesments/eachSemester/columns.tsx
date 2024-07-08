@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect, ChangeEvent } from 'react';
 import {OptionType, semesterAssessementType, CourseShortType} from "@/lib/types/admin/academics";
 import StatusBadge from "@/components/common/StatusBadge";
+import {useSelector} from "react-redux";
+import {
+    selectEachSemesterAssessment
+} from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
 
 // const getUniqueSubjects = (data: semesterAssessementType[]) => {
 //     const subjectsSet = new Set<string>();
@@ -104,23 +108,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 const initialData: semesterAssessementType[] = [
-    // {
-    //     cardId: "istad-1000",
-    //     nameEn: "Alice Johnson",
-    //     gender: "Female",
-    //     dob: "2001-03-15",
-    //     class: "FY2025 - M1",
-    //     subjects: [
-    //         { subjectName: "Introduction to IT", score: 85 },
-    //         { subjectName: "Programming Fundamental", score: 92 },
-    //         { subjectName: "Intensive English Program I", score: 88 },
-    //         { subjectName: "Academic Skill Development", score: 90 },
-    //         { subjectName: "Mathematics I", score: 95 }
-    //     ],
-    //     grade: "A",
-    //     total: 450,
-    //     status: 1
-    // }
+
     {
         cardId: "istad-1000",
         nameEn: "Alice Johnson",
@@ -140,6 +128,8 @@ const initialData: semesterAssessementType[] = [
         total: 450,
         status: 1
     }
+
+
 ];
 
 // Dynamically generate subject columns
@@ -163,28 +153,7 @@ const initialData: semesterAssessementType[] = [
 //     }
 // }));
 
-// const uniqueSubjects = getUniqueSubjects(initialData);
-// const subjectColumns = uniqueSubjects.map((subject) => ({
-//     accessorKey: subject.replace(/\s+/g, ''),
-//     header: ({ column } : any) => (
-//         <Button
-//             variant='ghost'
-//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//         >
-//             {subject.toUpperCase()}
-//             <ArrowUpDown className='ml-2 h-4 w-4' />
-//         </Button>
-//     ),
-//     cell: ({ row }: any) => {
-//         const subjectScore = row.original.courses.find(
-//             (course: CourseShortType) => course.title === subject
-//         )?.score;
-//         return subjectScore ?? '-';
-//     }
-// }));
-
 const uniqueSubjects = getUniqueSubjects(initialData);
-
 const subjectColumns = uniqueSubjects.map((subject) => ({
     accessorKey: subject.replace(/\s+/g, ''),
     header: ({ column } : any) => (
@@ -204,71 +173,120 @@ const subjectColumns = uniqueSubjects.map((subject) => ({
     }
 }));
 
+// const semesterStoreData = useSelector(selectEachSemesterAssessment)
+//
+// const uniqueSubjects = getUniqueSubjects(semesterStoreData);
+//
+// const subjectColumns = uniqueSubjects.map((subject) => ({
+//     accessorKey: subject.replace(/\s+/g, ''),
+//     header: ({ column } : any) => (
+//         <Button
+//             variant='ghost'
+//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+//         >
+//             {subject.toUpperCase()}
+//             <ArrowUpDown className='ml-2 h-4 w-4' />
+//         </Button>
+//     ),
+//     cell: ({ row }: any) => {
+//         const subjectScore = row.original.courses.find(
+//             (course: CourseShortType) => course.title === subject
+//         )?.score;
+//         return subjectScore ?? '-';
+//     }
+// }));
+
+// export default function columnSemesterData() {
+//     // const semesterStoreData = useSelector(selectEachSemesterAssessment);
+//     const uniqueSubjects = getUniqueSubjects(initialData);
+//     const subjectColumns = uniqueSubjects.map((subject) => ({
+//         accessorKey: subject.replace(/\s+/g, ''),
+//         header: ({column}: any) => (
+//             <Button
+//                 variant='ghost'
+//                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+//             >
+//                 {subject.toUpperCase()}
+//                 <ArrowUpDown className='ml-2 h-4 w-4'/>
+//             </Button>
+//         ),
+//         cell: ({row}: any) => {
+//             const subjectScore = row.original.courses.find(
+//                 (course: CourseShortType) => course.title === subject
+//             )?.score;
+//             return subjectScore ?? '-';
+//         }
+//     }));
+//
+//
+//
+//
+// }
 
 export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     {
         accessorKey: 'cardId',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 CARD ID
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
     {
         accessorKey: 'nameEn',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 FULLNAME(EN)
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
     {
         accessorKey: 'gender',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 GENDER
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
     {
         accessorKey: 'dob',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 className="w-[130px] flex justify-start items-start"
             >
                 DOB
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
     {
-        accessorKey: 'class',
-        header: ({ column }) => (
+        accessorKey: 'classCode',
+        header: ({column}) => (
             <Button
                 variant='ghost'
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 className="w-[130px] flex justify-start items-start"
             >
                 CLASS
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
@@ -276,39 +294,41 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     ...subjectColumns,
     {
         accessorKey: 'grade',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
             >
                 GPA
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
     {
         accessorKey: 'total',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
             >
                 TOTAL
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
     {
         accessorKey: 'status',
-        header: ({ column }) => (
+        header: ({column}) => (
             <Button
                 variant='ghost'
                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
             >
                 STATUS
-                <ArrowUpDown className='ml-2 h-4 w-4' />
+                <ArrowUpDown className='ml-2 h-4 w-4'/>
             </Button>
         ),
         cell: TableCell,
     },
 ];
+
+

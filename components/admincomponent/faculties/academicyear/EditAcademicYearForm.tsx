@@ -45,7 +45,7 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-export function EditAcademicYearForm({alias}: { alias: string }) {
+export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [editAcademicYear] = useEditAcademicYearByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -72,10 +72,6 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
         }
     }, [isSuccess, academicYearData]);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
             const editAcademicYearDataByAlias: AcademicYearType = {
@@ -85,6 +81,8 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
                 isDeleted: values.isDeleted,
                 isDraft: values.isDraft,
             };
+
+            console.log("Updated Data", editAcademicYearDataByAlias)
 
             await editAcademicYear({alias: initialAlias, updatedData: editAcademicYearDataByAlias}).unwrap();
 
@@ -98,7 +96,7 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
 
             resetForm();
             refetchAcademicYear();
-            handleClose();
+            onClose();
         } catch (error) {
             console.error("Error updating degree: ", error);
         } finally {
@@ -107,8 +105,8 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="w-[480px] bg-white">
+        <Dialog open={open} onOpenChange={onClose} modal={true}>
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Edit Academic Year</DialogTitle>
                 </DialogHeader>
@@ -116,7 +114,6 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
                 <Formik
                     enableReinitialize
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
@@ -180,48 +177,19 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value={false}
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value={true}
                                                 label="Draft"
                                             />
                                         </div>
 
                                         <ErrorMessage
                                             name="isDraft"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Public"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="Draft"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDeleted"
                                             component={RadioButton}
                                             className={`${style.error}`}
                                         />
@@ -238,20 +206,20 @@ export function EditAcademicYearForm({alias}: { alias: string }) {
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value="1"
-                                                label="Starting"
+                                                value={1}
+                                                label="Pending"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value="2"
+                                                value={2}
+                                                label="Started"
+                                            />
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value={3}
                                                 label="Ended"
-                                            />
-                                            <Field
-                                                name="status"
-                                                component={RadioButton}
-                                                value="3"
-                                                label="Achieved"
                                             />
                                         </div>
 

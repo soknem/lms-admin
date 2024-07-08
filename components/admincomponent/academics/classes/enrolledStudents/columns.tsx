@@ -18,6 +18,15 @@ import { useState, useEffect, ChangeEvent, MouseEvent } from 'react'
 import { OptionType , StudentType } from "@/lib/types/admin/academics";
 
 import StatusBadge from "@/components/common/StatusBadge";
+import {useSelector} from "react-redux";
+import {RootState} from "@/lib/store";
+import {selectDetailClasses} from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
+import {selectSingleClass} from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
+import {
+    useDeleteStudentFromClassMutation,
+    useGetStudentFromClassQuery
+} from "@/lib/features/admin/academic-management/classes/classApi";
+import {toast} from "react-hot-toast";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -46,7 +55,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
     // Custom rendering for specific columns 
-    if (accessorKey === 'status') {
+    if (accessorKey === 'studentStatus') {
         
         switch (value) {
             case 1:
@@ -65,6 +74,22 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     //add font style to khmer name columns 
     if(accessorKey === 'nameKh'){
         return <div className="khmer-font" >{value}</div>;
+    }
+
+    if(column.id === "nameEn"){
+        return (
+            <span className=" uppercase">
+        {value}
+      </span>
+        );
+    }
+
+    if (column.id === "gender") {
+        return (
+            <span className={value === "Female" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "Female" ? "Female" : value === "Male" ? "Male" : ""}
+      </span>
+        );
     }
 
 
@@ -104,7 +129,71 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return <span>{value}</span>;
 };
 
+// const HandleRemoveStudent = ({ row } : any) => {
+//
+//     if (row.original) {
+//         console.log("Student selected:", row.original.uuid);
+//     } else {
+//         console.error("Row does not have an 'original' property");
+//     }
+//
+//     const selectedClass = useSelector((state : RootState) => selectDetailClasses(state) );
+//
+//     console.log("selected class: ",selectedClass)
+//
+//
+//
+// }
 
+const HandleRemoveStudent = ({ row }: { row: any }) => {
+    const selectedClass = useSelector((state: RootState) => selectSingleClass(state));
+
+    if (row.original) {
+        console.log("Student selected:", row.original.uuid);
+    } else {
+        console.error("Row does not have an 'original' property");
+    }
+
+    console.log("selected class: ", selectedClass?.uuid || "");
+
+    const [deleteStudentFromClass, { isLoading, isError }] = useDeleteStudentFromClassMutation();
+
+    const { refetch: refetchData } = useGetStudentFromClassQuery(selectedClass?.uuid);
+
+
+    const handleRemoveClick = async () => {
+        if (row.original && selectedClass) {
+            try {
+                await deleteStudentFromClass({ classUuid: selectedClass.uuid, studentUuid: row.original.uuid }).unwrap();
+                toast.success("Student removed successfully");
+                console.log("Student removed successfully");
+                refetchData()
+            } catch (error) {
+                toast.error("Failed to remove student");
+                console.error("Failed to remove student:", error);
+            }
+        } else {
+            console.error("Row does not have an 'original' property or class is not selected");
+        }
+    };
+
+
+
+    return (
+        <div className="text-red-600 focus:text-red-600 font-medium focus:bg-background hover:cursor-pointer ">
+            {
+                isLoading ? (
+                    <span>Loading...</span>
+                ):(
+                    <TbTrash onClick={handleRemoveClick}  size={24} className="text-red-600 mr-2" />
+                )
+            }
+
+            {/*{isLoading && <span>Loading...</span>}*/}
+
+        </div>
+    );
+};
 
 export const StuColumns: ColumnDef<StudentType>[] = [
     {
@@ -208,7 +297,7 @@ export const StuColumns: ColumnDef<StudentType>[] = [
     },
 
     {
-        accessorKey: 'status',
+        accessorKey: 'studentStatus',
         header: ({ column }) => {
             return (
                 <Button
@@ -227,12 +316,9 @@ export const StuColumns: ColumnDef<StudentType>[] = [
 
     {
         id: 'actions',
-        cell: ({ row }) => {
-
-            return (
-                <div className="text-red-600 focus:text-red-600 font-medium focus:bg-background"><TbTrash  size={24} className="text-red-600 mr-2 "/></div>
-            )
-        }
+        cell: ({ row }) => (
+            <HandleRemoveStudent row={row} />
+        ),
     },
 
 ]

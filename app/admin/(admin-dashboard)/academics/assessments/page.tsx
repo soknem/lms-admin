@@ -28,9 +28,7 @@ import {
     useGetAssessmentQuery, useGetSemestersMutation,
     useGetTranscriptsMutation
 } from "@/lib/features/admin/academic-management/assesment/assessment";
-import {
-    selectAssessment,setAssessment
-} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
+
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
 import {TbFilter} from "react-icons/tb";
@@ -43,6 +41,10 @@ import FilterGenerationPopover from "@/components/common/filter/FilterGeneration
 import FilterSemesterPopover from "@/components/common/filter/FilterSemesterPopover";
 import FilterYearPopover from "@/components/common/filter/FilterYearPopover";
 import {FiPlus} from "react-icons/fi";
+import {
+    selectEachSemesterAssessment,
+    setEachSemesterAssessment
+} from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
 
 type TranscriptFilterType = {
     generationAlias: string;
@@ -187,6 +189,8 @@ export default function Assessment() {
 
     const [semesters , setSemesters] = useState([])
 
+    const dispatch = useDispatch();
+
     const fetchSemesterData = async (filters: any) => {
         try {
             const result = await getSemesters({
@@ -198,6 +202,7 @@ export default function Assessment() {
 
             console.log('Fetched data:', result);
             setSemesters(result.content)
+            dispatch(setEachSemesterAssessment(result.content));
 
         } catch (err) {
             console.error('Failed to fetch semester', err);
@@ -211,16 +216,24 @@ export default function Assessment() {
         semester: 1
     });
 
+
+
     useEffect(() => {
         // Fetch initial data when component mounts
         fetchSemesterData(semesterfilters);
+
     }, []); // Empty dependency array to run once on mount
 
     const handleSemesterFilter = () => {
         fetchSemesterData(semesterfilters); // Call fetch function on filter button click
+
     };
 
     console.log("semester filters", semesters);
+
+
+
+    // console.log("data semester from store: ",semesterStoreData)
 
 
     // ==== fetch generation ====
