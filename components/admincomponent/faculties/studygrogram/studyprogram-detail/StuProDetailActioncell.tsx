@@ -67,7 +67,7 @@ const ActionsCell = ({row}: any) => {
                     {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
                     <DropdownMenuItem
                         className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
-                        onClick={() => router.push(`/admin/faculties/setup-studyprogram/${setupSubject.alias}`)}
+                        onClick={() => router.push("/admin/faculties/studyprogram-detail")}
                     >
                         <TbFileImport size={20} className="text-gray-30 mr-2"/>
                         View

@@ -88,6 +88,8 @@ export default function SetupStuPro(props: PropsParams) {
 
                     <TabsContent value="foundation-year">
                         <SetupStudyProgramTable
+                            alias={alias}
+                            currentYear={currentYear}
                             columns={setupStudyProgramColumns}
                             data={filterDataByYear(1)}
                         />
@@ -95,6 +97,8 @@ export default function SetupStuPro(props: PropsParams) {
 
                     <TabsContent value="second-year">
                         <SetupStudyProgramTable
+                            alias={alias}
+                            currentYear={currentYear}
                             columns={setupStudyProgramColumns}
                             data={filterDataByYear(2)}
                         />
@@ -102,18 +106,22 @@ export default function SetupStuPro(props: PropsParams) {
 
                     <TabsContent value="third-year">
                         <SetupStudyProgramTable
+                            alias={alias}
+                            currentYear={currentYear}
                             columns={setupStudyProgramColumns}
                             data={filterDataByYear(3)}
                         />
                     </TabsContent>
                     <TabsContent value="fourth-year">
                         <SetupStudyProgramTable
+                            alias={alias}
+                            currentYear={currentYear}
                             columns={setupStudyProgramColumns}
                             data={filterDataByYear(4)}
                         />
                     </TabsContent>
                 </Tabs>
-                <AddSubjectStudyProForm alias={alias} year={currentYear}/>
+                {/*<AddSubjectStudyProForm alias={alias} year={currentYear}/>*/}
             </div>
         </section>
     );

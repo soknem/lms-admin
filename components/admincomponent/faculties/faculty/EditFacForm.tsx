@@ -144,30 +144,24 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                 logoUrl = null;
             }
 
-            // if (logo === values.logo) {
-            //     setLogo("");
-            // } else {
-            //     setLogo(logoUrl);
-            // }
-            // console.log("Logo", logo)
+            console.log("Logo", logo)
 
             const edtFacultyByAlias: FacultyType = {
                 alias: values.alias, // Use the initial alias
                 name: values.name,
                 description: values.description,
                 address: values.address,
-                // logo: logo,
                 logo: logoUrl,
                 isDeleted: values.isDeleted,
                 isDraft: values.isDraft,
-
 
                 // ...values,
                 // logo: logoUrl
             };
 
+            console.log("Updated Data", edtFacultyByAlias)
+
             await editFaculty({alias: initialAlias, updatedData: edtFacultyByAlias}).unwrap();
-            console.log("Original", initialAlias)
 
             // Now update the alias if it has changed
             if (values.alias !== initialAlias) {
@@ -313,13 +307,13 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value={true}
+                                                value={false}
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value={false}
+                                                value={true}
                                                 label="Draft"
                                             />
                                         </div>

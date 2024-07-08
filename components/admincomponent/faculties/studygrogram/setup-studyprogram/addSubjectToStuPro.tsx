@@ -14,12 +14,11 @@ import {
 } from "@/components/ui/dialog";
 
 import React, {useEffect, useState} from "react";
-import {
-    useGetStuProByAliasQuery
-} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
+import Select from 'react-select'
+
+
 import {useSelector} from "react-redux";
 import {RootState} from "@/lib/store";
-import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
 import {selectSubject} from "@/lib/features/admin/faculties/subject/subjectSlice";
 import {
     useAddSubjectToYearOfStudyMutation,
@@ -44,9 +43,9 @@ const validationSchema = Yup.object().shape({
 export function AddSubjectStudyProForm({alias, year}: { alias: string; year: number }) {
     const [isOpen, setIsOpen] = useState(false);
     const [uuids, setUuids] = useState<UUIDType[]>([]); /// State to store UUIDs
-    const {data: subjectsData} = useGetSubjectsQuery({page: 0, pageSize: 10});
+    // const {data: subjectsData} = useGetSubjectsQuery({page: 0, pageSize: 10});
     const subjects = useSelector((state: RootState) => selectSubject(state));
-    const {data: studyPrograms} = useGetStuProByAliasQuery(alias);
+    // const {data: studyPrograms} = useGetStuProByAliasQuery(alias);
     const [getYearOfStudyUUID] = useGetYearOfStudyUUIDMutation();
     const [addSubjectToYearOfStudy] = useAddSubjectToYearOfStudyMutation();
 
@@ -102,7 +101,7 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
-                    <FiPlus className="mr-2 h-4 w-4"/> Add Study Program
+                    <FiPlus className="mr-2 h-4 w-4"/> Select Subjects
                 </Button>
             </DialogTrigger>
 
@@ -130,7 +129,7 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                                            className={`${style.input}`}>
                                         <option value="" label="Select subject"/>
                                         {Array.isArray(subjects) && subjects.map(subject => (
-                                            <option key={subject.alias} value={subject.alias} label={subject.alias}/>
+                                            <option key={subject.alias} value={subject.alias} label={subject.title}/>
                                         ))}
                                     </Field>
                                     <ErrorMessage
@@ -151,7 +150,9 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                                         <option value="" label="Select semester"/>
                                         {Array.isArray(uuids) && uuids.map(semester => (
                                             <option key={semester.uuid} value={semester.uuid}
-                                                    label={semester.uuid}/>
+                                                    label={`Semester ${semester.semester}`}/>
+
+
                                         ))}
                                     </Field>
                                     <ErrorMessage
@@ -161,13 +162,6 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                                     />
                                 </div>
 
-                                {/* semester */}
-                                {/*<div className={`${style.inputContainer}`}>*/}
-                                {/*    <div className="flex">*/}
-                                {/*        <label className={`${style.label}`} htmlFor="semester">Semester</label>*/}
-                                {/*    </div>*/}
-                                {/*    <Field type="number" name="semester" id="semester" className={`${style.input}`}/>*/}
-                                {/*</div>*/}
                             </div>
 
                             {/* Submit Button */}
