@@ -22,6 +22,7 @@ import {
     useGetSubjectsQuery
 } from "@/lib/features/admin/faculties/subject/subject";
 import {SubjectType} from "@/lib/types/admin/faculty";
+import {toast} from "react-hot-toast";
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -147,13 +148,6 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                 logoUrl = null;
             }
 
-            // if (logo === values.logo) {
-            //     setLogo("");
-            // } else {
-            //     setLogo(logoUrl);
-            // }
-            // console.log("Logo", logo)
-
             const editSubjectByAlias: SubjectType = {
                 title: values.title,
                 logo: logoUrl,
@@ -170,7 +164,6 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
             };
 
             await editSubject({alias: initialAlias, updatedData: editSubjectByAlias}).unwrap();
-            console.log("Original", initialAlias)
 
             // Now update the alias if it has changed
             if (values.alias !== initialAlias) {
@@ -182,12 +175,11 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
 
             resetForm();
             refetchSubjects();
-            console.log("Update successfully")
-            // router.refresh(); // or any other navigation action
+            toast.success('Successfully created!');
+
             onClose()
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error updating faculty: ", error);
+            toast.error('Failed to edit subject!');
         } finally {
             setSubmitting(false);
         }
@@ -316,6 +308,7 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                     </label>
                                     <Field
                                         as="textarea"
+                                        rows={4}
                                         placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
@@ -341,13 +334,13 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
+                                            value={false}
                                             label="Public"
                                         />
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="false"
+                                            value={true}
                                             label="Draft"
                                         />
                                     </div>

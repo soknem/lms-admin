@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-import AddStaffForm from '@/components/admincomponent/users/staff/AddStaffForm';
+import AddNewStaffForm from "@/components/admincomponent/users/staff/AddNewStaffForm";
 
 export default function AddStaff(){
     return (
@@ -27,7 +27,7 @@ export default function AddStaff(){
                 </BreadcrumbList>
             </Breadcrumb>
             <section className="flex w-full justify-center items-center">
-                <AddStaffForm/>
+                <AddNewStaffForm/>
             </section>
         </main>
     )

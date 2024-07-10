@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import {CreateMaterialForm} from "@/components/admincomponent/materials/addMaterialForm";
+
 export default function Setting() {
     return (
-        <main className="flex flex-col h-full w-full gap-9 p-9">
+        <main className="flex flex-col h-full w-full gap-2 p-9">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
@@ -20,12 +21,12 @@ export default function Setting() {
                             </Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator/>
                     <h3 className="font-semibold text-lms-primary">ADD MATERIALS</h3>
                 </BreadcrumbList>
             </Breadcrumb>
             <section className="flex w-full justify-center items-center">
-                <CreateMaterialForm />
+                <CreateMaterialForm/>
             </section>
         </main>
     );

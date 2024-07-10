@@ -4,27 +4,34 @@ import {UserStudentDetailType} from "@/lib/types/admin/user";
 
 type StudentState = {
     students: UserStudentDetailType[];
+    totalElements: number;
 }
 
 const initialState: StudentState = {
     students: [] ,
+    totalElements: 0
 }
 
 const studentSlice = createSlice({
     name: "studentSlice",
     initialState,
     reducers: {
-        setStudent: (state, action: PayloadAction<UserStudentDetailType[]>) => {
-            state.students = action.payload;
+
+        setStudent: (state, action: PayloadAction<{ students: UserStudentDetailType[], totalElements: number }>) => {
+            state.students = action.payload.students;
+            state.totalElements = action.payload.totalElements;
         },
 
     }
 })
 
 export const { setStudent } = studentSlice.actions;
-export const selectStudent = (state: RootState) => state.student.students;
-export const selectStudentByUuid = (state: RootState, StudentUuid: string) => {
-    return state.student.students.find(stu => stu.uuid === StudentUuid);
+export const selectStudents = (state: RootState) => state.student.students;
+export const selectStudentByUuid = (state: RootState, studentUuid: string) => {
+    return state.student.students.find(stu => stu.uuid === studentUuid);
 };
+export const selectTotalStudentCount = (state: RootState) => state.student.totalElements;
+export const selectFemaleStudentCount = (state: RootState) => state.student.students.filter(stu => stu.gender === 'F').length;
+export const selectMaleStudentCount = (state: RootState) => state.student.students.filter(stu => stu.gender === 'M').length;
 
 export default studentSlice.reducer;

@@ -7,9 +7,7 @@ import StaffList from "@/components/admincomponent/users/staff/StaffList";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {useGetStudentQuery} from "@/lib/features/admin/user-management/student/student";
-import {selectStudent, setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
 import {useEffect} from "react";
-import {setAssessment} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 import {useGetStaffQuery} from "@/lib/features/admin/user-management/staff/staff";
 
 
@@ -24,6 +22,7 @@ export default function Users() {
     stuData = studentData.content;
     console.log("student data: ", stuData)
   }
+
 
   return (
     <main className="flex flex-col h-fullw-full p-9">

@@ -13,10 +13,6 @@ import {EditStudyProForm} from "./EditStudyProgramForm";
 import {useRouter} from "next/navigation";
 import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
 import {
-    useDisableFacultyByAliasMutation,
-    useEnableFacultyByAliasMutation
-} from "@/lib/features/admin/faculties/faculty/faculty";
-import {
     useDisableStudyProgramByAliasMutation,
     useEnableStudyProgramByAliasMutation
 } from "@/lib/features/admin/faculties/studyProgram/studyprogram";
@@ -100,7 +96,7 @@ const ActionsCell = ({row}: any) => {
                     <DropdownMenuItem
                         className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
                         onClick={() => {
-                            router.push("/admin/faculties/studyprogram-detail");
+                            router.push(`/admin/faculties/studyprogram-detail/${study_program.alias}`);
                         }}
                     >
                         <TbFileImport size={20} className="text-gray-30 mr-2"/>

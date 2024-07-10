@@ -22,6 +22,7 @@ import {RootState} from "@/lib/store";
 import {useGetAcademicYearsQuery} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import {selectAcademicYear} from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
 import {IoIosArrowDown} from "react-icons/io";
+import Select from "react-select";
 
 const initialValues = {
     uuid: "",
@@ -69,6 +70,12 @@ export function CreateAmsForm() {
         data
     } = useGetAcademicYearsQuery({page: 0, pageSize: 10});
     const academicYears = useSelector((state: RootState) => selectAcademicYear(state));
+
+
+    const academicYearOption = academicYears.map(academicYear => ({
+        value: academicYear.alias,
+        label: academicYear.academicYear
+    }));
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
@@ -121,10 +128,10 @@ export function CreateAmsForm() {
                 >
                     {() => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-1 items-center">
 
                                 {/*academicYear*/}
-                                <div className={`${style.inputContainer} relative w-full`}>
+                                <div className={style.inputContainer}>
 
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="academicYearAlias">Academic
@@ -132,29 +139,14 @@ export function CreateAmsForm() {
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field
-                                        as="select" name="academicYearAlias"
-                                        id="academicYearAlias"
-                                        className={`${style.input} appearance-none`}
-                                    >
-                                        <option value="" label="Select degree"/>
-                                        {Array.isArray(academicYears) && academicYears.map(academicYear => (
-                                            <option key={academicYear.alias} value={academicYear.alias}
-                                                    label={academicYear.alias}/>
-                                        ))}
-                                    </Field>
+
+
+                                    <Select options={academicYearOption}/>
                                     <ErrorMessage
                                         name="academicYear"
                                         component="div"
                                         className={style.error}
                                     />
-                                    <div
-                                        className="absolute inset-y-0 right-0 flex items-center pr-2 pt-6 pointer-events-none">
-                                        <IoIosArrowDown
-                                            className="h-5 w-5 text-gray-400"
-                                            aria-hidden="true"
-                                        />
-                                    </div>
                                 </div>
 
                                 {/*openDate*/}
@@ -237,7 +229,7 @@ export function CreateAmsForm() {
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between`}>
+                                <div className={`${style.inputContainer} flex w-full justify-between`}>
                                     {/* status */}
                                     <div className={``}>
                                         <div className="flex">

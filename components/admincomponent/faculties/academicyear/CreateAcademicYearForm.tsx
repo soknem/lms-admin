@@ -20,6 +20,7 @@ import {
     useGetAcademicYearsQuery
 } from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import React, {useState} from "react";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     alias: "",
@@ -63,14 +64,14 @@ export function CreateAcademicYearForm() {
 
     const handleSubmit = async (values: AcademicYearType, createAcademicYear: any) => {
         try {
-            const response = await createAcademicYear(values).unwrap();
-            console.log('Academic Year created successfully:', response);
-            // Optionally, reset the form or close the dialog here
-            // Handle success (e.g., show a success message or close the dialog)
+            await createAcademicYear(values).unwrap();
             refetchAcademicYear();
+            toast.success('Successfully created!');
             setIsOpen(false);
+
+
         } catch (error) {
-            console.error('Failed to create Academic Year :', error);
+            toast.error('Failed to create academic year');
         }
     };
 
@@ -143,7 +144,7 @@ export function CreateAcademicYearForm() {
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between flex-wrap space-y-2`}>
+                                <div className={`flex flex-col w-full justify-between space-y-2`}>
 
                                     {/* isDraft */}
                                     <div className={``}>
@@ -157,13 +158,13 @@ export function CreateAcademicYearForm() {
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value="false"
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value="true"
                                                 label="Draft"
                                             />
                                         </div>
@@ -187,19 +188,19 @@ export function CreateAcademicYearForm() {
                                                 name="status"
                                                 component={RadioButton}
                                                 value="1"
-                                                label="Starting"
+                                                label="Pending"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="2"
-                                                label="Ended"
+                                                label="Started"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="3"
-                                                label="Achieved"
+                                                label="Ended"
                                             />
                                         </div>
 

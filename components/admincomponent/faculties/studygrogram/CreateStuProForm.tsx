@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 
 import {StudyProgramType} from "@/lib/types/admin/faculty";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
@@ -26,11 +26,13 @@ import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/facul
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {
-    selectFaculty,
-    setFaculties
+    selectFaculty
 } from "@/lib/features/admin/faculties/faculty/facultySlice";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import slugify from "slugify";
+import Select from "react-select";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     alias: "",
@@ -122,11 +124,11 @@ const CustomInput = ({field, setFieldValue}: any) => {
 };
 
 export function CreateStudyProForm() {
-    const dispatch = useDispatch<AppDispatch>();
     const [createSingleFile] = useCreateSingleFileMutation();
     const [createStuProgram] = useCreateStuProgramMutation();
     const {refetch: refetchStuPrograms} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
+
     const {
         data: facultiesData,
     } = useGetFacultiesQuery({page: 0, pageSize: 10});
@@ -136,6 +138,16 @@ export function CreateStudyProForm() {
         data: degreesData,
     } = useGetDegreesQuery({page: 0, pageSize: 10});
     const degrees = useSelector((state: RootState) => selectDegree(state));
+
+    const degreeOptions = degrees.map(degree => ({
+        value: degree.alias,
+        label: degree.level
+    }));
+
+    const facultyOptions = faculties.map(faculty => ({
+        value: faculty.alias,
+        label: faculty.name
+    }));
 
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
@@ -161,11 +173,11 @@ export function CreateStudyProForm() {
                 await createStuProgram(newStuProgram).unwrap();
                 resetForm();
                 refetchStuPrograms();
-                console.log("Create successfully")
                 setIsOpen(false)
+                toast.success('Successfully created!');
             }
         } catch (error) {
-            console.error("Error creating study program: ", error);
+            toast.error('Failed to create study program!');
         } finally {
             setSubmitting(false);
         }
@@ -191,7 +203,7 @@ export function CreateStudyProForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, values}) => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
 
@@ -204,6 +216,18 @@ export function CreateStudyProForm() {
                                     <Field placeholder={`Master of Computer Science`} type="text"
                                            name="studyProgramName"
                                            id="studyProgramName"
+                                           onChange={(e: any) => {
+                                               setFieldValue(
+                                                   "studyProgramName",
+                                                   e.target.value
+                                               );
+                                               setFieldValue(
+                                                   "alias",
+                                                   slugify(e.target.value, {
+                                                       lower: true,
+                                                   })
+                                               );
+                                           }}
                                            className={`${style.input}`}/>
                                 </div>
 
@@ -213,7 +237,7 @@ export function CreateStudyProForm() {
                                         <label className={`${style.label}`} htmlFor="alias">Slug</label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field placeholder={`computer-science-master`} type="text" name="alias" id="alias"
+                                    <Field disabled type="text" name="alias" id="alias"
                                            className={`${style.input}`}/>
                                 </div>
 
@@ -222,13 +246,7 @@ export function CreateStudyProForm() {
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="facultyAlias">Faculty</label>
                                     </div>
-                                    <Field as="select" name="facultyAlias" id="facultyAlias"
-                                           className={`${style.input}`}>
-                                        <option value="" label="Select faculty"/>
-                                        {Array.isArray(faculties) && faculties.map(faculty => (
-                                            <option key={faculty.alias} value={faculty.alias} label={faculty.alias}/>
-                                        ))}
-                                    </Field>
+                                    <Select options={facultyOptions}/>
                                 </div>
 
                                 {/* degreeAlias */}
@@ -236,12 +254,7 @@ export function CreateStudyProForm() {
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="degreeAlias">Degree</label>
                                     </div>
-                                    <Field as="select" name="degreeAlias" id="degreeAlias" className={`${style.input}`}>
-                                        <option value="" label="Select degree"/>
-                                        {Array.isArray(degrees) && degrees.map(degree => (
-                                            <option key={degree.alias} value={degree.alias} label={degree.alias}/>
-                                        ))}
-                                    </Field>
+                                    <Select options={degreeOptions}/>
                                 </div>
 
                                 {/* description */}
@@ -250,6 +263,7 @@ export function CreateStudyProForm() {
                                     <Field
                                         placeholder={`The Master of Computer Science program offers advanced studies in computer science theory, algorithms, and practical applications.`}
                                         as="textarea"
+                                        rows={4}
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}
@@ -263,8 +277,8 @@ export function CreateStudyProForm() {
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <div className="flex gap-4 h-[40px] items-center">
-                                        <Field name="isDraft" component={RadioButton} value="true" label="Public"/>
-                                        <Field name="isDraft" component={RadioButton} value="false" label="Draft"/>
+                                        <Field name="isDraft" component={RadioButton} value="false" label="Public"/>
+                                        <Field name="isDraft" component={RadioButton} value="true" label="Draft"/>
                                     </div>
                                 </div>
 

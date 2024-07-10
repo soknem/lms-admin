@@ -112,21 +112,21 @@ const TableCell = ({getValue, row, column, table}: any) => {
         return (
             <span
                 className={
-                    value === 1
+                    value === 2
                         ? "Starting text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
-                        : value === 2
+                        : value === 3
                             ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                            : value === 3
-                                ? "Achieved text-white bg-gray-500 px-3 py-1 rounded-[10px]"
+                            : value === 1
+                                ? "Pending text-white bg-lms-accent px-3 py-1 rounded-[10px]"
                                 : ""
                 }
             >
             {value === 1
-                ? "Starting"
+                ? "Pending"
                 : value === 2
-                    ? "Ended"
+                    ? "Starting"
                     : value === 3
-                        ? "Achieved"
+                        ? "Ended"
                         : ""}
         </span>
         );
@@ -185,13 +185,6 @@ export const academicYearColumns: ColumnDef<AcademicYearType>[] = [
 
 
         cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                {value: true, label: "Public"},
-                {value: false, label: "Draft"},
-            ],
-        },
     },
 
     {
@@ -228,14 +221,6 @@ export const academicYearColumns: ColumnDef<AcademicYearType>[] = [
 
 
         cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                {value: 1, label: "Starting"},
-                {value: 2, label: "Ended"},
-                {value: 3, label: "Achieved"},
-            ],
-        },
     },
 
     {

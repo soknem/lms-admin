@@ -19,6 +19,8 @@ import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {useCreateSubjectMutation, useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
+import slugify from "slugify";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     title: "",
@@ -119,33 +121,44 @@ export function CreateSubjectForm() {
 
             if (fileResponse) {
                 // File uploaded successfully, now create the faculty
+
+                const theoryValue = values.theory;
+                const practiceValue = values.practice;
+                const internshipValue = values.internship;
+                const durationValue = (theoryValue * 15) + (practiceValue * 30) + (internshipValue * 45);
+
+
                 const newSubject: SubjectType = {
                     alias: values.alias,
                     title: values.title,
-                    duration: values.duration,
-                    theory: values.theory,
-                    practice: values.practice,
-                    internship: values.internship,
+                    duration: durationValue,
+                    theory: theoryValue,
+                    practice: practiceValue,
+                    internship: internshipValue,
                     description: values.description,
                     logo: fileResponse.name,
                     isDraft: values.isDraft,
                 };
 
+
                 const res = await createSubject(newSubject).unwrap();
                 resetForm();
-                // Handle success (e.g., show a success message or close the dialog)
                 refetchSubjects();
                 setIsOpen(false);
-                // console.log("Update successfully")
+
+                toast.success('Successfully created!');
 
             }
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating faculty: ", error);
+            toast.error('Failed to create subject!');
         } finally {
             setSubmitting(false);
         }
     };
+
+    const calculateDuration = (theory: number, practice: number, internship: number) => {
+        return (theory * 15) + (practice * 30) + (internship * 45);
+    }
 
     return (
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
@@ -167,7 +180,9 @@ export function CreateSubjectForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, values}) => (
+
+
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col items-center gap-1">
 
@@ -184,6 +199,18 @@ export function CreateSubjectForm() {
                                         placeholder="Introduction to IT"
                                         name="title"
                                         id="title"
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "title",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
@@ -203,8 +230,8 @@ export function CreateSubjectForm() {
                                     </div>
 
                                     <Field
+                                        disabled
                                         type="text"
-                                        placeholder="Faculty of Engineering"
                                         name="alias"
                                         id="alias"
                                         className={`${style.input}`}
@@ -226,7 +253,12 @@ export function CreateSubjectForm() {
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="duration" className={` ${style.input}`}/>
+                                        <Field
+                                            readOnly
+                                            name="duration"
+                                            className={` ${style.input}`}
+                                            value={calculateDuration(values.theory, values.practice, values.internship)}
+                                        />
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -237,7 +269,13 @@ export function CreateSubjectForm() {
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="theory" className={` ${style.input}`}/>
+                                        <Field
+                                            name="theory"
+                                            className={` ${style.input}`}
+                                            onChange={(e: any) => {
+                                                setFieldValue("theory", e.target.value);
+                                                setFieldValue("duration", calculateDuration(Number(e.target.value), values.practice, values.internship));
+                                            }}/>
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -248,7 +286,14 @@ export function CreateSubjectForm() {
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="practice" className={` ${style.input}`}/>
+                                        <Field
+                                            name="practice"
+                                            className={` ${style.input}`}
+                                            onChange={(e: any) => {
+                                                setFieldValue("practice", e.target.value);
+                                                setFieldValue("duration", calculateDuration(values.theory, Number(e.target.value), values.internship));
+                                            }}
+                                        />
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -259,7 +304,14 @@ export function CreateSubjectForm() {
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
 
-                                        <Field name="internship" className={` ${style.input}`}/>
+                                        <Field
+                                            name="internship"
+                                            className={` ${style.input}`}
+                                            onChange={(e: any) => {
+                                                setFieldValue("internship", e.target.value);
+                                                setFieldValue("duration", calculateDuration(values.theory, values.practice, Number(e.target.value)));
+                                            }}
+                                        />
                                     </div>
                                 </div>
 
@@ -270,6 +322,7 @@ export function CreateSubjectForm() {
                                     </label>
                                     <Field
                                         as="textarea"
+                                        rows={4}
                                         placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
@@ -295,13 +348,13 @@ export function CreateSubjectForm() {
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
+                                            value="false"
                                             label="Public"
                                         />
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="false"
+                                            value="true"
                                             label="Draft"
                                         />
                                     </div>

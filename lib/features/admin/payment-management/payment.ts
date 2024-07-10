@@ -7,10 +7,10 @@ export const paymentApi = istadLmsApi.injectEndpoints({
                 `/payments?pageNumber=${page}&pageSize=${pageSize}`,
         }),
         createPayment: builder.mutation({
-            query: (newAdmission) => ({
+            query: (newPayment) => ({
                 url: '/payments',
                 method: 'POST',
-                body: newAdmission,
+                body: newPayment,
             }),
         }),
     })

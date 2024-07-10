@@ -8,7 +8,6 @@ import {AppDispatch, RootState} from "@/lib/store";
 import {useGetAssessmentQuery} from "@/lib/features/admin/academic-management/assesment/assessment";
 import {useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
 import {selectLecture, setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
-import {setAssessment} from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
 
 
 export default  function Lecture() {

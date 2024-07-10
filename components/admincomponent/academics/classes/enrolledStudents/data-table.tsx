@@ -46,6 +46,14 @@ import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import { Label } from '@radix-ui/react-dropdown-menu'
 import AddEnrolledStuForm from "@/components/admincomponent/academics/classes/enrolledStudents/AddEnrolledStuForm";
+import CreateClassForm from "@/components/admincomponent/academics/classes/CreateClassForm";
+import {useSelector} from "react-redux";
+import {RootState} from "@/lib/store";
+import {selectSingleClass} from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
+import {
+  selectFemaleStudentCount, selectMaleStudentCount,
+  selectTotalStudentCount
+} from "@/lib/features/admin/user-management/student/studentSlice";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -119,6 +127,25 @@ export function StudentDataTable<TData, TValue>({
     },
   })
 
+  const selectedClass = useSelector((state: RootState) => selectSingleClass(state));
+
+
+  const totalStudent = useSelector((state: RootState) => selectTotalStudentCount(state));
+  const femaleStudents = useSelector((state: RootState) => selectFemaleStudentCount(state));
+  const maleStudents = useSelector((state: RootState) => selectMaleStudentCount(state));
+
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+
   return (
     <>
 
@@ -149,7 +176,7 @@ export function StudentDataTable<TData, TValue>({
           <DropdownMenuTrigger asChild>
             <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30 hover:bg-white/60 '>
               <TbAdjustmentsHorizontal className='mr-2 h-4 w-4' />
-              View
+              Table View
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='bg-white '>
@@ -172,7 +199,12 @@ export function StudentDataTable<TData, TValue>({
         </DropdownMenu>
 
         {/* add enrolled student form */}
-        <AddEnrolledStuForm />
+        <Button
+            className="px-4 py-1 text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]"
+            onClick={handleOpenModal}
+        >
+          Add Enrolled Student
+        </Button>
 
       </div>
 
@@ -181,51 +213,50 @@ export function StudentDataTable<TData, TValue>({
 
         {/* class detail information */}
         <div className='flex justify-between p-4'>
-                <div>
-                  <Label className='text-lms-gray-30'>Generation</Label>
-                  <p className='flex font-medium text-black'>Generation 1</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Generation</Label>
+            <p className='flex font-medium text-black'>{selectedClass?.generation.name || "N/A"}</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Year</Label>
-                  <p className='flex font-medium text-black'>Foundation Year</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Year</Label>
+            <p className='flex font-medium text-black'>{selectedClass?.year || "N/A"}</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Academic Year</Label>
-                  <p className='flex font-medium text-black'>2024-2025</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Academic Year</Label>
+            <p className='flex font-medium text-black'>{selectedClass?.academicYear.academicYear || "N/A"}</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Degree</Label>
-                  <p className='flex font-medium text-black'>Bachelor</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Study Program</Label>
+            <p className='flex font-medium text-black'>{selectedClass?.studyProgram.studyProgramName || "N/A"}</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Study Program</Label>
-                  <p className='flex font-medium text-black'>Software Engineer</p>
-                </div>
+          <div>
+            <Label className='text-lms-gray-30'>Shift</Label>
+            <p className='flex font-medium text-black'>{selectedClass?.shift.name || "N/A"}</p>
+          </div>
 
-                <div>
-                  <Label className='text-lms-gray-30'>Enrolled Student</Label>
-                  <div className='flex gap-2'>
-                    <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-black font-medium'>10</span></p>
-                    <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-black font-medium'>5</span></p>
-                    <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-black font-medium'>5</span></p>
-                  </div>
+          <div>
+            <Label className='text-lms-gray-30'>Enrolled Student</Label>
+            <div className='flex gap-2'>
+              <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-black font-medium'>{totalStudent || "N/A"}</span></p>
+              <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-black font-medium'>{maleStudents || "N/A"}</span></p>
+              <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-black font-medium'>{femaleStudents || "N/A"}</span></p>
+            </div>
 
 
-                </div>
-              </div>
-
+          </div>
+        </div>
 
 
         <Table>
 
           <TableHeader className='text-lms-gray-30'>
             {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map(header => {
                   return (
                     <TableHead key={header.id}>
                       {header.isPlaceholder
@@ -333,8 +364,8 @@ export function StudentDataTable<TData, TValue>({
           </Button>
         </div>
       </div>
-
-
+      {/* CreateClassForm Modal */}
+      <AddEnrolledStuForm isVisible={isModalVisible} onClose={handleCloseModal}/>
     </>
   )
 }

@@ -41,6 +41,8 @@ import {
 } from "@/lib/features/admin/academic-management/classes/classApi";
 import {selectClasses} from "@/lib/features/admin/academic-management/classes/classSlice";
 import {selectDetailClasses} from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
+import EditClassForm from "@/components/admincomponent/academics/classes/EditClassForm";
+import {RootState} from "@/lib/store";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -111,10 +113,10 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       );
     } else {
 
-      if (DisplayValue === 'false') {
-        return <StatusBadge type="success" status="Active" />
-      } else {
+      if (DisplayValue === 'true') {
         return <StatusBadge type="error" status="Disable" />
+      } else {
+        return <StatusBadge type="success" status="Active" />
       }
 
 
@@ -146,12 +148,19 @@ const ActionCell = ({ row } : any) => {
   const [enableClass] = useEnableClassMutation();
   const [disableClass] = useDisableClassMutation();
 
+
+
   // edit form
   const [isFormVisible, setIsFormVisible] = useState(false);
 
-  const classes = useSelector(selectDetailClasses);
 
-  const { refetch: refetchClasses } = useGetClassesQuery({ page: 0, pageSize: 10 });
+
+  // const { data: classesData, error: classesError } = useGetClassesQuery({ page: 0, pageSize: 10 });
+
+  const classes = useSelector((state: RootState) => selectDetailClasses(state));
+
+  console.log("classes detail: ",classes)
+
 
   const handleOpenCard = () => {
     setIsCardVisible(true);
@@ -162,12 +171,11 @@ const ActionCell = ({ row } : any) => {
       await enableClass(classUuid).unwrap();
       setIsDeleted((prev :any) => !prev);
       console.log('Class enabled successfully');
-      refetchClasses();
+
     }else{
       await disableClass(classUuid).unwrap();
       setIsDeleted((prev : any) => !prev);
       console.log('Class disable successfully');
-      refetchClasses();
     }
     setIsCardVisible(false);
   };
@@ -183,6 +191,8 @@ const ActionCell = ({ row } : any) => {
   const handleCloseForm = () => {
     setIsFormVisible(false);
   };
+
+
 
   return (
       <div>
@@ -224,9 +234,9 @@ const ActionCell = ({ row } : any) => {
                 buttonTitle={isDeleted ? "Enable" : "Disable"}
             />
         )}
-        {/*{isFormVisible && (*/}
-        {/*    <UpdateLectureForm uuid={row.original.uuid} onClose={handleCloseForm} lectureData={lectures} />*/}
-        {/*)}*/}
+        {isFormVisible && (
+            <EditClassForm uuid={row.original.uuid} onClose={handleCloseForm} classData={classes} />
+        )}
       </div>
   );
 };
@@ -248,6 +258,66 @@ export const columns: ColumnDef<ClassTableFormType>[] = [
     cell: TableCell,
   },
   {
+    accessorKey: "classStart",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            CLASS START
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
+    accessorKey: "classEnd",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            CLASS END
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
+    accessorKey: "academicYear",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            ACADEMIC YEAR
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
+    accessorKey: "instructor",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            INSTRUCTOR
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+  {
     accessorKey: "shift",
     header: ({ column }) => {
       return (
@@ -262,6 +332,22 @@ export const columns: ColumnDef<ClassTableFormType>[] = [
     },
     cell: TableCell,
   },
+  {
+    accessorKey: "studyProgram",
+    header: ({ column }) => {
+      return (
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            STUDY PROGRAM
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+      );
+    },
+    cell: TableCell,
+  },
+
 
   {
     accessorKey: "generation",
@@ -279,21 +365,7 @@ export const columns: ColumnDef<ClassTableFormType>[] = [
     cell: TableCell,
   },
 
-  {
-    accessorKey: "studyProgram",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          STUDY PROGRAM
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: TableCell,
-  },
+
 
   {
     accessorKey: "status",

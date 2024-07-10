@@ -80,7 +80,7 @@ export type UserStaffType = {
 };
 
 export type UserStaffDetailType = {
-  uuid: number;
+  uuid: string;
   nameEn: string;
   nameKh: string;
   username: string;

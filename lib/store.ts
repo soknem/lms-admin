@@ -9,7 +9,7 @@ import studentCourseSlice from "@/lib/features/student/course/studentCourseSlice
 import achievementSlice from "@/lib/features/student/achievement/achievementSlice";
 import studyProgramSlice from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
-import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentSlice";
+import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
 import studentSlice from "@/lib/features/admin/user-management/student/studentSlice";
 import courseSlice from "@/lib/features/admin/academic-management/courses/courseSlice";
 import admissionSlice from "@/lib/features/admin/admission-management/admissionSlice";
@@ -26,6 +26,9 @@ import academicYearSlice from "@/lib/features/admin/faculties/acdemicYear-manage
 import stuAdmissionSlice
     from "@/lib/features/admin/admission-management/students-admission-management/stuAdmissionSlice";
 import shiftSlice from "@/lib/features/admin/faculties/shift/shiftSlice";
+import assessmentEachSemesterSlice
+    from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
+import singleClassSlice from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
 import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
 import attendanceSlice from "@/lib/features/instructor/report/attendance/attendanceSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
@@ -42,7 +45,7 @@ export const makeStore = () => {
             auth: authSlice,
             generation: generationSlice,
             filter: filterSlice,
-            assessment: assessmentSlice,
+            eachSemesterAssessment: assessmentEachSemesterSlice,
             lecture: lectureSlice,
             degree: degreeSlice,
             faculty: facultySlice,
@@ -59,11 +62,13 @@ export const makeStore = () => {
             payment: paymentSlice,
             course: courseSlice,
             material: materialsSlice,
+            section: sectionSlice,
             class: classSlice,
             staff: staffSlice,
             file: fileSlice,
             instructorCourse: instructorcourseSlice,
             detailClasses: detailClassesSlice,
+            singleClass: singleClassSlice,
             studentSetting: StudentProfileSlice,
             schedule: scheduleSlice,
             attendance: attendanceSlice,

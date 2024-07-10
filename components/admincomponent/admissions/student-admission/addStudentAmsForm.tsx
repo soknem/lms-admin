@@ -27,6 +27,7 @@ import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
 import {selectShift, setShift} from "@/lib/features/admin/faculties/shift/shiftSlice";
 
 const initialValues = {
+    isDeleted: "",
     nameEn: "",
     nameKh: "",
     email: "",
@@ -207,6 +208,7 @@ export function AddStudentAmsForm() {
 
             // File uploaded successfully, now create the faculty
             const newStuAdmission: StudentAdmissionType = {
+                isDeleted: values.isDeleted,
                 nameEn: values.nameEn,
                 nameKh: values.nameKh,
                 email: values.email,
@@ -267,7 +269,7 @@ export function AddStudentAmsForm() {
                               className="w-full py-0 my-0">
 
                             <TabsList
-                                className="dark:bg-gray-800 bg-lms-background w-full h-[150px]  rounded-none px-10 ">
+                                className=" bg-lms-background w-full h-[150px]  rounded-none px-10 ">
 
                                 <div className="flex items-center justify-center container gap-[20px]">
 

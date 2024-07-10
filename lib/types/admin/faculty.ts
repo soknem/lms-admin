@@ -49,6 +49,14 @@ export type StudyProgramType = {
     degreeAlias: string,
 };
 
+// export type EditStudyProgramType = {
+//     alias: string,
+//     studyProgramName: string,
+//     description: string,
+//     logo: string,
+//     isDraft: boolean,
+// };
+
 
 export type SetupStudyProgramType = {
     alias: string;
@@ -66,7 +74,7 @@ export type SetupStudyProgramType = {
 };
 
 export type AddSubjectType = {
-    studyProgramAlias: string;
+    aliasOfSubjects: string;
     uuid: string;
     semester: number;
     year: number;

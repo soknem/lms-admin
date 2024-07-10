@@ -267,6 +267,7 @@ export function AdmissionTable<TData, TValue>({
 
             {/* Pagination */}
             <div className="flex items-center justify-end space-x-2 py-4">
+          
                 <Button
                     className="border-gray-30"
                     variant="outline"

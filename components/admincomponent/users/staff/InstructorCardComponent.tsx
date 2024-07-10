@@ -31,7 +31,7 @@ export default function InstructorCardComponent({
   onClick,
 }: CardProps) {
   return (
-    <main className="bg-white items-centerrounded-lg shadow-md p-4 hover:cursor-pointer">
+    <main className="bg-white items-centerrounded-lg rounded-[4px] p-4 hover:cursor-pointer">
       <div className="flex flex-row " onClick={onClick}>
         <Image
           className="rounded-xl w-[200px] h-[200px] object-cover"

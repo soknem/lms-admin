@@ -20,6 +20,11 @@ import {useGetAcademicYearQuery} from "@/lib/features/admin/faculties/academic-y
 import {toast} from "react-hot-toast";
 import {initialize} from "next/client";
 import {format} from "date-fns";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Button} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
+import {Calendar as CalendarIcon} from "lucide-react";
+import {Calendar} from "@/components/ui/calendar";
 
 type PropsType = {
   isVisible: boolean;
@@ -190,6 +195,8 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     const newClass = {
       classCode: values.classCode,
       year: values.year,
+      classStart: values.classStart,
+      classEnd: values.classEnd,
       generationAlias: values.generationAlias ,
       studyProgramAlias: values.studyProgramAlias,
       instructorUuid: selectInstructorUuid,
@@ -213,9 +220,14 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     }
   };
 
+  const [startDate, setStartDate] = React.useState<Date>()
+  const [endDate, setEndDate] = React.useState<Date>()
+
   const formik = useFormik({
     initialValues: {
       classCode: "",
+      classStart: "",
+      classEnd: "",
       year: 1,
       description: "Class Description",
       generationAlias: "",
@@ -248,8 +260,14 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
     //   handleCreateClass(values);
     // },
     onSubmit: (values) => {
+      const formattedValues = {
+        ...values,
+        classStart: startDate ? format(startDate, "yyyy-MM-dd") : "",
+        classEnd: endDate ? format(endDate,"yyyy-MM-dd") : ""
+      };
+      // dispatch(addLecture(formattedValues))
       console.log("form values: ",values);
-      handleCreateClass(values);
+      handleCreateClass(formattedValues);
     }
   });
 
@@ -274,6 +292,63 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
             {
               formik.errors.classCode ? <p className="text-red-700">{formik.errors.classCode}</p> : null
             }
+          </div>
+
+          {/* Class Start  */}
+          <div>
+            <RequiredFieldLabelComponent labelText="Class Start"
+                                         labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+            <div className="relative">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                      className={cn(
+                          "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
+                          !startDate && "text-gray-600"
+                      )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-white ">
+                  <Calendar
+                      mode="single"
+                      selected={startDate}
+                      onSelect={setStartDate}
+                      initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+          </div>
+
+          {/* Class End */}
+          <div>
+            <RequiredFieldLabelComponent labelText="Class End"
+                                         labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                    className={cn(
+                        "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
+                        !endDate && "text-gray-600"
+                    )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4"/>
+                  {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 bg-white ">
+                <Calendar
+                    mode="single"
+                    selected={endDate}
+                    onSelect={setEndDate}
+                    initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Year */}

@@ -74,7 +74,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
             />
         );
     }
-
+ 
     if (column.id === "isDraft") {
         return (
             <span

@@ -60,7 +60,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   // Custom status
   if (column.id === 'studentStatus') {
-
     switch (value) {
       case 1:
         return <StatusBadge type="success" status="Active" />
@@ -70,7 +69,25 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         return <StatusBadge type="error" status="Drop" />
       case 4:
         return <StatusBadge type="error" status="Disable" />
+      default:
+        return <StatusBadge type="default" status="Unknown" />
     }
+  }
+
+  if(column.id === "nameEn"){
+    return (
+        <span className=" uppercase">
+        {value}
+      </span>
+    );
+  }
+
+  if (column.id === "gender") {
+    return (
+        <span className={value === "F" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "F" ? "Female" : value === "M" ? "Male" : ""}
+      </span>
+    );
   }
 
   if (column.id === "nameKh") {
@@ -171,6 +188,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     header: ({ column }) => {
       return (
           <Button
+              className="w-[120px] flex justify-start items-start"
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -204,7 +222,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          PERSONAL NUMBER
+          TELEPHONE
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -219,7 +237,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          FAMILY NUMBER
+          FAMILY TEL
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -249,6 +267,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
         { value: "draft", label: "Hiatus" },
       ],
     },
+
   },
   {
     id: "actions",

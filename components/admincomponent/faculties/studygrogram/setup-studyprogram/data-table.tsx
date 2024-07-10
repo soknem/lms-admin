@@ -37,6 +37,9 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {FaSearch} from "react-icons/fa";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
+import {
+    AddSubjectStudyProForm
+} from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/addSubjectToStuPro";
 
 
 //custom component import
@@ -44,11 +47,15 @@ import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    alias: string; // Add alias prop
+    currentYear: number; // Add currentYear prop
 }
 
 export function SetupStudyProgramTable<TData, TValue>({
                                                           columns,
                                                           data,
+                                                          alias, // Destructure alias
+                                                          currentYear, // Destructure currentYear
                                                       }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -205,6 +212,11 @@ export function SetupStudyProgramTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
+
+
+                <AddSubjectStudyProForm alias={alias} year={currentYear}/>
+
+                {/*<CreateStudyProForm alias={alias} year={currentYear}/>*/}
             </div>
 
             {/* Table */}

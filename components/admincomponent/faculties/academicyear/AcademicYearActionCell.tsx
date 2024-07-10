@@ -78,7 +78,7 @@ const ActionsCell = ({row}: any) => {
                         className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
                         onClick={() => navigator.clipboard.writeText(academicYear.academicYear)}
                     >
-                        <TbCopy size={20} className="text-gray-30 mr-2  "/> Copy Faculty Name
+                        <TbCopy size={20} className="text-gray-30 mr-2  "/>
                         Copy Academic Year
                     </DropdownMenuItem>
                     <DropdownMenuItem

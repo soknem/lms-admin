@@ -43,13 +43,18 @@ export default function Class() {
   const transformToClassTableData = (data : any[] )   => {
     return data.map(item => ({
       uuid: item.uuid,
-      classCode: item.classCode,
-      shift: item.shift.name,
-      studyProgram: item.studyProgram.studyProgramName,
-      generation: item.generation.name,
+      year: item.year,
+      classStart: item?.classStart || "N/A",
+      classEnd: item?.classEnd || "N/A",
+      classCode: item?.classCode || "N/A",
+      shift: item?.shift?.name || "N/A",
+      studyProgram: item?.studyProgram?.studyProgramName || "N/A",
+      generation: item?.generation?.name || "N/A",
       isDraft: item.isDraft,
-      isDeleted: item.isDeleted,
-      status: item.status
+      instructor: item.instructor?.nameEn || "N/A",
+      isDeleted: item.isDeleted ,
+      status: item?.status || 1,
+      academicYear: item?.academicYear?.academicYear || "N/A",
     }));
   };
 
