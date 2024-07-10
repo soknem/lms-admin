@@ -1,17 +1,17 @@
 import { BreadcrumbWithCustomSeparator } from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
-import CourseDetailHeader from "@/components/studentcomponent/coursedetail/CourseDetailHeader";
+import CourseDetailHeader from "@/components/instructorcomponent/coursedetail/CourseDetailHeader";
 import React from "react";
 
 import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
 
-export default function coursedetail() {
+export default function courseDetail() {
     return (
         <main>
             <div className="bg-white py-[35px]">
                 <CourseDetailHeader />
             </div>
             <div className="p-5 mx-[100px]">
-                <BreadcrumbWithCustomSeparator />
+                {/*<BreadcrumbWithCustomSeparator />*/}
             </div>
             <div className=" mx-[100px] ">
                 <TabComponent/>

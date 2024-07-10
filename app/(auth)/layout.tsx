@@ -8,7 +8,7 @@ import {ErrorBoundary} from "next/dist/client/components/error-boundary";
 import Error from "@/app/error";
 import {Toaster} from "@/components/ui/toaster";
 
-interface RootLayoutProps {
+type RootLayoutProps = {
     children: ReactNode;
 }
 

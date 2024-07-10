@@ -41,12 +41,16 @@ import teachingSlice from "@/lib/features/instructor/report/timesheet/techingHis
 import studentAttendanceSlice from "@/lib/features/instructor/studentAttendance/studentAttendanceSlice";
 
 
+import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
+import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCourse";
 
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
+            studentCourseApi: studentCourseApi.reducer,
+            instructorCourseApi: instructorCourseApi.reducer,
             auth: authSlice,
             generation: generationSlice,
             filter: filterSlice,

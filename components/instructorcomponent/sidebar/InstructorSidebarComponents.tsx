@@ -79,11 +79,10 @@ export default function InstructorSidebarComponent({
     return (
         <div
             className={`h-full text-lms-primary transition-all duration-300  ${isSidebarOpen ? "w-[240px]" : "w-[72px]"} flex flex-col bg-white px-2 py-6`}>
-            <div className="flex justify-between items-center p-4  mb-4">
+            <div className="flex justify-between items-center p-4  mb-4 border-b">
                 <span className={`${isSidebarOpen ? "block" : "hidden"} text-xl font-medium`}>Instructor Menu</span>
-                <button onClick={handleSidebarToggle} className="text-white">
-                    {isSidebarOpen ? <FiChevronLeft className="text-lms-primary w-6 h-6"/> :
-                        <FiChevronRight className="text-lms-primary w-6 h-6"/>}
+                <button onClick={handleSidebarToggle} className="text-lms-primary">
+                    {isSidebarOpen ? <FiChevronLeft className="w-6 h-6"/> : <FiChevronRight className="w-6 h-6"/>}
                 </button>
             </div>
 
@@ -151,24 +150,7 @@ export default function InstructorSidebarComponent({
                     )
                 )}
 
-                <Button
-                    onClick={handleThemeToggle}
-                    className={`${buttonClass(false)} ${commonButtonStyles} ${isDarkMode ? "text-white" : ""}`}
-                >
-                    {isDarkMode ? (
-                        <>
-                            <BsMoonStarsFill className="w-5 h-5 text-primary"/>
-                            <span
-                                className={`${isSidebarOpen ? "block" : "hidden"} text-lg font-medium`}>Light Mode</span>
-                        </>
-                    ) : (
-                        <>
-                            <BsSunFill className="w-5 h-5 text-white group-hover:text-lms-primary"/>
-                            <span
-                                className={`${isSidebarOpen ? "block" : "hidden"} text-lg font-medium`}>Dark Mode</span>
-                        </>
-                    )}
-                </Button>
+
 
                 {
                     logout.map((item, index) => (

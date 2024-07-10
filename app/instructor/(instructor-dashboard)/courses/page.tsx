@@ -1,4 +1,4 @@
-    "use client";
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
@@ -13,10 +13,14 @@ import { AppDispatch } from "@/lib/store";
 import { InstructorCourseType, InCourseType } from "@/lib/types/instructor/course";
 import { setAchievements } from "@/lib/features/student/achievement/achievementSlice";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
+import { useRouter } from "next/navigation";
 import { CardCourseComponent } from "@/components/instructorcomponent/courses/card/CardCourseComponent";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 export default function Course() {
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { data = {}, error, isLoading } = useGetInstructorCourseQuery();
     const loading = useSelector(selectLoading);
@@ -25,14 +29,16 @@ export default function Course() {
     const [openCourse, setOpenCourse] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
     const [filteredCourses, setFilteredCourses] = useState<InCourseType[]>([]);
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 25;
 
     useEffect(() => {
         if (Object.keys(data).length > 0) {
             dispatch(setLoading());
             dispatch(setAchievements(data));
             setData(data);
-            setFilteredCourses(data.courses); // Set initial courses
+            setFilteredCourses(data.courses);
         }
         if (error) {
             dispatch(setError(error.toString()));
@@ -41,17 +47,20 @@ export default function Course() {
 
     useEffect(() => {
         let filtered = data.courses;
+
         if (selectedCourse) {
             const selectedCourseNumber = Number(selectedCourse);
             filtered = filtered.filter((course: InCourseType) => course.semester === selectedCourseNumber);
         }
-        if (searchTerm) {
+
+        if (searchQuery) {
             filtered = filtered.filter((course: InCourseType) =>
-                course.title.toLowerCase().includes(searchTerm.toLowerCase())
+                course.title.toLowerCase().includes(searchQuery.toLowerCase())
             );
         }
+
         setFilteredCourses(filtered);
-    }, [selectedCourse, searchTerm, data.courses]);
+    }, [selectedCourse, searchQuery, data.courses]);
 
     if (!allData) {
         return <LoadingComponent />;
@@ -68,13 +77,22 @@ export default function Course() {
         setSelectedCourse(null);
     };
 
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
     };
+
+    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
+    const paginatedCourses = filteredCourses.slice(
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
+    );
 
     return (
         <div className="flex flex-col h-full w-full p-9 gap-4">
-            <section className="bg-lms-primary w-full  rounded-xl relative flex items-center justify-center p-8">
+            <section className="bg-lms-primary w-full rounded-xl relative flex items-center justify-center p-8">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-2xl sm:text-3xl font-bold text-white">
                         Welcome back, {allData.nameEn}!
@@ -83,11 +101,11 @@ export default function Course() {
                         Passionate about literature and creative writing.
                     </p>
                 </div>
-                <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[75px]">
+                <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
                     <div className="w-[150px] h-[150px] rounded-full shadow-lg">
                         <img
                             src={allData.profileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
-                            alt="instructor"
+                            alt="student"
                             className="h-full w-full object-cover rounded-full"
                         />
                     </div>
@@ -107,8 +125,8 @@ export default function Course() {
                         <Input
                             placeholder="Search Course"
                             className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30 w-full"
-                            onChange={handleSearch}
-                            value={searchTerm}
+                            value={searchQuery}
+                            onChange={handleSearchChange}
                         />
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <FaSearch className="text-gray-400" />
@@ -119,7 +137,7 @@ export default function Course() {
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
-                                className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60 w-[250px]" // Set a fixed width for the button
+                                className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60 w-[250px]"
                             >
                                 <TbFilter className="mr-2 h-4 w-4" />
                                 {selectedCourse ? <>{selectedCourse}</> : <> Filter by semester </>}
@@ -158,9 +176,10 @@ export default function Course() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-4 w-full">
-                    {filteredCourses.map((course: InCourseType, index: number) => (
+                    {paginatedCourses.map((course: InCourseType, index: number) => (
                         <CardCourseComponent
                             key={index}
+                            onClick={() => router.push(`/instructor/courses/${course.uuid}`)}
                             title={course.title}
                             credit={course.credit}
                             semester={course.semester}
@@ -173,6 +192,17 @@ export default function Course() {
                         />
                     ))}
                 </div>
+
+                <Stack spacing={2} className="mb-10 w-full">
+                    <Pagination
+                        className="flex w-full justify-end"
+                        count={Math.ceil(filteredCourses.length / itemsPerPage)}
+                        variant="outlined"
+                        shape="rounded"
+                        page={page}
+                        onChange={handleChangePage}
+                    />
+                </Stack>
             </section>
         </div>
     );

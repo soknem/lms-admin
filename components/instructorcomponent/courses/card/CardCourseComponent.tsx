@@ -21,6 +21,7 @@ export function CardCourseComponent({
                                         semester,
                                         year,
                                         description,
+                                        onClick,
                                         uuid,
                                     }: CourseCardProps) {
     const router = useRouter();
@@ -35,13 +36,13 @@ export function CardCourseComponent({
     const maxLength = 120; // Adjust this value based on your needs
 
     return (
-        <Card className="w-[566px] h-[299px] bg-white">
+        <Card className="w-[566px] h-[299px] bg-white " onClick={onClick}>
             <CardHeader className="mx-[40px]">
-                <CardTitle className="text-lms-primary font-bold text-[24px] ">
+                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1 ">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px]">
-                    {truncateDescription(description, maxLength).toLowerCase()}
+                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3">
+                    {truncateDescription(description, maxLength).toUpperCase()}
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex mx-[40px]">

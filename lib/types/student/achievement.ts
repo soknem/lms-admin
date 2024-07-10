@@ -27,7 +27,6 @@ export type Achievement = {
     major: string;
     avatar: string;
     profileImage: string;
-    yearOfStudiesStudents: YearOfStudy[];
 };
 
 

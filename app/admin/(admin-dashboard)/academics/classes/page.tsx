@@ -14,7 +14,6 @@ import {
   selectDetailClasses,
   setDetailClasses
 } from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
-import {selectCourses} from "@/lib/features/student/course/studentCourseSlice";
 
 
 export default function Class() {

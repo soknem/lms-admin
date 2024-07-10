@@ -13,16 +13,20 @@ import VideoComponent from "@/components/studentcomponent/coursedetail/VideoComp
 export default function TabComponent() {
   const router = useRouter();
   return (
-    <div>
-      <Tabs defaultValue="curriculum">
-        <div className="flex items-center justify-between " >
-          <TabsList>
-            <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
-            <TabsTrigger value="Slide">Slide</TabsTrigger>
-            <TabsTrigger value="Video">Video</TabsTrigger>
-            <TabsTrigger value="Mini Project">Mini Project</TabsTrigger>
-          </TabsList>
-        </div>
+      <div>
+        <Tabs defaultValue="curriculum">
+          <div className="flex items-center justify-between " >
+            <TabsList>
+              <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
+              <TabsTrigger value="Slide">Slide</TabsTrigger>
+              <TabsTrigger value="Video">Video</TabsTrigger>
+              <TabsTrigger value="Mini Project">Mini Project</TabsTrigger>
+            </TabsList>
+            <Button className="border-2 bg-white flex items-center hover:bg-white/80">
+              Lecture
+              <TbArrowNarrowRight className="w-6 h-6 ml-2" />
+            </Button>
+          </div>
 
           <TabsContent value="curriculum">
             <CurriculumComponent/>
@@ -33,7 +37,8 @@ export default function TabComponent() {
           <TabsContent value="Video">
             <VideoComponent/>
           </TabsContent>
-      </Tabs>
-    </div>
-);
+        </Tabs>
+      </div>
+  );
 }
+// onClick={() => router.push(`/instructor/courses/coursedetail/lectures`)}
