@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+'use client'
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { IoCameraOutline, IoArrowDown } from "react-icons/io5";

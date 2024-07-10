@@ -52,7 +52,7 @@ export default function StaffDetail() {
                 {/*    id={insData.id}*/}
                 {/*    imageSrc={insData.imageSrc}*/}
                 {/*    name={insData.name}*/}
-                {/*    // education={insData.education}*/}
+                {/*    education={insData.education}*/}
                 {/*    position={insData.position}*/}
                 {/*    linkedin={insData.linkedin}*/}
                 {/*    github={insData.github}*/}

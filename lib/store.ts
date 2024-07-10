@@ -43,6 +43,7 @@ import studentAttendanceSlice from "@/lib/features/instructor/studentAttendance/
 
 import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
 import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCourse";
+import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 
 
 export const makeStore = () => {
