@@ -7,7 +7,6 @@ import StaffList from "@/components/admincomponent/users/staff/StaffList";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {useGetStudentQuery} from "@/lib/features/admin/user-management/student/student";
-import {selectStudent, setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
 import {useEffect} from "react";
 import {useGetStaffQuery} from "@/lib/features/admin/user-management/staff/staff";
 
