@@ -21,34 +21,30 @@ import {selectStaff, setStaff} from "@/lib/features/admin/user-management/staff/
 import {RootState} from "@/lib/store";
 import {UserStaffDetailType} from "@/lib/types/admin/user";
 import placeholderImage from "@/public/common/placeholderPf.png";
+import {setDetailClasses} from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
 
 export default function StaffList() {
 
     // ===== get all staff =======
-    const dispatch = useDispatch();
 
-    const { data : staffList , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffQuery({ page: 0, pageSize: 10 })
+    const { data : staffList , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffQuery({ page: 0, pageSize: 25 })
 
-    // console.log("staffData: ", staffList);
+    console.log("staffData: ", staffList);
 
     let staffData: UserStaffDetailType[]  = [];
+
     if(isStaffSuccess){
         staffData = staffList.content;
         console.log("staff data from stafflist page: ", staffData)
     }
 
+
     const router = useRouter();
+
     // State for search query and selected position filters
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedPosition, setSelectedPosition] = useState("");
 
-    // Filtered card data based on search query and selected position
-    // const filteredCardData : UserStaffDetailType[]  = staffData.filter(
-    //     (st : UserStaffDetailType) =>
-    //         st.nameEn.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    //         (selectedPosition === "" ||
-    //             st.position.toLowerCase() === selectedPosition.toLowerCase())
-    // );
     const filteredCardData: UserStaffDetailType[] = staffData.filter(
         (st: UserStaffDetailType) =>
             (st.nameEn && st.nameEn.toLowerCase().includes(searchQuery.toLowerCase())) &&
@@ -56,16 +52,13 @@ export default function StaffList() {
                 (st.position && st.position.toLowerCase() === selectedPosition.toLowerCase()))
     );
 
-    // Event handler for search input change
     const handleSearchChange = (event: any) => {
         setSearchQuery(event.target.value);
     };
 
-    // Event handler for position filters change
     const handlePositionFilterChange = (position: string) => {
         setSelectedPosition(position);
     };
-
 
     return <>
         <div className="flex flex-row gap-x-4 mt-6">
@@ -151,7 +144,7 @@ export default function StaffList() {
                 filteredCardData.map((card: UserStaffDetailType) => (
                     <InstructorCardComponent
                         key={card?.uuid || 'N/A'}
-                        imageSrc={card?.profileImage || placeholderImage} // Use a default image if profileImage is empty or null
+                        imageSrc={card?.profileImage || placeholderImage}
                         name={card.nameEn}
                         education={card.email}
                         position={card.position || "No position"}

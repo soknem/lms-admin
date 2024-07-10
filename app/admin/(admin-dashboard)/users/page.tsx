@@ -24,6 +24,7 @@ export default function Users() {
     console.log("student data: ", stuData)
   }
 
+
   return (
     <main className="flex flex-col h-fullw-full p-9">
       <h1 className=" text-3xl font-bold text-lms-primary">Users</h1>

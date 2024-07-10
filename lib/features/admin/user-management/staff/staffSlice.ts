@@ -24,6 +24,14 @@ const staffSlice = createSlice({
 
 export const { setStaff } = staffSlice.actions;
 export const selectStaff = (state: RootState) => state.staff.staffs ;
+// export const selectStaffByUUID = createSelector(
+//     [selectStaffs, (state: RootState, uuid: string) => uuid],
+//     (staffs, uuid) => staffs.find(staff => staff.uuid === uuid)
+// );
 
+export const selectStaffByUUID = (state: RootState, staffUuid: string) => {
+    const staffDetail = state.staff.staffs.find(stf => stf.uuid === staffUuid);
+    return staffDetail ? staffDetail.position : [];
+};
 
 export default staffSlice.reducer;

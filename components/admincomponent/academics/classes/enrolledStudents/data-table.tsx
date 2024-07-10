@@ -50,6 +50,10 @@ import CreateClassForm from "@/components/admincomponent/academics/classes/Creat
 import {useSelector} from "react-redux";
 import {RootState} from "@/lib/store";
 import {selectSingleClass} from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
+import {
+  selectFemaleStudentCount, selectMaleStudentCount,
+  selectTotalStudentCount
+} from "@/lib/features/admin/user-management/student/studentSlice";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -125,9 +129,11 @@ export function StudentDataTable<TData, TValue>({
 
   const selectedClass = useSelector((state: RootState) => selectSingleClass(state));
 
-  const totalStudent = selectedClass?.students.length
-  const maleStudents = selectedClass?.students.filter(student => student.gender === 'Male').length;
-  const femaleStudents = selectedClass?.students.filter(student => student.gender === 'Female').length;
+
+  const totalStudent = useSelector((state: RootState) => selectTotalStudentCount(state));
+  const femaleStudents = useSelector((state: RootState) => selectFemaleStudentCount(state));
+  const maleStudents = useSelector((state: RootState) => selectMaleStudentCount(state));
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 

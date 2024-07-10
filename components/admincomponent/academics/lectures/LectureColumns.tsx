@@ -64,9 +64,9 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
         switch (value) {
             case 1:
-              return <StatusBadge type="success" status="Started" />
+                return <StatusBadge type="warning" status="Pending" />
             case 2:
-              return <StatusBadge type="warning" status="Pending" />
+                return <StatusBadge type="success" status="Started" />
             case 3:
               return <StatusBadge type="error" status="Ended" />
           }
