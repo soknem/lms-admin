@@ -1,7 +1,7 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
-import {PaymentType} from "@/lib/types/admin/payments";
+import {PaymentType} from "@/lib/types/instructor/timesheet";
 
 
 type PaymentState = {

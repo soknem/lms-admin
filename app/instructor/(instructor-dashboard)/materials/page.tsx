@@ -1,10 +1,7 @@
 'use client'
-import curriculum from "@/components/admincomponent/materials/curriculum/curriculum.json"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getSlide, getVideo } from "@/lib/endpoints/MokApi";
 import React, {useEffect, useState} from "react";
 
-import {CurriculumType} from "@/lib/types/admin/materials";
 import { CurriculumTable } from "@/components/instructorcomponent/materials/curriculum/data-table";
 import { curriculumColumns } from "@/components/instructorcomponent/materials/curriculum/columns";
 import { SlideTable } from "@/components/instructorcomponent/materials/slide/data-table";
