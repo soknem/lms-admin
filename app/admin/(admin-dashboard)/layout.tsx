@@ -21,42 +21,27 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         <html lang="en" suppressHydrationWarning>
         <body
             className={cn(
-                "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
+                "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background ",
                 inter.variable, suwannaphum.variable
             )}
         >
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
-                <nav className="w-full h-[72px] shadow-md z-10">
+                <nav className="w-full h-[72px] shadow-md z-10 top-0 sticky  ">
                     <NavbarComponent/>
                 </nav>
 
-                <section className="flex flex-grow h-[calc(100vh-72px)]">
+                <section className="flex flex-grow overflow-hidden">
                     <aside className="flex">
                         <AdminSidebarComponent/>
                     </aside>
 
-                    <section className="flex-grow overflow-auto text-lms-black-90">
+                    <section className="flex-grow overflow-auto none-scroll-bar text-lms-black-90 ">
                         {children}
                     </section>
                 </section>
             </ErrorBoundary>
         </StoreProvider>
-        {/*<Toaster>*/}
-        {/*    {(t) => (*/}
-        {/*        <ToastBar toast={t}>*/}
-        {/*            {({ icon, message }) => (*/}
-        {/*                <>*/}
-        {/*                    {icon}*/}
-        {/*                    {message}*/}
-        {/*                    {t.type !== 'loading' && (*/}
-        {/*                        <button onClick={() => toast.dismiss(t.id)}>X</button>*/}
-        {/*                    )}*/}
-        {/*                </>*/}
-        {/*            )}*/}
-        {/*        </ToastBar>*/}
-        {/*    )}*/}
-        {/*</Toaster>*/}
         <Toaster
             position="top-center"
             toastOptions={{

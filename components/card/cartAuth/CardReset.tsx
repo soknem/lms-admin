@@ -24,12 +24,12 @@ import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/facul
 
 
 // Define initial values for the form fields
-interface InitialValues {
+type InitialValues = {
     password: string;
     confirmPassword: string;
 }
 
-const initialValues: InitialValues = {
+const initialValues : InitialValues = {
     password: '',
     confirmPassword: '',
 }

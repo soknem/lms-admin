@@ -99,7 +99,7 @@ export default function Course() {
                 <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
                     <div className="w-[150px] h-[150px] rounded-full shadow-lg">
                         <img
-                            src={allData.avatar || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                            src={allData.profileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                             alt="student"
                             className="h-full w-full object-cover rounded-full"
                         />
@@ -169,7 +169,7 @@ export default function Course() {
                     </Popover>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-4">
+                <div className="grid grid-cols-1 xl:grid-cols-2 justify-center gap-4">
                     {paginatedCourses.map((course: CourseType, index: number) => (
                         <CardCourseComponent
                             key={index}

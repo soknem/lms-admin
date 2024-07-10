@@ -1,4 +1,4 @@
-export type StudentSetting = {
+export type InstructorSetting = {
     gender: string;
     profileImage: string;
     phoneNumber: string;

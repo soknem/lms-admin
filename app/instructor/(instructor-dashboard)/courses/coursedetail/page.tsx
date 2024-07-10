@@ -11,7 +11,7 @@ export default function courseDetail() {
                 <CourseDetailHeader />
             </div>
             <div className="p-5 mx-[100px]">
-                <BreadcrumbWithCustomSeparator />
+                {/*<BreadcrumbWithCustomSeparator />*/}
             </div>
             <div className=" mx-[100px] ">
                 <TabComponent/>

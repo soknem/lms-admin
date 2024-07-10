@@ -42,7 +42,7 @@ const getFieldClassName = (
         : `${baseClass} ${validClass}`;
 };
 
-interface DecodedToken {
+type DecodedToken = {
     iss: string;
     sub: string;
     exp: number;

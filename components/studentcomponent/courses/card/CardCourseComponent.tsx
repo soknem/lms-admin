@@ -27,13 +27,13 @@ export function CardCourseComponent({
                                     }: CourseCardProps) {
     const router = useRouter();
     return (
-        <Card className="w-[566px] h-[299px] bg-white" onClick={onClick}>
+        <Card className=" xl:max-w-[566px]  xl:h-[299px]  w-[610px]  bg-white" onClick={onClick}>
             <CardHeader className="mx-[40px]">
                 <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1">
                     {title.toUpperCase()}
                 </CardTitle>
                 <CardDescription className="text-lms-black90 text-[16px] line-clamp-3">
-                    {description.toUpperCase()}
+                    {description}
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex mx-[40px]">
