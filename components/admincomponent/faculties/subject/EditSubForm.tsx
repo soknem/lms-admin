@@ -341,13 +341,13 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="true"
+                                            value={false}
                                             label="Public"
                                         />
                                         <Field
                                             name="isDraft"
                                             component={RadioButton}
-                                            value="false"
+                                            value={true}
                                             label="Draft"
                                         />
                                     </div>

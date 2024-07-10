@@ -82,6 +82,8 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                 isDraft: values.isDraft,
             };
 
+            console.log("Updated Data", editAcademicYearDataByAlias)
+
             await editAcademicYear({alias: initialAlias, updatedData: editAcademicYearDataByAlias}).unwrap();
 
             // Now update the alias if it has changed
@@ -112,7 +114,6 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                 <Formik
                     enableReinitialize
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
@@ -176,13 +177,13 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value={false}
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value={true}
                                                 label="Draft"
                                             />
                                         </div>
@@ -205,20 +206,20 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value="1"
-                                                label="Starting"
+                                                value={1}
+                                                label="Pending"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value="2"
+                                                value={2}
+                                                label="Started"
+                                            />
+                                            <Field
+                                                name="status"
+                                                component={RadioButton}
+                                                value={3}
                                                 label="Ended"
-                                            />
-                                            <Field
-                                                name="status"
-                                                component={RadioButton}
-                                                value="3"
-                                                label="Achieved"
                                             />
                                         </div>
 

@@ -17,6 +17,7 @@ import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateDegreeMutation, useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {useState} from "react";
+import slugify from "slugify";
 
 const initialValues = {
     alias: "",
@@ -105,7 +106,7 @@ export function CreateDeForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {() => (
+                    {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1">
 
@@ -122,6 +123,18 @@ export function CreateDeForm() {
                                         placeholder="Associated Degree"
                                         name="level"
                                         id="level"
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "level",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
@@ -140,8 +153,8 @@ export function CreateDeForm() {
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
+                                        disabled
                                         type="text"
-                                        placeholder="Associated Degree"
                                         name="alias"
                                         id="alias"
                                         className={` ${style.input}`}
@@ -207,13 +220,13 @@ export function CreateDeForm() {
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value="false"
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value="true"
                                                 label="Draft"
                                             />
                                         </div>

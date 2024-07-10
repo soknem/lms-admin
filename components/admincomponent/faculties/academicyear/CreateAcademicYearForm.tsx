@@ -143,7 +143,7 @@ export function CreateAcademicYearForm() {
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between flex-wrap space-y-2`}>
+                                <div className={`flex flex-col w-full justify-between space-y-2`}>
 
                                     {/* isDraft */}
                                     <div className={``}>
@@ -157,13 +157,13 @@ export function CreateAcademicYearForm() {
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value="false"
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value="true"
                                                 label="Draft"
                                             />
                                         </div>
@@ -187,19 +187,19 @@ export function CreateAcademicYearForm() {
                                                 name="status"
                                                 component={RadioButton}
                                                 value="1"
-                                                label="Starting"
+                                                label="Pending"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="2"
-                                                label="Ended"
+                                                label="Started"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="3"
-                                                label="Achieved"
+                                                label="Ended"
                                             />
                                         </div>
 

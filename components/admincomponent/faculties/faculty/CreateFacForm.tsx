@@ -23,7 +23,8 @@ import {
     useGetFacultyByAliasQuery
 } from "@/lib/features/admin/faculties/faculty/faculty";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
-// import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
+import {toast} from "react-hot-toast";
+import slugify from "slugify";
 
 const initialValues = {
     alias: "",
@@ -109,6 +110,15 @@ const CustomInput = ({field, setFieldValue}: any) => {
     );
 };
 
+slugify('alias', {
+    replacement: '-',  // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: false,      // convert to lower case, defaults to `false`
+    strict: false,     // strip special characters except replacement, defaults to `false`
+    locale: 'vi',      // language code of the locale to use
+    trim: true         // trim leading and trailing replacement chars, defaults to `true`
+})
+
 export function CreateFacForm() {
     const [createSingleFile] = useCreateSingleFileMutation();
     const [createFaculty] = useCreateFacultyMutation();
@@ -136,17 +146,16 @@ export function CreateFacForm() {
                     isDraft: values.isDraft,
                 };
 
-                const res = await createFaculty(newFaculty).unwrap();
+                await createFaculty(newFaculty).unwrap();
+                toast.success('Successfully created!');
                 resetForm();
-                // Handle success (e.g., show a success message or close the dialog)
                 refetchFaculties();
                 setIsOpen(false);
-                // console.log("Update successfully")
 
             }
         } catch (error) {
-            // Handle error (e.g., show an error message)
             console.error("Error creating faculty: ", error);
+            toast.error('Failed to create faculty!');
         } finally {
             setSubmitting(false);
         }
@@ -189,6 +198,18 @@ export function CreateFacForm() {
                                         name="name"
                                         id="name"
                                         className={`${style.input}`}
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "name",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                     />
                                     <ErrorMessage
                                         name="name"
@@ -207,8 +228,9 @@ export function CreateFacForm() {
                                     </div>
 
                                     <Field
-                                        type="text"
-                                        placeholder="Faculty of Engineering"
+                                        disabled
+                                        // type="text"
+                                        // placeholder="Faculty of Engineering"
                                         name="alias"
                                         id="alias"
                                         className={`${style.input}`}
@@ -271,13 +293,13 @@ export function CreateFacForm() {
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value="false"
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value="true"
                                                 label="Draft"
                                             />
                                         </div>
@@ -289,36 +311,6 @@ export function CreateFacForm() {
                                         />
                                     </div>
 
-                                    {/* isDeleted */}
-                                    {/*<div className={``}>*/}
-                                    {/*    <div className="flex">*/}
-                                    {/*        <label className={`${style.label}`} htmlFor="isDeleted">*/}
-                                    {/*            Status*/}
-                                    {/*        </label>*/}
-                                    {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
-                                    {/*    </div>*/}
-
-                                    {/*    <div className="flex gap-4 h-[40px] items-center">*/}
-                                    {/*        <Field*/}
-                                    {/*            name="isDeleted"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="true"*/}
-                                    {/*            label="Public"*/}
-                                    {/*        />*/}
-                                    {/*        <Field*/}
-                                    {/*            name="isDeleted"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="false"*/}
-                                    {/*            label="Draft"*/}
-                                    {/*        />*/}
-                                    {/*    </div>*/}
-
-                                    {/*    <ErrorMessage*/}
-                                    {/*        name="isDeleted"*/}
-                                    {/*        component={RadioButton}*/}
-                                    {/*        className={`${style.error}`}*/}
-                                    {/*    />*/}
-                                    {/*</div>*/}
                                 </div>
 
                                 {/* Faculty Image */}
