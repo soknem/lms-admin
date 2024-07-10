@@ -13,10 +13,6 @@ import {EditStudyProForm} from "./EditStudyProgramForm";
 import {useRouter} from "next/navigation";
 import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
 import {
-    useDisableFacultyByAliasMutation,
-    useEnableFacultyByAliasMutation
-} from "@/lib/features/admin/faculties/faculty/faculty";
-import {
     useDisableStudyProgramByAliasMutation,
     useEnableStudyProgramByAliasMutation
 } from "@/lib/features/admin/faculties/studyProgram/studyprogram";

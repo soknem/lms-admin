@@ -47,17 +47,17 @@ export default function StaffDetail() {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <StaffDetailComponent
-                    key={insData.id}
-                    id={insData.id}
-                    imageSrc={insData.imageSrc}
-                    name={insData.name}
-                    education={insData.education}
-                    position={insData.position}
-                    linkedin={insData.linkedin}
-                    github={insData.github}
-                    mail={insData.mail}
-                />
+                {/*<StaffDetailComponent*/}
+                {/*    key={insData.id}*/}
+                {/*    id={insData.id}*/}
+                {/*    imageSrc={insData.imageSrc}*/}
+                {/*    name={insData.name}*/}
+                {/*    education={insData.education}*/}
+                {/*    position={insData.position}*/}
+                {/*    linkedin={insData.linkedin}*/}
+                {/*    github={insData.github}*/}
+                {/*    mail={insData.mail}*/}
+                {/*/>*/}
             </section>
         </main>
     );

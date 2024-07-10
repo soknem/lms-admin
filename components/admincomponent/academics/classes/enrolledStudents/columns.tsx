@@ -86,8 +86,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
     if (column.id === "gender") {
         return (
-            <span className={value === "Female" ? "font-semibold text-orange-400" : "font-semibold"}>
-        {value === "Female" ? "Female" : value === "Male" ? "Male" : ""}
+            <span className={value === "F" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "F" ? "Female" : value === "M" ? "Male" : ""}
       </span>
         );
     }
@@ -128,22 +128,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     }
     return <span>{value}</span>;
 };
-
-// const HandleRemoveStudent = ({ row } : any) => {
-//
-//     if (row.original) {
-//         console.log("Student selected:", row.original.uuid);
-//     } else {
-//         console.error("Row does not have an 'original' property");
-//     }
-//
-//     const selectedClass = useSelector((state : RootState) => selectDetailClasses(state) );
-//
-//     console.log("selected class: ",selectedClass)
-//
-//
-//
-// }
 
 const HandleRemoveStudent = ({ row }: { row: any }) => {
     const selectedClass = useSelector((state: RootState) => selectSingleClass(state));

@@ -19,9 +19,6 @@ import {
 } from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuProSlice";
 import {useGetYearStuProsQuery} from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuPro";
 import {useGetStuProByAliasQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
-import {
-    AddSubjectStudyProForm
-} from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/addSubjectToStuPro";
 
 type PropsParams = {
     params: {

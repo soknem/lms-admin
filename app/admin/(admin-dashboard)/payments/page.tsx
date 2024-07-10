@@ -21,14 +21,12 @@ export default function Payments() {
         isLoading: paymentsLoading,
     } = useGetPaymentsQuery({page: 0, pageSize: 10});
     const payments = useSelector((state: RootState) => selectPayment(state));
-    const payLoading = useSelector(selectLoading);
-    const payError = useSelector(selectError);
 
     useEffect(() => {
         if (paymentsData) {
             dispatch(setPayments(paymentsData.content));
         }
-    }, [paymentsData, payError, dispatch]);
+    }, [paymentsData, dispatch]);
 
     return (
         <main className="flex flex-col h-full w-full p-9 gap-6">

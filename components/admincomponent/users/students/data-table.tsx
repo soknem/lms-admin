@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FaSearch} from "react-icons/fa";
 //import from shad cn
 import {
@@ -50,12 +50,6 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
 }
 
-const statusList: { [key: number]: string } = {
-    1: "Active",
-    2: "Hiatus",
-    3: "Drop",
-    4: "Disable",
-};
 
 export function UserStudentTable<TData, TValue>({
                                                     columns,
@@ -68,7 +62,6 @@ export function UserStudentTable<TData, TValue>({
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
 
-    const [selectedFilter, setSelectedFilter] = useState("All");
 
     const table = useReactTable({
         data,
@@ -122,46 +115,29 @@ export function UserStudentTable<TData, TValue>({
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();
 
-    // const filterOptions = ["All", "Public", "Disable", "Draft"];
-    // const handleFilterChange = (value: string) => {
-    //     setSelectedFilter(value);
-    //     const filterValue =
-    //         value === "All"
-    //             ? ""
-    //             : value === "Public"
-    //                 ? "true"
-    //                 : value === "Disable"
-    //                     ? "false"
-    //                     : "draft";
-    //     table.getColumn("status")?.setFilterValue(filterValue);
-    // };
+// Filter Gender
+    const genderLabelMap: { [key: string]: string } = {
+        F: "Female",
+        M: "Male",
+    };
 
-    // Filter Gender
     const [openGender, setopenGender] = useState(false);
 
-    const [selectedGender, setselectedGender] = React.useState<any>(null);
+    const [selectedGender, setSelectedGender] = React.useState<any>(null);
 
     const handleReset = (columnId: string) => {
         if (columnId === 'gender') {
-            setselectedGender(null);
-            table.getColumn(columnId)?.setFilterValue(''); // Clear the gender filter value
+            setSelectedGender(null);
+            table.getColumn(columnId)?.setFilterValue('');
             setData([...originalData]);
         }
-        // if (columnId === 'studentStatus') {
-        //     setselectedStatus(null);
-        // }
-        // table.getColumn(columnId)?.setFilterValue('');
-        // setData([...originalData]);
+        if (columnId === 'studentStatus') {
+            setSelectedStatus(null);
+            table.getColumn(columnId)?.setFilterValue('');
+            setData([...originalData]);
+        }
+
     };
-
-
-
-    // const filterGenderOptions = ["All", "Female", "Male"];
-    // const handleGenderFilterChange = (value: string) => {
-    //     setSelectedFilter(value);
-    //     const filterValue = value === "All" ? "" : value;
-    //     table.getColumn("gender")?.setFilterValue(filterValue);
-    // };
 
     const FilterGender = data.reduce((gender: string[], item: any) => {
         if (!gender.includes(item.gender)) {
@@ -170,24 +146,33 @@ export function UserStudentTable<TData, TValue>({
         return gender;
     }, []);
 
-    // const applyGenderFilter = (gender: string) => {
-    //     setselectedGender(gender);
-    //     table.getColumn('gender')?.setFilterValue((value: any) => value === gender); // Ensure exact match
-    //     setopenGender(false);
-    // };
-    
-    // Filter status
-    // const [openStatus, setopenStatus] = useState(false);
-    //
-    // const [selectedStatus, setselectedStatus] = React.useState<any>(null);
-    //
+    // filter Student Status
+    const statusLabelMap: { [key: number]: string } = {
+        1: "Active",
+        2: "Hiatus",
+        3: "Drop",
+        4: "Disable"
+    };
+
+    const [openStatus, setOpenStatus] = useState(false);
+
+    const [selectedStatus, setSelectedStatus] = React.useState<any>(null);
+
+
     // const FilterStatus = data.reduce((studentStatus: string[], item: any) => {
     //     if (!studentStatus.includes(item.studentStatus)) {
     //         studentStatus.push(item.studentStatus);
     //     }
     //     return studentStatus;
     // }, []);
-    
+
+    const FilterStatus = data.reduce((studentStatus: number[], item: any) => {
+        if (!studentStatus.includes(item.studentStatus)) {
+            studentStatus.push(item.studentStatus);
+        }
+        return studentStatus;
+    }, []);
+
     return (
         <>
             
@@ -235,21 +220,14 @@ export function UserStudentTable<TData, TValue>({
                                         <CommandItem
                                             key={index}
                                             value={gender}
-                                            // onSelect={(value) => {
-                                            //     setselectedGender(value);
-                                            //     table.getColumn('gender')?.setFilterValue(value);
-                                            //     setopenGender(false);
-                                            // }}
-
                                             onSelect={(value) => {
-                                                setselectedGender(value);
+                                                const selectedLabel = genderLabelMap[value];
+                                                setSelectedGender(selectedLabel);
                                                 table.getColumn('gender')?.setFilterValue(value);
                                                 setopenGender(false);
                                             }}
-
-                                            // onSelect={() => applyGenderFilter(gender)}
                                         >
-                                            {gender}
+                                            {genderLabelMap[gender]}
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>
@@ -261,79 +239,52 @@ export function UserStudentTable<TData, TValue>({
                     </PopoverContent>
                 </Popover>
 
-                {/*<DropdownMenu>*/}
-                {/*    <DropdownMenuTrigger asChild>*/}
-                {/*        <Button*/}
-                {/*            variant="outline"*/}
-                {/*            className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"*/}
-                {/*        >*/}
-                {/*            <TbFilter className="mr-2 h-4 w-4" />*/}
-                {/*            {selectedFilter}*/}
-                {/*        </Button>*/}
-                {/*    </DropdownMenuTrigger>*/}
-                {/*    <DropdownMenuContent align="end" className="border-[#E6E6E6] bg-white ">*/}
-                {/*        {filterGenderOptions.map((option) => (*/}
-                {/*            <DropdownMenuItem*/}
-                {/*                key={option}*/}
-                {/*                onSelect={() => handleGenderFilterChange(option)}*/}
-                {/*                className={`cursor-pointer  ${*/}
-                {/*                    (table.getColumn("gender")?.getFilterValue() || "All") === option*/}
-                {/*                }`}*/}
-                {/*            >*/}
-                {/*                {option}*/}
-                {/*            </DropdownMenuItem>*/}
-                {/*        ))}*/}
-                {/*    </DropdownMenuContent>*/}
-                {/*</DropdownMenu>*/}
-                
-                {/* Filter Student Status */}
-                {/*<Popover open={openStatus} onOpenChange={setopenStatus}>*/}
-                {/*    <PopoverTrigger asChild>*/}
-                {/*        <Button variant="outline" className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">*/}
-                {/*            <TbFilter className='mr-2 h-4 w-4' />*/}
-                {/*            {selectedStatus ? <>{selectedStatus}</> : <> Filter by status</>}*/}
-                {/*        </Button>*/}
-                {/*    </PopoverTrigger>*/}
-                {/*    <PopoverContent className="w-[200px] p-0 bg-white" align="start">*/}
-                {/*        <Command>*/}
-                {/*            <CommandInput*/}
-                {/*                placeholder="Filter status..." />*/}
 
-                {/*            <CommandList>*/}
-                {/*                <CommandEmpty>No results found.</CommandEmpty>*/}
-                {/*                <CommandGroup>*/}
-                {/*                    {FilterStatus.map((studentStatus, index) => (*/}
-                {/*                        <CommandItem*/}
-                {/*                            key={index}*/}
-                {/*                            value={studentStatus}*/}
-                {/*                            // onSelect={(value) => {*/}
-                {/*                            //     setselectedStatus(value);*/}
-                {/*                            //     table.getColumn('studentStatus')?.setFilterValue(value);*/}
-                {/*                            //     setopenStatus(false);*/}
-                {/*                            // }}*/}
-                {/*                            onSelect={(value) => {*/}
-                {/*                                setselectedStatus(value);*/}
-                {/*                                const statusKey = Object.keys(statusList).find(*/}
-                {/*                                    (key) => statusList[parseInt(key)] === value*/}
-                {/*                                );*/}
-                {/*                                table*/}
-                {/*                                    .getColumn("studentStatus")*/}
-                {/*                                    ?.setFilterValue(statusKey);*/}
-                {/*                                setopenStatus(false);*/}
-                {/*                            }}*/}
+                {/*Filter student status*/}
+                <Popover open={openStatus} onOpenChange={setOpenStatus}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
+                        >
+                            <TbFilter className="mr-2 h-4 w-4" />
+                            {selectedStatus ? <>{selectedStatus}</> : <>Filter by status</>}
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter by status..." />
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilterStatus.map((status, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={String(status)}
+                                            onSelect={(value) => {
+                                                const selectedLabel = statusLabelMap[Number(value)];
+                                                setSelectedStatus(selectedLabel);
+                                                table.getColumn("studentStatus")?.setFilterValue(value);
+                                                setOpenStatus(false);
+                                            }}
+                                        >
+                                            {statusLabelMap[status]}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedStatus && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none"
+                                onClick={() => handleReset("studentStatus")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
+                </Popover>
 
-                {/*                        >*/}
-                {/*                            {studentStatus}*/}
-                {/*                        </CommandItem>*/}
-                {/*                    ))}*/}
-                {/*                </CommandGroup>*/}
-                {/*            </CommandList>*/}
-                {/*        </Command>*/}
-                {/*        {selectedStatus && (*/}
-                {/*            <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none ' onClick={() => handleReset('studentStatus')}>Reset</Button>*/}
-                {/*        )}*/}
-                {/*    </PopoverContent>*/}
-                {/*</Popover>*/}
 
                 {/* Column visibility */}
                 <DropdownMenu>

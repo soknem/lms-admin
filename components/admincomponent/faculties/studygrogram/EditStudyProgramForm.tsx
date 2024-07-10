@@ -27,6 +27,7 @@ import {selectFaculty, setFaculties} from "@/lib/features/admin/faculties/facult
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {IoCameraOutline} from "react-icons/io5";
+import {toast} from "react-hot-toast";
 
 // const validationSchema = Yup.object().shape({
 //     alias: Yup.string().required("Required"),
@@ -170,8 +171,6 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
             setInitialAlias(stuProData.alias);
             setLogo(stuProData.logo)
         }
-
-        console.log("Initial values: ", initialValues);
     }, [isSuccess, stuProData]);
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
@@ -201,7 +200,6 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
             };
 
 
-            console.log("Edit study program: ", edtStuProByAlias);
             await editStuProgram({alias: initialAlias, updatedData: edtStuProByAlias}).unwrap();
 
             // Now update the alias if it has changed
@@ -215,13 +213,14 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                 }).unwrap();
             }
 
-
             resetForm();
             refetchStuPrograms();
             onClose();
-            console.log("Edit successfully");
+            toast.success('Successfully updated!');
+
         } catch (error) {
-            console.error("Error Editing study program: ", error);
+            console.error("Failed to edit study program", error);
+            toast.error('Failed to update study program');
         } finally {
             setSubmitting(true);
         }

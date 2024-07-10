@@ -28,7 +28,7 @@ export type StudentAdmissionType = {
     knownIstad: string,
     identity: string,
     biography: string,
-    // isDeleted: boolean,
+    isDeleted: boolean,
     shiftAlias: string,
     studyProgramAlias: string,
     degreeAlias: string,

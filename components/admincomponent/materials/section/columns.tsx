@@ -2,6 +2,7 @@
 import {RxCross2} from "react-icons/rx";
 import {IoCheckmarkSharp} from "react-icons/io5";
 
+
 import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal, ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -13,10 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {
-    StatusOption,
-    StudentAdmissionType,
-} from "@/lib/types/admin/admission";
+import {MaterialType, SectionType, StatusOption} from "@/lib/types/admin/materials";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
@@ -41,24 +39,6 @@ const TableCell = ({getValue, row, column, table}: any) => {
         setValue(newValue);
         tableMeta?.updateData(row.index, column.id, newValue);
     };
-    // Ensure the "id" column is not editable
-    if (column.id === "id") {
-        return <span>{value}</span>;
-    }
-
-    if (column.id === "profile") {
-        const studentData = row.original;
-        return (
-            <div className="flex items-center">
-                <img
-                    src={studentData.avatar}
-                    alt={studentData.avatar}
-                    className="w-8 h-8 rounded-full mr-2"
-                />
-                <span>{studentData.nameEn}</span>
-            </div>
-        );
-    }
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
@@ -76,6 +56,30 @@ const TableCell = ({getValue, row, column, table}: any) => {
         ) : (
             <input
                 className="w-full p-2 border-1 border-gray-300 rounded-md"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onBlur={onBlur}
+                type={columnMeta?.type || "text"}
+            />
+        );
+    }
+
+    if (tableMeta?.editedRows[row.id]) {
+        return columnMeta?.type === "select" ? (
+            <select
+                className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
+                onChange={onSelectChange}
+                value={value}
+            >
+                {columnMeta?.options?.map((option: StatusOption) => (
+                    <option key={option.label} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
+        ) : (
+            <input
+                className="w-full p-2 border-1 border-gray-300 "
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -135,45 +139,17 @@ const TableCell = ({getValue, row, column, table}: any) => {
     return <span>{value}</span>;
 };
 
+export const sectionColumns: ColumnDef<SectionType>[] = [
 
-export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
     {
-        accessorKey: "profile",
+        accessorKey: "title",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    PROFILE
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-        filterFn: (row, columnId, filterValue) => {
-            const profileName = row.original.nameEn.toLowerCase();
-            return profileName.includes(filterValue.toLowerCase());
-        },
-    },
-
-    {
-        accessorKey: "email",
-        header: () => {
-            return <div>EMAIL</div>;
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorKey: "degree.level",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    DEGREE
+                    TITLE
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -182,14 +158,14 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
     },
 
     {
-        accessorKey: "shift.name",
+        accessorKey: "subject.title",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    SHIFT
+                    Subject
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -198,11 +174,27 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
     },
 
     {
-        accessorKey: "studyProgram.studyProgramName",
-        header: () => {
-            return <div>STUDY PROGRAM</div>;
+        accessorKey: "isDraft",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    VISIBILITY
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
         },
         cell: TableCell,
+        meta: {
+            type: "select",
+            options: [
+                {value: 1, label: "Public"},
+                {value: 2, label: "Disable"},
+                {value: 3, label: "Draft"},
+            ],
+        },
     },
 
     {
@@ -218,14 +210,15 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
                 </Button>
             );
         },
+
+
         cell: TableCell,
     },
-
 
     {
         id: "actions",
         cell: ({row}) => {
-            const admission = row.original;
+            const curriculum = row.original;
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -238,9 +231,7 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
                             className="focus:bg-background"
-                            onClick={() =>
-                                navigator.clipboard.writeText(admission.nameEn)
-                            }
+                            onClick={() => navigator.clipboard.writeText(curriculum.title)}
                         >
                             Copy ID
                         </DropdownMenuItem>

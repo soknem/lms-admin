@@ -13,7 +13,7 @@ import {
     useDisableSubjectByAliasMutation,
     useEnableSubjectByAliasMutation
 } from "@/lib/features/admin/faculties/subject/subject";
-import {TbCopy, TbEye, TbEyeCancel, TbFileImport} from "react-icons/tb";
+import {TbCopy, TbFileImport} from "react-icons/tb";
 import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
 
 const ActionsCell = ({row}: any) => {

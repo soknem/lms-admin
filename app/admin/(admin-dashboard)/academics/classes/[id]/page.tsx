@@ -33,6 +33,7 @@ import {
 } from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
 import {setCourses} from "@/lib/features/student/course/studentCourseSlice";
 import React from "react";
+import {setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
 
 
 
@@ -78,9 +79,11 @@ export default function ClassDetail(props: Props) {
 
   const dispatch = useDispatch();
 
-  if(isClassSuccess){
+  if(isClassSuccess && isStuSuccess){
     dispatch(setSingleClass(classData))
+    dispatch(setStudent({ students: stuData.content, totalElements: stuData.totalElements }));
     console.log("classData: ",classData)
+    console.log("stuData: ",stuData)
   }
 
   if (isClassLoading) {

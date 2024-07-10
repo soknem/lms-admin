@@ -298,27 +298,30 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
           <div>
             <RequiredFieldLabelComponent labelText="Class Start"
                                          labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                    className={cn(
-                        "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
-                        !startDate && "text-gray-600"
-                    )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4"/>
-                  {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 bg-white ">
-                <Calendar
-                    mode="single"
-                    selected={startDate}
-                    onSelect={setStartDate}
-                    initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <div className="relative">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                      className={cn(
+                          "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
+                          !startDate && "text-gray-600"
+                      )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-white ">
+                  <Calendar
+                      mode="single"
+                      selected={startDate}
+                      onSelect={setStartDate}
+                      initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
           </div>
 
           {/* Class End */}

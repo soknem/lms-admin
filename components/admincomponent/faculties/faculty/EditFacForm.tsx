@@ -21,6 +21,7 @@ import {
     useGetFacultyByAliasQuery
 } from "@/lib/features/admin/faculties/faculty/faculty";
 import {IoCameraOutline} from "react-icons/io5";
+import {toast} from "react-hot-toast";
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -100,7 +101,6 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
     const [editFaculty] = useEditFacultyByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
     const [logo, setLogo] = useState(null);
-    // const [updateLogo, setUpdateLogo] = useState(null);
     const {data: facultyData, isSuccess} = useGetFacultyByAliasQuery(alias);
     const {refetch: refetchFaculties} = useGetFacultiesQuery({page: 0, pageSize: 10});
     const [initialValues, setInitialValues] = useState({
@@ -140,11 +140,9 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                 const fileResponse = await createSingleFile(fileData).unwrap();
                 logoUrl = fileResponse.name; // Assuming the response contains the URL of the uploaded file
             } else if (values.logo === logo) {
-                // If the logo hasn't changed, set logoUrl to null
                 logoUrl = null;
             }
 
-            console.log("Logo", logo)
 
             const edtFacultyByAlias: FacultyType = {
                 alias: values.alias, // Use the initial alias
@@ -155,8 +153,6 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                 isDeleted: values.isDeleted,
                 isDraft: values.isDraft,
 
-                // ...values,
-                // logo: logoUrl
             };
 
             console.log("Updated Data", edtFacultyByAlias)
@@ -176,10 +172,12 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
             refetchFaculties();
             onClose();
             console.log("Update successfully")
-            // router.refresh(); // or any other navigation action
+            toast.success('Successfully updated!');
+
+
         } catch (error) {
-            // Handle error (e.g., show an error message)
             console.error("Error updating faculty: ", error);
+            toast.error('Failed to edit faculty!');
         } finally {
             setSubmitting(false);
         }
@@ -263,7 +261,7 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                     </label>
                                     <Field
                                         as="textarea"
-                                        rows={3}
+                                        rows={4}
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}

@@ -48,7 +48,7 @@ const useFetchData = (queryHook: any, selector: any, action: any) => {
     return {stateData, loading, error};
 };
 
-export default function Page() {
+export default function Faculty() {
     const faculties = useFetchData(useGetFacultiesQuery, selectFaculty, setFaculties);
     const degrees = useFetchData(useGetDegreesQuery, selectDegree, setDegrees);
     const studyPrograms = useFetchData(useGetStudyProgramsQuery, selectStudyProgram, setStudyPrograms);

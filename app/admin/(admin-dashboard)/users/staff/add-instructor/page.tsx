@@ -10,7 +10,10 @@ import Link from "next/link";
 import React from "react";
 import AddInstructorForm from "@/components/admincomponent/users/staff/AddInstructorForm";
 
+
 export default function AddInstructor(){
+
+
     return (
         <main className="flex flex-col p-9 gap-6">
             <Breadcrumb>
@@ -27,7 +30,7 @@ export default function AddInstructor(){
                 </BreadcrumbList>
             </Breadcrumb>
             <section className="flex w-full justify-center items-center">
-                <AddInstructorForm/>
+                <AddInstructorForm />
             </section>
         </main>
     )
