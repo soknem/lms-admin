@@ -17,17 +17,19 @@ export default function Payment() {
     const dispatch = useDispatch();
     const { data, error } = useGetPaymentQuery();
 
-    // const paymentData = useSelector((state: RootState) => selectPayments(state));
+    // Handle undefined data by providing a fallback value
+    const paymentData: PaymentType[] = data?.content || [];
 
-    console.log(data.content);
-
-    const paymentData = data.content;
-
-    // Transform payment data to match TimesheetType
+    // Log data content for debugging
+    useEffect(() => {
+        if (data) {
+            console.log(data.content);
+        }
+    }, [data]);
 
     // Effect to update Redux store on data change
     useEffect(() => {
-        if (data) {
+        if (data && data.content) {
             dispatch(setPayments(data.content));
         }
         if (error) {

@@ -14,7 +14,7 @@ export type AttendanceT = {
          uuid: string;
          nameEn: string;
          gender: string;
-         status: string | null;
+         status: string;
 
      };
 
