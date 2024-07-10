@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { CardCourseComponent } from "@/components/instructorcomponent/courses/card/CardCourseComponent";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import { Stack } from "@mui/material";
 
 export default function Course() {
     const router = useRouter();

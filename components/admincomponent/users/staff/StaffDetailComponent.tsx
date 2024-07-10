@@ -32,7 +32,7 @@ type cardProps = {
     id: string,
     imageSrc: StaticImageData;
     name: string;
-    education: string[];
+    // education: string[];
     position: string;
     linkedin: string;
     github: string;
@@ -53,7 +53,7 @@ type cardProps = {
 };
 
 
-export default function StaffDetailComponent ({ id,imageSrc, name, education, position, linkedin, github, mail,skills,currentAddress, birthPlace,linkTelegram,nameKh,uploadCv,identityCard,phoneNumber,bio}: cardProps) {
+export default function StaffDetailComponent ({ id,imageSrc, name, position, linkedin, github, mail,skills,currentAddress, birthPlace,linkTelegram,nameKh,uploadCv,identityCard,phoneNumber,bio}: cardProps) {
 
 
     const { data : courseData , error : courseError,isSuccess: isCourseSuccess ,isLoading: isCourseLoading} = useGetInsAllCourseByUuidQuery(id)
@@ -67,7 +67,7 @@ export default function StaffDetailComponent ({ id,imageSrc, name, education, po
         }
     };
 
-    const educationArray = Array.isArray(education) ? education : [];
+    // const educationArray = Array.isArray(education) ? education : [];
 
     const skillArray = Array.isArray(skills) ? skills : [];
 
@@ -92,17 +92,17 @@ export default function StaffDetailComponent ({ id,imageSrc, name, education, po
                         </div>
                     </div>
 
-                    <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
-                        <p className="text-3xl font-bold">Education</p>
-                        {educationArray.map((edu, index) => (
-                            <div key={index} className="flex justify-start items-center ">
-                                <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">
-                                    <FaGraduationCap className="w-8 h-8 text-lms-primary"/>
-                                </div>
-                                <p className="leading-tight">{edu}</p>
-                            </div>
-                        ))}
-                    </div>
+                    {/*<div className="bg-white w-full p-6 rounded-[8px] space-y-6">*/}
+                    {/*    <p className="text-3xl font-bold">Education</p>*/}
+                    {/*    {educationArray.map((edu, index) => (*/}
+                    {/*        <div key={index} className="flex justify-start items-center ">*/}
+                    {/*            <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">*/}
+                    {/*                <FaGraduationCap className="w-8 h-8 text-lms-primary"/>*/}
+                    {/*            </div>*/}
+                    {/*            <p className="leading-tight">{edu}</p>*/}
+                    {/*        </div>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
 
                     {/* skill */}
                     <div className="bg-white w-full p-6 rounded-[8px] space-y-6">

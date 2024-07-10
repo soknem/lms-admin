@@ -75,30 +75,30 @@ export default function StaffDetail(props: Props) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <StaffDetailComponent
-                    key={data?.uuid}
-                    id={data?.uuid}
-                    imageSrc={data?.profileImage || placeholderImage}
-                    name={data?.nameEn || "N/A"}
-                    education={data?.educations || "N/A"}
-                    skills={data?.skills || "N/A"}
-                    position={data?.position || "N/A"}
-                    linkedin={data?.linkLinkedin || "N/A"}
-                    github={data?.linkGit || "N/A"}
-                    mail={data?.email || "N/A"}
+                {/*<StaffDetailComponent*/}
+                {/*    key={data?.uuid}*/}
+                {/*    id={data?.uuid}*/}
+                {/*    imageSrc={data?.profileImage || placeholderImage}*/}
+                {/*    name={data?.nameEn || "N/A"}*/}
+                {/*    education={data?.educations || "N/A"}*/}
+                {/*    skills={data?.skills || "N/A"}*/}
+                {/*    position={data?.position || "N/A"}*/}
+                {/*    linkedin={data?.linkLinkedin || "N/A"}*/}
+                {/*    github={data?.linkGit || "N/A"}*/}
+                {/*    mail={data?.email || "N/A"}*/}
 
-                    currentAddress={data?.currentAddress || "N/A"}
-                    birthPlace={data?.birthPlace || "N/A"}
-                    linkTelegram={data?.linkTelegram || "N/A"}
-                    nameKh={data?.nameKh || "N/A"}
-                    uploadCv={data?.uploadCv}
-                    identityCard={data?.identityCard}
-                    phoneNumber={data?.phoneNumber || "N/A"}
-                    bio={data?.bio || "N/A"}
+                {/*    currentAddress={data?.currentAddress || "N/A"}*/}
+                {/*    birthPlace={data?.birthPlace || "N/A"}*/}
+                {/*    linkTelegram={data?.linkTelegram || "N/A"}*/}
+                {/*    nameKh={data?.nameKh || "N/A"}*/}
+                {/*    uploadCv={data?.uploadCv}*/}
+                {/*    identityCard={data?.identityCard}*/}
+                {/*    phoneNumber={data?.phoneNumber || "N/A"}*/}
+                {/*    bio={data?.bio || "N/A"}*/}
 
-                    profileImage={data?.profileImage || placeholderImage}
+                {/*    profileImage={data?.profileImage || placeholderImage}*/}
 
-                />
+                {/*/>*/}
             </section>
         </main>
     );
