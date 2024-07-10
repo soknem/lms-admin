@@ -128,10 +128,10 @@ export function ScheduleTable<TData, TValue>({
             <Input
                 placeholder="Search schedule"
                 value={
-                    (table.getColumn("subject")?.getFilterValue() as string) ?? ""
+                    (table.getColumn("courseTitle")?.getFilterValue() as string) ?? ""
                 }
                 onChange={(event) =>
-                    table.getColumn("subject")?.setFilterValue(event.target.value)
+                    table.getColumn("courseTitle")?.setFilterValue(event.target.value)
                 }
 
                 className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "

@@ -34,6 +34,10 @@ import attendanceSlice from "@/lib/features/instructor/report/attendance/attenda
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
 import intmeterialsSlice from "@/lib/features/instructor/meterials/intmeterialsSlice";
 import intassessmentSlice from "@/lib/features/instructor/assessment/assessmentSlice";
+import currentLectureSlice from "@/lib/features/instructor/lecture/currentLectureSlice";
+import endedLectureSlice from "@/lib/features/instructor/endLecture/endedLectureSlice";
+import teachingSlice from "@/lib/features/instructor/report/timesheet/techingHistory/teachingSlice";
+import studentAttendanceSlice from "@/lib/features/instructor/studentAttendance/studentAttendanceSlice";
 
 
 
@@ -73,6 +77,10 @@ export const makeStore = () => {
             attendance: attendanceSlice,
             intmaterial:intmeterialsSlice,
             intructorAssessment:intassessmentSlice,
+            current: currentLectureSlice,
+            ended: endedLectureSlice,
+            teaching:teachingSlice,
+            studentAttendance: studentAttendanceSlice,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })

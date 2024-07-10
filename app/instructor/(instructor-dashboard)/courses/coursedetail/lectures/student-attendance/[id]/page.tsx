@@ -1,5 +1,5 @@
-import React from "react";
-import {studentAttendanceType} from "@/lib/types/admin/studentAttendance";
+'use client'
+import React, {useEffect} from "react";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -16,10 +16,34 @@ import {
 import {
     StudentAttendanceColumns
 } from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns";
+import {useDispatch, useSelector} from "react-redux";
+import {useGetStudentAttendanceQuery} from "@/lib/features/instructor/studentAttendance/studentAttendance";
+import {CurrentType, StudentAttendanceType} from "@/lib/types/instructor/lecture/lecture";
+import {RootState} from "@/lib/store";
+import {
+    selectStudentAttendances,
+    setStudentAttendances
+} from "@/lib/features/instructor/studentAttendance/studentAttendanceSlice";
 
 
 export default function StudentAttendance() {
-    const data: studentAttendanceType[] = Attendences
+    // const data: studentAttendanceType[] = Attendences
+
+    const dispatch = useDispatch();
+    const {data, error} = useGetStudentAttendanceQuery();
+
+    const studentAttendance: StudentAttendanceType[] = useSelector((state: RootState) => selectStudentAttendances(state));
+
+    useEffect(() => {
+        if (data) {
+            dispatch(setStudentAttendances(data.content));
+
+        }
+        if (error) {
+            console.error("Failed to load current", error);
+        }
+    }, [data, error, dispatch]);
+
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">
             <Breadcrumb>
@@ -54,7 +78,7 @@ export default function StudentAttendance() {
                 </BreadcrumbList>
             </Breadcrumb>
             <h1 className=' text-3xl font-bold text-lms-primary'>Student Attendance</h1>
-            <StudentAttendanceDataTable columns={StudentAttendanceColumns} data={data}/>
+            <StudentAttendanceDataTable columns={StudentAttendanceColumns} data={studentAttendance}/>
         </section>
     );
 }

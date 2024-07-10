@@ -78,11 +78,12 @@ export default function InstructorSidebarComponent({
 
     return (
         <div
-            className={`h-full text-white transition-all duration-300  ${isSidebarOpen ? "w-[240px]" : "w-[72px]"} flex flex-col bg-lms-primary px-2 py-6`}>
-            <div className="flex justify-between items-center p-4  mb-4 border-b">
+            className={`h-full text-lms-primary transition-all duration-300  ${isSidebarOpen ? "w-[240px]" : "w-[72px]"} flex flex-col bg-white px-2 py-6`}>
+            <div className="flex justify-between items-center p-4  mb-4">
                 <span className={`${isSidebarOpen ? "block" : "hidden"} text-xl font-medium`}>Instructor Menu</span>
                 <button onClick={handleSidebarToggle} className="text-white">
-                    {isSidebarOpen ? <FiChevronLeft className="w-6 h-6"/> : <FiChevronRight className="w-6 h-6"/>}
+                    {isSidebarOpen ? <FiChevronLeft className="text-lms-primary w-6 h-6"/> :
+                        <FiChevronRight className="text-lms-primary w-6 h-6"/>}
                 </button>
             </div>
 

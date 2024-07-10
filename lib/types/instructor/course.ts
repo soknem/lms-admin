@@ -18,5 +18,6 @@ export type InstructorCourseType = {
     username: string;
     gender: string;
     avatar: string;
+    profileImage:string;
     courses: InCourseType[];
 };

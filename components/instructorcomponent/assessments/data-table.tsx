@@ -2,7 +2,6 @@
 
 import React, {useState} from 'react'
 
-
 import {
   ColumnDef,
   flexRender,
@@ -35,13 +34,9 @@ import {
 
 import {Input} from '@/components/ui/input'
 
-//custom component import
-import {FaSearch} from "react-icons/fa";
-
+import {FaSearch} from "react-icons/fa"
 import {Button} from "@/components/ui/button"
-
-import {TbSearch} from "react-icons/tb";
-
+import {TbSearch, TbFilter, TbAdjustmentsHorizontal} from "react-icons/tb"
 import {useMediaQuery} from "usehooks-ts"
 import {
   Command,
@@ -58,12 +53,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-import {TbFilter} from "react-icons/tb";
-
-import {TbAdjustmentsHorizontal} from "react-icons/tb";
 import {useRouter} from 'next/navigation'
 import {Label} from '@radix-ui/react-dropdown-menu'
-
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -71,9 +62,9 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function InstructorCourseAssesmentDataTable<TData, TValue>({
-                                                          columns,
-                                                          data
-                                                        }: DataTableProps<TData, TValue>) {
+                                                                    columns,
+                                                                    data
+                                                                  }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -81,16 +72,13 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
 
-  // filters
   const [openClass, setOpenClass] = useState(false);
   const [selectedClass, setselectedClass] = React.useState<any>(null);
 
   const [openCourse, setOpenCourse] = useState(false);
   const [selectedCourse, setselectedCourse] = React.useState<any>(null);
 
-
   const router = useRouter();
-
 
   const table = useReactTable({
     data,
@@ -167,34 +155,30 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
     return course;
   }, []);
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    table.getColumn('student.nameEn')?.setFilterValue(value);
+  };
 
   return (
       <>
-
-        <div className='flex items-center justify-between gap-4 my-4'>
-
-          {/* search */}
-          <div className="flex items-center w-full relative">
-            <Input
-                placeholder="Search Student Fullname(EN)"
-                value={
-                    (table.getColumn("student.nameEn")?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                    table.getColumn("student.nameEn")?.setFilterValue(event.target.value)
-                }
-
-                className="border-[#E6E6E6] bg-white pl-10 "
-            />
-
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FaSearch className="text-gray-400"/>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center py-4 w-full">
+            <div className="flex items-center w-full relative">
+              <Input
+                  placeholder="Search student name"
+                  value={
+                      table.getColumn('student.nameEn')?.getFilterValue() as string ?? ''
+                  }
+                  onChange={handleSearchChange}
+                  className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30"
+              />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <FaSearch className="text-gray-400" />
+              </div>
             </div>
-
           </div>
 
-
-          {/* filters Class */}
           <Popover open={openClass} onOpenChange={setOpenClass}>
             <PopoverTrigger asChild>
               <Button variant="outline"
@@ -207,7 +191,6 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
               <Command>
                 <CommandInput
                     placeholder="Filter Class..."/>
-
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup>
@@ -228,26 +211,24 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                 </CommandList>
               </Command>
               {selectedClass && (
-                  <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none '
+                  <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none'
                           onClick={() => handleReset('classCode')}>Reset</Button>
               )}
             </PopoverContent>
           </Popover>
 
-          {/* filters study course */}
           <Popover open={openCourse} onOpenChange={setOpenCourse}>
             <PopoverTrigger asChild>
               <Button variant="outline"
-                      className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
+                      className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60">
                 <TbFilter className='mr-2 h-4 w-4'/>
-                {selectedCourse ? <>{selectedCourse}</> : <> Filter by course</>}
+                {selectedCourse ? <>{selectedCourse}</> : <> Filter by Course</>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0 bg-white" align="start">
               <Command>
                 <CommandInput
-                    placeholder="Filter course..."/>
-
+                    placeholder="Filter Course..."/>
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup>
@@ -268,14 +249,12 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                 </CommandList>
               </Command>
               {selectedCourse && (
-                  <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none '
+                  <Button className='bg-slate-50 hover:bg-slate-100 w-full rounded-none'
                           onClick={() => handleReset('course.title')}>Reset</Button>
               )}
             </PopoverContent>
           </Popover>
 
-
-          {/* Column visibility */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'>
@@ -283,7 +262,7 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                 View
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='end' className='bg-white '>
+            <DropdownMenuContent align='end' className='bg-white'>
               {table
                   .getAllColumns()
                   .filter(column => column.getCanHide())
@@ -301,56 +280,10 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   })}
             </DropdownMenuContent>
           </DropdownMenu>
-
-
         </div>
-
-        {/* Table */}
-        <div className='rounded-md p-4 bg-white'>
-
-          {/* class detail information */}
-          <div className='flex justify-between p-4'>
-            <div>
-              <Label className='text-lms-gray-30'>Generation</Label>
-              <p className='flex font-medium text-lms-black-90'>Generation 1</p>
-            </div>
-
-            <div>
-              <Label className='text-lms-gray-30'>Year</Label>
-              <p className='flex font-medium text-lms-black-90'>Foundation Year</p>
-            </div>
-
-            <div>
-              <Label className='text-lms-gray-30'>Academic Year</Label>
-              <p className='flex font-medium text-lms-black-90'>2024-2025</p>
-            </div>
-
-            <div>
-              <Label className='text-lms-gray-30'>Degree</Label>
-              <p className='flex font-medium text-lms-black-90'>Bachelor</p>
-            </div>
-
-            <div>
-              <Label className='text-lms-gray-30'>Study Program</Label>
-              <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
-            </div>
-
-            <div>
-              <Label className='text-lms-gray-30'>Class</Label>
-              <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>
-            </div>
-
-            <div>
-              <Label className='text-lms-gray-30'>Course</Label>
-              <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>
-            </div>
-
-
-          </div>
-
+        <div className="rounded-md border bg-white">
           <Table>
-
-            <TableHeader className='text-lms-gray-30'>
+            <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map(header => {
@@ -368,89 +301,64 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   </TableRow>
               ))}
             </TableHeader>
-
             <TableBody>
               {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map(row => (
                       <TableRow
                           key={row.id}
                           data-state={row.getIsSelected() && 'selected'}
-                          className='hover:bg-gray-50'
                       >
                         {row.getVisibleCells().map(cell => (
                             <TableCell key={cell.id}>
-                              {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
-                              )}
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </TableCell>
                         ))}
                       </TableRow>
                   ))
               ) : (
                   <TableRow>
-                    <TableCell
-                        colSpan={columns.length}
-                        className='h-24 text-center '
-                    >
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
                       No results.
                     </TableCell>
                   </TableRow>
               )}
             </TableBody>
-
-
+            <TableFooter>
+              {table.getFooterGroups().map(footerGroup => (
+                  <TableRow key={footerGroup.id}>
+                    {footerGroup.headers.map(header => (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.footer,
+                                  header.getContext()
+                              )}
+                        </TableHead>
+                    ))}
+                  </TableRow>
+              ))}
+            </TableFooter>
           </Table>
-
-
         </div>
-
-        {/* status Remark */}
-        <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
-          <p className='text-lms-success font-bold '>Status :</p>
-          <div className='flex gap-2 text-gray-500 '>
-            <p className='font-semibold text-lms-success'>Active</p>
-            <p className='khmer-font'>សិស្សកំពុងសិក្សា</p>
-          </div>
-
-          <div className='flex gap-2 text-gray-500'>
-            <p className='font-semibold text-lms-accent '>Hiatus</p>
-            <p className='khmer-font'>សិស្សព្យួរការសិក្សា</p>
-          </div>
-
-          <div className='flex gap-2 text-gray-500'>
-            <p className='font-semibold text-lms-error'>Drop</p>
-            <p className='khmer-font'>សិស្សបោះបង់ការសិក្សា</p>
-          </div>
-
-          <div className='flex gap-2 text-gray-500'>
-            <p className='font-semibold text-lms-error'>Disable</p>
-            <p className='khmer-font'>សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</p>
-          </div>
-        </div>
-
-        {/* Pagination */}
-        <div className='flex items-center justify-end space-x-2 py-4'>
+        <div className="flex items-center justify-end space-x-2 py-4">
           <Button
-              className='border-gray-30'
-              variant='outline'
-              size='sm'
+              variant="outline"
+              size="sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-              className='border-gray-30 '
-              variant='outline'
-              size='sm'
+              variant="outline"
+              size="sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
           >
             Next
           </Button>
         </div>
-
       </>
   )
 }

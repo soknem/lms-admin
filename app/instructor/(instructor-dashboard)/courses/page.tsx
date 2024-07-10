@@ -1,4 +1,4 @@
-"use client";
+    "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
@@ -74,7 +74,7 @@ export default function Course() {
 
     return (
         <div className="flex flex-col h-full w-full p-9 gap-4">
-            <section className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
+            <section className="bg-lms-primary w-full  rounded-xl relative flex items-center justify-center p-8">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-2xl sm:text-3xl font-bold text-white">
                         Welcome back, {allData.nameEn}!
@@ -83,10 +83,10 @@ export default function Course() {
                         Passionate about literature and creative writing.
                     </p>
                 </div>
-                <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
+                <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[75px]">
                     <div className="w-[150px] h-[150px] rounded-full shadow-lg">
                         <img
-                            src={allData.avatar || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                            src={allData.profileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                             alt="instructor"
                             className="h-full w-full object-cover rounded-full"
                         />

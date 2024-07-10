@@ -51,7 +51,7 @@ export default function Schedule() {
 
   return (
       <main className="flex flex-col h-full w-full p-9">
-        <section className="bg-lms-primary w-full sm:h-[172px] rounded-xl relative flex items-center justify-center p-8">
+        <section className="bg-lms-primary w-full  rounded-xl relative flex items-center justify-center p-8">
           <div className="flex flex-col gap-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-white">
               Welcome back, {allData?.nameEn ?? 'Instructor'}
@@ -63,7 +63,7 @@ export default function Schedule() {
           <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
             <div className="w-[150px] h-[150px] rounded-full shadow-lg">
               <img
-                  src={allData?.avatar || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                  src={allData?.profileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                   alt="student"
                   className="h-full w-full object-cover rounded-full"
               />
@@ -84,7 +84,7 @@ export default function Schedule() {
           {/* image */}
           <div className="w-[80px] h-[80px] lg:w-[150px] lg:h-[150px] rounded-full shadow-lg">
             <img
-                src={allData?.avatar || "https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"}
+                src={allData?.profileImage || "https://img.freepik.com/premium-photo/portrait-beautiful-asian-schoolgirl-wearing-backpack-purple-background_466494-2286.jpg?w=1380"}
                 alt="student"
                 className="h-full w-full object-cover rounded-full"
             />
