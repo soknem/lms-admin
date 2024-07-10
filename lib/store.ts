@@ -34,6 +34,7 @@ import attendanceSlice from "@/lib/features/instructor/report/attendance/attenda
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
 import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
 import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCourse";
+import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 
 
 export const makeStore = () => {
