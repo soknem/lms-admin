@@ -7,7 +7,7 @@ export default function page() {
         <main className='w-full h-screen relative flex items-center justify-center'>
             <section
                 className="h-full w-full bg-cover bg-center"
-                style={{backgroundImage: "url('/form.jpg')", filter: "blur(5px)"}}
+                style={{backgroundImage: "url('/bg-image.jpg')", filter: "blur(4px)"}}
             >
             </section>
             <section className="absolute">

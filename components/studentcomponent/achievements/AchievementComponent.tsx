@@ -120,31 +120,31 @@ function YearSemesterTable({ year, semester, courses }: YearSemesterTableProps) 
 }
 
 export default function AchievementTable({ data }: AchievementTableProps) {
-    const tableData = data.yearOfStudiesStudents.map(yearOfStudy => {
-        let rowNumber = 1;
-        return {
-            year: yearOfStudy.year,
-            semester: yearOfStudy.semester,
-            courses: yearOfStudy.courses.map(course => ({
-                NO: rowNumber++,
-                courseTitle: course.title,
-                score: course.score,
-                credit: course.credit,
-                grade: course.grade,
-            }))
-        };
-    });
+    // const tableData = data.yearOfStudiesStudents.map(yearOfStudy => {
+    //     let rowNumber = 1;
+    //     return {
+    //         year: yearOfStudy.year,
+    //         semester: yearOfStudy.semester,
+    //         courses: yearOfStudy.courses.map(course => ({
+    //             NO: rowNumber++,
+    //             courseTitle: course.title,
+    //             score: course.score,
+    //             credit: course.credit,
+    //             grade: course.grade,
+    //         }))
+    //     };
+    // });
 
     return (
         <section className="grid mt-4 lg:grid-cols-2 lg:gap-x-6 lg:gap-y-9 grid-cols-1 gap-x-6 gap-y-9">
-            {tableData.map((yearOfStudy, index) => (
-                <YearSemesterTable
-                    key={index}
-                    year={yearOfStudy.year}
-                    semester={yearOfStudy.semester}
-                    courses={yearOfStudy.courses}
-                />
-            ))}
+            {/*{tableData.map((yearOfStudy, index) => (*/}
+            {/*    <YearSemesterTable*/}
+            {/*        key={index}*/}
+            {/*        year={yearOfStudy.year}*/}
+            {/*        semester={yearOfStudy.semester}*/}
+            {/*        courses={yearOfStudy.courses}*/}
+            {/*    />*/}
+            {/*))}*/}
         </section>
     );
 }

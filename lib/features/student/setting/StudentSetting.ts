@@ -3,13 +3,18 @@ import { istadLmsApi } from "@/lib/api";
 
 export const studentSettingApi = istadLmsApi.injectEndpoints({
     endpoints: (builder) => ({
-        getStudentSettings: builder.mutation<any, any>({
+        patchStudentSettings: builder.mutation<any, any>({
             query: (settings) => ({
                 url: `/students/setting`,
                 method: 'PATCH',
                 body: settings,
             }),
         }),
+
+        getStudentSettings: builder.query<any, void>({
+            query: () => `/students/setting`,
+        }),
+
         getStudents: builder.query<any, { pageNumber: number, pageSize: number }>({
             query: ({ pageNumber, pageSize }) => `/students?pageNumber=${pageNumber}&pageSize=${pageSize}`,
         }),
@@ -24,7 +29,8 @@ export const studentSettingApi = istadLmsApi.injectEndpoints({
 });
 
 export const {
-    useGetStudentSettingsMutation,
+    usePatchStudentSettingsMutation,
+    useGetStudentSettingsQuery,
     useUploadProfileImageMutation,
     useGetStudentsQuery,
 } = studentSettingApi;

@@ -32,12 +32,25 @@ import singleClassSlice from "@/lib/features/admin/academic-management/detail-cl
 import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
 import attendanceSlice from "@/lib/features/instructor/report/attendance/attendanceSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
+import intmeterialsSlice from "@/lib/features/instructor/meterials/intmeterialsSlice";
+import intassessmentSlice from "@/lib/features/instructor/assessment/assessmentSlice";
+import currentLectureSlice from "@/lib/features/instructor/lecture/currentLectureSlice";
+import endedLectureSlice from "@/lib/features/instructor/endLecture/endedLectureSlice";
+import teachingSlice from "@/lib/features/instructor/report/timesheet/techingHistory/teachingSlice";
+import studentAttendanceSlice from "@/lib/features/instructor/studentAttendance/studentAttendanceSlice";
+
+
+import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
+import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCourse";
+import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
+            studentCourseApi: studentCourseApi.reducer,
+            instructorCourseApi: instructorCourseApi.reducer,
             auth: authSlice,
             generation: generationSlice,
             filter: filterSlice,
@@ -58,6 +71,7 @@ export const makeStore = () => {
             payment: paymentSlice,
             course: courseSlice,
             material: materialsSlice,
+            section: sectionSlice,
             class: classSlice,
             staff: staffSlice,
             file: fileSlice,
@@ -67,7 +81,12 @@ export const makeStore = () => {
             studentSetting: StudentProfileSlice,
             schedule: scheduleSlice,
             attendance: attendanceSlice,
-
+            intmaterial:intmeterialsSlice,
+            intructorAssessment:intassessmentSlice,
+            current: currentLectureSlice,
+            ended: endedLectureSlice,
+            teaching:teachingSlice,
+            studentAttendance: studentAttendanceSlice,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })

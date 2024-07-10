@@ -12,7 +12,7 @@ export default function Attendance() {
     const dispatch = useDispatch<AppDispatch>();
 
     // Fetch attendance data
-    const { data, error, isLoading } = useGetAttendanceQuery({ page: 0, pageSize: 25 });
+    const { data, error, isLoading } = useGetAttendanceQuery();
 
     // Select attendance from Redux store
     const attendance = useSelector((state: RootState) => selectAttendance(state));

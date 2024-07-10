@@ -40,7 +40,7 @@ export default  function Dashboard() {
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9 space-y-6">
             <h1 className=' text-3xl font-bold text-lms-primary'>Summary Dashboard</h1>
-            <div className="grid grid-cols-6 gap-4">
+            <div className="grid grid-cols-5 gap-4">
                 <DashboardCard label="Students" total={student} Icon={PiStudent} value2={DropStudent} value1={ActiveStudent} subLabel1="Active" subLabel2="Drop" />
 
                 <DashboardCard label="Courses" total={ActiveCourse} Icon={PiStudent} value2={DropStudent} value1={ActiveCourse} subLabel1="Started" subLabel2="Ended" />

@@ -164,16 +164,16 @@ export function AttendanceData<TData, TValue>({
 
     //filters data of class
     const FilteredClass = data.reduce((cs: string[], item: any) => {
-        if (!cs.includes(item.class)) {
-            cs.push(item.class);
+        if (!cs.includes(item.classCode)) {
+            cs.push(item.classCode);
         }
         return cs;
     }, []);
 
     //filters data of course
     const FilteredCourse = data.reduce((course: string[], item: any) => {
-        if (!course.includes(item.course)) {
-            course.push(item.course);
+        if (!course.includes(item.course.title)) {
+            course.push(item.course.title);
         }
         return course;
     }, []);

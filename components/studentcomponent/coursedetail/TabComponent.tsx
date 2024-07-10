@@ -22,10 +22,6 @@ export default function TabComponent() {
             <TabsTrigger value="Video">Video</TabsTrigger>
             <TabsTrigger value="Mini Project">Mini Project</TabsTrigger>
           </TabsList>
-          {/*<Button className="border-2 bg-white flex items-center hover:bg-white/80">*/}
-          {/*  Lecture*/}
-          {/*  <TbArrowNarrowRight className="w-6 h-6 ml-2" />*/}
-          {/*</Button>*/}
         </div>
 
           <TabsContent value="curriculum">
@@ -41,4 +37,3 @@ export default function TabComponent() {
     </div>
 );
 }
-// onClick={() => router.push(`/instructor/courses/coursedetail/lectures`)}

@@ -1,5 +1,4 @@
 import {DateComponent} from "@/components/instructorcomponent/reports/timesheet/DateComponent";
-import React from "react";
 import TabReportComponent from "@/components/instructorcomponent/reports/timesheet/TabReportComponent";
 
 export default function Report() {
@@ -9,8 +8,6 @@ export default function Report() {
             <div className="mt-4">
                 <DateComponent/>
                 <TabReportComponent/></div>
-
-
         </main>
     );
 }

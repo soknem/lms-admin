@@ -79,7 +79,7 @@ export default function AdminSidebarComponent({
 
     return (
         <div
-            className={`h-full text-lms-primary transition-all duration-300  ${isSidebarOpen ? "w-[240px]" : "w-[72px]"} flex flex-col bg-white px-2 py-6`}>
+            className={` text-lms-primary transition-all duration-300  ${isSidebarOpen ? "w-[240px]" : "w-[72px]"} flex flex-col bg-white px-2 py-6`}>
             <div className="flex justify-between items-center p-4  mb-4">
                 <span className={`${isSidebarOpen ? "block" : "hidden"} text-xl font-medium`}>Admin Menu</span>
                 <button onClick={handleSidebarToggle} className="text-white">
@@ -153,24 +153,6 @@ export default function AdminSidebarComponent({
                     )
                 )}
 
-                <Button
-                    onClick={handleThemeToggle}
-                    className={`${buttonClass(false)} ${commonButtonStyles} ${isDarkMode ? "text-lms-primary" : ""}`}
-                >
-                    {isDarkMode ? (
-                        <>
-                            <BsMoonStarsFill className="w-5 h-5 text-primary"/>
-                            <span
-                                className={`${isSidebarOpen ? "block" : "hidden"} text-lg font-medium`}>Light Mode</span>
-                        </>
-                    ) : (
-                        <>
-                            <BsSunFill className="w-5 h-5 text-lms-primary group-hover:text-lms-primary"/>
-                            <span
-                                className={`${isSidebarOpen ? "block" : "hidden"} text-lg font-medium`}>Dark Mode</span>
-                        </>
-                    )}
-                </Button>
 
                 {
                     logout.map((item, index) => (

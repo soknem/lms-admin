@@ -7,7 +7,7 @@ import {HiEyeOff} from "react-icons/hi";
 import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Formik, Form, Field, FormikErrors, FormikTouched} from "formik";
+import {Formik, Form, Field, FormikErrors, FormikTouched, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {CustomErrorMessageEmail} from '../alert/CustomErrorMessageEmail';
 import {CustomErrorMessagePass} from "../alert/CustomErrorMessagePass";
@@ -33,8 +33,8 @@ const getFieldClassName = (
     touched: FormikTouched<InitialValues>,
     fieldName: keyof InitialValues
 ) => {
-    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-gray-300 border-gray-300 block w-full p-2.5";
-    const errorClass = "border-red-500 dark:border-red-500";
+    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-blue-600 border-gray-300 block w-full p-2.5";
+    const errorClass = "border-red-600 dark:border-red-600";
     const validClass = "border-gray-300 dark:border-gray-300";
 
     return touched[fieldName] && errors[fieldName]
@@ -42,7 +42,7 @@ const getFieldClassName = (
         : `${baseClass} ${validClass}`;
 };
 
-interface DecodedToken {
+type DecodedToken = {
     iss: string;
     sub: string;
     exp: number;
@@ -121,7 +121,8 @@ export function CardLogin() {
     };
 
     return (
-        <Card className="w-[450px] bg-white/70 backdrop-blur-md dark:bg-white p-[16px] border border-gray-300 dark:border-white  ">
+        <Card
+            className="w-[450px] bg-white/80 backdrop-blur-[2px] dark:bg-white p-[16px] border border-gray-300 dark:border-white  ">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -129,13 +130,14 @@ export function CardLogin() {
                     handleSubmit(values, actions);
                 }}
             >
-                {({ errors, touched }) => (
+                {({errors, touched}) => (
                     <section>
                         <CardHeader className="items-center dark:border-white">
                             <section className="mb-5">
-                                <Image src="/logo.png" alt="logo" width={130} height={130} />
+                                <Image src="/logo.png" alt="logo" width={130} height={130}/>
                             </section>
-                            <CardTitle className="  text-[40px] text-center font-bold text-[#253C95] tracking-[0.5px] leading-[54px] dark:text-[#253C95]">
+                            <CardTitle
+                                className="  text-[40px] text-center font-bold text-[#253C95] tracking-[0.5px] leading-[54px] dark:text-[#253C95]">
                                 Welcome
                             </CardTitle>
                             <CardDescription className="text-[20px] text-gray-600 tracking-[0.5px] ">
@@ -146,10 +148,13 @@ export function CardLogin() {
                             <Form>
                                 <section className="grid w-full items-center gap-4 mt-[20px]">
                                     <section className="space-y-2">
-                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] text-gray-800" htmlFor="email">
+                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] text-gray-800"
+                                               htmlFor="email">
                                             Email
-                                            <span className={`text-red-500`}> *</span>
+                                            <span className={`text-red-600 `}> *</span>
                                         </label>
+
+
                                         <Field
 
                                             type="text"
@@ -163,13 +168,25 @@ export function CardLogin() {
 
                                         />
 
-                                        <CustomErrorMessageEmail errors={errors} touched={touched} fieldName="emailOrUsername" />
+                                        <ErrorMessage
+                                            name="emailOrUsername"
+                                            component="div"
+                                            className="text-red-600  text-[15px] mt-1 leading-[24px] tracking-[0.5px] "/>
+
+
                                     </section>
+
+
                                     <section className="space-y-2">
-                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] text-gray-800" htmlFor="password">
+
+
+                                        <label className="text-[16px] leading-[24px] tracking-[0.5px] text-gray-800"
+                                               htmlFor="password">
                                             Password
-                                            <span className={`text-red-500`}> *</span>
+                                            <span className={`text-red-600 `}> *</span>
                                         </label>
+
+
                                         <section className="relative">
                                             <Field
                                                 type={showPassword ? "text" : "password"}
@@ -190,7 +207,14 @@ export function CardLogin() {
                                                 />
                                             )}
                                         </section>
-                                        <CustomErrorMessagePass errors={errors} touched={touched} fieldName="password" />
+
+
+                                        <ErrorMessage
+                                            name="password"
+                                            component="div"
+                                            className="text-red-600  text-[15px] mt-1 leading-[24px] tracking-[0.5px] "/>
+
+
                                     </section>
 
                                     <Button

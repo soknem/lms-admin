@@ -1,16 +1,17 @@
-"use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
+import { IoCheckmarkSharp } from "react-icons/io5";
 
-import {ColumnDef} from "@tanstack/react-table";
-import {ArrowUpDown} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {AttendanceT, AttendanceType} from "@/lib/types/instructor/report";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
-import {StatusOption} from "@/lib/types/instructor/schedule";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
+import { AttendanceT } from "@/lib/types/instructor/report";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { StatusOption } from "@/lib/types/instructor/schedule";
+import StatusBadge from "@/components/common/StatusBadge";
 
-const TableCell = ({getValue, row, column, table}: any) => {
+// Define TableCell component
+const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
   const columnMeta = column.columnDef.meta;
   const tableMeta = table.options.meta;
@@ -29,63 +30,27 @@ const TableCell = ({getValue, row, column, table}: any) => {
     setValue(newValue);
     tableMeta?.updateData(row.index, column.id, newValue);
   };
+  const accessorKey = column.columnDef.accessorKey;
 
-  // Ensure the "id" column is not editable
 
+  // Render status span
+  if (accessorKey === 'student.status') {
 
-  if (tableMeta?.editedRows[row.id]) {
-    return columnMeta?.type === "select" ? (
-        <select
-            className="border-1 border-gray-300 rounded-md focus:to-primary"
-            onChange={onSelectChange}
-            value={value}
-        >
-          {columnMeta?.options?.map((option: StatusOption) => (
-              <option key={option.label} value={option.value}>
-                {option.label}
-              </option>
-          ))}
-        </select>
-    ) : (
-        <input
-            className="w-full p-2 border-1 border-gray-300 rounded-md"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onBlur={onBlur}
-            type={columnMeta?.type || "text"}
-        />
-    );
+    switch (value) {
+      case 1:
+        return <StatusBadge type="warning" status="Pending" />
+      case 2:
+        return <StatusBadge type="success" status="Started" />
+      case 3:
+        return <StatusBadge type="error" status="Ended" />
+    }
   }
-  if (column.id === "status") {
-    return (
-        <span
-            className={
-              value == 1
-                  ? "Active text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
-                  : value == 2
-                      ? "Drop text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                      : value == 3
-                          ? "Draft bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
-                          : ""
-            }
-        >
-  {value == 1
-      ? "Active"
-      : value == 2
-          ? "Drop"
-          : value == 3
-              ? "Draft"
-              : ""}
-</span>
-
-    );
-  }
-
+  // Default case: render plain span with value
   return <span>{value}</span>;
 };
 
-// Dynamic Edit on cell
-const EditCell = ({row, table}: any) => {
+// Define EditCell component
+const EditCell = ({ row, table }: any) => {
   const meta = table.options.meta;
 
   const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -110,7 +75,7 @@ const EditCell = ({row, table}: any) => {
                   onClick={setEditedRows}
                   name="cancel"
               >
-                <RxCross2 size={20} className="text-red-500"/>
+                <RxCross2 size={20} className="text-red-500" />
               </button>
 
               <button
@@ -118,92 +83,83 @@ const EditCell = ({row, table}: any) => {
                   name="done"
                   className="bg-green-100 rounded-full p-1"
               >
-                <IoCheckmarkSharp size={24} className="text-green-500"/>
+                <IoCheckmarkSharp size={24} className="text-green-500" />
               </button>
             </div>
         ) : (
             <button onClick={setEditedRows} name="edit">
-              <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
+              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
             </button>
         )}
       </div>
   );
 };
 
+// Define column definitions using ColumnDef<AttendanceT>
 export const attentdentColumns: ColumnDef<AttendanceT>[] = [
   {
     accessorKey: "student.cardId",
-    header: ({column}) => {
-      return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            CARD ID
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
-          </Button>
-      );
-    },
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          CARD ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: TableCell,
   },
   {
     accessorKey: "student.nameEn",
-    header: ({column}) => {
-      return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            FULLNAME(EN)
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
-          </Button>
-      );
-    },
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          FULLNAME(EN)
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: TableCell,
   },
   {
     accessorKey: "student.gender",
-    header: ({column}) => {
-      return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            GENDER
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
-          </Button>
-      );
-    },
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          GENDER
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: TableCell,
   },
   {
-    accessorKey: "lecture.classCode",
-    header: ({column}) => {
-      return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            CLASS
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
-          </Button>
-      );
-    },
+    accessorKey: "classCode",
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          CLASS
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: TableCell,
   },
   {
-    accessorKey: "course",
-    header: ({column}) => {
-      return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            COURSE
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
-          </Button>
-      );
-    },
+    accessorKey: "course.title",
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          COURSE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: TableCell,
   },
   {
@@ -222,46 +178,36 @@ export const attentdentColumns: ColumnDef<AttendanceT>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "total",
-    header: ({column}) => {
-      return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            TOTAL SCORE
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
-          </Button>
-      );
-    },
+    accessorKey: "totalScore",
+    header: ({ column }) => (
+        <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          TOTAL SCORE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    ),
     cell: TableCell,
   },
   {
-    accessorKey: "status",
-    header: ({column}) => {
+    accessorKey: 'student.status',
+    header: ({ column }) => {
       return (
           <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              variant='ghost'
+              onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             STATUS
-            <ArrowUpDown className="ml-2 h-4 w-4"/>
+            <ArrowUpDown className='ml-2 h-4 w-4' />
           </Button>
-      );
+      )
     },
-    cell: TableCell,
-    meta: {
-      type: "select",
-      options: [
-        {value: 1, label: "Active"},
-        {value: 2, label: "Drop"},
-        {value: 3, label: "Draft"},
-      ],
-    },
+    cell: TableCell
+
   },
   {
     id: "edit",
     cell: EditCell,
   },
-
 ];
