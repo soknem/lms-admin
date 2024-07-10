@@ -32,6 +32,7 @@ import singleClassSlice from "@/lib/features/admin/academic-management/detail-cl
 import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
 import attendanceSlice from "@/lib/features/instructor/report/attendance/attendanceSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
+import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 
 
 export const makeStore = () => {
@@ -58,6 +59,7 @@ export const makeStore = () => {
             payment: paymentSlice,
             course: courseSlice,
             material: materialsSlice,
+            section: sectionSlice,
             class: classSlice,
             staff: staffSlice,
             file: fileSlice,

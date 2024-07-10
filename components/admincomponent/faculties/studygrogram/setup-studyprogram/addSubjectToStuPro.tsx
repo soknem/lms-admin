@@ -24,6 +24,7 @@ import {
     useAddSubjectToYearOfStudyMutation,
     useGetYearOfStudyUUIDMutation
 } from "@/lib/features/admin/faculties/studyProgram/yearOfStudy-studyProgram/yearStuPro";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     aliasOfSubjects: "",
@@ -56,8 +57,15 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
         }
     }, [isOpen, alias, year]);
 
+    const subjectOptions = subjects.map(subject => ({
+        value: subject.alias,
+        label: subject.title
+    }));
 
-    console.log("Study Program", alias)
+    const semesterOptions = uuids.map(semester => ({
+        value: semester.uuid,
+        label: `Semester ${semester.semester}`
+    }));
 
     const fetchUuids = async () => {
         try {
@@ -85,12 +93,11 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
 
             resetForm();
             setIsOpen(false);
+            toast.success('Successfully added subject!');
 
-            console.log("Subject added to study program", setupSubjects);
-
-            console.log("Subject added to study program");
         } catch (error) {
             console.error("Error creating study program: ", error);
+            toast.error('Failed to add subject!');
         } finally {
             setSubmitting(false);
         }
@@ -116,7 +123,7 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {() => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-1 items-center justify-center">
 
@@ -125,13 +132,14 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="aliasOfSubjects">Subject</label>
                                     </div>
-                                    <Field as="select" name="aliasOfSubjects" id="aliasOfSubjects"
-                                           className={`${style.input}`}>
-                                        <option value="" label="Select subject"/>
-                                        {Array.isArray(subjects) && subjects.map(subject => (
-                                            <option key={subject.alias} value={subject.alias} label={subject.title}/>
-                                        ))}
-                                    </Field>
+                                    <Select isMulti options={subjectOptions}/>
+                                    {/*<Field as="select" name="aliasOfSubjects" id="aliasOfSubjects"*/}
+                                    {/*       className={`${style.input}`}>*/}
+                                    {/*    <option value="" label="Select subject"/>*/}
+                                    {/*    {Array.isArray(subjects) && subjects.map(subject => (*/}
+                                    {/*        <option key={subject.alias} value={subject.alias} label={subject.title}/>*/}
+                                    {/*    ))}*/}
+                                    {/*</Field>*/}
                                     <ErrorMessage
                                         name="aliasOfSubjects"
                                         component="div"
@@ -145,16 +153,18 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                                         <label className={`${style.label}`} htmlFor="uuid">UUID</label>
                                     </div>
 
-                                    <Field as="select" name="uuid" id="uuid"
-                                           className={`${style.input}`}>
-                                        <option value="" label="Select semester"/>
-                                        {Array.isArray(uuids) && uuids.map(semester => (
-                                            <option key={semester.uuid} value={semester.uuid}
-                                                    label={`Semester ${semester.semester}`}/>
+                                    <Select options={semesterOptions}/>
+
+                                    {/*<Field as="select" name="uuid" id="uuid"*/}
+                                    {/*       className={`${style.input}`}>*/}
+                                    {/*    <option value="" label="Select semester"/>*/}
+                                    {/*    {Array.isArray(uuids) && uuids.map(semester => (*/}
+                                    {/*        <option key={semester.uuid} value={semester.uuid}*/}
+                                    {/*                label={`Semester ${semester.semester}`}/>*/}
 
 
-                                        ))}
-                                    </Field>
+                                    {/*    ))}*/}
+                                    {/*</Field>*/}
                                     <ErrorMessage
                                         name="uuid"
                                         component="div"

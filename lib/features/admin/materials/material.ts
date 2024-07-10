@@ -25,5 +25,5 @@ export const materialApi = istadLmsApi.injectEndpoints({
 export const {
     useGetMaterialsQuery,
     useFilterFilesMutation,
-    useCreateMaterialMutation,
+    useCreateMaterialMutation
 } = materialApi;

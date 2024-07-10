@@ -18,6 +18,7 @@ import {TbAsterisk} from "react-icons/tb";
 import {useCreateDegreeMutation, useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 import {useState} from "react";
 import slugify from "slugify";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     alias: "",
@@ -70,17 +71,16 @@ export function CreateDeForm() {
                 isDraft: values.isDraft,
             };
 
-            const res = await createDegree(newDegree).unwrap();
+            await createDegree(newDegree).unwrap();
             resetForm();
-            // Handle success (e.g., show a success message or close the dialog)
+
             refetchDegrees();
             setIsOpen(false);
-            // console.log("Update successfully")
-
+            toast.success('Successfully created!');
 
         } catch (error) {
-            // Handle error (e.g., show an error message)
             console.error("Error creating degree: ", error);
+            toast.error('Failed to create degree!');
         } finally {
             setSubmitting(false);
         }
@@ -195,6 +195,7 @@ export function CreateDeForm() {
                                     </label>
                                     <Field
                                         as="textarea"
+                                        rows={4}
                                         name="description"
                                         placeholder="This is main degree of Engineering faculty"
                                         id="description"

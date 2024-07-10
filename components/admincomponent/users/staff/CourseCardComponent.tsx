@@ -24,7 +24,9 @@ const getTypeStatus = (type : number) => {
         case 1:
             return <span className="text-lms-success font-semibold">In Progress</span>;
         case 2:
-            return <span className="text-lms-error font-semibold">Ended</span>;
+            return <span className="text-[#C29343] font-semibold">Pending</span>;
+        case 3:
+            return <span className="text-lms-error  font-semibold">Ended</span>;
         default:
             return <span className="text-lms-gray-30 font-semibold">Not Started</span>;
     }

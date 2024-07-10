@@ -72,7 +72,21 @@ export function PaymentTable<TData, TValue>({
     const [selectedFilter, setSelectedFilter] = useState("All");
     // filters
     const [openGeneration, setOpenGeneration] = useState(false);
+    const [openYear, setOpenYear] = useState(false);
+    const [openAcademicYear, setOpenAcademicYear] = useState(false);
+    const [openFaculty, setOpenFaculty] = useState(false);
+    const [openDegree, setOpenDegree] = useState(false);
+    const [openStuPro, setOpenStuPro] = useState(false);
+    const [openClass, setOpenClass] = useState(false);
+    const [openShift, setOpenShift] = useState(false);
     const [selectedGen, setSelectedGen] = useState<any>(null);
+    const [selectedYear, setSelectedYear] = useState<any>(null);
+    const [selectedFaculty, setSelectedFaculty] = useState<any>(null);
+    const [selectedDegree, setSelectedDegree] = useState<any>(null);
+    const [selectedStuPro, setSelectedStuPro] = useState<any>(null);
+    const [selectedClass, setSelectedClass] = useState<any>(null);
+    const [selectedShift, setSelectedShift] = useState<any>(null);
+    const [selectedAcademicYear, setSelectedAcademicYear] = useState<any>(null);
 
     const table = useReactTable({
         data,
@@ -123,7 +137,7 @@ export function PaymentTable<TData, TValue>({
 
     console.log("data from page: ", data);
 
-    const handleReset = (columnId: string) => {
+    const handleGenReset = (columnId: string) => {
         if (columnId === "generation") {
             setSelectedGen(null);
         }
@@ -138,7 +152,111 @@ export function PaymentTable<TData, TValue>({
         return generation;
     }, []);
 
-    const [isFocused, setIsFocused] = useState(false);
+    const handleAcaYearReset = (columnId: string) => {
+        if (columnId === "academicYear") {
+            setSelectedAcademicYear(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredAcaYear = data.reduce((academicYear: string[], item: any) => {
+        if (!academicYear.includes(item.academicYear)) {
+            academicYear.push(item.academicYear);
+        }
+        return academicYear;
+    }, []);
+
+    const handleFacultyReset = (columnId: string) => {
+        if (columnId === "faculty") {
+            setSelectedFaculty(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredFaculty = data.reduce((faculty: string[], item: any) => {
+        if (!faculty.includes(item.faculty)) {
+            faculty.push(item.faculty);
+        }
+        return faculty;
+    }, []);
+
+    const handleDegreeReset = (columnId: string) => {
+        if (columnId === "degree") {
+            setSelectedDegree(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredDegree = data.reduce((degree: string[], item: any) => {
+        if (!degree.includes(item.degree)) {
+            degree.push(item.degree);
+        }
+        return degree;
+    }, []);
+
+    const handleStuProReset = (columnId: string) => {
+        if (columnId === "studyProgram") {
+            setSelectedStuPro(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredStuPro = data.reduce((studyProgram: string[], item: any) => {
+        if (!studyProgram.includes(item.studyProgram)) {
+            studyProgram.push(item.studyProgram);
+        }
+        return studyProgram;
+    }, []);
+
+    const handleClassReset = (columnId: string) => {
+        if (columnId === "classCode") {
+            setSelectedClass(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredClass = data.reduce((classCode: string[], item: any) => {
+        if (!classCode.includes(item.classCode)) {
+            classCode.push(item.classCode);
+        }
+        return classCode;
+    }, []);
+
+    const handleShiftReset = (columnId: string) => {
+        if (columnId === "shift") {
+            setSelectedShift(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredShift = data.reduce((shift: string[], item: any) => {
+        if (!shift.includes(item.shift)) {
+            shift.push(item.shift);
+        }
+        return shift;
+    }, []);
+
+    const handleYearReset = (columnId: string) => {
+        if (columnId === "year") {
+            setSelectedYear(null);
+        }
+        table.getColumn(columnId)?.setFilterValue("");
+        setData([...originalData]);
+    };
+
+    const FilteredYear = data.reduce((year: number[], item: any) => {
+        if (!year.includes(item.year)) {
+            year.push(item.year);
+        }
+        return year;
+    }, []);
+
     const filterOptions = ["All", "Paid", "Unpaid"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
@@ -195,10 +313,10 @@ export function PaymentTable<TData, TValue>({
                     <Input
                         placeholder="Search Curriculum"
                         value={
-                            (table.getColumn("name_en")?.getFilterValue() as string) ?? ""
+                            (table.getColumn("student")?.getFilterValue() as string) ?? ""
                         }
                         onChange={(event) =>
-                            table.getColumn("name_en")?.setFilterValue(event.target.value)
+                            table.getColumn("student")?.setFilterValue(event.target.value)
                         }
 
                         className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
@@ -302,7 +420,7 @@ export function PaymentTable<TData, TValue>({
                                                 setOpenGeneration(false);
                                             }}
                                         >
-                                            {generation}
+                                            {` ${generation}`}
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>
@@ -311,7 +429,7 @@ export function PaymentTable<TData, TValue>({
                         {selectedGen && (
                             <Button
                                 className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
-                                onClick={() => handleReset("generation")}
+                                onClick={() => handleGenReset("generation")}
                             >
                                 Reset
                             </Button>
@@ -319,81 +437,314 @@ export function PaymentTable<TData, TValue>({
                     </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters Year */}
+                <Popover open={openYear} onOpenChange={setOpenYear}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Year
+                            {selectedYear ? <>{`Year ${selectedYear}`}</> : <> Filter by year</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Year..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredYear.map((year, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={year.toString()}
+                                            onSelect={(value) => {
+                                                setSelectedYear(value);
+                                                table.getColumn("year")?.setFilterValue(value);
+                                                setOpenYear(false);
+                                            }}
+                                        >
+                                            {`Year ${year}`}
+                                            {/*{year}*/}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedYear && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleYearReset("year")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters Academic Year */}
+                <Popover open={openAcademicYear} onOpenChange={setOpenAcademicYear}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Academic Year
+                            {selectedAcademicYear ? <>{selectedAcademicYear}</> : <> Filter by academic
+                                year</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Academic Year..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredAcaYear.map((acaYear, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={acaYear}
+                                            onSelect={(value) => {
+                                                setSelectedAcademicYear(value);
+                                                table.getColumn("academicYear")?.setFilterValue(value);
+                                                setOpenAcademicYear(false);
+                                            }}
+                                        >
+                                            {acaYear}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedAcademicYear && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleAcaYearReset("academicYear")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters faculty */}
+                <Popover open={openFaculty} onOpenChange={setOpenFaculty}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Degree
+                            {selectedFaculty ? <>{selectedFaculty}</> : <> Filter by faculty</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Degree..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredFaculty.map((faculty, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={faculty}
+                                            onSelect={(value) => {
+                                                setSelectedFaculty(value);
+                                                table.getColumn("faculty")?.setFilterValue(value);
+                                                setOpenFaculty(false);
+                                            }}
+                                        >
+                                            {faculty}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedFaculty && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleFacultyReset("faculty")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters Degree */}
+                <Popover open={openDegree} onOpenChange={setOpenDegree}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Faculty
+                            {selectedDegree ? <>{selectedDegree}</> : <> Filter by degree</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Degree..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredDegree.map((degree, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={degree}
+                                            onSelect={(value) => {
+                                                setSelectedDegree(value);
+                                                table.getColumn("degree")?.setFilterValue(value);
+                                                setOpenDegree(false);
+                                            }}
+                                        >
+                                            {degree}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedDegree && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleDegreeReset("degree")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters Study Program */}
+                <Popover open={openStuPro} onOpenChange={setOpenStuPro}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Major
+                            {selectedStuPro ? <>{selectedStuPro}</> : <> Filter by study program</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Study Program..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredStuPro.map((studyProgram, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={studyProgram}
+                                            onSelect={(value) => {
+                                                setSelectedStuPro(value);
+                                                table.getColumn("studyProgram")?.setFilterValue(value);
+                                                setOpenStuPro(false);
+                                            }}
+                                        >
+                                            {studyProgram}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedStuPro && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleStuProReset("studyProgram")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters class*/}
+                <Popover open={openClass} onOpenChange={setOpenClass}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Class
+                            {selectedClass ? <>{selectedClass}</> : <> Filter by class</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Study Program..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredClass.map((classCode, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={classCode}
+                                            onSelect={(value) => {
+                                                setSelectedClass(value);
+                                                table.getColumn("classCode")?.setFilterValue(value);
+                                                setOpenClass(false);
+                                            }}
+                                        >
+                                            {classCode}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedClass && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleClassReset("classCode")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
 
-                <Popover>
+                {/* filters Shift*/}
+                <Popover open={openShift} onOpenChange={setOpenShift}>
                     <PopoverTrigger asChild>
                         <Button
                             variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            Filter By Shift
+                            {selectedShift ? <>{selectedShift}</> : <> Filter shift</>}
                         </Button>
                     </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 bg-white" align="start">
+                        <Command>
+                            <CommandInput placeholder="Filter Study Program..."/>
+
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    {FilteredShift.map((shift, index) => (
+                                        <CommandItem
+                                            key={index}
+                                            value={shift}
+                                            onSelect={(value) => {
+                                                setSelectedShift(value);
+                                                table.getColumn("shift")?.setFilterValue(value);
+                                                setOpenShift(false);
+                                            }}
+                                        >
+                                            {shift}
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                        {selectedShift && (
+                            <Button
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
+                                onClick={() => handleShiftReset("shift")}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </PopoverContent>
                 </Popover>
             </div>
 
@@ -403,42 +754,42 @@ export function PaymentTable<TData, TValue>({
                 <div className="flex flex-wrap gap-2 p-4 w-full">
                     <div className="min-w-[150px]">
                         <Label className="text-gray-30">Generation</Label>
-                        <p className="flex font-medium text-black">{selectedGen}</p>
+                        <p className="flex font-medium text-black">{selectedGen || "All Generations"}</p>
                     </div>
 
                     <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Year</Label>
-                        <p className="flex font-medium text-black">Foundation Year</p>
+                        <p className="flex font-medium text-black">{selectedYear ? `Year ${selectedYear}` : "All Years"}</p>
                     </div>
 
                     <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Academic Year</Label>
-                        <p className="flex font-medium text-black">2024-2025</p>
+                        <p className="flex font-medium text-black">{selectedAcademicYear || "All Academic Year"}</p>
+                    </div>
+
+                    <div className=" min-w-[150px]">
+                        <Label className="text-gray-30">Faulty</Label>
+                        <p className="flex font-medium text-black">{selectedFaculty || "All Faculties"}</p>
                     </div>
 
                     <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Degree</Label>
-                        <p className="flex font-medium text-black">Bachelor</p>
+                        <p className="flex font-medium text-black">{selectedDegree || "All Degrees"}</p>
                     </div>
 
                     <div className=" min-w-[150px]">
-                        <Label className="text-gray-30">Faculty</Label>
-                        <p className="flex font-medium text-black">Bachelor</p>
-                    </div>
-
-                    <div className=" min-w-[150px]">
-                        <Label className="text-gray-30">Major</Label>
-                        <p className="flex font-medium text-black">Software Engineer</p>
+                        <Label className="text-gray-30">Study Program</Label>
+                        <p className="flex font-medium text-black">{selectedStuPro || "All Study Program"}</p>
                     </div>
 
                     <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Class</Label>
-                        <p className="flex font-medium text-black">FY2025 - A1</p>
+                        <p className="flex font-medium text-black">{selectedClass || "All Classes"}</p>
                     </div>
 
                     <div className=" min-w-[150px]">
                         <Label className="text-gray-30">Shift</Label>
-                        <p className="flex font-medium text-black">Morning</p>
+                        <p className="flex font-medium text-black">{selectedShift || "All Shifts"}</p>
                     </div>
                 </div>
 
@@ -447,7 +798,7 @@ export function PaymentTable<TData, TValue>({
                     <TableHeader className="text-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
+                                {headerGroup.headers.filter(header => !header.column.columnDef.enableHiding).map((header) => {
                                     return (
                                         <TableHead key={header.id}>
                                             {header.isPlaceholder
@@ -469,7 +820,7 @@ export function PaymentTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                 >
-                                    {row.getVisibleCells().map((cell) => (
+                                    {row.getVisibleCells().filter(cell => !cell.column.columnDef.enableHiding).map((cell) => (
                                         <TableCell key={cell.id}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,

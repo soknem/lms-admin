@@ -36,19 +36,10 @@ const TableCell = ({getValue, row, column, table}: any) => {
         tableMeta?.updateData(row.index, column.id, newValue);
     };
     // Ensure the "id" column is not editable
-    if (column.id === "id") {
-        return <span>{value}</span>;
+    if (column.id === "academicYear") {
+        return <span>{value.academicYear}</span>;
     }
 
-    if (column.id === "logo") {
-        return (
-            <img
-                src={value}
-                alt="Logo"
-                className="w-12 h-12 rounded-full object-cover"
-            />
-        );
-    }
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
@@ -102,63 +93,22 @@ const TableCell = ({getValue, row, column, table}: any) => {
         return <span>{value ? value : "No Data"}</span>;
     }
 
+    if (column.id === "remark") {
+        return <span className={`line-clamp-1`}>{value ? value : "No Remark"}</span>;
+    }
+
     if (column.id === "telegramLink") {
-        return <span>{value ? value : "No Data"}</span>;
+        return <span>{value ? value : "No Link"}</span>;
     }
 
     return <span>{value}</span>;
 };
 
-// Dynamic Edit on cell
-const EditCell = ({row, table}: any) => {
-    const meta = table.options.meta;
-
-    const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
-        const action = e.currentTarget.name;
-
-        meta?.setEditedRows((old: any) => ({
-            ...old,
-            [row.id]: action === "edit",
-        }));
-
-        if (action === "cancel") {
-            meta?.revertData(row.index, true);
-        }
-    };
-
-    return (
-        <div>
-            {meta?.editedRows[row.id] ? (
-                <div>
-                    <button
-                        className="mr-3 bg-red-100 rounded-full p-1"
-                        onClick={setEditedRows}
-                        name="cancel"
-                    >
-                        <RxCross2 size={20} className="text-red-500"/>
-                    </button>
-
-                    <button
-                        onClick={setEditedRows}
-                        name="done"
-                        className="bg-green-100 rounded-full p-1"
-                    >
-                        <IoCheckmarkSharp size={20} className="text-green-500"/>
-                    </button>
-                </div>
-            ) : (
-                <button onClick={setEditedRows} name="edit">
-                    <BiSolidMessageSquareEdit size={24} className="text-lms-primary"/>
-                </button>
-            )}
-        </div>
-    );
-};
 
 export const admissionColumns: ColumnDef<AdmissionType>[] = [
 
     {
-        accessorKey: "academicYear.academicYear",
+        accessorKey: "academicYear",
         header: ({column}) => {
             return (
                 <Button
@@ -208,7 +158,7 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
     {
         accessorKey: "telegramLink",
         header: () => {
-            return <div>TELEGRAM GROUP</div>;
+            return <div>TELEGRAM</div>;
         },
         cell: TableCell,
     },
@@ -227,14 +177,6 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
             );
         },
         cell: TableCell,
-        meta: {
-            type: "select",
-            options: [
-                {value: 1, label: "Opening"},
-                {value: 2, label: "Ended"},
-                {value: 3, label: "Achieved"},
-            ],
-        },
     },
 
     {
@@ -243,11 +185,6 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
             return <div>REMARK</div>;
         },
         cell: TableCell,
-    },
-
-    {
-        id: "edit",
-        cell: EditCell,
     },
 
     {

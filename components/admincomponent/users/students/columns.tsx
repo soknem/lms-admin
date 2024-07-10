@@ -60,7 +60,6 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   // Custom status
   if (column.id === 'studentStatus') {
-
     switch (value) {
       case 1:
         return <StatusBadge type="success" status="Active" />
@@ -70,6 +69,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         return <StatusBadge type="error" status="Drop" />
       case 4:
         return <StatusBadge type="error" status="Disable" />
+      default:
+        return <StatusBadge type="default" status="Unknown" />
     }
   }
 
@@ -83,8 +84,8 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   if (column.id === "gender") {
     return (
-        <span className={value === "Female" ? "font-semibold text-orange-400" : "font-semibold"}>
-        {value === "Female" ? "Female" : value === "Male" ? "Male" : ""}
+        <span className={value === "F" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "F" ? "Female" : value === "M" ? "Male" : ""}
       </span>
     );
   }
@@ -266,6 +267,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
         { value: "draft", label: "Hiatus" },
       ],
     },
+
   },
   {
     id: "actions",

@@ -21,6 +21,7 @@ import {
     useGetDegreeByAliasQuery,
     useGetDegreesQuery
 } from "@/lib/features/admin/faculties/degree/degree";
+import {toast} from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required('Alias is required'),
@@ -101,8 +102,12 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
             resetForm();
             refetchDegree();
             onClose();
+            toast.success('Successfully updated!');
+
         } catch (error) {
             console.error("Error updating degree: ", error);
+            toast.error('Failed to edit degree!');
+
         } finally {
             setSubmitting(false);
         }
@@ -174,6 +179,7 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
                                     </label>
                                     <Field
                                         as="textarea"
+                                        rows={4}
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}

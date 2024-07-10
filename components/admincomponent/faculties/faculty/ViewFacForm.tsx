@@ -158,7 +158,7 @@ export function ViewFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                     </label>
                                     <Field
                                         as="textarea"
-                                        rows={3}
+                                        rows={4}
                                         name="description"
                                         id="description"
                                         disabled

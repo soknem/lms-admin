@@ -1,16 +1,19 @@
 // **** Curriculum *****
 export type MaterialType = {
-    alias: string;
+    uuid: string,
     title: string;
-    description: string;
     contentType: string;
+    fileType: string,
     extension: string;
+    description: string;
     size: number;
-    // file: string;
     fileName: string,
-    subjectAlias: null,
-    // "isDeleted": false,
-    isDraft: false
+    fileUrl: string,
+    subject: string;
+    isDraft: boolean
+    isDeleted: boolean,
+    download: string,
+    section: string,
 };
 
 // **** Slide *****
@@ -24,6 +27,15 @@ export type SlideType = {
     subject: string;
     file: string;
 };
+
+export type SectionType = {
+    uuid: string;
+    title: string;
+    subjectAlias: string;
+    materials: string;
+    isDeleted: boolean;
+    isDraft: boolean;
+}
 
 export type CurriculumType = {
     title: string;

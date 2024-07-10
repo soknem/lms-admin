@@ -103,6 +103,7 @@ export function ViewDeForm({alias, onClose}: { alias: string; onClose: () => voi
                                     </label>
                                     <Field
                                         as="textarea"
+                                        rows={4}
                                         disabled
                                         name="description"
                                         id="description"

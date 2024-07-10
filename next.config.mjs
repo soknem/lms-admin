@@ -8,8 +8,8 @@ const nextConfig = {
                 hostname: 'lms-api.istad.co',
                 pathname: '**',
             },
-        ],
-    },
+        ]
+    }
 };
 
 export default nextConfig;

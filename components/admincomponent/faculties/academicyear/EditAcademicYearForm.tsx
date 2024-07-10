@@ -19,6 +19,7 @@ import {
     useGetAcademicYearByAliasQuery, useGetAcademicYearsQuery
 } from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import {AcademicYearType} from "@/lib/types/admin/faculty";
+import {toast} from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required('Alias is required'),
@@ -82,8 +83,6 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                 isDraft: values.isDraft,
             };
 
-            console.log("Updated Data", editAcademicYearDataByAlias)
-
             await editAcademicYear({alias: initialAlias, updatedData: editAcademicYearDataByAlias}).unwrap();
 
             // Now update the alias if it has changed
@@ -96,9 +95,10 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
 
             resetForm();
             refetchAcademicYear();
+            toast.success('Successfully created!');
             onClose();
         } catch (error) {
-            console.error("Error updating degree: ", error);
+            toast.error('Failed to create academic year!');
         } finally {
             setSubmitting(false);
         }

@@ -20,6 +20,7 @@ import {
     useGetAcademicYearsQuery
 } from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import React, {useState} from "react";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     alias: "",
@@ -63,14 +64,14 @@ export function CreateAcademicYearForm() {
 
     const handleSubmit = async (values: AcademicYearType, createAcademicYear: any) => {
         try {
-            const response = await createAcademicYear(values).unwrap();
-            console.log('Academic Year created successfully:', response);
-            // Optionally, reset the form or close the dialog here
-            // Handle success (e.g., show a success message or close the dialog)
+            await createAcademicYear(values).unwrap();
             refetchAcademicYear();
+            toast.success('Successfully created!');
             setIsOpen(false);
+
+
         } catch (error) {
-            console.error('Failed to create Academic Year :', error);
+            toast.error('Failed to create academic year');
         }
     };
 

@@ -127,7 +127,6 @@ export function CreateFacForm() {
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            // Upload the logo file
             const fileData = new FormData();
             fileData.append("file", values.logo);
 
@@ -249,6 +248,7 @@ export function CreateFacForm() {
                                     </label>
                                     <Field
                                         as="textarea"
+                                        rows={4}
                                         placeholder="This is main description of our academic"
                                         name="description"
                                         id="description"
