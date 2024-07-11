@@ -1,7 +1,7 @@
 "use client";
 import "@/app/globals.css";
 import {cn} from "@/lib/utils";
-import {ReactNode, useState, useEffect} from "react";
+import {ReactNode, useState, useEffect, Suspense} from "react";
 import {inter, suwannaphum} from "@/app/font";
 import StoreProvider from "@/app/StoreProvider";
 import {ErrorBoundary} from "next/dist/client/components/error-boundary";
@@ -9,6 +9,7 @@ import Error from "@/app/error";
 import NavbarComponent from "@/components/instructorcomponent/navbar/NavbarComponent";
 import InstructorSidebarComponent from "@/components/instructorcomponent/sidebar/InstructorSidebarComponents";
 import {usePathname} from "next/navigation";
+import PageLoading from "@/app/admin/(admin-dashboard)/PageLoading";
 
 
 interface RootLayoutProps {

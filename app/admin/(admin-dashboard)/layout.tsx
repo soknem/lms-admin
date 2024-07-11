@@ -1,7 +1,7 @@
 "use client";
 import "@/app/globals.css";
 import {cn} from "@/lib/utils";
-import {ReactNode, useState, useEffect} from "react";
+import {ReactNode, useState, useEffect, Suspense} from "react";
 import {inter, suwannaphum} from "@/app/font";
 import StoreProvider from "@/app/StoreProvider";
 import {ErrorBoundary} from "next/dist/client/components/error-boundary";
@@ -10,6 +10,7 @@ import NavbarComponent from "@/components/admincomponent/navbar/NavbarComponent"
 import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSidebarComponent";
 
 import {toast, Toaster, ToastBar} from 'react-hot-toast';
+import PageLoading from "@/app/admin/(admin-dashboard)/PageLoading";
 
 interface RootLayoutProps {
     children: ReactNode;
@@ -27,6 +28,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         >
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
+                <Suspense fallback={<PageLoading />}>
                 <nav className="w-full h-[72px] shadow-md z-10 top-0 sticky  ">
                     <NavbarComponent/>
                 </nav>
@@ -40,6 +42,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
                         {children}
                     </section>
                 </section>
+                </Suspense>
             </ErrorBoundary>
         </StoreProvider>
         <Toaster

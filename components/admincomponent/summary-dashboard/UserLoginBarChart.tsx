@@ -109,7 +109,7 @@ const UserLoginBarChart = () => {
 
     return (
         <div className="bg-white p-5 h-full flex justify-between items-center rounded-xl">
-            <div className="chart-container w-[600px] h-[400px] md:w-1/2 ">
+            <div className="chart-container w-full h-full md:w-1/2 ">
                 <canvas ref={chartContainer}></canvas>
             </div>
 
