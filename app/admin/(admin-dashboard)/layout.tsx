@@ -11,13 +11,17 @@ import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSide
 
 import {toast, Toaster, ToastBar} from 'react-hot-toast';
 import PageLoading from "@/app/admin/(admin-dashboard)/PageLoading";
+import {useGetProfileQuery} from "@/lib/features/userProfile/userProfile";
+import {any} from "prop-types";
+import {useDispatch} from "react-redux";
+import {setUserProfile} from "@/lib/features/userProfile/userProfileSlice";
+import UserProfileFetcher from "@/components/common/UserProfileFetcher";
 
 interface RootLayoutProps {
     children: ReactNode;
 }
 
 export default function RootLayoutParent({children}: RootLayoutProps) {
-
     return (
         <html lang="en" suppressHydrationWarning>
         <body
@@ -29,19 +33,21 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
                 <Suspense fallback={<PageLoading />}>
-                <nav className="w-full h-[72px] shadow-md z-10 top-0 sticky  ">
-                    <NavbarComponent/>
-                </nav>
+                    <UserProfileFetcher>
+                        <nav className="w-full h-[72px] shadow-md z-10 top-0 sticky  ">
+                            <NavbarComponent/>
+                        </nav>
 
-                <section className="flex flex-grow overflow-hidden">
-                    <aside className="flex">
-                        <AdminSidebarComponent/>
-                    </aside>
+                        <section className="flex flex-grow overflow-hidden">
+                            <aside className="flex">
+                                <AdminSidebarComponent/>
+                            </aside>
 
-                    <section className="flex-grow overflow-auto none-scroll-bar text-lms-black-90 ">
-                        {children}
-                    </section>
-                </section>
+                            <section className="flex-grow overflow-auto none-scroll-bar text-lms-black-90 ">
+                                {children}
+                            </section>
+                        </section>
+                    </UserProfileFetcher>
                 </Suspense>
             </ErrorBoundary>
         </StoreProvider>

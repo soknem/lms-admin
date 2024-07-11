@@ -55,6 +55,8 @@ import { useRouter } from 'next/navigation'
 
 import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
 import CreateLectureForm from "@/components/admincomponent/academics/lectures/form/CreateLectureForm";
+import {Input} from "@/components/ui/input";
+import {FaSearch} from "react-icons/fa";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -192,26 +194,24 @@ export function SummaryLectureDataTable<TData, TValue>({
             <div className='flex items-center justify-between gap-4 '>
 
                 {/* Search */}
-                {/* <div className="flex items-center w-full relative">
-          <Input
-            placeholder="Search by class...."
-            value={
-              (table.getColumn("className")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("className")?.setFilterValue(event.target.value)
-            }
+                <div className="flex items-center w-full relative">
+                  <Input
+                    placeholder="Search by class...."
+                    value={
+                      (table.getColumn("className")?.getFilterValue() as string) ?? ""
+                    }
+                    onChange={(event) =>
+                      table.getColumn("className")?.setFilterValue(event.target.value)
+                    }
 
-            className="border-[#E6E6E6] bg-white pl-10 "
-          />
+                    className="border-[#E6E6E6] bg-white pl-10 "
+                  />
 
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <FaSearch className="text-gray-400" />
-          </div>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FaSearch className="text-gray-400" />
+                  </div>
 
-        </div> */}
-
-                <DatePickerWithRange/>
+        </div>
 
                 {/* filter class */}
                 <Popover open={openClass} onOpenChange={setOpenClass}>
