@@ -136,7 +136,7 @@ export function AddStudentAmsForm() {
     };
 
 
-    const CustomInputFile = ({field, form: {setFieldValue, values}, label, placeholder, previewField}: any) => {
+    const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: any) => {
         const handleUploadFile = (e: any) => {
             const file = e.target.files[0];
             const localUrl = URL.createObjectURL(file);

@@ -33,6 +33,7 @@ import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
 import attendanceSlice from "@/lib/features/instructor/report/attendance/attendanceSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
 import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
+import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
 
 
 export const makeStore = () => {
@@ -46,6 +47,7 @@ export const makeStore = () => {
             lecture: lectureSlice,
             degree: degreeSlice,
             faculty: facultySlice,
+            banner: bannerSlice,
             student: studentSlice,
             studentCourse: studentCourseSlice,
             achievement: achievementSlice,

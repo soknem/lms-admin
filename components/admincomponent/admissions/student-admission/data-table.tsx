@@ -115,7 +115,7 @@ export function StudentAdmissionTable<TData, TValue>({
         setSelectedFilter(value);
         const filterValue =
             value === "All" ? "" : value === "Paid" ? "paid" : "unpaid";
-        table.getColumn("status")?.setFilterValue(filterValue);
+        table.getColumn("isDeleted")?.setFilterValue(filterValue);
     };
 
     return (
@@ -164,7 +164,7 @@ export function StudentAdmissionTable<TData, TValue>({
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
                                 className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
+                                    (table.getColumn("isDeleted")?.getFilterValue() || "All") ===
                                     option
                                 }`}
                             >

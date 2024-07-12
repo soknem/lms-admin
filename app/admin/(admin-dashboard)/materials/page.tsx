@@ -29,13 +29,19 @@ export default function Materials() {
         }
     }, [materialsData, dispatch]);
 
-    console.log("Materials", materials)
+    console.log("Materials", materialsData)
 
 
     // Section of materials in each subject
     const {
         data: sectionsData,
     } = useGetAllSectionQuery({page: 0, pageSize: 10});
+
+
+    // Don't need arguement
+    // const {
+    //     data: sectionsData,
+    // } = useGetAllSectionQuery();
 
     const sections = useSelector((state: RootState) => selectSection(state));
 

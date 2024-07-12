@@ -46,14 +46,17 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-    alias: Yup.string().required("Required"),
-    studyProgramName: Yup.string().required("Required"),
-    logo: Yup.string().required("Required"),
-    description: Yup.string(),
-    isDeleted: Yup.boolean().required("Required"),
-    isDraft: Yup.boolean().required("Required"),
-    degreeAlias: Yup.string().required("Required"),
-    facultyAlias: Yup.string().required("Required")
+    alias: Yup.string()
+        .required('Alias is required'),
+    studyProgramName: Yup.string()
+        .required('Study Program Name is required'),
+    logo: Yup.string()
+        .required('Logo is required'),
+    isDraft: Yup.boolean(),
+    degreeAlias: Yup.string()
+        .required('Degree Alias is required'),
+    facultyAlias: Yup.string()
+        .required('Faculty Alias is required'),
 });
 
 const RadioButton = ({field, value, label}: any) => {
@@ -94,7 +97,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
             />
             <label
                 htmlFor="file"
-                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-[420px] h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
             >
                 {!imagePreview ? (
                     <div className="flex items-center justify-center gap-8">
@@ -170,6 +173,8 @@ export function CreateStudyProForm() {
                     isDraft: values.isDraft,
                 };
 
+                console.log("New:", newStuProgram)
+
                 await createStuProgram(newStuProgram).unwrap();
                 resetForm();
                 refetchStuPrograms();
@@ -239,6 +244,11 @@ export function CreateStudyProForm() {
                                     </div>
                                     <Field disabled type="text" name="alias" id="alias"
                                            className={`${style.input}`}/>
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
                                 </div>
 
                                 {/* facultyAlias */}
@@ -246,7 +256,15 @@ export function CreateStudyProForm() {
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="facultyAlias">Faculty</label>
                                     </div>
-                                    <Select options={facultyOptions}/>
+                                    <Select
+                                        options={facultyOptions}
+                                        onChange={(selectedOption) => setFieldValue('facultyAlias', selectedOption ? selectedOption.value : '')}
+                                    />
+                                    <ErrorMessage
+                                        name="facultyAlias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
                                 </div>
 
                                 {/* degreeAlias */}
@@ -254,7 +272,16 @@ export function CreateStudyProForm() {
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="degreeAlias">Degree</label>
                                     </div>
-                                    <Select options={degreeOptions}/>
+                                    <Select
+                                        options={degreeOptions}
+                                        onChange={(selectedOption) => setFieldValue('degreeAlias', selectedOption ? selectedOption.value : '')}
+                                    />
+
+                                    <ErrorMessage
+                                        name="degreeAlias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
                                 </div>
 
                                 {/* description */}
@@ -268,6 +295,10 @@ export function CreateStudyProForm() {
                                         id="description"
                                         className={`${style.input}`}
                                     />
+                                    <ErrorMessage
+                                        name="description"
+                                        component="div"
+                                        className={`${style.error}`}/>
                                 </div>
 
                                 {/* isDraft */}
@@ -280,14 +311,34 @@ export function CreateStudyProForm() {
                                         <Field name="isDraft" component={RadioButton} value="false" label="Public"/>
                                         <Field name="isDraft" component={RadioButton} value="true" label="Draft"/>
                                     </div>
+                                    <ErrorMessage
+                                        name="isDraft"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
                                 </div>
 
                                 {/* logo */}
                                 <div className="mb-4">
-                                    <label htmlFor="logo" className="block text-sm font-medium text-gray-700 my-2">Faculty
-                                        Logo</label>
-                                    <Field type="file" name="logo" id="logo" component={CustomInput}
-                                           setFieldValue={setFieldValue} className="mt-1"/>
+                                    <label
+                                        htmlFor="logo"
+                                        className="block text-sm font-medium text-gray-700 my-2"
+                                    >
+                                        Study Program Logo
+                                    </label>
+                                    <Field
+                                        type="file"
+                                        name="logo"
+                                        id="logo"
+                                        component={CustomInput}
+                                        setFieldValue={setFieldValue}
+                                        className="mt-1"
+                                    />
+                                    <ErrorMessage
+                                        name="logo"
+                                        component="div"
+                                        className="text-red-500 mt-1 text-sm"
+                                    />
                                 </div>
                             </div>
 

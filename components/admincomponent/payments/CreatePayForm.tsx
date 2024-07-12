@@ -28,7 +28,7 @@ import Select from "react-select";
 import {selectStudyProgram} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 
 const initialValues = {
-    // receipt_id: 0, // Uncomment if needed
+    receiptId: '',
     uuid: '',
     usernameOrEmail: '',
     gender: '',
@@ -72,79 +72,12 @@ const validationSchema = Yup.object().shape({
     remark: Yup.string(),
 });
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
-
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        setImagePreview(localUrl);
-
-        setFieldValue(field.name, file);
-    };
-
-    return (
-        <div className="w-full">
-            <input
-                type="file"
-                onChange={handleUploadFile}
-                className="hidden"
-                id="file"
-            />
-            <label
-                htmlFor="file"
-                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[68px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
-            >
-                {!imagePreview ? (
-                    <div className="flex items-center justify-center gap-8">
-                        <FiUploadCloud className="text-lms-primary text-[34px]"/>
-                        <div className="flex flex-col items-start justify-start gap-1">
-                            <p className="text-center text-md text-black">
-                                Select a file or drag and drop here
-                            </p>
-                            <p className="text-center text-md text-lms-gray-30">
-                                JPG, PNG or PDF, file size no more than 10MB
-                            </p>
-                        </div>
-                    </div>
-                ) : (
-                    <div style={{position: 'relative', width: '100%', height: '100%'}}>
-                        <Image
-                            src={imagePreview}
-                            alt="preview"
-                            fill
-                            style={{objectFit: 'contain'}}
-                        />
-                    </div>
-                )}
-            </label>
-        </div>
-    );
-};
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
-            />
-            <label className="pl-2" htmlFor={value}>
-                {label}
-            </label>
-        </div>
-    );
-};
-
 export function CreatePayForm() {
 
     const [createPayment] = useCreatePaymentMutation();
     const {refetch: refetchPayment} = useGetPaymentsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
 
-    // === student ===
     const {
         data: studentData,
         error: studentError,
@@ -205,6 +138,7 @@ export function CreatePayForm() {
         try {
             // File uploaded successfully, now create the faculty
             const newPayment: PaymentType = {
+                receiptId: values.receiptId,
                 uuid: values.uuid,
                 usernameOrEmail: values.usernameOrEmail,
                 gender: values.gender,
@@ -250,7 +184,7 @@ export function CreatePayForm() {
     };
 
     return (
-        <Dialog>
+        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button className="bg-lms-primary text-white hover:bg-lms-primary">
                     <FiPlus className="mr-2 h-4 w-4"/> Add Payment

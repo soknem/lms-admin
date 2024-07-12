@@ -1,24 +1,17 @@
 "use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
 
 import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {AdmissionType, StatusOption} from "@/lib/types/admin/admission";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
-import ActionsCell from "@/components/admincomponent/admissions/AdmissionActionCell";
+
+import {DegreeType, StatusOption} from "@/lib/types/admin/faculty";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
+import {BannerType} from "@/lib/types/admin/banner";
+import ActionsCell from "@/components/admincomponent/faculties/banner/BannerActionCell";
 
 const TableCell = ({getValue, row, column, table}: any) => {
     const initialValue = getValue();
@@ -39,11 +32,18 @@ const TableCell = ({getValue, row, column, table}: any) => {
         setValue(newValue);
         tableMeta?.updateData(row.index, column.id, newValue);
     };
-    // Ensure the "id" column is not editable
-    if (column.id === "academicYear") {
-        return <span>{value.academicYear}</span>;
+
+    if (column.id === "title") {
+        return <span className={`w-full line-clamp-1`}>{value}</span>;
     }
 
+    if (column.id === "description") {
+        return <span className={`line-clamp-1`}>{value || "No Description"}</span>;
+    }
+
+    if (column.id === "link") {
+        return <span className={`w-[200px] line-clamp-1`}>{value}</span>;
+    }
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
@@ -69,40 +69,24 @@ const TableCell = ({getValue, row, column, table}: any) => {
         );
     }
 
-    if (column.id === "status") {
+    if (column.id === "isDraft") {
         return (
             <span
                 className={
-                    value === 1
-                        ? "Opening text-[#548164]  bg-green-200 px-3 py-1 rounded-[10px]"
-                        : value === 2
-                            ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                            : value === 3
-                                ? "Finish bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
-                                : ""
+                    value === false
+                        ? "Public text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                        : value === true
+                            ? "Draft text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            : ""
                 }
             >
-        {value === 1
-            ? "Opening"
-            : value === 2
-                ? "Ended"
-                : value === 3
-                    ? "Finish"
+            {value === false
+                ? "Public"
+                : value === true
+                    ? "Draft"
                     : ""}
-      </span>
+        </span>
         );
-    }
-
-    if (column.id === "endDate") {
-        return <span>{value ? value : "No Data"}</span>;
-    }
-
-    if (column.id === "remark") {
-        return <span className={`line-clamp-1`}>{value ? value : "No Remark"}</span>;
-    }
-
-    if (column.id === "telegramLink") {
-        return <span>{value ? value : "No Link"}</span>;
     }
 
     // Custom rendering for specific columns
@@ -136,18 +120,17 @@ const TableCell = ({getValue, row, column, table}: any) => {
     return <span>{value}</span>;
 };
 
-
-export const admissionColumns: ColumnDef<AdmissionType>[] = [
+export const bannerColumns: ColumnDef<BannerType>[] = [
 
     {
-        accessorKey: "academicYear",
+        accessorKey: "title",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    ACADEMIC YEAR
+                    TITLE
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -156,47 +139,7 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
     },
 
     {
-        accessorKey: "openDate",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    START DATE
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorKey: "endDate",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    END DATE
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorKey: "telegramLink",
-        header: () => {
-            return <div>TELEGRAM</div>;
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorKey: "remark",
+        accessorKey: "description",
         header: () => {
             return <div>DESCRIPTION</div>;
         },
@@ -204,18 +147,35 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
     },
 
     {
-        accessorKey: "status",
+        accessorKey: "link",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    REMARK
+                    LINK
+                </Button>
+            );
+        },
+        cell: TableCell,
+    },
+
+    {
+        accessorKey: "isDraft",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    VISIBILITY
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
+
+
         cell: TableCell,
     },
 
@@ -232,6 +192,8 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
                 </Button>
             );
         },
+
+
         cell: TableCell,
     },
 

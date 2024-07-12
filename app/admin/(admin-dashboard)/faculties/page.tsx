@@ -31,6 +31,10 @@ import {
 } from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
 import {academicYearColumns} from "@/components/admincomponent/faculties/academicyear/columns";
 import {AcademicYearTable} from "@/components/admincomponent/faculties/academicyear/data-table";
+import {useGetBannersQuery} from "@/lib/features/admin/faculties/banner/banner";
+import {selectBanner, setBanners} from "@/lib/features/admin/faculties/banner/bannerSlice";
+import {BannerTable} from "@/components/admincomponent/faculties/banner/data-table";
+import {bannerColumns} from "@/components/admincomponent/faculties/banner/columns";
 
 const useFetchData = (queryHook: any, selector: any, action: any) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -54,8 +58,11 @@ export default function Faculty() {
     const studyPrograms = useFetchData(useGetStudyProgramsQuery, selectStudyProgram, setStudyPrograms);
     const subjects = useFetchData(useGetSubjectsQuery, selectSubject, setSubjects);
     const academicYears = useFetchData(useGetAcademicYearsQuery, selectAcademicYear, setAcademicYears);
-    console.log(academicYears.stateData)
-    console.log(studyPrograms.stateData)
+    const banner = useFetchData(useGetBannersQuery, selectBanner, setBanners);
+    // console.log(academicYears.stateData)
+    // console.log(studyPrograms.stateData)
+
+    console.log("Banner Data", banner.stateData)
 
     return (
         <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">
@@ -76,6 +83,8 @@ export default function Faculty() {
                                      className="dark:text-gray-300 dark:hover:text-white">Subject</TabsTrigger>
                         <TabsTrigger value="academic-year"
                                      className="dark:text-gray-300 dark:hover:text-white">Academic Year</TabsTrigger>
+                        <TabsTrigger value="banner"
+                                     className="dark:text-gray-300 dark:hover:text-white">Banner</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="faculty">
@@ -96,6 +105,10 @@ export default function Faculty() {
 
                     <TabsContent value="academic-year">
                         <AcademicYearTable columns={academicYearColumns} data={academicYears.stateData}/>
+                    </TabsContent>
+
+                    <TabsContent value="banner">
+                        <BannerTable columns={bannerColumns} data={banner.stateData}/>
                     </TabsContent>
                 </Tabs>
             </section>

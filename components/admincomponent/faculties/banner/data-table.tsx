@@ -2,8 +2,6 @@
 
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
-import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
-//import from shad cn
 import {
     ColumnDef,
     flexRender,
@@ -30,25 +28,26 @@ import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuTrigger,
     DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {useRouter} from "next/navigation";
-import {CreateAmsForm} from "@/components/admincomponent/admissions/CreateAmsForm";
+import {CreateBannerForm} from "./CreateBannerForm";
+import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 
+//custom component import
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function AdmissionTable<TData, TValue>({
-                                                  columns,
-                                                  data,
-                                              }: DataTableProps<TData, TValue>) {
+export function BannerTable<TData, TValue>({
+                                               columns,
+                                               data,
+                                           }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -56,7 +55,6 @@ export function AdmissionTable<TData, TValue>({
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
     const [selectedFilter, setSelectedFilter] = useState("All");
-    const router = useRouter();
 
     const table = useReactTable({
         data,
@@ -107,36 +105,37 @@ export function AdmissionTable<TData, TValue>({
 
     console.log("data from page: ", data);
 
-    const filterOptions = ["All", "Opening", "Ended", "Achieved"];
+
+    const filterOptions = ["All", "Public", "Draft"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
         const filterValue =
             value === "All"
                 ? ""
-                : value === "Opening"
-                    ? "opening"
-                    : value === "Ended"
-                        ? "ended"
-                        : "achieved";
-        table.getColumn("status")?.setFilterValue(filterValue);
+                : value === "Public"
+                    ? false
+                    : value === "Draft"
+                        ? true
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
     };
 
     return (
         <>
-            {/* Search */}
+
             <div className="flex items-center justify-between gap-4 ">
+                {/* Search */}
                 <div className="flex items-center py-4 w-full">
                     <div className="flex items-center w-full relative">
                         <Input
-                            placeholder="Search Admission"
+                            placeholder="Search Banner Title"
                             value={
-                                (table.getColumn("academicYear")?.getFilterValue() as string) ?? ""
+                                (table.getColumn("title")?.getFilterValue() as string) ?? ""
                             }
                             onChange={(event) =>
-                                table.getColumn("academicYear")?.setFilterValue(event.target.value)
+                                table.getColumn("title")?.setFilterValue(event.target.value)
                             }
-
-                            className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
+                            className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30 "
                         />
 
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -166,7 +165,7 @@ export function AdmissionTable<TData, TValue>({
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
                                 className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
                                     option
                                 }`}
                             >
@@ -183,7 +182,7 @@ export function AdmissionTable<TData, TValue>({
                             variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
                         >
                             <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
-                            Columns
+                            Table View
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-white">
@@ -207,7 +206,8 @@ export function AdmissionTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <CreateAmsForm/>
+                {/* Add Degree */}
+                <CreateBannerForm/>
             </div>
 
             {/* Table */}
@@ -231,7 +231,6 @@ export function AdmissionTable<TData, TValue>({
                             </TableRow>
                         ))}
                     </TableHeader>
-
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
@@ -265,9 +264,6 @@ export function AdmissionTable<TData, TValue>({
 
             {/* Pagination */}
             <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredRowModel().rows.length} row(s)
-                </div>
                 <Button
                     className="border-gray-30"
                     variant="outline"

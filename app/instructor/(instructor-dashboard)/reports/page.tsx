@@ -9,8 +9,6 @@ export default function Report() {
             <div className="mt-4">
                 <DateComponent/>
                 <TabReportComponent/></div>
-
-
         </main>
     );
 }

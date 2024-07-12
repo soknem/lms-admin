@@ -19,22 +19,36 @@ import {
     selectError, selectLoading,
     selectStuAdmission, setStuAdmissions
 } from "@/lib/features/admin/admission-management/students-admission-management/stuAdmissionSlice";
+import {useGetAdmissionByAliasQuery} from "@/lib/features/admin/admission-management/admission";
 
+type PropsParams = {
+    params: {
+        uuid: string;
+    };
+};
 
-export default function StuAdmissions() {
+export default function StuAdmissions(props: PropsParams) {
+
+    console.log("props", props)
+
+    const uuid = props.params.uuid;
     const dispatch = useDispatch<AppDispatch>();
     const {data, error, isLoading} = useGetStuAdmissionsQuery({page: 0, pageSize: 10});
 
+    const {data: admissionData, isSuccess} = useGetAdmissionByAliasQuery(uuid);
+
+    const admissionYear = admissionData?.academicYear.academicYear;
+    console.log(admissionData)
+    // console.log("admissionYear", admissionYear)
+
     const stuAdmissions = useSelector((state: RootState) => selectStuAdmission(state));
-    const setupStuProLoading = useSelector(selectLoading);
-    const setupStuProError = useSelector(selectError);
 
     useEffect(() => {
         if (data) {
             dispatch(setStuAdmissions(data.content));
         }
         if (error) {
-            console.error("failed to load generation", error);
+            console.error("failed to load student admission", error);
         }
     }, [data, error, dispatch]);
 
@@ -50,7 +64,7 @@ export default function StuAdmissions() {
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator/>
-                    <h3 className="font-semibold text-lms-primary">2022-2023</h3>
+                    <h3 className="font-semibold text-lms-primary">{admissionYear}</h3>
                 </BreadcrumbList>
             </Breadcrumb>
             <h2 className="text-4xl font-bold text-lms-primary">

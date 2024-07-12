@@ -146,8 +146,8 @@ export function PaymentTable<TData, TValue>({
     };
 
     const FilteredGen = data.reduce((generation: string[], item: any) => {
-        if (!generation.includes(item.generation)) {
-            generation.push(item.generation);
+        if (!generation?.includes(item?.generation)) {
+            generation?.push(item?.generation);
         }
         return generation;
     }, []);
@@ -160,9 +160,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredAcaYear = data.reduce((academicYear: string[], item: any) => {
-        if (!academicYear.includes(item.academicYear)) {
-            academicYear.push(item.academicYear);
+    const FilteredAcaYear = data?.reduce((academicYear: string[], item: any) => {
+        if (!academicYear?.includes(item?.academicYear)) {
+            academicYear?.push(item?.academicYear);
         }
         return academicYear;
     }, []);
@@ -175,9 +175,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredFaculty = data.reduce((faculty: string[], item: any) => {
-        if (!faculty.includes(item.faculty)) {
-            faculty.push(item.faculty);
+    const FilteredFaculty = data?.reduce((faculty: string[], item: any) => {
+        if (!faculty?.includes(item?.faculty)) {
+            faculty?.push(item?.faculty);
         }
         return faculty;
     }, []);
@@ -190,9 +190,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredDegree = data.reduce((degree: string[], item: any) => {
-        if (!degree.includes(item.degree)) {
-            degree.push(item.degree);
+    const FilteredDegree = data?.reduce((degree: string[], item: any) => {
+        if (!degree?.includes(item?.degree)) {
+            degree?.push(item?.degree);
         }
         return degree;
     }, []);
@@ -205,9 +205,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredStuPro = data.reduce((studyProgram: string[], item: any) => {
-        if (!studyProgram.includes(item.studyProgram)) {
-            studyProgram.push(item.studyProgram);
+    const FilteredStuPro = data?.reduce((studyProgram: string[], item: any) => {
+        if (!studyProgram?.includes(item?.studyProgram)) {
+            studyProgram?.push(item?.studyProgram);
         }
         return studyProgram;
     }, []);
@@ -220,9 +220,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredClass = data.reduce((classCode: string[], item: any) => {
-        if (!classCode.includes(item.classCode)) {
-            classCode.push(item.classCode);
+    const FilteredClass = data?.reduce((classCode: string[], item: any) => {
+        if (!classCode?.includes(item?.classCode)) {
+            classCode?.push(item?.classCode);
         }
         return classCode;
     }, []);
@@ -235,9 +235,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredShift = data.reduce((shift: string[], item: any) => {
-        if (!shift.includes(item.shift)) {
-            shift.push(item.shift);
+    const FilteredShift = data?.reduce((shift: string[], item: any) => {
+        if (!shift?.includes(item?.shift)) {
+            shift?.push(item?.shift);
         }
         return shift;
     }, []);
@@ -250,9 +250,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredYear = data.reduce((year: number[], item: any) => {
-        if (!year.includes(item.year)) {
-            year.push(item.year);
+    const FilteredYear = data?.reduce((year: number[], item: any) => {
+        if (!year?.includes(item?.year)) {
+            year?.push(item?.year);
         }
         return year;
     }, []);
@@ -267,45 +267,45 @@ export function PaymentTable<TData, TValue>({
 
     return (
         <>
-            <section className="w-full  bg-white rounded flex flex-wrap items-center gap-9 p-6">
-                <div
-                    className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
-                        Earnings this semester
-                    </p>
-                    <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
-                </div>
+            {/*<section className="w-full  bg-white rounded flex flex-wrap items-center gap-9 p-6">*/}
+            {/*    <div*/}
+            {/*        className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">*/}
+            {/*        <p className="text-2xl font-medium text-lms-black-90">*/}
+            {/*          Total Earning*/}
+            {/*        </p>*/}
+            {/*        <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>*/}
+            {/*    </div>*/}
 
-                <div
-                    className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">To be paid</p>
-                    <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
-                </div>
+            {/*    <div*/}
+            {/*        className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">*/}
+            {/*        <p className="text-2xl font-medium text-lms-black-90">To be paid</p>*/}
+            {/*        <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>*/}
+            {/*    </div>*/}
 
-                <div
-                    className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
-                        Earnings this semester
-                    </p>
-                    <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
-                </div>
+            {/*    <div*/}
+            {/*        className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">*/}
+            {/*        <p className="text-2xl font-medium text-lms-black-90">*/}
+            {/*            Earnings this semester*/}
+            {/*        </p>*/}
+            {/*        <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>*/}
+            {/*    </div>*/}
 
-                <div
-                    className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
-                        Total students
-                    </p>
-                    <p className="text-4xl font-bold text-lms-primary">150 people</p>
-                </div>
+            {/*    <div*/}
+            {/*        className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">*/}
+            {/*        <p className="text-2xl font-medium text-lms-black-90">*/}
+            {/*            Total students*/}
+            {/*        </p>*/}
+            {/*        <p className="text-4xl font-bold text-lms-primary">150 people</p>*/}
+            {/*    </div>*/}
 
-                <div
-                    className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
-                        Students to be paid:
-                    </p>
-                    <p className="text-4xl font-bold text-[#F5A524]">20 people</p>
-                </div>
-            </section>
+            {/*    <div*/}
+            {/*        className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">*/}
+            {/*        <p className="text-2xl font-medium text-lms-black-90">*/}
+            {/*            Students to be paid:*/}
+            {/*        </p>*/}
+            {/*        <p className="text-4xl font-bold text-[#F5A524]">20 people</p>*/}
+            {/*    </div>*/}
+            {/*</section>*/}
 
             {/* Search */}
             <div className="flex items-center justify-between gap-4 ">
@@ -420,7 +420,7 @@ export function PaymentTable<TData, TValue>({
                                                 setOpenGeneration(false);
                                             }}
                                         >
-                                            {` ${generation}`}
+                                            {generation}
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>

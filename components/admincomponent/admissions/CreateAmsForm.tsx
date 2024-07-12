@@ -41,7 +41,6 @@ const validationSchema = Yup.object().shape({
     endDate: Yup.date().required("End date is required"),
     remark: Yup.string(),
     status: Yup.string(),
-    isDeleted: Yup.boolean(),
 });
 
 const RadioButton = ({field, value, label}: any) => {
@@ -66,12 +65,8 @@ export function CreateAmsForm() {
     const [createAdmission] = useCreateAdmissionMutation();
     const {refetch: refetchAdms} = useGetAdmissionsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
-    const {
-        data
-    } = useGetAcademicYearsQuery({page: 0, pageSize: 10});
+
     const academicYears = useSelector((state: RootState) => selectAcademicYear(state));
-
-
     const academicYearOption = academicYears.map(academicYear => ({
         value: academicYear.alias,
         label: academicYear.academicYear
@@ -126,7 +121,7 @@ export function CreateAmsForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {() => (
+                    {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1 items-center">
 
@@ -141,9 +136,10 @@ export function CreateAmsForm() {
                                     </div>
 
 
-                                    <Select options={academicYearOption}/>
+                                    <Select options={academicYearOption}
+                                            onChange={(selectedOption) => setFieldValue('academicYearAlias', selectedOption ? selectedOption.value : '')}/>
                                     <ErrorMessage
-                                        name="academicYear"
+                                        name="academicYearAlias"
                                         component="div"
                                         className={style.error}
                                     />
@@ -243,19 +239,19 @@ export function CreateAmsForm() {
                                                 name="status"
                                                 component={RadioButton}
                                                 value="1"
-                                                label="Public"
+                                                label="Opening"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="2"
-                                                label="Draft"
+                                                label="Closed"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="3"
-                                                label="Disabled"
+                                                label="Finish"
                                             />
                                         </div>
                                         <ErrorMessage
@@ -265,34 +261,6 @@ export function CreateAmsForm() {
                                         />
                                     </div>
 
-                                    {/*isDeleted*/}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={style.label} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Yes"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="No"
-                                            />
-                                        </div>
-                                        <ErrorMessage
-                                            name="isDeleted"
-                                            component="div"
-                                            className={style.error}
-                                        />
-                                    </div>
                                 </div>
                             </div>
 

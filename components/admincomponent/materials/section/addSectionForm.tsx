@@ -57,6 +57,9 @@ export function CreateSectionForm() {
     const [createSection] = useCreateSectionMutation();
     const {refetch: refetchSections} = useGetAllSectionQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
+    const [curriculumData, setCurriculumData] = useState({});
+    const [slideData, setSlideData] = useState({});
+    const [videoData, setVideoData] = useState({});
 
     const {
         data: subjectData,
@@ -76,6 +79,8 @@ export function CreateSectionForm() {
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
+
+
             const newSection: SectionType = {
                 uuid: values.uuid,
                 title: values.title,
