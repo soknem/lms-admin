@@ -34,7 +34,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
             <ErrorBoundary errorComponent={Error}>
                 <Suspense fallback={<PageLoading />}>
                     <UserProfileFetcher>
-                        <nav className="w-full h-[72px] shadow-md  top-0 sticky  ">
+                        <nav className="w-full h-[72px] shadow-md z-10 top-0 sticky  ">
                             <NavbarComponent/>
                         </nav>
 
