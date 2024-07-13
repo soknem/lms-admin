@@ -11,75 +11,61 @@ export default function CourseDetailHeaderStudent({
                                                       credit,
                                                       theory,
                                                       practice,
+                                                      instructor,
                                                       instructorProfileImage,
                                                       instructorName,
                                                       position,
                                                       studentProfileImage,
                                                       classesStart
                                                   }: CourseDetail) {
-    // Debugging console logs
-    console.log("CourseDetailHeaderStudent props:", {
-        year,
-        semester,
-        courseTitle,
-        courseDescription,
-        courseLogo,
-        credit,
-        theory,
-        practice,
-        instructorProfileImage,
-        instructorName,
-        position,
-        studentProfileImage,
-        classesStart
-    });
 
     const router = useRouter();
 
     return (
         <section>
             <section className="mx-[90px] flex flex-col-2 justify-between">
-            <div className="h-[250px]">
+                <div className="h-[250px]">
                     <span
                         className="px-[25px] mx-2 py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
                         Year {year || "N/A"}
                     </span>
-                <span className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
+                    <span
+                        className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
                         Semester {semester || "N/A"}
                     </span>
-                <h2 className="text-[40px] font-bold text-lms-black90 mt-[14px]">
-                    {courseTitle?.toUpperCase() || "Course Title"}
-                </h2>
-                <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
-                    {courseDescription || "Course Description"}
-                </p>
-                <div className="flex items-center mt-[20px]">
+                    <h2 className="text-[40px] font-bold text-lms-black90 mt-[14px]">
+                        {courseTitle?.toUpperCase() || "Course Title"}
+                    </h2>
+                    <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
+                        {courseDescription || "Course Description"}
+                    </p>
+                    <div className="flex items-center mt-[20px]">
                         <span className="mr-4 font-semibold">
                             Credit: {credit || "N/A"}
                         </span>
-                    <span className="mr-4 font-semibold">
+                        <span className="mr-4 font-semibold">
                             | Theory: {theory || "N/A"}
                         </span>
-                    <span className="mr-4 font-semibold">
+                        <span className="mr-4 font-semibold">
                             | Practice: {practice || "N/A"}
                         </span>
+                    </div>
                 </div>
-            </div>
-            <div className="ml-[88px]">
-                <img
-                    src={courseLogo}
-                    alt="Course Logo"
-                    width={215}
-                    height={215}
-                    className="w-[215px] h-[215px]"
-                />
-            </div>
+                <div className="ml-[88px]">
+                    <img
+                        src={courseLogo}
+                        alt="Course Logo"
+                        width={215}
+                        height={215}
+                        className="w-[215px] h-[215px]"
+                    />
+                </div>
             </section>
             <section className="flex items-center mx-[90px]">
                 <img
-                    onClick={() => router.push("/instructor/courses/int-profile")}
+                    onClick={() => router.push("/instructor/courses/int-profile/{uuid}")}
                     className="w-[60px] h-[60px] rounded-full mr-4"
-                    src={instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                    src={instructor.instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                     alt="Instructor"
                     width={60}
                     height={60}

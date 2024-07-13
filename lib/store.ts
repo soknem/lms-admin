@@ -6,7 +6,6 @@ import degreeSlice from "@/lib/features/admin/faculties/degree/degreeSlice";
 import filterSlice from "@/lib/features/filters/filterSlice";
 import facultySlice from "@/lib/features/admin/faculties/faculty/facultySlice";
 import studentCourseSlice from "@/lib/features/student/course/studentCourseSlice";
-import achievementSlice from "@/lib/features/student/achievement/achievementSlice";
 import studyProgramSlice from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
 import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
@@ -43,6 +42,7 @@ import studentAttendanceSlice from "@/lib/features/instructor/studentAttendance/
 import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
 import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCourse";
 import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
+import {studentAchievementApi} from "@/lib/features/student/achievement/achievement";
 import userProfileSlice from "@/lib/features/userProfile/userProfileSlice";
 
 
@@ -52,6 +52,7 @@ export const makeStore = () => {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
             studentCourseApi: studentCourseApi.reducer,
             instructorCourseApi: instructorCourseApi.reducer,
+            studentAchievementApi: studentAchievementApi.reducer,
             auth: authSlice,
             generation: generationSlice,
             filter: filterSlice,
@@ -61,7 +62,6 @@ export const makeStore = () => {
             faculty: facultySlice,
             student: studentSlice,
             studentCourse: studentCourseSlice,
-            achievement: achievementSlice,
             studyProgram: studyProgramSlice,
             setupStudyProgram: yearStuProSlice,
             subject: subjectSlice,

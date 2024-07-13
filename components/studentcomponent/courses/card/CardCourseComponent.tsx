@@ -20,12 +20,20 @@ type CourseCardProps = CourseType & { onClick: () => void };
 export function CardCourseComponent({
                                         title,
                                         credit,
+                                        progress,
                                         semester,
                                         year,
                                         description,
                                         onClick,
+                                        instructorProfileImage,
+                                        logo,
                                     }: CourseCardProps) {
     const router = useRouter();
+
+    const ImageArray = [
+        logo,
+        instructorProfileImage,
+    ]
     return (
         <Card className=" xl:max-w-[566px]  xl:h-[299px]  w-[610px]  bg-white" onClick={onClick}>
             <CardHeader className="mx-[40px]">
@@ -38,17 +46,21 @@ export function CardCourseComponent({
             </CardHeader>
             <CardContent className="flex mx-[40px]">
                 <div className="flex items-center -space-x-4 ">
-                    {courseCardData.images.map((image, index) => (
-                        <Image
-                            onClick={() => router.push("/instructor/courses/int-profile")}
-                            key={index}
-                            src={image.src}
-                            alt={image.alt}
-                            width={64}
-                            height={64}
-                            className=" h-[64px] w-[64] rounded-full object-cover ring-2 ring-white"
-                        />
-                    ))}
+                    {ImageArray.map((image, index) => {
+                        if (image) {
+                            return (
+                                <Image
+                                    onClick={() => router.push("/instructor/courses/int-profile")}
+                                    key={index}
+                                    src={image}
+                                    alt={`Image ${index}`}
+                                    width={64}
+                                    height={64}
+                                    className=" h-[64px] w-[64] rounded-full object-cover ring-2 ring-white"
+                                />
+                            )
+                        }
+                    })}
                 </div>
                 {/* Add content here */}
                 <div className="mt-4 ml-[100px]">
@@ -62,7 +74,7 @@ export function CardCourseComponent({
                         <div className="relative pt-3 flex-1">
                             <div className="overflow-hidden h-2 w-[85px] mb-2 text-xs flex rounded bg-gray-200">
                                 <div
-                                    style={{width: "50%"}}
+                                    style={{width: `${progress}%`}}
                                     className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lms-success"
                                 ></div>
                             </div>

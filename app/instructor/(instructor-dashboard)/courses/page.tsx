@@ -11,7 +11,6 @@ import { selectLoading, setLoading, selectError, setError, setCourses } from "@/
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { InstructorCourseType, InCourseType } from "@/lib/types/instructor/course";
-import { setAchievements } from "@/lib/features/student/achievement/achievementSlice";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import { useRouter } from "next/navigation";
 import { CardCourseComponent } from "@/components/instructorcomponent/courses/card/CardCourseComponent";
@@ -36,7 +35,6 @@ export default function Course() {
     useEffect(() => {
         if (Object.keys(data).length > 0) {
             dispatch(setLoading());
-            dispatch(setAchievements(data));
             setData(data);
             setFilteredCourses(data.courses);
         }
@@ -185,9 +183,9 @@ export default function Course() {
                             semester={course.semester}
                             year={course.year}
                             description={course.description}
+                            instructorProfileImage={course.instructorProfileImage || 'default_profile_image'}
                             uuid={course.uuid}
                             logo={course.logo || 'default_logo_path'}
-                            instructorAvatar={course.instructorAvatar || 'default_avatar_path'}
                             instructorName={course.instructorName || 'default_name'}
                         />
                     ))}
