@@ -1,8 +1,9 @@
-import * as React from "react";
+// columns.ts
 import { ColumnDef } from "@tanstack/react-table";
-import { AchievementTableType } from "@/lib/types/student/achievement";
+import {Course} from "@/lib/types/student/achievement";
 
-export const columns: ColumnDef<AchievementTableType>[] = [
+
+export const columns: ColumnDef<Course>[] = [
     {
         accessorKey: "NO",
         header: "NO",
@@ -13,10 +14,10 @@ export const columns: ColumnDef<AchievementTableType>[] = [
         ),
     },
     {
-        accessorKey: "courseTitle",
-        header: "Course",
+        accessorKey: "title",
+        header: "Title",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("courseTitle")}</div>
+            <div className="capitalize">{row.getValue("title")}</div>
         ),
     },
     {

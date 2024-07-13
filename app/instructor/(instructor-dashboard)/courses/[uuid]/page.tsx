@@ -2,12 +2,12 @@
 import React from "react";
 import {BreadcrumbWithCustomSeparator} from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
 import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
-import type {CourseDetailProps} from "@/lib/types/student/course";
+import type {PropsParam} from "@/lib/types/student/course";
 import CourseDetailHeaderStudent from "@/components/studentcomponent/coursedetail/CourseDetailHeaderStudent";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import {useGetInstructorCourseByUuidQuery} from "@/lib/features/instructor/course/instructorCourse";
 
-export default function CourseDetail({params}: CourseDetailProps) {
+export default function CourseDetail({params}: PropsParam) {
     const uuid = params.uuid;
     const {data, error, isLoading} = useGetInstructorCourseByUuidQuery({uuid});
 
@@ -38,6 +38,7 @@ export default function CourseDetail({params}: CourseDetailProps) {
                     credit={data.credit}
                     theory={data.theory}
                     practice={data.practice}
+                    instructor={data.instructor}
                     instructorProfileImage={data.instructorProfileImage}
                     instructorName={data.instructorName}
                     position={data.position}

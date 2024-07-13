@@ -1,13 +1,16 @@
 'use client'
-import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import {useState} from "react";
+import {Formik, Form, Field, ErrorMessage, FormikHelpers} from "formik";
 import * as Yup from "yup";
-import { IoCameraOutline, IoArrowDown } from "react-icons/io5";
-import { TbAsterisk } from "react-icons/tb";
-import { useDispatch } from "react-redux";
-import { setStudentSetting } from "@/lib/features/student/setting/StudentProfileSlice";
-import { usePatchStudentSettingsMutation, useUploadProfileImageMutation } from "@/lib/features/student/setting/StudentSetting";
-import { StudentSetting } from "@/lib/types/student/StudentSetting";
+import {IoCameraOutline, IoArrowDown} from "react-icons/io5";
+import {TbAsterisk} from "react-icons/tb";
+import {useDispatch} from "react-redux";
+import {setStudentSetting} from "@/lib/features/student/setting/StudentProfileSlice";
+import {
+    usePatchStudentSettingsMutation,
+    useUploadProfileImageMutation
+} from "@/lib/features/student/setting/StudentSetting";
+import {StudentSetting} from "@/lib/types/student/StudentSetting";
 import style from "../style.module.css";
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -49,7 +52,7 @@ export function EditStuProForm({
         birthPlace,
     };
 
-    const handleSubmit = async (values: StudentSetting, { resetForm }: FormikHelpers<StudentSetting>) => {
+    const handleSubmit = async (values: StudentSetting, {resetForm}: FormikHelpers<StudentSetting>) => {
         try {
             const response = await patchStudentSettings(values).unwrap();
             console.log(response);
@@ -66,14 +69,14 @@ export function EditStuProForm({
             const formData = new FormData();
             formData.append("file", file);
 
-            console.log("Uploading image..." , formData);
+            console.log("Uploading image...", formData);
             try {
                 const response = await uploadProfileImage(formData).unwrap();
-                console.log("response" , response);
-                const { name, uri } = response;
+                console.log("response", response);
+                const {name, uri} = response;
 
-                console.log("name" , name);
-                console.log("uri" , uri);
+                console.log("name", name);
+                console.log("uri", uri);
 
 
                 setProfileImagePreview(uri);
@@ -96,10 +99,19 @@ export function EditStuProForm({
                 enableReinitialize={true}
                 onSubmit={handleSubmit}
             >
-                {({ setFieldValue }) => (
-                    <Form className="py-2 rounded-lg w-full flex flex-col justify-center items-center">
-                        <div className="w-full grid lg:gap-4 gap-2 lg:grid-cols-3 justify-center md:grid-cols-2 grid-cols-1">
+                {({setFieldValue}) => (
+
+
+                    <Form className="pb-6 rounded-lg w-full flex flex-col justify-center items-center">
+
+
+                        <div
+                            className="w-full grid lg:gap-x-4 gap-x-2 lg:grid-cols-3 justify-center md:grid-cols-2 grid-cols-1">
+
+
+                            {/*Profile Student */}
                             <div className="h-[200px] w-[200px] relative rounded-[10px] grid row-span-2">
+
                                 <div
                                     style={{
                                         width: '200px',
@@ -111,150 +123,269 @@ export function EditStuProForm({
                                     }}
                                     className="h-full w-full object-cover"
                                 ></div>
-                                <div className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
+                                <div
+                                    className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
                                     <input
                                         type="file"
                                         accept="image/*"
                                         className="absolute w-full h-full opacity-0 cursor-pointer"
                                         onChange={(e) => handleImageUpload(e, setFieldValue)}
                                     />
-                                    <IoCameraOutline className="w-5 h-5" />
+                                    <IoCameraOutline className="w-5 h-5"/>
                                 </div>
                             </div>
 
-                            <div className="mb-5">
+
+                            {/*Gender*/}
+                            <section>
                                 <div className="flex">
-                                    <label className={style.label} htmlFor="gender">Gender</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+                                    <label
+                                        className={style.label} htmlFor="gender">
+                                        Gender
+                                    </label>
+
+
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+
+
                                 </div>
+
                                 <div className="relative w-full">
+
                                     <Field
                                         as="select"
                                         name="gender"
                                         id="gender"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none">
+                                        className={`${style.input} `}
+                                    >
                                         <option value="" disabled hidden>Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </Field>
-                                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                        <IoArrowDown className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                                    </div>
-                                </div>
-                                <ErrorMessage name="gender" component="div" className={style.error} />
-                            </div>
 
-                            <div className="mb-5">
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                        <IoArrowDown
+                                            className="h-5 w-5 text-gray-400"
+                                            aria-hidden="true"
+                                        />
+
+                                    </div>
+
+                                </div>
+                                <ErrorMessage
+                                    name="gender"
+                                    component="div"
+                                    className={style.error}
+                                />
+                            </section>
+
+
+                            {/*Phone Number*/}
+                            <section>
                                 <div className="flex">
                                     <label className={style.label} htmlFor="phoneNumber">Personal Number</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                 </div>
                                 <Field
                                     type="text"
                                     name="phoneNumber"
                                     id="phoneNumber"
                                     placeholder="086 341 985"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none" />
-                                <ErrorMessage name="phoneNumber" component="div" className={style.error} />
-                            </div>
+                                    className={`${style.input} `}
+                                />
 
-                            <div className="mb-5">
+                                <ErrorMessage
+                                    name="phoneNumber"
+                                    component="div"
+                                    className={style.error}
+                                />
+                            </section>
+
+
+                            {/*Family Number*/}
+                            <section>
+
                                 <div className="flex">
-                                    <label className={style.label} htmlFor="familyPhoneNumber">Family Number</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+
+                                    <label
+                                        className={style.label}
+                                        htmlFor="familyPhoneNumber">
+                                        Family Number
+                                    </label>
+
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+
                                 </div>
+
                                 <Field
                                     type="text"
                                     name="familyPhoneNumber"
                                     id="familyPhoneNumber"
                                     placeholder="016 359 615"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none" />
-                                <ErrorMessage name="familyPhoneNumber" component="div" className={style.error} />
-                            </div>
+                                    className={`${style.input} `}
+                                />
 
-                            <div className="mb-5">
+                                <ErrorMessage
+                                    name="familyPhoneNumber"
+                                    component="div"
+                                    className={style.error}
+                                />
+                            </section>
+
+
+                            {/*Guardian Relationship*/}
+                            <section>
                                 <div className="flex">
-                                    <label className={style.label} htmlFor="guardianRelationShip">Guardian Relationship</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+                                    <label className={style.label} htmlFor="guardianRelationShip">Guardian
+                                        Relationship</label>
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                 </div>
                                 <div className="relative w-full">
                                     <Field
                                         as="select"
                                         name="guardianRelationShip"
                                         id="guardianRelationShip"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none">
+                                        className={`${style.input} `}
+                                    >
                                         <option value="" disabled hidden>Select Guardian Relationship</option>
                                         <option value="Mother">Mother</option>
                                         <option value="Father">Father</option>
                                         <option value="Sibling">Sibling</option>
                                         <option value="Other">Other</option>
                                     </Field>
-                                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                        <IoArrowDown className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                    <div
+                                        className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                        <IoArrowDown className="h-5 w-5 text-gray-400" aria-hidden="true"/>
                                     </div>
                                 </div>
-                                <ErrorMessage name="guardianRelationShip" component="div" className={style.error} />
-                            </div>
+                                <ErrorMessage name="guardianRelationShip" component="div" className={style.error}/>
+                            </section>
 
-                            <div className="mb-5">
+
+                            {/* Place Of Birth*/}
+                            <section>
+
                                 <div className="flex">
-                                    <label className={style.label} htmlFor="birthPlace">Place of Birth</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+
+                                    <label
+                                        className={style.label}
+                                        htmlFor="birthPlace">
+                                        Place of Birth
+                                    </label>
+
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+
                                 </div>
+
                                 <Field
                                     as="textarea"
                                     name="birthPlace"
                                     placeholder="House 123 , Street 310 , Phum 4 , Boeung Keng Kang 1 , Chamkarmon , Phnom Penh , Cambodia"
                                     id="birthPlace"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
                                     rows="2"
-                                    cols="30" />
-                                <ErrorMessage name="birthPlace" component="div" className={style.error} />
-                            </div>
+                                    cols="30"
+                                    className={`${style.input} `}
+                                />
 
-                            <div className="mb-5">
+                                <ErrorMessage
+                                    name="birthPlace"
+                                    component="div"
+                                    className={style.error}/>
+
+                            </section>
+
+
+                            {/*Current Address*/}
+                            <section>
+
                                 <div className="flex">
-                                    <label className={style.label} htmlFor="currentAddress">Current Address</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+
+                                    <label
+                                        className={style.label}
+                                        htmlFor="currentAddress">
+                                        Current Address
+                                    </label>
+
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+
                                 </div>
+
                                 <Field
                                     as="textarea"
                                     name="currentAddress"
                                     id="currentAddress"
                                     placeholder="House 123 , Street 310 , Phum 4 , Boeung Keng Kang 1 , Chamkarmon , Phnom Penh , Cambodia"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
-                                    rows="2"
-                                    cols="30" />
-                                <ErrorMessage name="currentAddress" component="div" className={style.error} />
-                            </div>
+                                    className={`${style.input} `} rows="2"
+                                    cols="30"
+                                />
 
-                            <div className="mb-5">
+                                <ErrorMessage
+                                    name="currentAddress"
+                                    component="div"
+                                    className={style.error}
+                                />
+
+                            </section>
+
+
+                            {/*Bio*/}
+                            <section>
+
                                 <div className="flex">
-                                    <label className={style.label} htmlFor="biography">Bio</label>
-                                    <TbAsterisk className="w-2 h-2 text-lms-error" />
+
+                                    <label
+                                        className={style.label}
+                                        htmlFor="biography">
+                                        Bio
+                                    </label>
+
+                                    <TbAsterisk className="w-2 h-2 text-lms-error"/>
+
                                 </div>
+
                                 <Field
                                     as="textarea"
                                     name="biography"
                                     id="biography"
                                     placeholder="I am a student at Liger Leadership Academy. I am studying in the foundation program. I am 15 years old."
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 focus:outline-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 appearance-none"
-                                    rows="2"
-                                    cols="30" />
-                                <ErrorMessage name="biography" component="div" className={style.error} />
-                            </div>
+                                    className={`${style.input} `} rows="2"
+                                    cols="30"
+                                />
+
+                                <ErrorMessage
+                                    name="biography"
+                                    component="div"
+                                    className={style.error}
+                                />
+
+                            </section>
+
+
                         </div>
 
+
+                        {/* Submit button*/}
                         <button
                             type="submit"
                             className="absolute bottom-0 right-0 mt-4 px-4 py-2 bg-lms-primary hover:bg-blue-700 text-white rounded-xl">
                             Submit
                         </button>
+
+
                     </Form>
+
+
                 )}
+
+
             </Formik>
+
+
         </section>
+
+
     );
 }
 
