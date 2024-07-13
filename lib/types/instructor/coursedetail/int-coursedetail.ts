@@ -11,3 +11,17 @@ export type IntCourseDetail = {
     instructorName: string;
     position: 'INSTRUCTOR' | 'ASSISTANT' | 'LECTURER'; // Add other positions if necessary
 };
+
+
+export type CourseType = {
+    onClick: () => void;
+    uuid: string;
+    title: string;
+    credit: number;
+    logo: string;
+    description: string;
+    instructorProfileImage: string | null;
+    instructorName: string | null;
+    year: number;
+    semester: number;
+};

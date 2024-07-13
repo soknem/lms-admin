@@ -2,9 +2,8 @@ import { istadLmsApi } from "@/lib/api";
 
 export const attendanceApi = istadLmsApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAttendance: builder.query<any, { page: number; pageSize: number }>({
-            query: ({ page = 0, pageSize = 25 }) =>
-                `/attendances?pageNumber=${page}&pageSize=${pageSize}`,
+        getAttendance: builder.query<any,void>({
+            query: () => `/reports/attendances`,
         }),
 
     }),

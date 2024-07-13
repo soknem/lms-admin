@@ -40,20 +40,20 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     return (
         <span
             className={
-              value === 1
-                  ? "Starting text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
-                  : value === 2
+              value === 2
+                  ? "Started text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                  : value === 3
                       ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
-                      : value === 3
-                          ? "Pending text-white bg-gray-500 px-3 py-1 rounded-[10px]"
+                      : value === 1
+                          ? "Pending text-white bg-lms-accent px-3 py-1 rounded-[10px]"
                           : ""
             }
         >
-            {value === 1
-                ? "Starting"
-                : value === 2
+            {value === 2
+                ? "Started"
+                : value === 3
                     ? "Ended"
-                    : value === 3
+                    : value === 1
                         ? "Pending"
                         : ""}
         </span>

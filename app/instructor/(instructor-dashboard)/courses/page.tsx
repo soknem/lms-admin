@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { CardCourseComponent } from "@/components/instructorcomponent/courses/card/CardCourseComponent";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import { Stack } from "@mui/material";
 
 export default function Course() {
     const router = useRouter();
@@ -142,6 +142,7 @@ export default function Course() {
                             </Button>
                         </PopoverTrigger>
 
+                        {/* Set fixed width for PopoverContent */}
                         <PopoverContent className="w-[207px] p-0 bg-white" align="start">
                             <Command>
                                 <CommandInput className="text-gray-500" placeholder="Filter Semester..." />
@@ -182,9 +183,9 @@ export default function Course() {
                             semester={course.semester}
                             year={course.year}
                             description={course.description}
+                            instructorProfileImage={course.instructorProfileImage || 'default_profile_image'}
                             uuid={course.uuid}
                             logo={course.logo || 'default_logo_path'}
-                            instructorAvatar={course.instructorAvatar || 'default_avatar_path'}
                             instructorName={course.instructorName || 'default_name'}
                         />
                     ))}

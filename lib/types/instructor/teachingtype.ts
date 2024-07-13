@@ -1,9 +1,11 @@
 export type TeachingType={
-  date: string;
-  session: string;
+  uuid: string;
+  lectureDate: string;
+  startTime: string;
+  endTime: string;
   schedule: string;
   teachingType: string;
-  status: string;
+  paidStatus: number;
 
 
   }
