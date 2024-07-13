@@ -9,8 +9,6 @@ import {
 import {useSelector} from "react-redux";
 import {RootState} from "@/lib/store";
 import placeholder from "@/public/common/placeholderPf.png"
-import {useGetProfileQuery} from "@/lib/features/userProfile/userProfile";
-import {any} from "prop-types";
 
 export default function NavbarComponent() {
 
@@ -28,17 +26,17 @@ export default function NavbarComponent() {
 
       {/* profile */}
         <section className="flex flex-row gap-4">
-            <div>
+            <div className="w-12 h-12 rounded-full overflow-hidden relative">
                 {profileImage ? (
-                    <Image src={profileImage} alt="admin" width={50} height={50} className="rounded-full"/>
+                    <Image src={profileImage} alt="admin" layout="fill" objectFit="cover"/>
                 ) : (
-                    <Image src={placeholder} alt="admin" width={50} height={50} className="rounded-full"/>
+                    <Image src={placeholder} alt="admin" layout="fill" objectFit="cover"/>
                 )}
             </div>
 
             <div>
                 <p className="text-black font-semibold text-xl ">{username || "Username"}</p>
-                <p className="text-lms-gray-30 font-semibold text-sm  ">{position || "Postion"}</p>
+                <p className="text-lms-gray-30 font-semibold text-sm  ">{position || "Position"}</p>
             </div>
 
         </section>

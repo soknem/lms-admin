@@ -23,6 +23,15 @@ export const instructorApi = istadLmsApi.injectEndpoints({
         }),
         getInsDetailByUuid: builder.query({
             query: (insUuid) => `/instructors/detail/${insUuid}`,
+            providesTags: [{ type: 'SingleIns', id: 'LIST' }],
+        }),
+        updateIns: builder.mutation<any, { uuid: string, updatedData: any }>({
+            query: ({uuid, updatedData}) => ({
+                url: `/instructors/${uuid}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+            invalidatesTags: [{ type: 'Instructors', id: 'LIST' }],
         }),
 
     })
@@ -34,4 +43,5 @@ export const {
     useGetInsAllCourseByUuidQuery,
     useGetInsCurrentCourseByUuidQuery,
     useGetInsDetailByUuidQuery,
+    useUpdateInsMutation
 } = instructorApi;

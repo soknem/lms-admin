@@ -21,17 +21,6 @@ import placeholderImage from "@/public/common/placeholderPf.png";
 import {useGetInsDetailByUuidQuery} from "@/lib/features/admin/user-management/instructor/instructor";
 
 
-const insData = {
-    id: "000001",
-    imageSrc: instructorProfile,
-    name: "Sang Sokea",
-    education: "Bachelor of Science in Computer Science University of California Berkeley and Graduated in May 2022",
-    position: "Instructor",
-    linkedin: "https://www.linkedin.com/in/sang-sokea",
-    github: "https://github.com/SangSokea",
-    mail: "sangsokea@gmail.com"
-};
-
 type Props = {
     params: { id: string };
     searchParams: { [key: string]: string | string[] | undefined };
@@ -75,30 +64,31 @@ export default function StaffDetail(props: Props) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                {/*<StaffDetailComponent*/}
-                {/*    key={data?.uuid}*/}
-                {/*    id={data?.uuid}*/}
-                {/*    imageSrc={data?.profileImage || placeholderImage}*/}
-                {/*    name={data?.nameEn || "N/A"}*/}
-                {/*    education={data?.educations || "N/A"}*/}
-                {/*    skills={data?.skills || "N/A"}*/}
-                {/*    position={data?.position || "N/A"}*/}
-                {/*    linkedin={data?.linkLinkedin || "N/A"}*/}
-                {/*    github={data?.linkGit || "N/A"}*/}
-                {/*    mail={data?.email || "N/A"}*/}
+                <StaffDetailComponent
+                    key={data?.uuid}
+                    id={data?.uuid}
+                    imageSrc={data?.profileImage || placeholderImage}
+                    name={data?.nameEn || "N/A"}
+                    education={data?.educations || []}
+                    skills={data?.skills || []}
+                    position={data?.position || "N/A"}
+                    linkedin={data?.linkLinkedin || "N/A"}
+                    github={data?.linkGit || "N/A"}
+                    mail={data?.email || "N/A"}
 
-                {/*    currentAddress={data?.currentAddress || "N/A"}*/}
-                {/*    birthPlace={data?.birthPlace || "N/A"}*/}
-                {/*    linkTelegram={data?.linkTelegram || "N/A"}*/}
-                {/*    nameKh={data?.nameKh || "N/A"}*/}
-                {/*    uploadCv={data?.uploadCv}*/}
-                {/*    identityCard={data?.identityCard}*/}
-                {/*    phoneNumber={data?.phoneNumber || "N/A"}*/}
-                {/*    bio={data?.bio || "N/A"}*/}
+                    currentAddress={data?.currentAddress || "N/A"}
+                    birthPlace={data?.birthPlace || "N/A"}
+                    linkTelegram={data?.linkTelegram || "N/A"}
+                    nameKh={data?.nameKh || "N/A"}
+                    uploadCv={data?.uploadCv}
+                    identityCard={data?.identityCard}
+                    phoneNumber={data?.phoneNumber || "N/A"}
+                    bio={data?.bio || "N/A"}
 
-                {/*    profileImage={data?.profileImage || placeholderImage}*/}
+                    profileImage={data?.profileImage || placeholderImage}
+                    isDeleted={data?.isDeleted || false}
 
-                {/*/>*/}
+                />
             </section>
         </main>
     );

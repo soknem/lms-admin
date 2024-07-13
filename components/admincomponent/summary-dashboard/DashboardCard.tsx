@@ -16,7 +16,7 @@ type props = {
 const DashboardCard = ({total, label, Icon,value2,value1 , subLabel2,subLabel1 }: props) => {
     return (
         <div className="w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl ">
-            <div className="p-6">
+            <div className="p-4">
                 <div className="flex items-center justify-between">
 
 
@@ -34,15 +34,15 @@ const DashboardCard = ({total, label, Icon,value2,value1 , subLabel2,subLabel1 }
 
                     <div className="text-xl font-medium text-lms-gray-80 ">{label}</div>
                     <div className="flex space-x-6">
-                        <div className=" text-based text-gray-500 mt-4 ">
+                        <div className=" text-xs text-gray-500 mt-4 ">
                             <span
-                                className="text-lms-primary mr-2  py-1 px-2  border border-lms-primary rounded-xl text-md font-semibold">{subLabel1}</span>
-                            <span className="text-lms-black-90 mr-2 font-semibold text-xl ">{value1}</span>
+                                className="text-lms-primary mr-2  py-1 px-2  border border-lms-primary rounded-xl font-semibold">{subLabel1}</span>
+                            <span className="text-lms-black-90 mr-2 font-semibold text-[18px]">{value1}</span>
                         </div>
-                        <div className="text-based text-gray-500 mt-4">
+                        <div className="text-xs text-gray-500 mt-4">
                             <span
-                                className="text-[#C29343] mr-2  py-1 px-2 border border-lms-accent rounded-xl text-based  font-semibold">{subLabel2}</span>
-                            <span className="text-lms-black-90 mr-2 font-semibold text-xl ">{value2}</span>
+                                className="text-[#C29343] mr-2  py-1 px-2 border border-lms-accent rounded-xl  font-semibold">{subLabel2}</span>
+                            <span className="text-lms-black-90 mr-2 font-semibold text-[18px]">{value2}</span>
                         </div>
                     </div>
 

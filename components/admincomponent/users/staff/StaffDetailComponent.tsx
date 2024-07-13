@@ -32,7 +32,7 @@ type cardProps = {
     id: string,
     imageSrc: StaticImageData;
     name: string;
-    // education: string[];
+    education: string[];
     position: string;
     linkedin: string;
     github: string;
@@ -49,11 +49,12 @@ type cardProps = {
     phoneNumber: string;
     bio: string;
     profileImage: StaticImageData;
+    isDeleted: boolean
 
 };
 
 
-export default function StaffDetailComponent ({ id,imageSrc, name, position, linkedin, github, mail,skills,currentAddress, birthPlace,linkTelegram,nameKh,uploadCv,identityCard,phoneNumber,bio}: cardProps) {
+export default function StaffDetailComponent ({ id,imageSrc, name, position, linkedin, github, mail,skills,currentAddress, birthPlace,linkTelegram,nameKh,uploadCv,identityCard,phoneNumber,bio,education , isDeleted}: cardProps) {
 
 
     const { data : courseData , error : courseError,isSuccess: isCourseSuccess ,isLoading: isCourseLoading} = useGetInsAllCourseByUuidQuery(id)
@@ -67,7 +68,7 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
         }
     };
 
-    // const educationArray = Array.isArray(education) ? education : [];
+    const educationArray = Array.isArray(education) ? education : [];
 
     const skillArray = Array.isArray(skills) ? skills : [];
 
@@ -92,36 +93,45 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                         </div>
                     </div>
 
-                    {/*<div className="bg-white w-full p-6 rounded-[8px] space-y-6">*/}
-                    {/*    <p className="text-3xl font-bold">Education</p>*/}
-                    {/*    {educationArray.map((edu, index) => (*/}
-                    {/*        <div key={index} className="flex justify-start items-center ">*/}
-                    {/*            <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">*/}
-                    {/*                <FaGraduationCap className="w-8 h-8 text-lms-primary"/>*/}
-                    {/*            </div>*/}
-                    {/*            <p className="leading-tight">{edu}</p>*/}
-                    {/*        </div>*/}
-                    {/*    ))}*/}
-                    {/*</div>*/}
+
+                    {(education.length !== 0)  ? (
+                        <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
+                            <p className="text-3xl font-bold">Education</p>
+                            {educationArray.map((edu, index) => (
+                                <div key={index} className="flex justify-start items-center ">
+                                    <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">
+                                        <FaGraduationCap className="w-8 h-8 text-lms-primary"/>
+                                    </div>
+                                    <p className="leading-tight">{edu}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (<></>)
+                    }
+
 
                     {/* skill */}
-                    <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
-                        <p className="text-3xl font-bold">Skill</p>
-                        {skillArray.map((sk, index) => (
-                            <div key={index} className="flex justify-start items-center ">
-                                <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">
-                                    <BiSolidBookOpen className="w-8 h-8 text-lms-primary"/>
-                                </div>
-                                <p className="leading-tight">{sk}</p>
+                    {(skills.length !== 0) ? (
+                        <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
+                            <p className="text-3xl font-bold">Skill</p>
+                            {skillArray.map((sk, index) => (
+                                <div key={index} className="flex justify-start items-center ">
+                                    <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">
+                                        <BiSolidBookOpen className="w-8 h-8 text-lms-primary"/>
+                                        </div>
+                                        <p className="leading-tight">{sk}</p>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        ) : ( <></> )
+                    }
+
                 </div>
 
                 <div className="col-span-3 space-y-6">
                     <div className="relative p-6 bg-white rounded-[8px]">
                         <div className="absolute top-6 right-6">
-                            <MoreInfo/>
+                            <MoreInfo staffUuid={id} isDeletedState={isDeleted} position={position} />
                         </div>
                         <p className="font-bold text-4xl ">{name}</p>
                         <p className="text-lms-gray-30 text-xl font-medium mb-6">{position}</p>
@@ -130,7 +140,7 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                         <div className="space-y-4 mb-6">
                             {/* email */}
                             <div className="flex items-center">
-                                <IoMdMail className="w-6 h-6 text-lms-primary mr-4"/>
+                            <IoMdMail className="w-6 h-6 text-lms-primary mr-4"/>
                                 <p className="leading-tight">{mail}</p>
                             </div>
 
@@ -182,75 +192,6 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                         </div>
 
                     </div>
-
-                    {/* tabs */}
-                    {/*<div className="rounded-[8px]">*/}
-                    {/*    <Tabs defaultValue="current" className="w-full">*/}
-
-                    {/*        <TabsList className="grid w-[400px] grid-cols-2">*/}
-                    {/*            <TabsTrigger value="current">Current Course</TabsTrigger>*/}
-                    {/*            <TabsTrigger value="list">Course List</TabsTrigger>*/}
-                    {/*        </TabsList>*/}
-
-                    {/*        {isCurrentCourseLoading ?*/}
-                    {/*            <div>Loading...</div>*/}
-                    {/*            : currentCourseData ? (*/}
-                    {/*                <TabsContent value="current">*/}
-                    {/*                    <div className="flex flex-wrap gap-6 mt-6">*/}
-                    {/*                        {currentCourseData.courseInstructor.map((currentCourseData: any) => (*/}
-                    {/*                            <CourseCardComponent*/}
-                    {/*                                id={currentCourseData.uuid}*/}
-                    {/*                                key={currentCourseData.uuid}*/}
-                    {/*                                imageSrc={currentCourseData?.courseLogo || placeholderImage}*/}
-                    {/*                                name={currentCourseData?.courseTitle || "N/A"}*/}
-                    {/*                                year={currentCourseData?.year || "N/A"}*/}
-                    {/*                                semester={currentCourseData?.semester || "N/A"}*/}
-                    {/*                                hour={currentCourseData?.hours || "N/A"}*/}
-                    {/*                                status={currentCourseData?.status || "N/A"}*/}
-                    {/*                            />*/}
-                    {/*                        ))}*/}
-
-                    {/*                    </div>*/}
-                    {/*                </TabsContent>*/}
-                    {/*            ) : (*/}
-                    {/*                <div className="mx-auto">*/}
-                    {/*                    <p>No results</p>*/}
-                    {/*                </div>*/}
-                    {/*            )*/}
-                    {/*        }*/}
-
-
-                    {/*        {isCourseLoading ?*/}
-                    {/*            <div>Loading...</div>*/}
-                    {/*            : courseData ? (*/}
-                    {/*                <TabsContent value="list">*/}
-                    {/*                    <div className="flex flex-wrap gap-6 mt-6">*/}
-                    {/*                        {courseData.courseInstructor.map((course: any) => (*/}
-                    {/*                            <CourseCardComponent*/}
-                    {/*                                id={course.uuid}*/}
-                    {/*                                key={course.uuid}*/}
-                    {/*                                imageSrc={course?.courseLogo || placeholderImage}*/}
-                    {/*                                name={course?.courseTitle || "N/A"}*/}
-                    {/*                                year={course?.year || "N/A"}*/}
-                    {/*                                semester={course?.semester || "N/A"}*/}
-                    {/*                                hour={course?.hours || "N/A"}*/}
-                    {/*                                status={course?.status || "N/A"}*/}
-                    {/*                            />*/}
-                    {/*                        ))}*/}
-
-                    {/*                    </div>*/}
-                    {/*                </TabsContent>*/}
-                    {/*            ) : (*/}
-                    {/*                <div className="mx-auto">*/}
-                    {/*                    <p>No results</p>*/}
-                    {/*                </div>*/}
-                    {/*            )*/}
-                    {/*        }*/}
-
-
-                    {/*    </Tabs>*/}
-                    {/*</div>*/}
-
 
                     <div className="rounded-[8px]">
                         {position !== 'INSTRUCTOR' ? null :
