@@ -105,7 +105,7 @@ export default function EditCourseForm({ isVisible, onClose , courseData }: Prop
     return(
         <Modal isVisible={isVisible} onClose={onClose}>
             <h2 className="text-xl text-lms-black-90 font-bold mb-4">Update Course</h2>
-            <form className=" space-y-2 " onSubmit={formik.handleSubmit}>
+            <form className="w-[480px] space-y-2 " onSubmit={formik.handleSubmit}>
 
                 {/* Class Start  */}
                 <div>

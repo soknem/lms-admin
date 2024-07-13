@@ -274,269 +274,272 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
   return (
       <Modal isVisible={isVisible} onClose={onClose}>
         <h2 className="text-xl text-lms-black-90 font-bold mb-4">Create Class</h2>
-        <form className="h-[500px] space-y-4 md:space-y-6 overflow-y-scroll" onSubmit={formik.handleSubmit}>
 
-          {/* Class Code */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Class Code"
-                                         labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
-            <input
-                type="text"
-                name="classCode"
-                onChange={formik.handleChange}
-                value={formik.values.classCode}
-                className="border text-md outline-lms-gray-30  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-                placeholder="FY2025-SE-A1"
+        <form className="w-[960px]  space-y-4 md:space-y-6 " onSubmit={formik.handleSubmit}>
+          <div className="grid grid-cols-2 gap-4">
 
-            />
-            {
-              formik.errors.classCode ? <p className="text-red-700">{formik.errors.classCode}</p> : null
-            }
-          </div>
+            {/* Class Code */}
+            <div>
+              <RequiredFieldLabelComponent labelText="Class Code"
+                                           labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
+              <input
+                  type="text"
+                  name="classCode"
+                  onChange={formik.handleChange}
+                  value={formik.values.classCode}
+                  className="border text-md outline-lms-gray-30  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
+                  placeholder="FY2025-SE-A1"
 
-          {/* Class Start  */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Class Start"
-                                         labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-            <div className="relative">
+              />
+              {
+                formik.errors.classCode ? <p className="text-red-700">{formik.errors.classCode}</p> : null
+              }
+            </div>
+
+            {/* Class Start  */}
+            <div>
+              <RequiredFieldLabelComponent labelText="Class Start"
+                                           labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+              <div className="relative">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                        className={cn(
+                            "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
+                            !startDate && "text-gray-600"
+                        )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4"/>
+                      {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-white ">
+                    <Calendar
+                        mode="single"
+                        selected={startDate}
+                        onSelect={setStartDate}
+                        initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+            </div>
+
+            {/* Class End */}
+            <div>
+              <RequiredFieldLabelComponent labelText="Class End"
+                                           labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                       className={cn(
                           "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
-                          !startDate && "text-gray-600"
+                          !endDate && "text-gray-600"
                       )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4"/>
-                    {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                    {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0 bg-white ">
                   <Calendar
                       mode="single"
-                      selected={startDate}
-                      onSelect={setStartDate}
+                      selected={endDate}
+                      onSelect={setEndDate}
                       initialFocus
                   />
                 </PopoverContent>
               </Popover>
             </div>
 
-          </div>
+            {/* Year */}
+            <div>
+              <RequiredFieldLabelComponent labelText="Year"
+                                           labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
+              <input
+                  type="number"
+                  name="year"
+                  onChange={formik.handleChange}
+                  value={formik.values.year}
+                  className="border text-md outline-lms-gray-30  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
+                  placeholder="1"
 
-          {/* Class End */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Class End"
-                                         labelClassName={`block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                    className={cn(
-                        "text-gray-600 border  border-lms-gray-30 w-full justify-start text-left font-normal",
-                        !endDate && "text-gray-600"
-                    )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4"/>
-                  {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 bg-white ">
-                <Calendar
-                    mode="single"
-                    selected={endDate}
-                    onSelect={setEndDate}
-                    initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+              />
+              {
+                formik.errors.year ? <p className="text-red-700">{formik.errors.year}</p> : null
+              }
+            </div>
 
-          {/* Year */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Year"
-                                         labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}/>
-            <input
-                type="number"
-                name="year"
-                onChange={formik.handleChange}
-                value={formik.values.year}
-                className="border text-md outline-lms-gray-30  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-                placeholder="1"
+            {/* Generation */}
 
-            />
-            {
-              formik.errors.year ? <p className="text-red-700">{formik.errors.year}</p> : null
-            }
-          </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Generation
+              </label>
+              <Select
+                  name="generationAlias"
+                  options={generations}
+                  value={generations.find(
+                      (option: any) => option.value === formik.values.generationAlias
+                  )}
+                  onChange={(option) => handleGenChange(option)}
+                  onBlur={formik.handleBlur}
+                  className={`w-full ${
+                      formik.touched.generationAlias && formik.errors.generationAlias
+                          ? "border-red-500"
+                          : "border-gray-300"
+                  } `}
+              />
+              {formik.touched.generationAlias && formik.errors.generationAlias && (
+                  <p className="text-red-500 text-sm mt-1">{formik.errors.generationAlias}</p>
+              )}
+            </div>
 
-          {/* Generation */}
+            {/* Study Program */}
 
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">
-              Generation
-            </label>
-            <Select
-                name="generationAlias"
-                options={generations}
-                value={generations.find(
-                    (option: any) => option.value === formik.values.generationAlias
-                )}
-                onChange={(option) => handleGenChange(option)}
-                onBlur={formik.handleBlur}
-                className={`w-full ${
-                    formik.touched.generationAlias && formik.errors.generationAlias
-                        ? "border-red-500"
-                        : "border-gray-300"
-                } `}
-            />
-            {formik.touched.generationAlias && formik.errors.generationAlias && (
-                <p className="text-red-500 text-sm mt-1">{formik.errors.generationAlias}</p>
-            )}
-          </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Study Program
+              </label>
+              <Select
+                  name="studyProgramAlias"
+                  options={studyPrograms}
+                  value={studyPrograms.find(
+                      (option: any) => option.value === formik.values.studyProgramAlias
+                  )}
+                  onChange={(option) => handleProgramChange(option)}
+                  onBlur={formik.handleBlur}
+                  className={`w-full ${
+                      formik.touched.studyProgramAlias && formik.errors.studyProgramAlias
+                          ? "border-red-500"
+                          : "border-gray-300"
+                  }`}
+              />
+              {formik.touched.studyProgramAlias && formik.errors.studyProgramAlias && (
+                  <p className="text-red-500 text-sm mt-1">{formik.errors.studyProgramAlias}</p>
+              )}
+            </div>
 
-          {/* Study Program */}
+            {/* Shift */}
 
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">
-              Study Program
-            </label>
-            <Select
-                name="studyProgramAlias"
-                options={studyPrograms}
-                value={studyPrograms.find(
-                    (option: any) => option.value === formik.values.studyProgramAlias
-                )}
-                onChange={(option) => handleProgramChange(option)}
-                onBlur={formik.handleBlur}
-                className={`w-full ${
-                    formik.touched.studyProgramAlias && formik.errors.studyProgramAlias
-                        ? "border-red-500"
-                        : "border-gray-300"
-                }`}
-            />
-            {formik.touched.studyProgramAlias && formik.errors.studyProgramAlias && (
-                <p className="text-red-500 text-sm mt-1">{formik.errors.studyProgramAlias}</p>
-            )}
-          </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Shift
+              </label>
+              <Select
+                  name="shiftAlias"
+                  options={shifts}
+                  value={shifts.find(
+                      (option: any) => option.value === formik.values.shiftAlias
+                  )}
+                  onChange={(option) => handleShiftChange(option)}
+                  onBlur={formik.handleBlur}
+                  className={`w-full  ${
+                      formik.touched.shiftAlias && formik.errors.shiftAlias
+                          ? "border-red-500"
+                          : "border-gray-300"
+                  } `}
+              />
+              {formik.touched.shiftAlias && formik.errors.shiftAlias && (
+                  <p className="text-red-500 text-sm mt-1">{formik.errors.shiftAlias}</p>
+              )}
+            </div>
 
-          {/* Shift */}
+            {/* Instructor */}
+            <div>
+              <RequiredFieldLabelComponent labelText="Instructor"
+                                           labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
 
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">
-              Shift
-            </label>
-            <Select
-                name="shiftAlias"
-                options={shifts}
-                value={shifts.find(
-                    (option: any) => option.value === formik.values.shiftAlias
-                )}
-                onChange={(option) => handleShiftChange(option)}
-                onBlur={formik.handleBlur}
-                className={`w-full  ${
-                    formik.touched.shiftAlias && formik.errors.shiftAlias
-                        ? "border-red-500"
-                        : "border-gray-300"
-                } `}
-            />
-            {formik.touched.shiftAlias && formik.errors.shiftAlias && (
-                <p className="text-red-500 text-sm mt-1">{formik.errors.shiftAlias}</p>
-            )}
-          </div>
+              <Select
+                  className="basic-single"
+                  classNamePrefix="select"
+                  isClearable={true}
+                  isSearchable={true}
+                  name="instructorUuid"
+                  options={instructors}
+                  onChange={handleInstructorChange}
+              />
+              {
+                formik.errors.instructorUuid ? <p className="text-red-700">{formik.errors.instructorUuid}</p> : null
+              }
+            </div>
 
-          {/* Instructor */}
-          <div>
-            <RequiredFieldLabelComponent labelText="Instructor"
-                                         labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"/>
+            {/* Academic Year */}
 
-            <Select
-                className="basic-single"
-                classNamePrefix="select"
-                isClearable={true}
-                isSearchable={true}
-                name="instructorUuid"
-                options={instructors}
-                onChange={handleInstructorChange}
-            />
-            {
-              formik.errors.instructorUuid ? <p className="text-red-700">{formik.errors.instructorUuid}</p> : null
-            }
-          </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Academic Year
+              </label>
+              <Select
+                  name="academicYearAlias"
+                  options={academicYears}
+                  value={academicYears.find(
+                      (option: any) => option.value === formik.values.academicYearAlias
+                  )}
+                  onChange={(option) => handleAcademicYearChange(option)}
+                  onBlur={formik.handleBlur}
+                  className={`w-full  ${
+                      formik.touched.academicYearAlias && formik.errors.academicYearAlias
+                          ? "border-red-500"
+                          : "border-gray-300"
+                  }`}
+              />
+              {formik.touched.academicYearAlias && formik.errors.academicYearAlias && (
+                  <p className="text-red-500 text-sm mt-1">{formik.errors.academicYearAlias}</p>
+              )}
+            </div>
 
-          {/* Academic Year */}
+            {/* Status */}
+            <div>
+              <RequiredFieldLabelComponent
+                  labelText="Status"
+                  labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              />
+              <Select
+                  className="basic-single"
+                  classNamePrefix="select"
+                  name="status"
+                  options={statusList}
+                  onChange={handleStatusChange}
+              />
+              {
+                formik.errors.status ? <p className="text-red-700">{formik.errors.status}</p> : null
+              }
+            </div>
 
-          <div>
-            <label className="block text-gray-700 font-semibold mb-2">
-              Academic Year
-            </label>
-            <Select
-                name="academicYearAlias"
-                options={academicYears}
-                value={academicYears.find(
-                    (option: any) => option.value === formik.values.academicYearAlias
-                )}
-                onChange={(option) => handleAcademicYearChange(option)}
-                onBlur={formik.handleBlur}
-                className={`w-full  ${
-                    formik.touched.academicYearAlias && formik.errors.academicYearAlias
-                        ? "border-red-500"
-                        : "border-gray-300"
-                }`}
-            />
-            {formik.touched.academicYearAlias && formik.errors.academicYearAlias && (
-                <p className="text-red-500 text-sm mt-1">{formik.errors.academicYearAlias}</p>
-            )}
-          </div>
+            {/* Visibility */}
+            <div>
+              <RequiredFieldLabelComponent
+                  labelText="Visibility"
+                  labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}
+              />
+              <input
+                  type="radio"
+                  id="isDraftTrue"
+                  name="isDraft"
+                  value="true"
+                  checked={formik.values.isDraft}
+                  onChange={() => formik.setFieldValue("isDraft", true)}
+              />
+              <label htmlFor="isDraftTrue" className="px-2 pr-4">Draft</label>
+              <input
+                  type="radio"
+                  id="isDraftFalse"
+                  name="isDraft"
+                  value="false"
+                  checked={!formik.values.isDraft}
+                  onChange={() => formik.setFieldValue("isDraft", false)}
+              />
+              <label htmlFor="isDraftFalse" className="px-2 pr-4">Public</label>
+              {formik.errors.isDraft && (
+                  <p className="text-red-700">{formik.errors.isDraft}</p>
+              )}
 
-          {/* Status */}
-          <div>
-            <RequiredFieldLabelComponent
-                labelText="Status"
-                labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            />
-            <Select
-                className="basic-single"
-                classNamePrefix="select"
-                name="status"
-                options={statusList}
-                onChange={handleStatusChange}
-            />
-            {
-              formik.errors.status ? <p className="text-red-700">{formik.errors.status}</p> : null
-            }
-          </div>
+            </div>
 
-          {/* Visibility */}
-          <div>
-            <RequiredFieldLabelComponent
-                labelText="Visibility"
-                labelClassName={`block mb-2 text-md font-medium text-gray-900 dark:text-white`}
-            />
-            <input
-                type="radio"
-                id="isDraftTrue"
-                name="isDraft"
-                value="true"
-                checked={formik.values.isDraft}
-                onChange={() => formik.setFieldValue("isDraft", true)}
-            />
-            <label htmlFor="isDraftTrue" className="px-2 pr-4">Draft</label>
-            <input
-                type="radio"
-                id="isDraftFalse"
-                name="isDraft"
-                value="false"
-                checked={!formik.values.isDraft}
-                onChange={() => formik.setFieldValue("isDraft", false)}
-            />
-            <label htmlFor="isDraftFalse" className="px-2 pr-4">Public</label>
-            {formik.errors.isDraft && (
-                <p className="text-red-700">{formik.errors.isDraft}</p>
-            )}
 
           </div>
-
-
           <div className="flex justify-end">
             <button
                 type="submit"
@@ -547,6 +550,8 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
             </button>
           </div>
         </form>
+
+
       </Modal>
   );
 }
