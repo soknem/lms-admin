@@ -1,3 +1,4 @@
+'use client'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -8,9 +9,32 @@ import {
 import Link from "next/link";
 import React from "react";
 import {EditUserStaffForm} from "@/components/admincomponent/users/staff/EditUserStaffForm";
+import {EditStaffForm} from "@/components/admincomponent/users/staff/EditStaffForm";
+import {useGetStaffByUuidQuery} from "@/lib/features/admin/user-management/staff/staff";
+import {useGetInsDetailByUuidQuery} from "@/lib/features/admin/user-management/instructor/instructor";
+
+type Props = {
+    params: { id: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export default function Users(props: Props) {
+
+    const { data : staffData , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffByUuidQuery(props.params.id)
+
+    console.log("staff Data: ",staffData?.position || "Instructor");
+
+    const { data : insData , error : insError,isSuccess: isInsSuccess ,isLoading: isInsLoading} = useGetInsDetailByUuidQuery(props.params.id)
 
 
-export default function Users() {
+    if(isStaffLoading){
+        return <div className="flex justify-center items-center min-h-screen">
+            Loading...
+        </div>
+    }
+
+    const data = staffData?.position === "INSTRUCTOR" ? insData : staffData;
+
     return (
         <main className="flex flex-col p-9 gap-6">
             <Breadcrumb>
@@ -28,7 +52,7 @@ export default function Users() {
             </Breadcrumb>
 
             <section className="flex flex-grow  gap-6 p-6 bg-white rounded-[10px] justify-center items-center">
-                <EditUserStaffForm />
+                <EditStaffForm updateData={data} />
             </section>
 
             <section>
