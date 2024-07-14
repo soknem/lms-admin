@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-import {EditUserStaffForm} from "@/components/admincomponent/users/staff/EditUserStaffForm";
 import {EditStaffForm} from "@/components/admincomponent/users/staff/EditStaffForm";
 import {useGetStaffByUuidQuery} from "@/lib/features/admin/user-management/staff/staff";
 import {useGetInsDetailByUuidQuery} from "@/lib/features/admin/user-management/instructor/instructor";
