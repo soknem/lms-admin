@@ -9,7 +9,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import toast from 'react-hot-toast';
-import { useUpdateLectureMutation, useGetLectureQuery } from "@/lib/features/admin/academic-management/lecture/lecture";
+import { useUpdateLectureMutation, useGetLectureQuery } from "@/lib/features/instructor/lectureadd/lecture";
 import {
     useGetClassesQuery,
     useGetClassByUuidQuery

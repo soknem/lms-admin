@@ -115,7 +115,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'nameKh',
+        accessorKey: 'nameKh', // Assuming this maps to the Khmer name in your table
         header: ({ column }) => (
             <Button
                 variant='ghost'
@@ -128,7 +128,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'gender',
+        accessorKey: 'gender', // Assuming this maps to the gender in your table
         header: ({ column }) => (
             <Button
                 variant='ghost'
@@ -141,7 +141,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'P',
+        accessorKey: 'P', // Assuming this maps to the 'P' status in your table
         header: () => (
             <Button variant='ghost' className="pl-4">
                 P
@@ -150,7 +150,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'EA',
+        accessorKey: 'EA', // Assuming this maps to the 'EA' status in your table
         header: () => (
             <Button variant='ghost' className="pl-4">
                 EA
@@ -159,7 +159,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'UA',
+        accessorKey: 'UA', // Assuming this maps to the 'UA' status in your table
         header: () => (
             <Button variant='ghost' className="pl-4">
                 UA

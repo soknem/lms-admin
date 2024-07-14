@@ -49,6 +49,7 @@ export default function CourseDetail({params}: CourseDetailProps) {
                 <BreadcrumbWithCustomSeparator
                     {...data}
                 />
+
             </section>
             <section className="mx-[100px]">
                 <TabComponent/>

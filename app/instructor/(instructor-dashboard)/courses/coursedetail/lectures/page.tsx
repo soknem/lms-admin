@@ -47,9 +47,10 @@ export default function Lecture() {
     const {data: LectureData,error:LectureError} = useGetLectureQuery({ page: 0, pageSize: 10 });
 
 
-    // Select assessment from Redux store
+
     const filteredCurrentLectureData: CurrentType[] = useSelector((state: RootState) => selectCurrents(state));
     const filteredEndedLectureData: EndedLectureType[] = useSelector((state: RootState) => selectEndeds(state));
+
 
     // Effect to update Redux store on data change
     useEffect(() => {

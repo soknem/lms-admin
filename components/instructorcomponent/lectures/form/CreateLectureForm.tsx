@@ -39,7 +39,7 @@ import {
 } from "@/lib/features/admin/academic-management/classes/classSlice";
 import {useGetClassByUuidQuery, useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
 import {CreateGenerationType, FormLectureType, ShortCourseType} from "@/lib/types/admin/academics";
-import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/admin/academic-management/lecture/lecture";
+import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/instructor/lectureadd/lecture";
 import {Class} from "@/lib/types/admin/academics";
 import Select, {ActionMeta, SingleValue} from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
@@ -167,36 +167,36 @@ export default function CreateLectureForm() {
 //                 },
 //             });
 
-        //     toast.custom((t) => (
-        //         <div
-        //             className={`${
-        //                 t.visible ? 'animate-enter' : 'animate-leave'
-        //             } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        //         >
-        //             <div className="flex-1 w-0 p-4">
-        //                 <div className="flex items-start">
-        //                     <div className="ml-3 flex-1">
-        //                         <div className="flex items-center">
-        //                             <MdError className="w-6 h-6 mr-2" />
-        //                             <p className="text-base text-red-600 font-bold ">
-        //                                 {errorMessage}
-        //                             </p>
-        //                         </div>
-        //
-        //                         <p className="mt-1 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: errorDescription }}></p>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     ), {
-        //         duration: 5000, // Set duration in milliseconds (e.g., 5000ms = 5 seconds)
-        //         style: {
-        //             marginBottom: '20px',
-        //         },
-        //     });
-        // }
+            //     toast.custom((t) => (
+            //         <div
+            //             className={`${
+            //                 t.visible ? 'animate-enter' : 'animate-leave'
+            //             } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            //         >
+            //             <div className="flex-1 w-0 p-4">
+            //                 <div className="flex items-start">
+            //                     <div className="ml-3 flex-1">
+            //                         <div className="flex items-center">
+            //                             <MdError className="w-6 h-6 mr-2" />
+            //                             <p className="text-base text-red-600 font-bold ">
+            //                                 {errorMessage}
+            //                             </p>
+            //                         </div>
+            //
+            //                         <p className="mt-1 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: errorDescription }}></p>
+            //                     </div>
+            //                 </div>
+            //             </div>
+            //         </div>
+            //     ), {
+            //         duration: 5000, // Set duration in milliseconds (e.g., 5000ms = 5 seconds)
+            //         style: {
+            //             marginBottom: '20px',
+            //         },
+            //     });
+            // }
 
-    }}
+        }}
 
     // ========== class ===========
     const [selectedClassUUID, setSelectedClassUUID] = useState('');
