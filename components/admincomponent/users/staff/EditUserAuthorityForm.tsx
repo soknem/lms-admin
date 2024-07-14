@@ -120,10 +120,6 @@ export default function EditUserAuthorityForm({ isVisible, onClose , staffUuid }
                     setSubmitting(false);
                 }
             }
-
-
-
-
         }
     });
 
@@ -132,8 +128,6 @@ export default function EditUserAuthorityForm({ isVisible, onClose , staffUuid }
             <h2 className="text-xl text-lms-black-90 font-bold mb-4">Edit Authorities</h2>
             <form className="z-50 w-[560px]  space-y-2" onSubmit={formik.handleSubmit}>
                 <div className="mt-6">
-                    {/*<RequiredFieldLabelComponent labelText="Customize Permission"*/}
-                    {/*                             labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>*/}
                     <div className="grid grid-cols-3 gap-4 justify-center items-start">
                         {authorityOptions.map(authority => (
                             <div key={authority} className="flex items-center mb-2">

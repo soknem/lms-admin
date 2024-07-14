@@ -29,11 +29,11 @@ export const staffApi = istadLmsApi.injectEndpoints({
         // **** Staff Update *****
         updateStaff: builder.mutation<any, { uuid: string, updatedData: any }>({
             query: ({uuid, updatedData}) => ({
-                url: `/admins/${uuid}`,
+                url: `/users/except-student/${uuid}`,
                 method: 'PATCH',
                 body: updatedData,
             }),
-            invalidatesTags: [{ type: 'Staffs', id: 'LIST' }],
+            invalidatesTags: [{ type: 'SingleStaff', id: 'LIST' },{ type: 'SingleIns', id: 'LIST' }],
         }),
 
         // **** Staff Enable & Disable *****
@@ -49,7 +49,7 @@ export const staffApi = istadLmsApi.injectEndpoints({
                 url: `/users/${staffUuid}/disable`,
                 method: 'PUT',
             }),
-            invalidatesTags: [{ type: 'SingleStaff', id: 'LIST' },{ type: 'SingleIns', id: 'LIST' }],
+            invalidatesTags: [{ type: 'SingleStaff', id: 'LIST' },{ type: 'SingleIns', id: 'LIST' },{ type: 'SingleIns', id: 'LIST' }],
         }),
 
         // **** Staff Authority *****

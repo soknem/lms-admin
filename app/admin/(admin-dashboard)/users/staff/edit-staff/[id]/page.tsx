@@ -50,7 +50,7 @@ export default function Users(props: Props) {
                 </BreadcrumbList>
             </Breadcrumb>
 
-            <section className="flex flex-grow  gap-6 p-6 bg-white rounded-[10px] justify-center items-center">
+            <section className="gap-6 p-6 bg-white rounded-[10px]">
                 <EditStaffForm updateData={data} />
             </section>
 
