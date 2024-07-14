@@ -77,6 +77,10 @@ export const classApi = istadLmsApi.injectEndpoints({
             ],
 
         }),
+
+        getSummary: builder.query<any,{}>({
+            query: () => `/summary-dashboards`,
+        }),
     })
 });
 
@@ -92,4 +96,5 @@ export const {
     useDeleteStudentFromClassMutation,
     useGetStudentFromClassQuery,
     useAddStudentToClassMutation,
+    useGetSummaryQuery
 } = classApi;

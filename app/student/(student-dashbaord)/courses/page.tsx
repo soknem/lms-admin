@@ -11,7 +11,6 @@ import { selectLoading, setLoading, selectError, setError, setCourses } from "@/
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { StudentCourseType, CourseType } from "@/lib/types/student/course";
-import { setAchievements } from "@/lib/features/student/achievement/achievementSlice";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -36,7 +35,6 @@ export default function Course() {
     useEffect(() => {
         if (Object.keys(data).length > 0) {
             dispatch(setLoading());
-            dispatch(setAchievements(data));
             setData(data);
             setFilteredCourses(data.courses); // Set initial courses
         }
@@ -86,7 +84,7 @@ export default function Course() {
     const paginatedCourses = filteredCourses.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
     return (
-        <div className="flex flex-col h-full w-full p-9 gap-4">
+        <main className="flex flex-col h-full w-full p-9 gap-4">
             <section className="bg-lms-primary w-full rounded-xl relative flex items-center justify-center p-8">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-2xl sm:text-3xl font-bold text-white">
@@ -181,7 +179,8 @@ export default function Course() {
                             description={course.description}
                             uuid={course.uuid}
                             logo={course.logo || 'default_logo_path'}
-                            instructorAvatar={course.instructorAvatar || 'default_avatar_path'}
+                            progress={course.progress || null}
+                            instructorProfileImage={course.instructorProfileImage || 'default_avatar_path'}
                             instructorName={course.instructorName || 'default_name'}
                         />
                     ))}
@@ -198,6 +197,6 @@ export default function Course() {
                     />
                 </Stack>
             </section>
-        </div>
+        </main>
     );
 }

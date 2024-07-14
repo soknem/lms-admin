@@ -11,21 +11,51 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 
 import {useRouter} from "next/navigation";
+import {TbEye, TbEyeCancel, TbFileImport, TbPencil,TbLockCog} from "react-icons/tb";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+import {
+    useDisableClassMutation,
+    useEnableClassMutation
+} from "@/lib/features/admin/academic-management/classes/classApi";
+import {useDisableStaffMutation, useEnableStaffMutation} from "@/lib/features/admin/user-management/staff/staff";
 
-const MoreInfo = () => {
+type props = {
+    staffUuid : string
+    isDeletedState : boolean
+    position: string
+}
+
+const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
     const router = useRouter();
-    const [isEditFormVisible, setEditFormVisible] = useState(false);
-    const [isViewFormVisible, setViewFormVisible] = useState(false);
 
-    const handleEditClick = () => {
-        router.push("/admin/users/staff/edit-staff");
-        setEditFormVisible(true);
-        setViewFormVisible(false); // Close view form if open
+
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(isDeletedState);
+
+    const [enableStaff] = useEnableStaffMutation();
+    const [disableStaff] = useDisableStaffMutation();
+
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
     };
 
-    const handleViewClick = () => {
-        setViewFormVisible(true);
-        setEditFormVisible(false); // Close edit form if open
+
+    const handleConfirm = async   (staffUuid : string) => {
+        if(isDeleted){
+            await enableStaff(staffUuid).unwrap();
+            setIsDeleted((prev :any) => !prev);
+            console.log('Staff enabled successfully');
+
+        }else{
+            await disableStaff(staffUuid).unwrap();
+            setIsDeleted((prev : any) => !prev);
+            console.log('Staff disable successfully');
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
     };
 
     return (
@@ -33,30 +63,48 @@ const MoreInfo = () => {
             {" "}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
+                    <Button variant='ghost' className='h-8 w-8 p-0'>
+                        <span className='sr-only'>Open menu</span>
+                        <MoreHorizontal className='h-4 w-4' />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="bg-white">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem
-                        className="focus:bg-background"
-                        onClick={handleEditClick}
-                    >
-                        Edit
+                <DropdownMenuContent align='end' className="bg-white">
+
+                    <DropdownMenuItem onClick={() => router.push(`edit-staff/${staffUuid}`)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
                     </DropdownMenuItem>
-                    {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                    {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                    <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-                        Disable
+
+                    <DropdownMenuItem onClick={() => router.push(`edit-staff/${staffUuid}`)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbLockCog size={20} className="text-gray-30 mr-2"  /> Edit Authorities
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                        className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2" /> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2" /> Disable
+                            </>
+                        )}
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            {/* {isEditFormVisible && <EditFacForm />} */}
-            {/* {isViewFormVisible && <ViewFacForm />} */}
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this user?" : "Do you really want to disable this user?"}
+                    onConfirm={() => handleConfirm(staffUuid)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
+            )}
         </div>
-    );
-};
+    )
+
+}
 
 export default MoreInfo;
