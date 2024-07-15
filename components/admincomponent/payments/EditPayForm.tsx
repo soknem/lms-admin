@@ -3,125 +3,148 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../style.module.css";
-import {FiPlus} from "react-icons/fi";
 import {
     Dialog,
     DialogContent,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {DegreeType} from "@/lib/types/admin/faculty";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import {create} from "domain";
 import {PaymentType} from "@/lib/types/admin/payments";
 import {TbAsterisk} from "react-icons/tb";
+import {useEditPaymentByUuidMutation, useGetPaymentByUuidQuery} from "@/lib/features/admin/payment-management/payment";
+import {toast} from "react-hot-toast";
+import Select from "react-select";
 
-const initialValues = {
-    uuid: '',
-    usernameOrEmail: '',
-    gender: '',
-    discount: 0,
-    paidAmount: 0,
-    balanceDue: 0,
-    courseFee: 0,
-    paymentMethod: '',
-    status: false,
-    remark: '',
-    paidDate: '',
-    originalPayment: 0,
-    totalPayment: 0,
-    studentName: '',
-    studentProfile: '',
-    paidReturn: 0,
-    academicFee: 0,
-    generation: '',
-    degree: '',
-    faculty: '',
-    academicYear: '',
-    studyProgram: '',
-    year: 0,
-    semester: 0,
-    shift: '',
-    classCode: '',
-};
+const validationSchema = Yup.object().shape({});
 
-const validationSchema = Yup.object().shape({
-    id: Yup.number(),
-    level: Yup.string(),
-    description: Yup.string(),
-    create_by: Yup.string(),
-    status: Yup.string().required("A selection is required"),
-});
+export function EditPayForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
+    const [editPayment] = useEditPaymentByUuidMutation();
+    const {data: paymentData, isSuccess} = useGetPaymentByUuidQuery(uuid);
+    const [initialAlias, setInitialAlias] = useState("");
+    const [initialValues, setInitialValues] = useState({
+        receiptId: '',
+        uuid: '',
+        usernameOrEmail: '',
+        gender: '',
+        discount: 0,
+        paidAmount: 0,
+        balanceDue: 0,
+        courseFee: 0,
+        paymentMethod: '',
+        status: false,
+        remark: '',
+        paidDate: '',
+        originalPayment: 0,
+        totalPayment: 0,
+        studentName: '',
+        studentProfile: '',
+        paidReturn: 0,
+        academicFee: 0,
+        generation: '',
+        degree: '',
+        faculty: '',
+        academicYear: '',
+        studyProgram: '',
+        year: 0,
+        semester: 0,
+        classCode: '',
+        shift: '',
+    });
 
-const handleSubmit = async (value: PaymentType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
-};
+    useEffect(() => {
+        if (isSuccess && paymentData) {
+            setInitialValues({
+                receiptId: paymentData.receiptId,
+                uuid: paymentData.uuid,
+                usernameOrEmail: paymentData.usernameOrEmail,
+                gender: paymentData.gender,
+                discount: paymentData.discount,
+                paidAmount: paymentData.paidAmount,
+                balanceDue: paymentData.balanceDue,
+                courseFee: paymentData.courseFee,
+                paymentMethod: paymentData.paymentMethod,
+                status: paymentData.status,
+                remark: paymentData.remark,
+                paidDate: paymentData.paidDate,
+                originalPayment: paymentData.originalPayment,
+                totalPayment: paymentData.totalPayment,
+                studentName: paymentData.studentName,
+                studentProfile: paymentData.studentProfile,
+                paidReturn: paymentData.paidReturn,
+                academicFee: paymentData.academicFee,
+                generation: paymentData.generation,
+                degree: paymentData.degree,
+                faculty: paymentData.faculty,
+                academicYear: paymentData.academicYear,
+                studyProgram: paymentData.studyProgram,
+                year: paymentData.year,
+                semester: paymentData.semester,
+                classCode: paymentData.classCode,
+                shift: paymentData.shift,
+            });
+            setInitialAlias(paymentData.uuid);
+        }
+    }, [isSuccess, paymentData]);
 
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
-            />
-            <label className="pl-2" htmlFor={value}>
-                {label}
-            </label>
-        </div>
-    );
-};
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            const editPaymentByUuid: PaymentType = {
+                receiptId: values.receiptId,
+                uuid: values.uuid,
+                usernameOrEmail: values.usernameOrEmail,
+                gender: values.gender,
+                discount: values.discount,
+                paidAmount: values.paidAmount,
+                balanceDue: values.balanceDue,
+                courseFee: values.courseFee,
+                paymentMethod: values.paymentMethod,
+                status: values.status,
+                remark: values.remark,
+                paidDate: values.paidDate,
+                originalPayment: values.originalPayment,
+                totalPayment: values.totalPayment,
+                studentName: values.studentName,
+                studentProfile: values.studentProfile,
+                paidReturn: values.paidReturn,
+                academicFee: values.academicFee,
+                generation: values.generation,
+                degree: values.degree,
+                faculty: values.faculty,
+                academicYear: values.academicYear,
+                studyProgram: values.studyProgram,
+                year: values.year,
+                semester: values.semester,
+                classCode: values.classCode,
+                shift: values.shift,
+            };
 
-const CustomInput = ({field, setFieldValue}: any) => {
-    const [imagePreview, setImagePreview] = useState("");
+            await editPayment({uuid: initialAlias, updatedData: editPaymentByUuid}).unwrap();
 
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
-        setImagePreview(localUrl);
+            // Now update the alias if it has changed
+            if (values.uuid !== initialAlias) {
+                await editPayment({
+                    uuid: values.uuid,
+                    updatedData: {...editPayment, uuid: values.uuid,}
+                }).unwrap();
+            }
 
-        setFieldValue(field.name, file);
+            resetForm();
+            onClose();
+            toast.success('Successfully updated!');
+
+        } catch (error) {
+            console.error("Error updating degree: ", error);
+            toast.error('Failed to edit degree!');
+
+        } finally {
+            setSubmitting(false);
+        }
     };
-    return (
-        <div>
-            <input onChange={(e) => handleUploadFile(e)} type="file"/>
-            {imagePreview && (
-                <Image src={imagePreview} alt="preview" width={200} height={200}/>
-            )}
-        </div>
-    );
-};
 
-// const dateValue = new Date(value);
-// const formattedDate = format(dateValue, 'yyyy');
-const currentYear = new Date().getFullYear();
-const years = Array.from(new Array(40), (val, index) => currentYear - index);
-
-// const CustomSelect = ({ field, form, options } : any ) => (
-//   <select {...field}>
-//     <option value="" label="Select an option" />
-//     {options.map((option) => (
-//       <option key={option.value} value={option.value} label={option.label} />
-//     ))}
-//   </select>
-// );
-
-export function EditPayForm() {
     const [open, setOpen] = useState(true);
     const handleClose = () => {
         setOpen(false);
@@ -138,149 +161,147 @@ export function EditPayForm() {
 
                 <Formik
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values) => {
-                        // create degree post
-                        const paymentPost: PaymentType = {
-                            uuid: values.uuid,
-                            usernameOrEmail: values.usernameOrEmail,
-                            gender: values.gender,
-                            discount: values.discount,
-                            paidAmount: values.paidAmount,
-                            balanceDue: values.balanceDue,
-                            courseFee: values.courseFee,
-                            paymentMethod: values.paymentMethod,
-                            status: values.status,
-                            remark: values.remark,
-                            paidDate: values.paidDate,
-                            originalPayment: values.originalPayment,
-                            totalPayment: values.totalPayment,
-                            studentName: values.studentName,
-                            studentProfile: values.studentProfile,
-                            paidReturn: values.paidReturn,
-                            academicFee: values.academicFee,
-                            generation: values.generation,
-                            degree: values.degree,
-                            faculty: values.faculty,
-                            academicYear: values.academicYear,
-                            studyProgram: values.studyProgram,
-                            year: values.year,
-                            semester: values.semester,
-                            classCode: values.classCode,
-                            shift: values.shift,
-                        };
-
-                        // post product
-                        handleSubmit(paymentPost);
-                    }}
+                    // validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
                 >
                     {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-4">
+                            <div className="flex items-center justify-center flex-wrap gap-y-0 gap-x-2">
+
+
+                                {/*<div className={`${style.inputContainer}`}>*/}
+                                {/*    <div className="flex">*/}
+                                {/*        <label className={`${style.label}`} htmlFor="year">*/}
+                                {/*            Year*/}
+                                {/*        </label>*/}
+                                {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                {/*    </div>*/}
+                                {/*    <Select*/}
+                                {/*        options={yearOptions}*/}
+                                {/*        name="year"*/}
+                                {/*        onChange={(option: any) => setFieldValue("year", option.value)}*/}
+                                {/*    />*/}
+                                {/*    <ErrorMessage name="year" component="div" className={`${style.error}`}/>*/}
+                                {/*</div>*/}
+
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="academic_year">
-                                            Academic Fee
+                                        <label className={`${style.label}`} htmlFor="semester">
+                                            Semester
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
-                                    <Field
-                                        type="text"
-                                        placeholder="$ 700"
-                                        name="academic_year"
-                                        id="academic_year"
-                                        className={`${style.input}`}
+                                    <Select
+                                        options={semesterOptions}
+                                        name="semester"
+                                        onChange={(option: any) => setFieldValue("semester", option.value)}
                                     />
-                                    <ErrorMessage
-                                        name="academic_year"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
+                                    <ErrorMessage name="semester" component="div" className={`${style.error}`}/>
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
+                                {/*<div className={`${style.inputContainer}`}>*/}
+                                {/*    <div className="flex">*/}
+                                {/*        <label className={`${style.label}`} htmlFor="faculty">Faculty</label>*/}
+                                {/*    </div>*/}
+                                {/*    <Select*/}
+                                {/*        options={facultyOptions}*/}
+                                {/*        name="faculty"*/}
+                                {/*        onChange={(option: any) => setFieldValue("faculty", option.value)}*/}
+                                {/*    />*/}
+                                {/*    <ErrorMessage name="faculty" component="div" className={`${style.error}`}/>*/}
+                                {/*</div>*/}
+
+
+                                {/*<div className={`${style.inputContainer}`}>*/}
+                                {/*    <div className="flex">*/}
+                                {/*        <label className={`${style.label}`} htmlFor="studyProgram">Study Program</label>*/}
+                                {/*    </div>*/}
+                                {/*    <Select*/}
+                                {/*        options={studyProgramOption}*/}
+                                {/*        name="studyProgram"*/}
+                                {/*        onChange={(option: any) => setFieldValue("studyProgram", option.value)}*/}
+                                {/*    />*/}
+                                {/*    <ErrorMessage name="studyProgram" component="div" className={`${style.error}`}/>*/}
+                                {/*</div>*/}
+
+                                <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="total_payment">
+                                        <label className={`${style.label}`} htmlFor="discount">
+                                            Discount
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <Field
+                                        type="number"
+                                        placeholder="$ 100"
+                                        name="discount"
+                                        id="discount"
+                                        className={` ${style.input}`}
+                                    />
+                                    <ErrorMessage name="discount" component="div" className={`${style.error}`}/>
+                                </div>
+
+                                <div className={` ${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="paidAmount">
                                             Paid Amount
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
                                     <Field
-                                        type="text"
+                                        type="number"
                                         placeholder="$ 500"
-                                        name="total_payment"
-                                        id="total_payment"
-                                        className={`${style.input}`}
+                                        name="paidAmount"
+                                        id="paidAmount"
+                                        className={` ${style.input}`}
                                     />
-                                    <ErrorMessage
-                                        name="total_payment"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
+                                    <ErrorMessage name="paidAmount" component="div" className={`${style.error}`}/>
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
+                                <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="date">
+                                        <label className={`${style.label}`} htmlFor="paidDate">
                                             Paid Date
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
                                     <Field
                                         type="date"
-                                        placeholder="Feb 25, 2023"
-                                        name="date"
-                                        id="date"
-                                        className={`${style.input}`}
+                                        name="paidDate"
+                                        id="paidDate"
+                                        className={` ${style.input}`}
                                     />
-                                    <ErrorMessage
-                                        name="date"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
+                                    <ErrorMessage name="paidDate" component="div" className={`${style.error}`}/>
                                 </div>
 
-                                <div className={`${style.inputContainer}`}>
+                                {/*<div className={`${style.inputContainer}`}>*/}
+                                {/*    <div className="flex">*/}
+                                {/*        <label className={`${style.label}`} htmlFor="paymentMethod">Payment*/}
+                                {/*            Method</label>*/}
+                                {/*    </div>*/}
+                                {/*    <Select*/}
+                                {/*        options={paymentMethodOption}*/}
+                                {/*        name="paymentMethod"*/}
+                                {/*        onChange={(option: any) => setFieldValue("paymentMethod", option.value)}*/}
+                                {/*    />*/}
+                                {/*    <ErrorMessage name="paymentMethod" component="div" className={`${style.error}`}/>*/}
+                                {/*</div>*/}
+
+                                <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="payment_method">
-                                            Payment Method
+                                        <label className={`${style.label}`} htmlFor="remark">
+                                            Remark
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
                                     <Field
                                         type="text"
-                                        placeholder="Cash Payment"
-                                        name="payment_method"
-                                        id="payment_method"
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="payment_method"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
-
-                                <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="remark">
-                                        Remark
-                                    </label>
-                                    <Field
-                                        type="text"
-                                        placeholder="About to be fully paid"
+                                        placeholder="Remark"
                                         name="remark"
                                         id="remark"
-                                        className={`${style.input}`}
+                                        className={` ${style.input}`}
                                     />
-                                    <ErrorMessage
-                                        name="remark"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
+                                    <ErrorMessage name="remark" component="div" className={`${style.error}`}/>
                                 </div>
                             </div>
 
@@ -293,6 +314,7 @@ export function EditPayForm() {
                                     Save Change
                                 </Button>
                             </DialogFooter>
+
                         </Form>
                     )}
                 </Formik>

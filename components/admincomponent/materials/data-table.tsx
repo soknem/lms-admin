@@ -125,7 +125,7 @@ export function MaterialTable<TData, TValue>({
                 <div className="flex items-center py-4 w-full">
                     <div className="flex items-center w-full relative">
                         <Input
-                            placeholder="Search Slide"
+                            placeholder="Search Materials"
                             value={
                                 (table.getColumn("title")?.getFilterValue() as string) ?? ""
                             }

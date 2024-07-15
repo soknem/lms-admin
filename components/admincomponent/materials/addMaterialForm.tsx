@@ -17,7 +17,6 @@ import {useDispatch} from "react-redux";
 import Select from "react-select";
 import {useGetAllBySubjectAliasQuery} from "@/lib/features/admin/materials/subjectMaterialSection/section";
 
-
 const initialValues = {
     uuid: '',
     title: '',
@@ -374,7 +373,7 @@ export function CreateMaterialForm() {
                     </div>
                     <Formik
                         initialValues={curriculumData}
-                        validationSchema={validationSchema}
+                        // validationSchema={validationSchema}
                         onSubmit={handleSubmitCurriculum}
                         enableReinitialize
                         onValuesChange={(values: any) => handleFormikChange("curriculum", values)}

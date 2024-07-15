@@ -63,5 +63,8 @@ export const istadLmsApi = createApi({
         'Instructors',
         'Staffs',
         'Admissions',
+        'Materials',
+        'Sections',
+        'Payments',
     ]
 });

@@ -2,32 +2,32 @@
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
-import style from "../style.module.css";
-import {FiPlus} from "react-icons/fi";
+import style from "../../style.module.css";
 
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+
+import {DegreeType} from "@/lib/types/admin/faculty";
 import React, {useEffect, useState} from "react";
 import {TbAsterisk} from "react-icons/tb";
-import {SectionType} from "@/lib/types/admin/materials";
-import {AppDispatch, RootState} from "@/lib/store";
-import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
-import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    useCreateSectionMutation,
-    useGetAllSectionQuery
-} from "@/lib/features/admin/materials/subjectMaterialSection/section";
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {toast} from "react-hot-toast";
-import Select from "react-select";
 
-const initialValues = {
-    uuid: '',
-    title: '',
-    subjectAlias: '',
-    materials: '',
-    isDeleted: false,
-    isDraft: false,
-};
+import {
+    useEditDegreeByAliasMutation,
+    useGetDegreeByAliasQuery,
+    useGetDegreesQuery
+} from "@/lib/features/admin/faculties/degree/degree";
+import {toast} from "react-hot-toast";
+import {
+    useGetSectionByUuidQuery,
+    useUpdateSectionMutation
+} from "@/lib/features/admin/materials/subjectMaterialSection/section";
+import {SectionType} from "@/lib/types/admin/materials";
+import Select from "react-select";
 
 const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
@@ -41,96 +41,94 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
     );
 };
 
-export function CreateSectionForm() {
-    const dispatch = useDispatch<AppDispatch>();
-    const [createSection] = useCreateSectionMutation();
-    const {refetch: refetchSections} = useGetAllSectionQuery({page: 0, pageSize: 10});
-    const [isOpen, setIsOpen] = useState(false);
-    const [curriculumData, setCurriculumData] = useState({});
-    const [slideData, setSlideData] = useState({});
-    const [videoData, setVideoData] = useState({});
-
-    const {
-        data: subjectData,
-    } = useGetSubjectsQuery({page: 0, pageSize: 10});
-    const subjects = useSelector((state: RootState) => selectSubject(state));
+export function EditSectionForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
+    const [open, setOpen] = useState(true);
+    const [editSection] = useUpdateSectionMutation();
+    const [initialAlias, setInitialAlias] = useState("");
+    const {data: sectionData, isSuccess} = useGetSectionByUuidQuery(uuid);
+    const [initialValues, setInitialValues] = useState({
+        uuid: '',
+        title: '',
+        subjectAlias: '',
+        materials: '',
+        isDeleted: false,
+        isDraft: false,
+    });
 
     useEffect(() => {
-        if (subjectData) {
-            dispatch(setSubjects(subjectData.content));
+        if (isSuccess && sectionData) {
+            setInitialValues({
+                uuid: sectionData.uuid,
+                title: sectionData.title,
+                subjectAlias: sectionData.subjectAlias,
+                materials: sectionData.materials,
+                isDeleted: sectionData.isDeleted,
+                isDraft: sectionData.isDraft
+            });
+            setInitialAlias(sectionData.uuid);
         }
-    }, [subjectData, dispatch]);
+    }, [isSuccess, sectionData]);
 
-    const subjectOptions = subjects.map(subject => ({
-        value: subject.alias,
-        label: subject.title
-    }));
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-
-
-            const newSection: SectionType = {
+            const editSectionByUuid: SectionType = {
                 uuid: values.uuid,
                 title: values.title,
                 subjectAlias: values.subjectAlias,
                 materials: values.materials,
                 isDeleted: values.isDeleted,
-                isDraft: values.isDraft,
+                isDraft: values.isDraft
             };
 
-            await createSection(newSection).unwrap();
+            await editSection({uuid: initialAlias, updatedData: editSectionByUuid}).unwrap();
 
-            console.log("Create successfully", newSection)
-            toast.success('Successfully created!');
-
+            // Now update the alias if it has changed
+            if (values.uuid !== initialAlias) {
+                await editSection({
+                    uuid: values.uuid,
+                    updatedData: {...editSectionByUuid, uuid: values.uuid,}
+                }).unwrap();
+            }
             resetForm();
-            refetchSections();
-            setIsOpen(false);
-
+            onClose();
+            toast.success('Successfully updated!');
 
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating degree: ", error);
-            toast.error('Failed to create faculty!');
+            console.error("Error updating section: ", error);
+            toast.error('Failed to edit section!');
+
         } finally {
             setSubmitting(false);
         }
     };
 
     return (
-        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
-
-            <DialogTrigger asChild>
-                <Button onClick={() => setIsOpen(true)} className="bg-lms-primary text-white hover:bg-lms-primary">
-                    <FiPlus className="mr-2 h-4 w-4"/> Add Section
-                </Button>
-            </DialogTrigger>
-
+        <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
-
                 <DialogHeader>
-                    <DialogTitle className={`text-2xl font-semibold`}>Add Section</DialogTitle>
+                    <DialogTitle className={`text-2xl font-semibold`}>Edit Degree</DialogTitle>
                 </DialogHeader>
 
                 <Formik
+                    enableReinitialize
                     initialValues={initialValues}
-                    validationSchema={validationSchema}
+                    // validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
-                        <Form className="py-4 rounded-lg w-full flex flex-col justify-start gap-4">
+                    {() => (
+                        <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-3">
 
                                 {/* Section Title*/}
@@ -155,54 +153,33 @@ export function CreateSectionForm() {
                                     />
                                 </div>
 
-                                {/* Subject*/}
-                                <div className={``}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="subjectAlias">
-                                            Subject
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Select
-                                        name="subjectAlias"
-                                        onChange={(option: any) => setFieldValue("subjectAlias", option.value)}
-                                        options={subjectOptions}
-                                    />
-                                    <ErrorMessage
-                                        name="subjectAlias"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
-
-                                {/* isDraft */}
                                 <div className={`flex w-full justify-between`}>
+
                                     {/* Visibility */}
                                     <div className={``}>
                                         <div className="flex">
                                             <label className={`${style.label}`} htmlFor="isDraft">
                                                 Visibility
                                             </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                            <TbAsterisk className="w-2 h-2 text-lms-error"/>
                                         </div>
                                         <div className="flex gap-4 h-[40px] items-center">
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="false"
+                                                value={false}
                                                 label="Public"
                                             />
                                             <Field
                                                 name="isDraft"
                                                 component={RadioButton}
-                                                value="true"
+                                                value={true}
                                                 label="Draft"
                                             />
                                         </div>
-
                                         <ErrorMessage
                                             name="isDraft"
-                                            component={RadioButton}
+                                            component="div"
                                             className={`${style.error}`}
                                         />
                                     </div>
@@ -211,13 +188,13 @@ export function CreateSectionForm() {
 
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
                                 >
-                                    Add
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>

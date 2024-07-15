@@ -201,6 +201,7 @@ export function CreatePayForm() {
                 >
                     {({setFieldValue, values}) => (
                         <Form className="py-4 rounded-lg w-full">
+
                             <div className="flex items-center justify-center flex-wrap gap-y-0 gap-x-2">
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
@@ -377,6 +378,7 @@ export function CreatePayForm() {
                                     <ErrorMessage name="remark" component="div" className={`${style.error}`}/>
                                 </div>
                             </div>
+
                             <DialogFooter>
                                 <Button
                                     type="submit"
