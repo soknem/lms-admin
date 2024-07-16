@@ -59,10 +59,6 @@ export default function Faculty() {
     const subjects = useFetchData(useGetSubjectsQuery, selectSubject, setSubjects);
     const academicYears = useFetchData(useGetAcademicYearsQuery, selectAcademicYear, setAcademicYears);
     const banner = useFetchData(useGetBannersQuery, selectBanner, setBanners);
-    // console.log(academicYears.stateData)
-    // console.log(studyPrograms.stateData)
-
-    console.log("Banner Data", banner.stateData)
 
     return (
         <section className="flex flex-col h-full w-full p-9 dark:bg-gray-900 dark:text-black">

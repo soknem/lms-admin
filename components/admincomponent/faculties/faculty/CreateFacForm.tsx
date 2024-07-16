@@ -1,5 +1,5 @@
 "use client";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import {Formik, Form, Field, ErrorMessage, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../../style.module.css";
@@ -36,10 +36,23 @@ const initialValues = {
     isDraft: true
 };
 
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+
 const validationSchema = Yup.object().shape({
-    alias: Yup.string().required('Alias is required'),
-    name: Yup.string().required('Title is required'),
+    alias: Yup.string().required('Slug is required'),
+    name: Yup.string().required('Title of faculty is required'),
     address: Yup.string().required('Address is required'),
+    logo: Yup.mixed()
+        .test("fileFormat", "Unsupported Format", (value: any) => {
+            if (!value) return true;
+            return SUPPORTED_FORMATS.includes(value.type);
+        })
+        .test("fileSize", "File Size is too large", (value: any) => {
+            if (!value) return true;
+            return value.size <= FILE_SIZE;
+        })
+        .nullable(),
     isDraft: Yup.boolean().required('Visibility is required'),
 });
 
@@ -67,7 +80,6 @@ const CustomInput = ({field, setFieldValue}: any) => {
         const file = e.target.files[0];
         const localUrl = URL.createObjectURL(file);
         setImagePreview(localUrl);
-
         setFieldValue(field.name, file);
     };
 
@@ -101,7 +113,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
                             src={imagePreview}
                             alt="preview"
                             fill
-                            style={{objectFit: 'contain'}}
+                            style={{objectFit: 'scale-down'}}
                         />
                     </div>
                 )}
@@ -110,50 +122,40 @@ const CustomInput = ({field, setFieldValue}: any) => {
     );
 };
 
-slugify('alias', {
-    replacement: '-',  // replace spaces with replacement character, defaults to `-`
-    remove: undefined, // remove characters that match regex, defaults to `undefined`
-    lower: false,      // convert to lower case, defaults to `false`
-    strict: false,     // strip special characters except replacement, defaults to `false`
-    locale: 'vi',      // language code of the locale to use
-    trim: true         // trim leading and trailing replacement chars, defaults to `true`
-})
-
 export function CreateFacForm() {
     const [createSingleFile] = useCreateSingleFileMutation();
     const [createFaculty] = useCreateFacultyMutation();
-    const {refetch: refetchFaculties} = useGetFacultiesQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+    const handleSubmit = async (values: FacultyType, {setSubmitting, resetForm}: FormikHelpers<FacultyType>) => {
         try {
-            const fileData = new FormData();
-            fileData.append("file", values.logo);
+            let logoName = '';
 
-            const fileResponse = await createSingleFile(fileData).unwrap();
-            console.log(fileResponse)
+            if (values.logo) {
+                const fileData = new FormData();
+                fileData.append("file", values.logo);
 
-            if (fileResponse) {
-                // File uploaded successfully, now create the faculty
-                const newFaculty: FacultyType = {
-                    alias: values.alias,
-                    name: values.name,
-                    description: values.description,
-                    address: values.address,
-                    logo: fileResponse.name,
-                    isDeleted: values.isDeleted,
-                    isDraft: values.isDraft,
-                };
-
-                await createFaculty(newFaculty).unwrap();
-                toast.success('Successfully created!');
-                resetForm();
-                refetchFaculties();
-                setIsOpen(false);
-
+                const fileResponse = await createSingleFile(fileData).unwrap();
+                logoName = fileResponse.name;
             }
+
+            // Create the faculty object with or without the logo
+            const newFaculty: FacultyType = {
+                alias: values.alias,
+                name: values.name,
+                description: values.description,
+                address: values.address,
+                logo: logoName,  // This will be an empty string if no logo is uploaded
+                isDeleted: values.isDeleted,
+                isDraft: values.isDraft,
+            };
+
+            await createFaculty(newFaculty).unwrap();
+            toast.success('Successfully created!');
+            resetForm();
+            setIsOpen(false);
+
         } catch (error) {
-            console.error("Error creating faculty: ", error);
             toast.error('Failed to create faculty!');
         } finally {
             setSubmitting(false);
@@ -178,7 +180,7 @@ export function CreateFacForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({isSubmitting, setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1">
 
@@ -228,8 +230,6 @@ export function CreateFacForm() {
 
                                     <Field
                                         disabled
-                                        // type="text"
-                                        // placeholder="Faculty of Engineering"
                                         name="alias"
                                         id="alias"
                                         className={`${style.input}`}
@@ -279,40 +279,6 @@ export function CreateFacForm() {
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between`}>
-                                    {/* isDraft */}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={`${style.label}`} htmlFor="isDraft">
-                                                Visibility
-                                            </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                        </div>
-
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDraft"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="Public"
-                                            />
-                                            <Field
-                                                name="isDraft"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Draft"
-                                            />
-                                        </div>
-
-                                        <ErrorMessage
-                                            name="isDraft"
-                                            component={RadioButton}
-                                            className={`${style.error}`}
-                                        />
-                                    </div>
-
-                                </div>
-
                                 {/* Faculty Image */}
                                 <div className="mb-4">
                                     <label
@@ -335,6 +301,39 @@ export function CreateFacForm() {
                                         className="text-red-500 mt-1 text-sm"
                                     />
                                 </div>
+
+                                {/* isDraft */}
+                                <div className={`${style.inputContainer} flex w-full justify-between`}>
+                                    <div>
+                                        <div className="flex">
+                                            <label htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Public"
+                                                onChange={() => setFieldValue('isDraft', false)}
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Draft"
+                                                onChange={() => setFieldValue('isDraft', true)}
+                                            />
+                                        </div>
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component="div"
+                                            className="text-lms-error"
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Submit Button */}
@@ -342,8 +341,9 @@ export function CreateFacForm() {
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Add
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

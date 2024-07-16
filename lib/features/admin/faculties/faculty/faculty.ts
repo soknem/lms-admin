@@ -13,6 +13,7 @@ export const facultyApi = istadLmsApi.injectEndpoints({
                 method: 'POST',
                 body: newFaculty,
             }),
+            invalidatesTags: [{type: 'Faculties', id: 'LIST'}],
         }),
         editFacultyByAlias: builder.mutation({
             query: ({alias, updatedData}) => ({
@@ -20,6 +21,7 @@ export const facultyApi = istadLmsApi.injectEndpoints({
                 method: 'PATCH',
                 body: updatedData,
             }),
+            invalidatesTags: [{type: 'Faculties', id: 'LIST'}],
         }),
         getFacultyByAlias: builder.query({
             query: (alias) => ({

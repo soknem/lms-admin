@@ -103,8 +103,7 @@ export function FacultyTable<TData, TValue>({
             },
         },
     });
-
-    console.log("data from page: ", data);
+    
 
     const filterOptions = ["All", "Public", "Draft"];
 

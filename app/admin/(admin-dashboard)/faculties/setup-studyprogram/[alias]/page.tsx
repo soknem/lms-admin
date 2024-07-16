@@ -28,14 +28,10 @@ type PropsParams = {
 
 export default function SetupStuPro(props: PropsParams) {
 
-    console.log("props", props)
-
     const alias = props.params.alias;
     const dispatch = useDispatch<AppDispatch>();
 
     const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
-
-    console.log("stuProData", stuProData?.studyProgramName)
 
     const {
         data: setupStuProsData,
@@ -118,7 +114,6 @@ export default function SetupStuPro(props: PropsParams) {
                         />
                     </TabsContent>
                 </Tabs>
-                {/*<AddSubjectStudyProForm alias={alias} year={currentYear}/>*/}
             </div>
         </section>
     );
