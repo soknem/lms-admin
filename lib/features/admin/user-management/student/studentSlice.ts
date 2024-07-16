@@ -8,7 +8,7 @@ type StudentState = {
     totalElements: number;
 }
 
-const initialState: StudentState = {
+const initialState: { students: any[]; totalElements: number } = {
     students: [] ,
     totalElements: 0
 }

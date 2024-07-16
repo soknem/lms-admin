@@ -23,7 +23,7 @@ export default async function Report() {
         <main className="p-9">
             <h2 className="text-4xl text-lms-primary font-bold mb-6">Reports</h2>
 
-            <div className= "flex justify-end">
+            <div className="flex justify-end">
                 <FilterReport columns={columns} data={data}/>
             </div>
 
@@ -46,22 +46,22 @@ export default async function Report() {
                             <ReportComponent/>
                         </TabsContent>
                         <TabsContent value="instructor">
-                          <ReportInstructorComponent />
+                            <ReportInstructorComponent/>
                         </TabsContent>
                         <TabsContent value="staff">
-                          <ReportStaffComponent />
+                            <ReportStaffComponent/>
                         </TabsContent>
                         <TabsContent value="admission">
-                          <ReportAdmissionComponent />
+                            <ReportAdmissionComponent/>
                         </TabsContent>
                         <TabsContent value="payment">
-                          <StudentpayComponent />
-                          <div className="mt-4">
-                            <StudentpayComponent2 />
-                          </div>
+                            <StudentpayComponent/>
+                            <div className="mt-4">
+                                <StudentpayComponent2/>
+                            </div>
                         </TabsContent>
                         <TabsContent value="earning">
-                          <EarningsReportComponent />
+                            <EarningsReportComponent/>
                         </TabsContent>
                     </Tabs>
 
