@@ -11,10 +11,12 @@ import { selectLoading, setLoading, selectError, setError, setCourses } from "@/
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { StudentCourseType, CourseType } from "@/lib/types/student/course";
-import { setAchievements } from "@/lib/features/student/achievement/achievementSlice";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { useRouter } from "next/navigation";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 export default function Course() {
     const dispatch = useDispatch<AppDispatch>();
@@ -26,11 +28,13 @@ export default function Course() {
     const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
     const [filteredCourses, setFilteredCourses] = useState<CourseType[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 25; // Number of items per page
+    const router = useRouter();
 
     useEffect(() => {
         if (Object.keys(data).length > 0) {
             dispatch(setLoading());
-            dispatch(setAchievements(data));
             setData(data);
             setFilteredCourses(data.courses); // Set initial courses
         }
@@ -72,9 +76,16 @@ export default function Course() {
         setSearchTerm(event.target.value);
     };
 
+    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
+    // Calculate paginated courses
+    const paginatedCourses = filteredCourses.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
     return (
-        <div className="flex flex-col h-full w-full p-9 gap-4">
-            <section className=" bg-lms-primary w-full rounded-xl relative flex items-center justify-center p-8">
+        <main className="flex flex-col h-full w-full p-9 gap-4">
+            <section className="bg-lms-primary w-full rounded-xl relative flex items-center justify-center p-8">
                 <div className="flex flex-col gap-4">
                     <h2 className="text-2xl sm:text-3xl font-bold text-white">
                         Welcome back, {allData.nameEn}!
@@ -86,7 +97,7 @@ export default function Course() {
                 <section className="hidden lg:flex gap-9 absolute lg:left-1/6 top-[60px]">
                     <div className="w-[150px] h-[150px] rounded-full shadow-lg">
                         <img
-                            src={allData.avatar || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                            src={allData.profileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                             alt="student"
                             className="h-full w-full object-cover rounded-full"
                         />
@@ -119,14 +130,13 @@ export default function Course() {
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
-                                className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60 w-[250px]" // Set a fixed width for the button
+                                className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60 w-[250px]"
                             >
                                 <TbFilter className="mr-2 h-4 w-4" />
                                 {selectedCourse ? <>{selectedCourse}</> : <> Filter by semester </>}
                             </Button>
                         </PopoverTrigger>
 
-                        {/* Set fixed width for PopoverContent */}
                         <PopoverContent className="w-[207px] p-0 bg-white" align="start">
                             <Command>
                                 <CommandInput className="text-gray-500" placeholder="Filter Semester..." />
@@ -157,10 +167,11 @@ export default function Course() {
                     </Popover>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 justify-center gap-4">
-                    {filteredCourses.map((course: CourseType, index: number) => (
+                <div className="grid grid-cols-1 xl:grid-cols-2 justify-center gap-4">
+                    {paginatedCourses.map((course: CourseType, index: number) => (
                         <CardCourseComponent
                             key={index}
+                            onClick={() => router.push(`/student/courses/${course.uuid}`)}
                             title={course.title}
                             credit={course.credit}
                             semester={course.semester}
@@ -168,12 +179,24 @@ export default function Course() {
                             description={course.description}
                             uuid={course.uuid}
                             logo={course.logo || 'default_logo_path'}
-                            instructorAvatar={course.instructorAvatar || 'default_avatar_path'}
+                            progress={course.progress || null}
+                            instructorProfileImage={course.instructorProfileImage || 'default_avatar_path'}
                             instructorName={course.instructorName || 'default_name'}
                         />
                     ))}
                 </div>
+
+                <Stack spacing={2} className=" mb-10 w-full  ">
+                    <Pagination
+                        className=" flex w-full justify-end "
+                        count={Math.ceil(filteredCourses.length / itemsPerPage)}
+                        variant="outlined"
+                        shape="rounded"
+                        page={page}
+                        onChange={handleChangePage}
+                    />
+                </Stack>
             </section>
-        </div>
+        </main>
     );
 }

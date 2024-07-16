@@ -25,24 +25,24 @@ export default function TabComponent() {
         <TabsContent value="student">
           <ReportComponent />
         </TabsContent>
-        <TabsContent value="instructor">
-          <ReportInstructorComponent />
-        </TabsContent>
-        <TabsContent value="staff">
-          <ReportStaffComponent />
-        </TabsContent>
-        <TabsContent value="admission">
-          <ReportAdmissionComponent />
-        </TabsContent>
-        <TabsContent value="payment">
-          <StudentpayComponent />
-          <div className="mt-4">
-            <StudentpayComponent2 />
-          </div>
-        </TabsContent>
-        <TabsContent value="earning">
-          <EarningsReportComponent />
-        </TabsContent>
+        {/*<TabsContent value="instructor">*/}
+        {/*  <ReportInstructorComponent />*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="staff">*/}
+        {/*  <ReportStaffComponent />*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="admission">*/}
+        {/*  <ReportAdmissionComponent />*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="payment">*/}
+        {/*  <StudentpayComponent />*/}
+        {/*  <div className="mt-4">*/}
+        {/*    <StudentpayComponent2 />*/}
+        {/*  </div>*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="earning">*/}
+        {/*  <EarningsReportComponent />*/}
+        {/*</TabsContent>*/}
       </Tabs>
     </div>
   );

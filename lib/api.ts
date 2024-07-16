@@ -66,5 +66,8 @@ export const istadLmsApi = createApi({
         'Materials',
         'Sections',
         'Payments',
+        'SingleStaff',
+        'SingleIns',
+        'SingleStaffAuthorities'
     ]
 });

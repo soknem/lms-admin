@@ -6,7 +6,6 @@ import degreeSlice from "@/lib/features/admin/faculties/degree/degreeSlice";
 import filterSlice from "@/lib/features/filters/filterSlice";
 import facultySlice from "@/lib/features/admin/faculties/faculty/facultySlice";
 import studentCourseSlice from "@/lib/features/student/course/studentCourseSlice";
-import achievementSlice from "@/lib/features/student/achievement/achievementSlice";
 import studyProgramSlice from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import subjectSlice from "@/lib/features/admin/faculties/subject/subjectSlice";
 import assessmentSlice from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
@@ -32,7 +31,19 @@ import singleClassSlice from "@/lib/features/admin/academic-management/detail-cl
 import scheduleSlice from "@/lib/features/instructor/schedule/scheduleSlice";
 import attendanceSlice from "@/lib/features/instructor/report/attendance/attendanceSlice";
 import StudentProfileSlice from "@/lib/features/student/setting/StudentProfileSlice";
+import intmeterialsSlice from "@/lib/features/instructor/meterials/intmeterialsSlice";
+import intassessmentSlice from "@/lib/features/instructor/assessment/assessmentSlice";
+import currentLectureSlice from "@/lib/features/instructor/lecture/currentLectureSlice";
+import endedLectureSlice from "@/lib/features/instructor/endLecture/endedLectureSlice";
+import teachingSlice from "@/lib/features/instructor/report/timesheet/techingHistory/teachingSlice";
+import studentAttendanceSlice from "@/lib/features/instructor/studentAttendance/studentAttendanceSlice";
+
+
+import {studentCourseApi} from "@/lib/features/student/course/studentCourse";
+import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCourse";
 import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
+import {studentAchievementApi} from "@/lib/features/student/achievement/achievement";
+import userProfileSlice from "@/lib/features/userProfile/userProfileSlice";
 import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
 
 
@@ -40,6 +51,9 @@ export const makeStore = () => {
     return configureStore({
         reducer: {
             [istadLmsApi.reducerPath]: istadLmsApi.reducer,
+            studentCourseApi: studentCourseApi.reducer,
+            instructorCourseApi: instructorCourseApi.reducer,
+            studentAchievementApi: studentAchievementApi.reducer,
             auth: authSlice,
             generation: generationSlice,
             filter: filterSlice,
@@ -50,7 +64,6 @@ export const makeStore = () => {
             banner: bannerSlice,
             student: studentSlice,
             studentCourse: studentCourseSlice,
-            achievement: achievementSlice,
             studyProgram: studyProgramSlice,
             setupStudyProgram: yearStuProSlice,
             subject: subjectSlice,
@@ -71,7 +84,14 @@ export const makeStore = () => {
             studentSetting: StudentProfileSlice,
             schedule: scheduleSlice,
             attendance: attendanceSlice,
-
+            intmaterial:intmeterialsSlice,
+            intructorAssessment:intassessmentSlice,
+            current: currentLectureSlice,
+            ended: endedLectureSlice,
+            teaching:teachingSlice,
+            studentAttendance: studentAttendanceSlice,
+            userProfile: userProfileSlice,
+            studentReport: studentSlice,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })

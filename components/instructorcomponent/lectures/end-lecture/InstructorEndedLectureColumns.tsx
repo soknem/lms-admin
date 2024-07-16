@@ -15,6 +15,7 @@ import { OptionType, LectureType } from "@/lib/types/admin/academics";
 
 
 import StatusBadge from "@/components/common/StatusBadge";
+import {EndedLectureType} from "@/lib/types/instructor/lecture/lecture";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -43,16 +44,28 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
     // Custom status
-    if (accessorKey === 'status') {
-
-        switch (value) {
-            case 1:
-              return <StatusBadge type="success" status="Started" />
-            case 2:
-              return <StatusBadge type="warning" status="Pending" />
-            case 3:
-              return <StatusBadge type="error" status="Ended" />
-          }
+    if (column.id === "status") {
+        return (
+            <span
+                className={
+                    value === 2
+                        ? "Started text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                        : value === 3
+                            ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            : value === 1
+                                ? "Pending text-white bg-lms-accent px-3 py-1 rounded-[10px]"
+                                : ""
+                }
+            >
+            {value === 2
+                ? "Started"
+                : value === 3
+                    ? "Ended"
+                    : value === 1
+                        ? "Pending"
+                        : ""}
+        </span>
+        );
     }
 
     //data in session is a combination of starttime and end time
@@ -101,7 +114,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 
 
-export const InstructorEndedLectureColumns: ColumnDef<LectureType>[] = [
+export const InstructorEndedLectureColumns: ColumnDef<EndedLectureType>[] = [
     {
         accessorKey: 'lectureDate',
         header: ({ column }) => {
@@ -120,25 +133,30 @@ export const InstructorEndedLectureColumns: ColumnDef<LectureType>[] = [
 
     },
     {
-        accessorKey: 'session',
+        accessorKey: "timeRange",
         header: ({ column }) => {
             return (
                 <Button
-                    //to  customize the size of each column
-                    // className="w-[200px] flex justify-start items-start"
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     SESSION
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
-            )
+            );
         },
-        cell: TableCell
+        cell: ({ row }) => {
+            const { startTime, endTime } = row.original;
+            return (
+                <span>{`${startTime} - ${endTime}`}</span>
+            );
+        },
+
+
     },
 
     {
-        accessorKey: 'class',
+        accessorKey: 'classCode',
         header: ({ column }) => {
             return (
                 <Button
@@ -173,7 +191,7 @@ export const InstructorEndedLectureColumns: ColumnDef<LectureType>[] = [
     },
 
     {
-        accessorKey: 'course',
+        accessorKey: 'courseTitle',
         header: ({ column }) => {
             return (
                 <Button

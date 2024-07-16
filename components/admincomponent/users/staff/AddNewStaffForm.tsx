@@ -25,8 +25,8 @@ import {useAddStaffMutation} from "@/lib/features/admin/user-management/staff/st
 export default function AddNewStaffForm() {
     const [activeTab, setActiveTab] = useState("personal_info");
 
-    const [cvFile, setCvFile] = useState<Blob | null>(null); // State for CV file
-    const [idCardFile, setIdCardFile] = useState<Blob | null>(null); // State for Identity Card file
+    const [cvFile, setCvFile] = useState<Blob | null>(null);
+    const [idCardFile, setIdCardFile] = useState<Blob | null>(null);
 
 
 

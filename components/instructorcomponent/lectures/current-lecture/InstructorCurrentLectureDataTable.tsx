@@ -63,7 +63,7 @@ import { TbFilter } from "react-icons/tb";
 import { TbAdjustmentsHorizontal } from "react-icons/tb";
 import { useRouter } from 'next/navigation'
 import {DatePickerWithRange} from "@/components/common/DatePickerWithRange";
-import CreateLectureForm from "@/components/admincomponent/academics/lectures/form/CreateLectureForm";
+import CreateLectureForm from "@/components/instructorcomponent/lectures/form/CreateLectureForm";
 
 
 
@@ -166,22 +166,29 @@ export function InstructorCurrentLectureDataTable<TData, TValue>({
 
   //filter data of class
   const FilteredClass = data.reduce((cs: string[], item: any) => {
-    if (!cs.includes(item.class)) {
-      cs.push(item.class);
+    if (!cs.includes(item.classCode)) {
+      cs.push(item.classCode);
     }
     return cs;
   }, []);
 
   //filter data of course
   const FilteredCourse = data.reduce((course: string[], item: any) => {
-    if (!course.includes(item.course)) {
-      course.push(item.course);
+    if (!course.includes(item.courseTitle)) {
+      course.push(item.courseTitle);
     }
     return course;
   }, []);
 
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
   return (
     <>
 
@@ -315,7 +322,15 @@ export function InstructorCurrentLectureDataTable<TData, TValue>({
 
 
         {/* Create class form */}
-        <CreateLectureForm />
+        <Button
+            className="px-4 py-1 text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]"
+            onClick={handleOpenModal}
+        >
+          Create Lectures
+        </Button>
+
+        <CreateLectureForm isVisible={isModalVisible} onClose={handleCloseModal}/>
+
       </div>
 
 

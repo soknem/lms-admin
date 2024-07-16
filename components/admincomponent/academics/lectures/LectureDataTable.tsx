@@ -55,6 +55,7 @@ import { useRouter } from 'next/navigation'
 
 import { DatePickerWithRange } from '@/components/common/DatePickerWithRange'
 import CreateLectureForm from "@/components/admincomponent/academics/lectures/form/CreateLectureForm";
+import CreateClassForm from "@/components/admincomponent/academics/classes/CreateClassForm";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -184,6 +185,16 @@ export function LectureDataTable<TData, TValue>({
   //   const uuid = table.getColumn('classCode'); // Adjust this according to your data structure
   //   console.log('Clicked row UUID:', uuid?.id);
   // };
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
 
   return (
@@ -355,7 +366,12 @@ export function LectureDataTable<TData, TValue>({
         </DropdownMenu>
 
         {/* Create class form */}
-        <CreateLectureForm />
+        <Button
+            className="px-4 py-1 text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]"
+            onClick={handleOpenModal}
+        >
+          Create Lectures
+        </Button>
 
       </div>
 
@@ -435,7 +451,7 @@ export function LectureDataTable<TData, TValue>({
           Next
         </Button>
       </div>
-
+      <CreateLectureForm isVisible={isModalVisible} onClose={handleCloseModal}/>
 
     </>
   )

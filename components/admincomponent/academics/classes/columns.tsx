@@ -87,7 +87,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
       );
     } else {
       if (DisplayValue === "false") {
-        return <StatusBadge type="success" status="Pubic" />;
+        return <StatusBadge type="success" status="Public" />;
       } else {
         return <StatusBadge type="default" status="Draft" />;
       }

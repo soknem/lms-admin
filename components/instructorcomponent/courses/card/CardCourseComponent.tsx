@@ -10,8 +10,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
-import { useRouter } from "next/navigation";
-import {CourseType} from "@/lib/types/student/course";
+import {useRouter} from "next/navigation";
+import {CourseType} from "@/lib/types/instructor/coursedetail/int-coursedetail";
 
 type CourseCardProps = CourseType;
 
@@ -21,6 +21,7 @@ export function CardCourseComponent({
                                         semester,
                                         year,
                                         description,
+                                        onClick,
                                         uuid,
                                     }: CourseCardProps) {
     const router = useRouter();
@@ -35,13 +36,13 @@ export function CardCourseComponent({
     const maxLength = 120; // Adjust this value based on your needs
 
     return (
-        <Card className="w-[566px] h-[299px] bg-white">
+        <Card className="w-[566px] h-[299px] bg-white " onClick={onClick}>
             <CardHeader className="mx-[40px]">
-                <CardTitle className="text-lms-primary font-bold text-[24px] ">
+                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1 ">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px]">
-                    {truncateDescription(description, maxLength).toLowerCase()}
+                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3">
+                    {truncateDescription(description, maxLength).toUpperCase()}
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex mx-[40px]">
@@ -69,7 +70,7 @@ export function CardCourseComponent({
                         <div className="relative pt-3 flex-1">
                             <div className="overflow-hidden h-2 w-[85px] mb-2 text-xs flex rounded bg-gray-200">
                                 <div
-                                    style={{ width: "50%" }}
+                                    style={{width: "50%"}}
                                     className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lms-success"
                                 ></div>
                             </div>

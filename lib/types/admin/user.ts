@@ -92,5 +92,10 @@ export type UserStaffDetailType = {
   profileImage: string;
   currentAddress: string;
   birthPlace: string;
+  educations: [];
+  linkGit: string;
+  linkTelegram: string;
+  linkLinkedIn: string;
+  skills: [];
 }
 

@@ -105,7 +105,7 @@ export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
     return(
         <Modal isVisible={isVisible} onClose={onClose}>
             <h2 className="text-xl text-lms-black-90 font-bold mb-4">Add Enrolled Student</h2>
-            <form className="h-[400px] space-y-2 " onSubmit={formik.handleSubmit}>
+            <form className="h-[400px] w-[480px] space-y-2 " onSubmit={formik.handleSubmit}>
                 <AsyncSelect
                     isMulti
                     cacheOptions

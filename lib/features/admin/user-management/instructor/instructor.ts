@@ -23,6 +23,7 @@ export const instructorApi = istadLmsApi.injectEndpoints({
         }),
         getInsDetailByUuid: builder.query({
             query: (insUuid) => `/instructors/detail/${insUuid}`,
+            providesTags: [{ type: 'SingleIns', id: 'LIST' }],
         }),
 
     })

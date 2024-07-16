@@ -24,12 +24,12 @@ import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/facul
 
 
 // Define initial values for the form fields
-interface InitialValues {
+type InitialValues = {
     password: string;
     confirmPassword: string;
 }
 
-const initialValues: InitialValues = {
+const initialValues : InitialValues = {
     password: '',
     confirmPassword: '',
 }
@@ -42,7 +42,7 @@ const validationSchema = Yup.object({
 
 // Define function to get field class name based on validation status
 const getFieldClassName = (errors: FormikErrors<InitialValues>, touched: FormikTouched<InitialValues>, fieldName: keyof InitialValues) => {
-    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-gray-300 block w-full p-2.5";
+    const baseClass = "bg-gray-100 dark:bg-gray-100 tracking-[0.5px] border text-gray-900 dark:text-gray-700 text-[15px] rounded-[8px] focus:outline-blue-600 border-gray-300 block w-full p-2.5";
     const errorClass = "border-red-500 dark:border-red-500 focus:border-red-500";
     const validClass = "border-gray-300 dark:border-gray-300";
 
@@ -92,7 +92,7 @@ export function CardReset() {
 
     // Render the component
     return (
-        <Card className="w-[450px] bg-white/70 backdrop-blur-md dark:bg-white p-[16px] border border-gray-300 dark:border-white">
+        <Card className="w-[450px] bg-white/80 backdrop-blur-[2px] dark:bg-white p-[16px] border border-gray-300 dark:border-white">
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}

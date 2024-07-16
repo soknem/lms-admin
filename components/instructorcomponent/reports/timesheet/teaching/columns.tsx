@@ -42,7 +42,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 export const TeachingColumns: ColumnDef<TeachingType>[] = [
   {
-    accessorKey: "date",
+    accessorKey: "lectureDate",
     header: ({ column }) => {
       return (
         <Button
@@ -57,16 +57,16 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "session",
+    accessorKey: "timeRange",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          SESSION
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            SESSION
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -105,7 +105,7 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "status",
+    accessorKey: "paidStatus",
     header: ({ column }) => {
       return (
         <Button

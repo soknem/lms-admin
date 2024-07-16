@@ -105,17 +105,17 @@ export function ScheduleTable<TData, TValue>({
 
   console.log("data from page: ", data);
 
-  const filterOptions = ["All", "Public", "Disable", "Draft"];
+  const filterOptions = ["All", "Started", "Pending", "Ended"];
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
     const filterValue =
       value === "All"
         ? ""
-        : value === "Public"
-        ? "active"
-        : value === "Disable"
-        ? "inactive"
-        : "disable";
+        : value === "Started"
+        ? "Started"
+        : value === "Pending"
+        ? "Pending"
+        : "Ended";
     table.getColumn("status")?.setFilterValue(filterValue);
   };
 
@@ -128,10 +128,10 @@ export function ScheduleTable<TData, TValue>({
             <Input
                 placeholder="Search schedule"
                 value={
-                    (table.getColumn("subject")?.getFilterValue() as string) ?? ""
+                    (table.getColumn("courseTitle")?.getFilterValue() as string) ?? ""
                 }
                 onChange={(event) =>
-                    table.getColumn("subject")?.setFilterValue(event.target.value)
+                    table.getColumn("courseTitle")?.setFilterValue(event.target.value)
                 }
 
                 className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "

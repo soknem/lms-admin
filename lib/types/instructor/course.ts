@@ -3,9 +3,10 @@ export type InCourseType = {
     uuid: string;
     title: string;
     credit: number;
-    logo: string;
+    logo: string | null;
     description: string;
     instructorAvatar: string | null;
+    instructorProfileImage : string | null;
     instructorName: string | null;
     year: number;
     semester: number;
@@ -17,5 +18,6 @@ export type InstructorCourseType = {
     nameKh: string;
     username: string;
     gender: string;
+    profileImage: string;
     courses: InCourseType[];
 };

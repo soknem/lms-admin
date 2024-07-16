@@ -6,9 +6,10 @@ import {inter, suwannaphum} from "@/app/font";
 import StoreProvider from "@/app/StoreProvider";
 import {ErrorBoundary} from "next/dist/client/components/error-boundary";
 import Error from "@/app/error";
-import {Toaster} from "@/components/ui/toaster";
+import {Toaster} from "react-hot-toast";
 
-interface RootLayoutProps {
+
+type RootLayoutProps = {
     children: ReactNode;
 }
 
@@ -30,7 +31,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
                     <section className="absolute inset-0 "></section>
                     <section className="relative w-full">
                         {children}
-                        <Toaster/>
+
                     </section>
 
 
@@ -39,6 +40,15 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
 
             </ErrorBoundary>
         </StoreProvider>
+        <Toaster
+            position="top-center"
+            toastOptions={{
+                duration: 1000,
+                style: {
+                    marginBottom: '20px',
+                },
+            }}
+        />
         </body>
         </html>
     );
