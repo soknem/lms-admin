@@ -58,6 +58,7 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
+    receiptId: Yup.string().required("Required"),
     usernameOrEmail: Yup.string().required("Required"),
     academicFee: Yup.number().required("Required"),
     year: Yup.string().required("Required"),
@@ -69,13 +70,12 @@ const validationSchema = Yup.object().shape({
     paidAmount: Yup.number().required("Required"),
     paidDate: Yup.date().required("Required"),
     paymentMethod: Yup.string().required("Required"),
-    remark: Yup.string(),
+    // remark: Yup.string(),
 });
 
 export function CreatePayForm() {
 
     const [createPayment] = useCreatePaymentMutation();
-    const {refetch: refetchPayment} = useGetPaymentsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
 
     const {
@@ -170,11 +170,9 @@ export function CreatePayForm() {
             await createPayment(newPayment).unwrap();
             toast.success('Successfully created!');
             resetForm();
-            refetchPayment();
             setIsOpen(false);
 
         } catch (error) {
-            console.error("Error creating faculty: ", error);
             toast.error('Failed to create Payment!');
         } finally {
             setSubmitting(false);
@@ -188,7 +186,7 @@ export function CreatePayForm() {
                     <FiPlus className="mr-2 h-4 w-4"/> Add Payment
                 </Button>
             </DialogTrigger>
-            <DialogContent className="w-[910px] bg-white">
+            <DialogContent className="w-[910px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle>Add Payment</DialogTitle>
                 </DialogHeader>
@@ -197,13 +195,30 @@ export function CreatePayForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue, values}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full">
 
                             <div className="flex items-center justify-center flex-wrap gap-y-0 gap-x-2">
+
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="receiptId">Receipt ID</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+                                    <Field
+                                        type="text"
+                                        placeholder="001"
+                                        name="receiptId"
+                                        id="receiptId"
+                                        className={` ${style.input}`}
+                                    />
+                                    <ErrorMessage name="receiptId" component="div" className={`${style.error}`}/>
+                                </div>
+
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="usernameOrEmail">Student</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Select
                                         options={studentOptions}
@@ -263,6 +278,7 @@ export function CreatePayForm() {
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="faculty">Faculty</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Select
                                         options={facultyOptions}
@@ -275,6 +291,7 @@ export function CreatePayForm() {
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="degree">Degree</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Select
                                         options={degreeOptions}
@@ -287,6 +304,7 @@ export function CreatePayForm() {
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="studyProgram">Study Program</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Select
                                         options={studyProgramOption}
@@ -350,6 +368,7 @@ export function CreatePayForm() {
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="paymentMethod">Payment
                                             Method</label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Select
                                         options={paymentMethodOption}
@@ -359,31 +378,32 @@ export function CreatePayForm() {
                                     <ErrorMessage name="paymentMethod" component="div" className={`${style.error}`}/>
                                 </div>
 
-                                <div className={` ${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="remark">
-                                            Remark
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        type="text"
-                                        placeholder="Remark"
-                                        name="remark"
-                                        id="remark"
-                                        className={` ${style.input}`}
-                                    />
-                                    <ErrorMessage name="remark" component="div" className={`${style.error}`}/>
-                                </div>
+                                {/*<div className={` ${style.inputContainer}`}>*/}
+                                {/*    <div className="flex">*/}
+                                {/*        <label className={`${style.label}`} htmlFor="remark">*/}
+                                {/*            Remark*/}
+                                {/*        </label>*/}
+                                {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                {/*    </div>*/}
+                                {/*    <Field*/}
+                                {/*        type="text"*/}
+                                {/*        placeholder="Remark"*/}
+                                {/*        name="remark"*/}
+                                {/*        id="remark"*/}
+                                {/*        className={` ${style.input}`}*/}
+                                {/*    />*/}
+                                {/*    <ErrorMessage name="remark" component="div" className={`${style.error}`}/>*/}
+                                {/*</div>*/}
                             </div>
 
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
-                                    className="bg-lms-primary text-white hover:bg-lms-primary"
+                                    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    <FiUploadCloud className="mr-2 h-4 w-4"/>
-                                    Submit
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

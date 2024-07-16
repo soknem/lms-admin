@@ -46,9 +46,9 @@ const TableCell = ({getValue, row, column, table}: any) => {
         );
     }
 
-    if (column.id === "remark") {
-        return <span className={`line-clamp-1`}>{value || "No Remark"}</span>;
-    }
+    // if (column.id === "remark") {
+    //     return <span className={`line-clamp-1`}>{value || "No Remark"}</span>;
+    // }
 
     if (column.id === "discount") {
         return <span className={`text-lms-error`}>{value} %</span>;
@@ -133,20 +133,20 @@ const TableCell = ({getValue, row, column, table}: any) => {
             <span
                 className={
                     value === 3
-                        ? "Fully Paid text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
+                        ? "Paid text-[#548164] bg-green-200 px-3 py-1 rounded-[10px]"
                         : value === 1
-                            ? "Not Paid text-white bg-red-500 px-3 py-1 rounded-[10px]"
+                            ? "Partially text-white bg-red-500 px-3 py-1 rounded-[10px]"
                             : value === 2
-                                ? "Not Completed text-white bg-lms-accent px-3 py-1 rounded-[10px]"
+                                ? "Unpaid text-white bg-lms-accent px-3 py-1 rounded-[10px]"
                                 : ""
                 }
             >
     {value === 1
-        ? "Not Paid"
+        ? "Unpaid"
         : value === 2
-            ? "Not Completed"
+            ? "Partially"
             : value === 3
-                ? "Fully Paid"
+                ? "Paid"
                 : ""}
 </span>
 
@@ -159,7 +159,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
 export const paymentColumns: ColumnDef<PaymentType>[] = [
 
     // {
-    //     accessorKey: "receipt_id",
+    //     accessorKey: "receiptId",
     //     header: ({column}) => {
     //         return (
     //             <Button
@@ -330,7 +330,7 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    PAID COMPLETION
+                    REMARK
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -354,15 +354,15 @@ export const paymentColumns: ColumnDef<PaymentType>[] = [
         cell: TableCell,
     },
 
-    {
-        accessorKey: "remark",
-        header: ({column}) => {
-            return (
-                <span>REMARK</span>
-            );
-        },
-        cell: TableCell,
-    },
+    // {
+    //     accessorKey: "remark",
+    //     header: ({column}) => {
+    //         return (
+    //             <span>REMARK</span>
+    //         );
+    //     },
+    //     cell: TableCell,
+    // },
 
     {
         accessorKey: "generation",
