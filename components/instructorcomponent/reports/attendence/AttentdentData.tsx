@@ -308,9 +308,68 @@ export function AttendanceData<TData, TValue>({
                     </PopoverContent>
                 </Popover>
             </div>
-            <div className="rounded-md border">
+            <div className="rounded-md border bg-white p-4">
+                <div className='flex justify-between p-5 '>
+                    <div>
+                        <Label className='text-lms-gray-30'>Generation</Label>
+                        <p className='flex font-medium text-lms-black-90'>Generation 1</p>
+                    </div>
+
+                    <div>
+                        <Label className='text-lms-gray-30'>Year</Label>
+                        <p className='flex font-medium text-lms-black-90'>Foundation Year</p>
+                    </div>
+
+                    <div>
+                        <Label className='text-lms-gray-30'>Academic Year</Label>
+                        <p className='flex font-medium text-lms-black-90'>2024-2025</p>
+                    </div>
+
+                    <div>
+                        <Label className='text-lms-gray-30'>Degree</Label>
+                        <p className='flex font-medium text-lms-black-90'>Bachelor</p>
+                    </div>
+
+                    <div>
+                        <Label className='text-lms-gray-30'>Study Program</Label>
+                        <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
+                    </div>
+
+                    <div>
+                        <Label className='text-lms-gray-30'>Class</Label>
+                        <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>
+                    </div>
+
+                    <div>
+                        <Label className='text-lms-gray-30'>Course</Label>
+                        <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>
+                    </div>
+
+
+                </div>
+                <div className='p-4 bg-blue-50 rounded-b-sm mb-2'>
+                    <Label className='text-lms-gray-30'>Score Point</Label>
+                    <div className='flex gap-20 mt-2'>
+                        <div className='flex justify-between'>
+                            <span className='font-medium text-lms-black-90'>Present (P) </span>
+                            <span className='font-medium text-lms-black-90'> +1pt</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span className='font-medium text-lms-black-90'>Excused Absent (EA) </span>
+                            <span className='font-medium text-lms-black-90'> -0.5pt</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span className='font-medium text-lms-black-90'>Unexcused Absent (UA) </span>
+                            <span className='font-medium text-lms-black-90'> -1pt</span>
+                        </div>
+                    </div>
+                </div>
+
+
                 <Table>
+
                     <TableHeader className="bg-white">
+
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {

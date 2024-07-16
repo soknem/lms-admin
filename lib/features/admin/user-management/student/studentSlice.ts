@@ -3,6 +3,7 @@ import type {RootState} from "@/lib/store";
 import {UserStudentDetailType} from "@/lib/types/admin/user";
 
 type StudentState = {
+    data: any;
     students: UserStudentDetailType[];
     totalElements: number;
 }

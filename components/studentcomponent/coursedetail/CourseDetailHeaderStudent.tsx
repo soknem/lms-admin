@@ -1,6 +1,6 @@
 import React from "react";
-import {useRouter} from "next/navigation";
-import type {CourseDetail} from "@/lib/types/student/course";
+import { useRouter } from "next/navigation";
+import type { CourseDetail } from "@/lib/types/student/course";
 
 export default function CourseDetailHeaderStudent({
                                                       year,
@@ -65,7 +65,7 @@ export default function CourseDetailHeaderStudent({
                 <img
                     onClick={() => router.push("/instructor/courses/int-profile/{uuid}")}
                     className="w-[60px] h-[60px] rounded-full mr-4"
-                    src={instructor.instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                    src={instructor?.instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                     alt="Instructor"
                     width={60}
                     height={60}
@@ -90,13 +90,11 @@ export default function CourseDetailHeaderStudent({
                                 className="h-[40px] w-[40px] rounded-full object-cover ring-2 ring-white"
                             />
                         )) : <span>No students joined</span>}
-
                     </div>
                     <div className="flex items-center ml-2">
                         <div className="mr-2 font-bold">
                             <div className="text-lms-primary ml-10">{studentProfileImage?.length || 0}</div>
                             <div className="text-lms-gray-80">Students Joined</div>
-
                         </div>
                     </div>
                     <div className="mx-[100px] mt-5">
@@ -107,6 +105,9 @@ export default function CourseDetailHeaderStudent({
                     </div>
                 </div>
             </section>
+
+
         </section>
+
     );
 }

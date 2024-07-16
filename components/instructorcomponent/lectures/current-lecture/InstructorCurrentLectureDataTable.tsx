@@ -181,7 +181,14 @@ export function InstructorCurrentLectureDataTable<TData, TValue>({
   }, []);
 
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
   return (
     <>
 
@@ -315,7 +322,15 @@ export function InstructorCurrentLectureDataTable<TData, TValue>({
 
 
         {/* Create class form */}
-        <CreateLectureForm />
+        <Button
+            className="px-4 py-1 text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]"
+            onClick={handleOpenModal}
+        >
+          Create Lectures
+        </Button>
+
+        <CreateLectureForm isVisible={isModalVisible} onClose={handleCloseModal}/>
+
       </div>
 
 

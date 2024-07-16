@@ -168,7 +168,7 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
+                <FaSearch className="text-gray-400"/>
               </div>
             </div>
           </div>
@@ -179,13 +179,13 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   variant="outline"
                   className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
               >
-                <TbFilter className="mr-2 h-4 w-4" />
+                <TbFilter className="mr-2 h-4 w-4"/>
                 {selectedClass ? <>{selectedClass}</> : <> Filter by Class</>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0 bg-white" align="start">
               <Command>
-                <CommandInput placeholder="Filter Class..." />
+                <CommandInput placeholder="Filter Class..."/>
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup>
@@ -222,13 +222,13 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   variant="outline"
                   className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
               >
-                <TbFilter className="mr-2 h-4 w-4" />
+                <TbFilter className="mr-2 h-4 w-4"/>
                 {selectedCourse ? <>{selectedCourse}</> : <> Filter by Course</>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0 bg-white" align="start">
               <Command>
-                <CommandInput placeholder="Filter Course...." />
+                <CommandInput placeholder="Filter Course...."/>
                 <CommandList>
                   <CommandEmpty>No results found.</CommandEmpty>
                   <CommandGroup>
@@ -265,7 +265,7 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   variant="outline"
                   className="border-[#E6E6E6] bg-white ml-auto text-lms-gray-30"
               >
-                <TbAdjustmentsHorizontal className="mr-2 h-4 w-4" />
+                <TbAdjustmentsHorizontal className="mr-2 h-4 w-4"/>
                 View
               </Button>
             </DropdownMenuTrigger>
@@ -290,12 +290,54 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="rounded-md border bg-white">
+        <div className='rounded-md p-4 bg-white'>
+
+          {/* class detail information */}
+          <div className='flex gap-16 p-5'>
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Generation</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>Generation 1</p>*/}
+            {/*</div>*/}
+
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Year</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>Foundation Year</p>*/}
+            {/*</div>*/}
+
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Academic Year</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>2024-2025</p>*/}
+            {/*</div>*/}
+
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Degree</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>Bachelor</p>*/}
+            {/*</div>*/}
+
+            <div>
+              <Label className='text-lms-gray-30'>Card ID</Label>
+              <p className='flex font-medium text-lms-black-90'>Gen 1</p>
+            </div>
+
+            <div>
+              <Label className='text-lms-gray-30'>Class</Label>
+              <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>
+            </div>
+
+            <div>
+              <Label className='text-lms-gray-30'>Course</Label>
+              <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>
+            </div>
+
+
+          </div>
+
           <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+
+            <TableHeader className='text-lms-gray-30'>
+              {table.getHeaderGroups().map(headerGroup => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
+                    {headerGroup.headers.map(header => {
                       return (
                           <TableHead key={header.id}>
                             {header.isPlaceholder
@@ -305,19 +347,21 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                                     header.getContext()
                                 )}
                           </TableHead>
-                      );
+                      )
                     })}
                   </TableRow>
               ))}
             </TableHeader>
+
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
+                  table.getRowModel().rows.map(row => (
                       <TableRow
                           key={row.id}
                           data-state={row.getIsSelected() && 'selected'}
+                          className='hover:bg-gray-50'
                       >
-                        {row.getVisibleCells().map((cell) => (
+                        {row.getVisibleCells().map(cell => (
                             <TableCell key={cell.id}>
                               {flexRender(
                                   cell.column.columnDef.cell,
@@ -329,29 +373,84 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
                   ))
               ) : (
                   <TableRow>
-                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                    <TableCell
+                        colSpan={columns.length}
+                        className='h-24 text-center '
+                    >
                       No results.
                     </TableCell>
                   </TableRow>
               )}
             </TableBody>
-            <TableFooter>
-              {table.getFooterGroups().map((footerGroup) => (
-                  <TableRow key={footerGroup.id}>
-                    {footerGroup.headers.map((header) => (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.footer,
-                                  header.getContext()
-                              )}
-                        </TableHead>
-                    ))}
-                  </TableRow>
-              ))}
-            </TableFooter>
+
+
           </Table>
+
+
+        </div>
+
+        <div className="rounded-md border bg-white">
+          {/*<Table>*/}
+          {/*  <TableHeader>*/}
+          {/*    {table.getHeaderGroups().map((headerGroup) => (*/}
+          {/*        <TableRow key={headerGroup.id}>*/}
+          {/*          {headerGroup.headers.map((header) => {*/}
+          {/*            return (*/}
+          {/*                <TableHead key={header.id}>*/}
+          {/*                  {header.isPlaceholder*/}
+          {/*                      ? null*/}
+          {/*                      : flexRender(*/}
+          {/*                          header.column.columnDef.header,*/}
+          {/*                          header.getContext()*/}
+          {/*                      )}*/}
+          {/*                </TableHead>*/}
+          {/*            );*/}
+          {/*          })}*/}
+          {/*        </TableRow>*/}
+          {/*    ))}*/}
+          {/*  </TableHeader>*/}
+          {/*  <TableBody>*/}
+          {/*    {table.getRowModel().rows?.length ? (*/}
+          {/*        table.getRowModel().rows.map((row) => (*/}
+          {/*            <TableRow*/}
+          {/*                key={row.id}*/}
+          {/*                data-state={row.getIsSelected() && 'selected'}*/}
+          {/*            >*/}
+          {/*              {row.getVisibleCells().map((cell) => (*/}
+          {/*                  <TableCell key={cell.id}>*/}
+          {/*                    {flexRender(*/}
+          {/*                        cell.column.columnDef.cell,*/}
+          {/*                        cell.getContext()*/}
+          {/*                    )}*/}
+          {/*                  </TableCell>*/}
+          {/*              ))}*/}
+          {/*            </TableRow>*/}
+          {/*        ))*/}
+          {/*    ) : (*/}
+          {/*        <TableRow>*/}
+          {/*          <TableCell colSpan={columns.length} className="h-24 text-center">*/}
+          {/*            No results.*/}
+          {/*          </TableCell>*/}
+          {/*        </TableRow>*/}
+          {/*    )}*/}
+          {/*  </TableBody>*/}
+          {/*  <TableFooter>*/}
+          {/*    {table.getFooterGroups().map((footerGroup) => (*/}
+          {/*        <TableRow key={footerGroup.id}>*/}
+          {/*          {footerGroup.headers.map((header) => (*/}
+          {/*              <TableHead key={header.id}>*/}
+          {/*                {header.isPlaceholder*/}
+          {/*                    ? null*/}
+          {/*                    : flexRender(*/}
+          {/*                        header.column.columnDef.footer,*/}
+          {/*                        header.getContext()*/}
+          {/*                    )}*/}
+          {/*              </TableHead>*/}
+          {/*          ))}*/}
+          {/*        </TableRow>*/}
+          {/*    ))}*/}
+          {/*  </TableFooter>*/}
+          {/*</Table>*/}
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button

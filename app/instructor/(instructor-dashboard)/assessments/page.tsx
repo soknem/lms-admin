@@ -29,7 +29,7 @@ export default function Assessments() {
     return (
         <main className="flex flex-col h-full w-full p-9">
             <h2 className="text-4xl text-lms-primary font-bold">Assessment</h2>
-            <InstructorCourseAssesmentDataTable columns={InstructorCourseAssessmentColumn} data={assessment} />
+            <InstructorCourseAssesmentDataTable columns={InstructorCourseAssessmentColumns} data={assessment} />
         </main>
     );
 }

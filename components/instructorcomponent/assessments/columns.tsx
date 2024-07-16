@@ -157,16 +157,16 @@ const EditCell = ({ row, table }: any) => {
 };
 
 export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
-    {
-        accessorKey: 'student.cardId',
-        header: ({column}) => (
-            <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                CARD ID <ArrowUpDown className='ml-2 h-4 w-4'/>
-            </Button>
-        ),
-        cell: TableCell,
-        meta: {type: 'text'},
-    },
+    // {
+    //     accessorKey: 'student.cardId',
+    //     header: ({column}) => (
+    //         <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+    //             CARD ID <ArrowUpDown className='ml-2 h-4 w-4'/>
+    //         </Button>
+    //     ),
+    //     cell: TableCell,
+    //     meta: {type: 'text'},
+    // },
     {
         accessorKey: 'student',
         header: ({column}) => (
@@ -202,25 +202,25 @@ export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
         cell: TableCell,
         meta: {type: 'date'},
     },
-    {
-        accessorKey: 'classCode',
-        header: ({column}) => (
-            <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    className="w-[130px] flex justify-start items-start">
-                CLASS <ArrowUpDown className='ml-2 h-4 w-4'/>
-            </Button>
-        ),
-        cell: TableCell,
-        meta: {type: 'text'},
-    },
-    {
-        accessorKey: 'course',
-        header: ({column}) => (
-            <Button variant='ghost'> COURSE <ArrowUpDown className='ml-2 h-4 w-4'/> </Button>
-        ),
-        cell: TableCell,
-        meta: {type: 'text'},
-    },
+    // {
+    //     accessorKey: 'classCode',
+    //     header: ({column}) => (
+    //         <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //                 className="w-[130px] flex justify-start items-start">
+    //             CLASS <ArrowUpDown className='ml-2 h-4 w-4'/>
+    //         </Button>
+    //     ),
+    //     cell: TableCell,
+    //     meta: {type: 'text'},
+    // },
+    // {
+    //     accessorKey: 'course',
+    //     header: ({column}) => (
+    //         <Button variant='ghost'> COURSE <ArrowUpDown className='ml-2 h-4 w-4'/> </Button>
+    //     ),
+    //     cell: TableCell,
+    //     meta: {type: 'text'},
+    // },
     {
         accessorKey: 'midtermExamScore',
         header: ({column}) => (
