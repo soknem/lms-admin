@@ -27,6 +27,8 @@ import {
 // import MoreInfo from "./StaffMoreInfocomponent";
 // import CourseCardComponent from "./CourseCardComponent";
 import placeholderImage from "@/public/common/placeholderPf.png";
+import { FaTelegram } from "react-icons/fa6";
+import placeholder from "@/public/common/placeholderPf.png";
 
 type cardProps = {
     id: string,
@@ -74,12 +76,15 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
 
     return(
         <section>
-            <div className="w-full rounded overflow-hidden grid grid-cols-4 gap-6 p-4 hover:cursor-pointer">
-                <div className="col-span-1 space-y-4">
+            <div className="w-full rounded overflow-hidden flex gap-6 p-4 hover:cursor-pointer">
+                <div className="w-64 space-y-4">
                     {/* profile */}
                     <div className="bg-white  w-full  p-6 rounded-[8px]">
-                        <Image className="object-cover w-full rounded-[8px]" width={100} height={100} src={imageSrc}
-                               alt="profile"/>
+                        <div className="h-48  overflow-hidden relative">
+                            <Image src={imageSrc} alt="admin" layout="fill" objectFit="cover"/>
+
+                        </div>
+
                         <div className="flex justify-center gap-4 mt-6">
                             <Link href={linkedin} target="_blank" rel="noopener noreferrer">
                                 <ImLinkedin className="w-7 h-7 text-lms-primary"/>
@@ -87,14 +92,15 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                             <Link href={github} target="_blank" rel="noopener noreferrer">
                                 <ImGithub className="w-7 h-7 text-lms-primary"/>
                             </Link>
-                            <Link href={`mailto:${mail}`} target="_blank" rel="noopener noreferrer">
-                                <IoMdMail className="w-7 h-7 text-lms-primary"/>
+                            <Link href={linkTelegram} target="_blank" rel="noopener noreferrer">
+                                <FaTelegram className="w-7 h-7 text-lms-primary"/>
                             </Link>
+
                         </div>
                     </div>
 
 
-                    {(education.length !== 0)  ? (
+                    {(education.length !== 0) ? (
                         <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
                             <p className="text-3xl font-bold">Education</p>
                             {educationArray.map((edu, index) => (
@@ -106,7 +112,12 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                                 </div>
                             ))}
                         </div>
-                    ) : (<></>)
+                    ) : (
+                        <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
+                            <p className="text-3xl font-bold">Educations</p>
+                            <p>No Information available</p>
+                        </div>
+                    )
                     }
 
 
@@ -118,17 +129,22 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                                 <div key={index} className="flex justify-start items-center ">
                                     <div className="bg-lms-primary/20 p-1 mr-4 rounded-[8px]">
                                         <BiSolidBookOpen className="w-8 h-8 text-lms-primary"/>
-                                        </div>
-                                        <p className="leading-tight">{sk}</p>
+                                    </div>
+                                    <p className="leading-tight">{sk}</p>
                                     </div>
                                 ))}
                             </div>
-                        ) : ( <></> )
+                        ) : (
+                        <div className="bg-white w-full p-6 rounded-[8px] space-y-6">
+                            <p className="text-3xl font-bold">Skills</p>
+                            <p>No Information available</p>
+                        </div>
+                    )
                     }
 
                 </div>
 
-                <div className="col-span-3 space-y-6">
+                <div className="flex-grow space-y-6">
                     <div className="relative p-6 bg-white rounded-[8px]">
                         <div className="absolute top-6 right-6">
                             <MoreInfo staffUuid={id} isDeletedState={isDeleted} position={position} />

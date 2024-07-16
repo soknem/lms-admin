@@ -146,10 +146,14 @@ export default function StaffList() {
                         key={card?.uuid || 'N/A'}
                         imageSrc={card?.profileImage || placeholderImage}
                         name={card.nameEn}
-                        education={card.email}
-                        position={card.position || "No position"}
-                        linkedin={card.email}
-                        github={card.email}
+                        education={card?.educations || []}
+                        position={card?.position || "No Position"}
+                        linkedin={card?.linkLinkedIn || ""}
+                        email={card?.email || "N/A"}
+                        github={card?.linkGit || "" }
+                        telegram={card?.linkTelegram || ""}
+                        skills={card?.skills || [] }
+                        phoneNumber={card?.phoneNumber || "N/A"}
                         onClick={() => router.push(`/admin/users/staff/${card.uuid}`)}
                     />
                 ))

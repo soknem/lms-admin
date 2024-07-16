@@ -19,7 +19,6 @@ import {Calendar} from "@/components/ui/calendar";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {toast} from "react-hot-toast";
 import {useUpdateStaffMutation} from "@/lib/features/admin/user-management/staff/staff";
-import {useUpdateInsMutation} from "@/lib/features/admin/user-management/instructor/instructor";
 
 
 export function EditStaffForm( {updateData} : any ) {
@@ -85,39 +84,62 @@ export function EditStaffForm( {updateData} : any ) {
     // update staff
     const [updateStaff, { isLoading : isStfLoading, isSuccess : isStfSucess, error: isStfError }] = useUpdateStaffMutation();
 
-    // updateInstructor
-    const [updateIns, { isLoading : isInsLoading, isSuccess : isInsSucess, error: isInsError }] = useUpdateInsMutation();
-
 
     const handleUpdateStaff = async(values : any) => {
 
         const uuid = updateData?.uuid;
+
         const educationValues = values.educations.map((education: { label: string; value: string }) => education.value);
+
         const skillValues = values.skills.map((skill: { label: string; value: string }) => skill.value);
 
-        const updatedData = {
-            nameEn: values.nameEn,
-            nameKh: values.nameKh,
-            gender: selectedGender?.value,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            dob: values.dob,
-            educations: educationValues,
-            skills: skillValues,
-            birthPlace: values.birthPlace,
-            currentAddress: values.currentAddress,
-            bio: values.bio,
-            linkGit: values.linkGit,
-            linkLinkedin: values.linkLinkedin,
-            linkTelegram: values.linkTelegram,
-        };
 
         try {
-            if(values.position === "INSTRUCTOR"){
-                await updateIns({uuid,updatedData}).unwrap();
-            }else{
-                await updateStaff({uuid,updatedData}).unwrap();
+
+
+            const updatedData : any = {
+                nameEn: values.nameEn,
+                nameKh: values.nameKh,
+                gender: selectedGender?.value,
+                phoneNumber: values.phoneNumber,
+                dob: values.dob,
+                educations: educationValues,
+                skills: skillValues,
+                birthPlace: values.birthPlace,
+                currentAddress: values.currentAddress,
+                bio: values.bio,
+                linkGit: values.linkGit,
+                linkLinkedin: values.linkLinkedin,
+                linkTelegram: values.linkTelegram,
+            };
+
+
+
+            if (cvFile) {
+                const cvFormData = new FormData();
+                cvFormData.append('file', cvFile);
+                const cvResponse = await createSingleFile(cvFormData).unwrap();
+                console.log('CV File uploaded:', cvResponse);
+                updatedData.uploadCv = cvResponse.name;
             }
+
+            if (idCardFile) {
+                const idCardFormData = new FormData();
+                idCardFormData.append('file', idCardFile);
+                const idCardResponse = await createSingleFile(idCardFormData).unwrap();
+                console.log('ID Card File uploaded:', idCardResponse);
+                updatedData.identityCard = idCardResponse.name;
+            }
+
+            if (pfImageFile) {
+                const pfImageFormData = new FormData();
+                pfImageFormData.append('file', pfImageFile);
+                const pfImageResponse = await createSingleFile(pfImageFormData).unwrap();
+                console.log('Profile Image File uploaded:', pfImageResponse);
+                updatedData.profileImage = pfImageResponse.name;
+            }
+
+           await updateStaff({uuid,updatedData}).unwrap();
             toast.success('Successfully updated!');
             console.log("Staff updated successfully");
         } catch (error) {
@@ -345,23 +367,23 @@ export function EditStaffForm( {updateData} : any ) {
                     </div>
 
                     {/*Email*/}
-                    <div>
-                        <RequiredFieldLabelComponent labelText="Email"
-                                                     labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
-                        <input
-                            type="text"
-                            name="email"
-                            onChange={formik.handleChange}
-                            value={formik.values.email}
-                            className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-                            placeholder="example@gmail.com"
+                    {/*<div>*/}
+                    {/*    <RequiredFieldLabelComponent labelText="Email"*/}
+                    {/*                                 labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>*/}
+                    {/*    <input*/}
+                    {/*        type="text"*/}
+                    {/*        name="email"*/}
+                    {/*        onChange={formik.handleChange}*/}
+                    {/*        value={formik.values.email}*/}
+                    {/*        className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "*/}
+                    {/*        placeholder="example@gmail.com"*/}
 
-                        />
-                        {
-                            typeof formik.errors.email === 'string' &&
-                            <p className="text-red-700">{formik.errors.email}</p>
-                        }
-                    </div>
+                    {/*    />*/}
+                    {/*    {*/}
+                    {/*        typeof formik.errors.email === 'string' &&*/}
+                    {/*        <p className="text-red-700">{formik.errors.email}</p>*/}
+                    {/*    }*/}
+                    {/*</div>*/}
 
                     {/* Phone number*/}
                     <div>
@@ -657,9 +679,9 @@ export function EditStaffForm( {updateData} : any ) {
                         <button
                             type="submit"
                             className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            disabled={isInsLoading || isStfLoading}
+                            disabled={isStfLoading}
                         >
-                            {(isInsLoading || isStfLoading) ? "Updating..." : "Update"}
+                            {(isStfLoading) ? "Updating..." : "Update"}
                         </button>
                     </div>
                 </div>
