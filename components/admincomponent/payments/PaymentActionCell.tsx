@@ -61,7 +61,7 @@ const ActionsCell = ({row}: any) => {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            {isEditFormVisible && <EditPayForm/>}
+            {/*{isEditFormVisible && <EditPayForm/>}*/}
             {isViewFormVisible && <ViewPayForm/>}
         </div>
     );

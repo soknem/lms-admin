@@ -19,6 +19,8 @@ import {
 import {useSelector} from "react-redux";
 import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {EditCurriculumForm} from "@/components/admincomponent/materials/curriculum/EditCurriculumForm";
+import {EditSlideForm} from "@/components/admincomponent/materials/slide/EditSlideForm";
+import {EditVideoForm} from "@/components/admincomponent/materials/video/EditVideoForm";
 
 const ActionsCell = ({row}: any) => {
     const [isCardVisible, setIsCardVisible] = useState(false);
@@ -116,16 +118,14 @@ const ActionsCell = ({row}: any) => {
             </DropdownMenu>
             {isViewFormVisible && <ViewDeForm alias={material.alias} onClose={handleCloseForm}/>}
 
-            {/*const fileTypeOption = [*/}
-            {/*{value: "curriculum", label: 'Curriculum'},*/}
-            {/*{value: "slide", label: 'Slide'},*/}
-            {/*{value: "youtubeVideo", label: 'Video'},*/}
-            {/*]*/}
-
             {isEditFormVisible && (
-                material.fileType === 'curriculum' ?
-                    <EditCurriculumForm uuid={material.uuid} onClose={handleCloseForm}/> :
-                    <EditDeForm alias={material.alias} onClose={handleCloseForm}/>
+                material.fileType === 'curriculum' ? (
+                    <EditCurriculumForm uuid={material.uuid} onClose={handleCloseForm}/>
+                ) : material.fileType === 'slide' ? (
+                    <EditSlideForm uuid={material.uuid} onClose={handleCloseForm}/>
+                ) : material.fileType === 'youtubeVideo' ? (
+                    <EditVideoForm uuid={material.uuid} onClose={handleCloseForm}/>
+                ) : null
             )}
 
             {/*{isEditFormVisible && <EditCurriculumForm uuid={material.uuid} onClose={handleCloseForm}/>}*/}

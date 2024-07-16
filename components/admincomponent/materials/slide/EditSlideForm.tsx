@@ -88,7 +88,7 @@ const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: a
     );
 };
 
-export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
+export function EditSlideForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [editMaterial] = useUpdateMaterialByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -232,7 +232,7 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                         <label className={`${style.label}`} htmlFor="fileType">
                                             File Type
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
                                     </div>
 
                                     <Field

@@ -192,7 +192,7 @@ export function EditPayForm({uuid, onClose}: { uuid: string; onClose: () => void
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Select
-                                        options={semesterOptions}
+                                        // options={semesterOptions}
                                         name="semester"
                                         onChange={(option: any) => setFieldValue("semester", option.value)}
                                     />

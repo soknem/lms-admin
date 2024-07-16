@@ -29,7 +29,7 @@ export default function Materials() {
         }
     }, [materialsData, dispatch]);
 
-    // console.log("Materials", materialsData.content)
+    console.log("Materials", materialsData.content)
 
 
     // Section of materials in each subject

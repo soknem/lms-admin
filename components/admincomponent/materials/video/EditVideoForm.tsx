@@ -88,7 +88,7 @@ const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: a
     );
 };
 
-export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
+export function EditVideoForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [editMaterial] = useUpdateMaterialByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -232,7 +232,7 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                         <label className={`${style.label}`} htmlFor="fileType">
                                             File Type
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
                                     </div>
 
                                     <Field
@@ -269,16 +269,20 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                     />
                                 </div>
 
+                                {/*fileName*/}
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="fileName">
-                                        File Upload
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="fileName">
+                                            Youtube Video
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
-                                        type="file"
+                                        type="text"
                                         name="fileName"
                                         id="fileName"
-                                        component={CustomInputFile}
-                                        previewField="curriculumPreview"
+                                        className={`${style.input}`}
                                     />
                                     <ErrorMessage
                                         name="fileName"

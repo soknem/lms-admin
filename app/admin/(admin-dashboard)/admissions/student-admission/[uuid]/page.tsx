@@ -11,6 +11,7 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {
+    useGetAllStudentAdmissionByAdmissionUuidQuery,
     useGetStuAdmissionsQuery
 } from "@/lib/features/admin/admission-management/students-admission-management/stuAdmission";
 import {StudentAdmissionTable} from "@/components/admincomponent/admissions/student-admission/data-table";
@@ -33,12 +34,12 @@ export default function StuAdmissions(props: PropsParams) {
 
     const uuid = props.params.uuid;
     const dispatch = useDispatch<AppDispatch>();
-    const {data, error, isLoading} = useGetStuAdmissionsQuery({page: 0, pageSize: 10});
+    const {data, error, isLoading} = useGetAllStudentAdmissionByAdmissionUuidQuery(uuid);
 
     const {data: admissionData, isSuccess} = useGetAdmissionByAliasQuery(uuid);
+    console.log("getAllStudentAdmissionByAdmissionUuid", admissionData)
 
     const admissionYear = admissionData?.academicYear.academicYear;
-    console.log(admissionData)
     // console.log("admissionYear", admissionYear)
 
     const stuAdmissions = useSelector((state: RootState) => selectStuAdmission(state));
