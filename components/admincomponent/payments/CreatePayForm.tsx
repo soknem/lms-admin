@@ -89,7 +89,6 @@ export function CreatePayForm() {
 
     if (isStudentSuccess) {
         stuData = studentData.content;
-        console.log("student data: ", stuData)
     }
 
     const faculties = useSelector((state: RootState) => selectFaculty(state));
@@ -167,7 +166,6 @@ export function CreatePayForm() {
                 shift: values.shift,
             };
 
-            console.log("New payment", newPayment)
 
             await createPayment(newPayment).unwrap();
             toast.success('Successfully created!');

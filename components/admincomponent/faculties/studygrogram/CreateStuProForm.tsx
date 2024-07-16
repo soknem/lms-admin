@@ -13,8 +13,8 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {StudyProgramType} from "@/lib/types/admin/faculty";
-import React, {useState} from "react";
+import {DegreeType, FacultyType, StudyProgramType} from "@/lib/types/admin/faculty";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
@@ -25,11 +25,7 @@ import {
 import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
-import {
-    selectFaculty
-} from "@/lib/features/admin/faculties/faculty/facultySlice";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
-import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import slugify from "slugify";
 import Select from "react-select";
 import {toast} from "react-hot-toast";
@@ -45,13 +41,24 @@ const initialValues = {
     facultyAlias: ""
 };
 
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+
 const validationSchema = Yup.object().shape({
     alias: Yup.string()
         .required('Alias is required'),
     studyProgramName: Yup.string()
         .required('Study Program Name is required'),
-    logo: Yup.string()
-        .required('Logo is required'),
+    logo: Yup.mixed()
+        .test("fileFormat", "Unsupported Format", (value: any) => {
+            if (!value) return true;
+            return SUPPORTED_FORMATS.includes(value.type);
+        })
+        .test("fileSize", "File Size is too large", (value: any) => {
+            if (!value) return true;
+            return value.size <= FILE_SIZE;
+        })
+        .nullable(),
     isDraft: Yup.boolean(),
     degreeAlias: Yup.string()
         .required('Degree Alias is required'),
@@ -67,7 +74,7 @@ const RadioButton = ({field, value, label}: any) => {
                 {...field}
                 id={value}
                 value={value}
-                checked={field.value === value}
+                checked={String(field.value) === value}
             />
             <label className="pl-2" htmlFor={value}>
                 {label}
@@ -127,60 +134,69 @@ const CustomInput = ({field, setFieldValue}: any) => {
 };
 
 export function CreateStudyProForm() {
+    const dispatch = useDispatch<AppDispatch>();
     const [createSingleFile] = useCreateSingleFileMutation();
     const [createStuProgram] = useCreateStuProgramMutation();
-    const {refetch: refetchStuPrograms} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
+    const [faculties, setFaculties] = useState([]);
+    const [degrees, setDegrees] = useState([]);
 
     const {
         data: facultiesData,
-    } = useGetFacultiesQuery({page: 0, pageSize: 10});
-    const faculties = useSelector((state: RootState) => selectFaculty(state));
+    } = useGetFacultiesQuery({page: 0, pageSize: 0});
+
+    useEffect(() => {
+        if (facultiesData) {
+            const facultiesOption = facultiesData?.content?.map((faculty: FacultyType) => ({
+                value: faculty.alias,
+                label: faculty.name
+            }));
+            setFaculties(facultiesOption);
+        }
+    }, [facultiesData, dispatch]);
 
     const {
         data: degreesData,
-    } = useGetDegreesQuery({page: 0, pageSize: 10});
-    const degrees = useSelector((state: RootState) => selectDegree(state));
+    } = useGetDegreesQuery({page: 0, pageSize: 0});
 
-    const degreeOptions = degrees.map(degree => ({
-        value: degree.alias,
-        label: degree.level
-    }));
-
-    const facultyOptions = faculties.map(faculty => ({
-        value: faculty.alias,
-        label: faculty.name
-    }));
+    useEffect(() => {
+        if (degreesData) {
+            const degreesOption = degreesData?.content?.map((degree: DegreeType) => ({
+                value: degree.alias,
+                label: degree.level
+            }));
+            setDegrees(degreesOption);
+        }
+    }, [degreesData, dispatch]);
 
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            const fileData = new FormData();
-            fileData.append("file", values.logo);
+            let logoName = '';
 
-            const fileResponse = await createSingleFile(fileData).unwrap();
-            console.log(fileResponse)
+            if (values.logo) {
+                const fileData = new FormData();
+                fileData.append("file", values.logo);
 
-            if (fileResponse) {
-                const newStuProgram: StudyProgramType = {
-                    alias: values.alias,
-                    studyProgramName: values.studyProgramName,
-                    degreeAlias: values.degreeAlias,
-                    facultyAlias: values.facultyAlias,
-                    description: values.description,
-                    logo: fileResponse.name,
-                    isDeleted: values.isDeleted,
-                    isDraft: values.isDraft,
-                };
-
-                console.log("New:", newStuProgram)
-
-                await createStuProgram(newStuProgram).unwrap();
-                resetForm();
-                refetchStuPrograms();
-                setIsOpen(false)
-                toast.success('Successfully created!');
+                const fileResponse = await createSingleFile(fileData).unwrap();
+                logoName = fileResponse.name;
             }
+
+            const newStuProgram: StudyProgramType = {
+                alias: values.alias,
+                studyProgramName: values.studyProgramName,
+                degreeAlias: values.degreeAlias,
+                facultyAlias: values.facultyAlias,
+                description: values.description,
+                logo: logoName,
+                isDeleted: values.isDeleted,
+                isDraft: values.isDraft,
+            };
+
+            await createStuProgram(newStuProgram).unwrap();
+            resetForm();
+            setIsOpen(false)
+            toast.success('Successfully created!');
         } catch (error) {
             toast.error('Failed to create study program!');
         } finally {
@@ -208,7 +224,7 @@ export function CreateStudyProForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue, values}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
 
@@ -242,8 +258,13 @@ export function CreateStudyProForm() {
                                         <label className={`${style.label}`} htmlFor="alias">Slug</label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field disabled type="text" name="alias" id="alias"
-                                           className={`${style.input}`}/>
+                                    <Field
+                                        disabled
+                                        placeholder={`master-of-computer-science`}
+                                        type="text"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}/>
                                     <ErrorMessage
                                         name="alias"
                                         component="div"
@@ -257,8 +278,8 @@ export function CreateStudyProForm() {
                                         <label className={`${style.label}`} htmlFor="facultyAlias">Faculty</label>
                                     </div>
                                     <Select
-                                        options={facultyOptions}
-                                        onChange={(selectedOption) => setFieldValue('facultyAlias', selectedOption ? selectedOption.value : '')}
+                                        options={faculties}
+                                        onChange={(selectedOption: any) => setFieldValue('facultyAlias', selectedOption ? selectedOption.value : '')}
                                     />
                                     <ErrorMessage
                                         name="facultyAlias"
@@ -273,8 +294,8 @@ export function CreateStudyProForm() {
                                         <label className={`${style.label}`} htmlFor="degreeAlias">Degree</label>
                                     </div>
                                     <Select
-                                        options={degreeOptions}
-                                        onChange={(selectedOption) => setFieldValue('degreeAlias', selectedOption ? selectedOption.value : '')}
+                                        options={degrees}
+                                        onChange={(selectedOption: any) => setFieldValue('degreeAlias', selectedOption ? selectedOption.value : '')}
                                     />
 
                                     <ErrorMessage
@@ -344,8 +365,13 @@ export function CreateStudyProForm() {
 
                             {/* Submit Button */}
                             <DialogFooter>
-                                <Button type="submit"
-                                        className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">Add</Button>
+                                <Button
+                                    type="submit"
+                                    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Adding...' : 'Add'}
+                                </Button>
                             </DialogFooter>
                         </Form>
                     )}

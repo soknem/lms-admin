@@ -107,7 +107,6 @@ export function StudentAdmissionTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const router = useRouter();
     const filterOptions = ["All", "Paid", "Unpaid"];
@@ -205,12 +204,12 @@ export function StudentAdmissionTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary"
-                        onClick={() => router.push("/admin/admissions/student-admission/add-stu-admission")}
-                >
-                    <FiPlus className="mr-2 h-4 w-4"/>
-                    Add Student Admission
-                </Button>
+                {/*<Button className="bg-lms-primary text-white hover:bg-lms-primary"*/}
+                {/*        onClick={() => router.push("/admin/admissions/student-admission/add-stu-admission")}*/}
+                {/*>*/}
+                {/*    <FiPlus className="mr-2 h-4 w-4"/>*/}
+                {/*    Add Student Admission*/}
+                {/*</Button>*/}
             </div>
 
             {/* Table */}

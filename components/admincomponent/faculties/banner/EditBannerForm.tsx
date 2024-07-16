@@ -95,7 +95,6 @@ export function EditBannerForm({alias, onClose}: { alias: string; onClose: () =>
             }
 
 
-            console.log('New Banner', editBannerByAlias);
             resetForm();
             onClose();
             toast.success('Successfully updated!');

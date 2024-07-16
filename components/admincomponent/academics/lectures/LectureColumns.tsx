@@ -178,7 +178,6 @@ const ActionCell = ({ row } : any) => {
 
     const lectures = useSelector(selectLecture);
 
-    console.log("lecture from column: ",lectures)
 
     const { refetch: refetchLecture } = useGetLectureQuery({ page: 0, pageSize: 10 });
 
@@ -190,12 +189,10 @@ const ActionCell = ({ row } : any) => {
         if(isDeleted){
             await enableLecture(lectureUuid).unwrap();
             setIsDeleted((prev :any) => !prev);
-            console.log('Lecture enabled successfully');
             refetchLecture();
         }else{
             await disableLecture(lectureUuid).unwrap();
             setIsDeleted((prev : any) => !prev);
-            console.log('Lecture disable successfully');
             refetchLecture();
         }
         setIsCardVisible(false);

@@ -152,14 +152,12 @@ export default function AddNewStaffForm() {
             cvFormData.append('file', cvFile);
 
             const cvResponse = await createSingleFile(cvFormData).unwrap();
-            console.log('CV File uploaded:', cvResponse);
 
             // Upload ID card file
             const idCardFormData = new FormData();
             idCardFormData.append('file', idCardFile);
 
             const idCardResponse = await createSingleFile(idCardFormData).unwrap();
-            console.log('ID Card File uploaded:', idCardResponse);
 
             if (values.authorityNames.length > 0) {
 
@@ -188,12 +186,10 @@ export default function AddNewStaffForm() {
                     authorityNames: modifiedAuthorityNames
                 };
 
-                console.log("New Staff Data: ", newStaff); // Debugging the new class data
 
                 try {
                     await addStaff(newStaff).unwrap();
                     toast.success('Successfully created!');
-                    console.log("Staff created successfully");
                     resetForm()
                     setSubmitting(false);
                 } catch (error) {
@@ -266,7 +262,6 @@ export default function AddNewStaffForm() {
                 dob: birthDate ? format(birthDate, "yyyy-MM-dd") : "",
             };
 
-            console.log("form values: ",values);
             handleAddStaff(formattedValues,{ setSubmitting ,resetForm });
         }
     })

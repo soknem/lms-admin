@@ -55,7 +55,8 @@ export function AdmissionTable<TData, TValue>({
     const [allData, setData] = useState(() => [...data]);
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
-    const [selectedFilter, setSelectedFilter] = useState("All");
+    const [selectedFilter, setSelectedFilter] = useState("Filter by remark");
+    const [selectedFilterStatus, setSelectedFilterStatus] = useState("Filter by status");
     const router = useRouter();
 
     const table = useReactTable({
@@ -105,7 +106,6 @@ export function AdmissionTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const filterOptions = ["All", "Opening", "Ended", "Achieved"];
     const handleFilterChange = (value: string) => {
@@ -114,11 +114,27 @@ export function AdmissionTable<TData, TValue>({
             value === "All"
                 ? ""
                 : value === "Opening"
-                    ? "opening"
+                    ? 1
                     : value === "Ended"
-                        ? "ended"
-                        : "achieved";
+                        ? 2
+                        : value === "Achieved"
+                            ? 3
+                            : "";
         table.getColumn("status")?.setFilterValue(filterValue);
+    };
+
+    const filterStatus = ["All", "Active", "Disabled"];
+    const handleFilterStatusChange = (value: string) => {
+        setSelectedFilterStatus(value);
+        const filterValue =
+            value === "All"
+                ? ""
+                : value === "Active"
+                    ? false
+                    : value === "Disabled"
+                        ? true
+                        : "";
+        table.getColumn("isDeleted")?.setFilterValue(filterValue);
     };
 
     return (
@@ -151,7 +167,7 @@ export function AdmissionTable<TData, TValue>({
                     <DropdownMenuTrigger asChild>
                         <Button
                             variant="outline"
-                            className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
+                            className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
                             <TbFilter className='mr-2 h-4 w-4'/>
                             {selectedFilter}
@@ -165,9 +181,41 @@ export function AdmissionTable<TData, TValue>({
                             <DropdownMenuItem
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
-                                className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
-                                    option
+                                className={`cursor-pointer ${
+                                    (table.getColumn("status")?.getFilterValue() || "All") === option
+                                }`}
+                            >
+                                {option}
+                            </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Filter status*/}
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
+                        >
+                            <TbFilter className='mr-2 h-4 w-4'/>
+                            {selectedFilterStatus}
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        align="end"
+                        className="border-[#E6E6E6] bg-white"
+                    >
+                        {/* Title */}
+                        <div className="px-4 py-2 font-semibold text-lms-gray-30">
+                            Filter by status
+                        </div>
+                        {filterStatus.map((option) => (
+                            <DropdownMenuItem
+                                key={option}
+                                onSelect={() => handleFilterStatusChange(option)}
+                                className={`cursor-pointer ${
+                                    (table.getColumn("isDeleted")?.getFilterValue() || "All") === option
                                 }`}
                             >
                                 {option}
@@ -213,7 +261,7 @@ export function AdmissionTable<TData, TValue>({
             {/* Table */}
             <div className="w-full rounded-md p-4 bg-white">
                 <Table>
-                    <TableHeader className="text-gray-30">
+                    <TableHeader className="text-lms-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {

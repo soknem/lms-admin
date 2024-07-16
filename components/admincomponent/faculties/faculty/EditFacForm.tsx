@@ -140,7 +140,7 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
             setInitialValues({
                 alias: facultyData.alias,
                 name: facultyData.name,
-                description: facultyData.description,
+                description: facultyData.description || "No description",
                 address: facultyData.address,
                 logo: facultyData.logo,
                 isDeleted: facultyData.isDeleted,
@@ -318,10 +318,10 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between`}>
+                                <div className={`${style.inputContainer} flex w-full justify-between`}>
 
                                     {/* isDraft */}
-                                    <div className={`${style.inputContainer}`}>
+                                    <div className={``}>
                                         <div className="flex">
                                             <label className={`${style.label}`} htmlFor="isDraft">
                                                 Visibility

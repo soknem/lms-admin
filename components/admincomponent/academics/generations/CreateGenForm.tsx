@@ -38,15 +38,12 @@ export default function CreateGenForm() {
 
             const result = await createGeneration(newGeneration).unwrap();
 
-            console.log('Generation created successfully');
 
 
         } catch (err: any) {
             console.error('Error creating generation:', err);
             if (err.status === 409) {
-                console.log("Generation already exists. Please choose a different alias.")
             } else {
-                console.log("Generation creation failed:");
             }
         }
     };

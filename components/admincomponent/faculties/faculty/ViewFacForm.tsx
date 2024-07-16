@@ -52,7 +52,7 @@ export function ViewFacForm({alias, onClose}: { alias: string; onClose: () => vo
     const [initialValues, setInitialValues] = useState({
         alias: "",
         name: "",
-        description: "No Description",
+        description: "",
         address: "",
         logo: "",
         isDeleted: false,
@@ -64,7 +64,7 @@ export function ViewFacForm({alias, onClose}: { alias: string; onClose: () => vo
             setInitialValues({
                 alias: facultyData.alias,
                 name: facultyData.name,
-                description: facultyData.description,
+                description: facultyData.description || "No description",
                 address: facultyData.address,
                 logo: facultyData.logo,
                 isDeleted: facultyData.isDeleted,

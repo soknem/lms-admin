@@ -11,10 +11,6 @@ import AdminSidebarComponent from "@/components/admincomponent/sidebar/AdminSide
 
 import {toast, Toaster, ToastBar} from 'react-hot-toast';
 import PageLoading from "@/app/admin/(admin-dashboard)/PageLoading";
-import {useGetProfileQuery} from "@/lib/features/userProfile/userProfile";
-import {any} from "prop-types";
-import {useDispatch} from "react-redux";
-import {setUserProfile} from "@/lib/features/userProfile/userProfileSlice";
 import UserProfileFetcher from "@/components/common/UserProfileFetcher";
 
 interface RootLayoutProps {
@@ -32,7 +28,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         >
         <StoreProvider>
             <ErrorBoundary errorComponent={Error}>
-                <Suspense fallback={<PageLoading />}>
+                <Suspense fallback={<PageLoading/>}>
                     <UserProfileFetcher>
                         <nav className="w-full h-[72px] shadow-md z-10 top-0 sticky  ">
                             <NavbarComponent/>

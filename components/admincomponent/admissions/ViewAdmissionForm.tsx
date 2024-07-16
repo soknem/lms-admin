@@ -9,13 +9,52 @@ import {
 } from "@/components/ui/dialog";
 
 import React, {useEffect, useState} from "react";
-import {TbAsterisk} from "react-icons/tb";
 import {
     useGetAdmissionByAliasQuery
 } from "@/lib/features/admin/admission-management/admission";
-import {useSelector} from "react-redux";
-import {RootState} from "@/lib/store";
-import {selectAcademicYear} from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {CalendarIcon} from "@radix-ui/react-icons";
+import {format, parseISO} from "date-fns";
+import {Calendar} from "@/components/ui/calendar";
+
+const DatePickerField = ({field, form, label, ...props}: any) => {
+    const {setFieldValue} = form;
+    const {name, value} = field;
+
+    return (
+        <div className={style.inputContainer}>
+            <div className="flex">
+                <label className={`${style.label}`} htmlFor={name}>
+                    {label}
+                </label>
+            </div>
+            <Popover>
+                <PopoverTrigger asChild>
+                    <button
+                        type="button"
+                        className={cn(`${style.input}`, !value && "text-gray-600")}
+                    >
+                        <div className={`flex`}>
+                            <CalendarIcon className="mr-2 h-4 w-4"/>
+                            {value ? format(parseISO(value), "PPP") : <span>Pick a date</span>}
+                        </div>
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-white">
+                    <Calendar
+                        mode="single"
+                        selected={value ? parseISO(value) : undefined}
+                        onSelect={(date) =>
+                            setFieldValue(name, date ? date.toISOString().split("T")[0] : "")
+                        }
+                        initialFocus
+                    />
+                </PopoverContent>
+            </Popover>
+        </div>
+    );
+};
 
 export function ViewAdmissionForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
@@ -31,12 +70,6 @@ export function ViewAdmissionForm({uuid, onClose}: { uuid: string; onClose: () =
         status: 0,
         isDeleted: false,
     });
-
-    const academicYears = useSelector((state: RootState) => selectAcademicYear(state));
-    const academicYearOption = academicYears.map(academicYear => ({
-        value: academicYear.alias,
-        label: academicYear.academicYear
-    }));
 
     useEffect(() => {
         if (isSuccess && admissionData) {
@@ -67,43 +100,25 @@ export function ViewAdmissionForm({uuid, onClose}: { uuid: string; onClose: () =
                     onSubmit={() => {
                     }}
                 >
-                    {() => (
+                    {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1 items-center">
 
-                                {/*openDate*/}
-                                <div className={style.inputContainer}>
-                                    <div className="flex">
-                                        <label className={style.label} htmlFor="openDate">
-                                            Open Date
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        disabled
-                                        type="date"
-                                        name="openDate"
-                                        id="openDate"
-                                        className={style.input}
-                                    />
-                                </div>
+                                {/* Start Date */}
+                                <Field
+                                    name="openDate"
+                                    component={DatePickerField}
+                                    label="Open Date"
+                                    setFieldValue={setFieldValue}
+                                />
 
-                                {/*endDate*/}
-                                <div className={style.inputContainer}>
-                                    <div className="flex">
-                                        <label className={style.label} htmlFor="endDate">
-                                            End Date
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        disabled
-                                        type="date"
-                                        name="endDate"
-                                        id="endDate"
-                                        className={style.input}
-                                    />
-                                </div>
+                                {/* End Date */}
+                                <Field
+                                    name="endDate"
+                                    component={DatePickerField}
+                                    label="End Date"
+                                    setFieldValue={setFieldValue}
+                                />
 
                                 {/*telegramLink*/}
                                 <div className={style.inputContainer}>

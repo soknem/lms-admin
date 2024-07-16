@@ -30,17 +30,14 @@ type PropsParams = {
 
 export default function StuAdmissions(props: PropsParams) {
 
-    console.log("props", props)
 
     const uuid = props.params.uuid;
     const dispatch = useDispatch<AppDispatch>();
     const {data, error, isLoading} = useGetAllStudentAdmissionByAdmissionUuidQuery(uuid);
 
     const {data: admissionData, isSuccess} = useGetAdmissionByAliasQuery(uuid);
-    console.log("getAllStudentAdmissionByAdmissionUuid", admissionData)
 
     const admissionYear = admissionData?.academicYear.academicYear;
-    // console.log("admissionYear", admissionYear)
 
     const stuAdmissions = useSelector((state: RootState) => selectStuAdmission(state));
 

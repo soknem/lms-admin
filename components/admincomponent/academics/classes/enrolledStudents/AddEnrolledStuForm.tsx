@@ -52,7 +52,6 @@ export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
     const [addStudentToClass] = useAddStudentToClassMutation()
     const classUuid = selectedClass?.uuid
 
-    console.log("Student Data: ",stuData)
 
     const filterstudent = (inputValue: string) => {
         if (!stuData) return [];
@@ -90,7 +89,6 @@ export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
                     studentAdmissionUuid: values.studentAdmissionUuid.map((option: any) => option.value)
                 }).unwrap();
                 toast.success("Add students successfully.");
-                console.log("student formik: ",values)
 
                 onClose();
             } catch (error) {

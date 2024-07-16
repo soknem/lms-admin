@@ -41,11 +41,9 @@ const ActionsCell = ({row}: any) => {
         if (isDeleted) {
             await enableDegree(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Degree enabled successfully');
         } else {
             await disableDegree(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Degree disable successfully');
         }
         setIsCardVisible(false);
     };

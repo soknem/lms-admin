@@ -105,7 +105,6 @@ export default function CreateLectureForm({ isVisible, onClose }: PropsType) {
             const result = await createLecture(newLecture).unwrap();
             refetchLecture()
             toast.success('Successfully created!');
-            console.log('Lecture created successfully');
 
 
         } catch (err : any) {
@@ -175,7 +174,6 @@ export default function CreateLectureForm({ isVisible, onClose }: PropsType) {
         }
     }, [classData, classError, dispatch]);
 
-    console.log("single class data", Courses);
 
     const handleCourseChange = (selectedOption : any) => {
         // Extracting the UUID from the selected option
@@ -246,7 +244,6 @@ export default function CreateLectureForm({ isVisible, onClose }: PropsType) {
                 lectureDate: date ? format(date, "yyyy-MM-dd") : "",
             };
             // dispatch(addLecture(formattedValues))
-            console.log("Form values: ", formattedValues);
             handleCreateLecture(formattedValues);
 
         }

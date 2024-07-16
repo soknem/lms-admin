@@ -29,13 +29,11 @@ export default function StaffList() {
 
     const { data : staffList , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffQuery({ page: 0, pageSize: 25 })
 
-    console.log("staffData: ", staffList);
 
     let staffData: UserStaffDetailType[]  = [];
 
     if(isStaffSuccess){
         staffData = staffList.content;
-        console.log("staff data from stafflist page: ", staffData)
     }
 
 

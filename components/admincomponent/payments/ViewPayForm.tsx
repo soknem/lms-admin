@@ -72,7 +72,6 @@ const CustomInput = ({field, setFieldValue}: any) => {
     const handleUploadFile = (e: any) => {
         const file = e.target.files[0];
         const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
         setImagePreview(localUrl);
 
         setFieldValue(field.name, file);

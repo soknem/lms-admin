@@ -33,7 +33,6 @@ export default function InstructorProfile({params} : PropsParam) {
     const uuid = params.uuid;
     const {data, error, isLoading} = useGetInstructorByUuidQuery({uuid});
 
-    console.log(" DATA INSTRUCTOR PROFILE", data)
     return (
         <main>
             <section className="flex flex-col gap-4 h-full w-full p-9">

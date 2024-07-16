@@ -30,7 +30,6 @@ export default function Attendance() {
     // Use attendance data from Redux store
     // const attendanceData: AttendanceT[] = attendance;
 
-    console.log("Data", data)
 
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">

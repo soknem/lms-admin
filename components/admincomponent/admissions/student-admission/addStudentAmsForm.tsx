@@ -239,7 +239,6 @@ export function AddStudentAmsForm() {
             const res = await createStuAdmission(newStuAdmission).unwrap();
             resetForm();
             refetchStuAdmissions();
-            console.log("Update successfully");
         } catch (error) {
             // Handle error (e.g., show an error message)
             console.error("Error creating faculty: ", error);

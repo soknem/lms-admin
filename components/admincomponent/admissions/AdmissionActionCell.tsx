@@ -42,11 +42,9 @@ const ActionsCell = ({row}: any) => {
         if (isDeleted) {
             await enableAdmission(uuid).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Degree enabled successfully');
         } else {
             await disableAdmission(uuid).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Degree disable successfully');
         }
         setIsCardVisible(false);
     };
@@ -83,7 +81,7 @@ const ActionsCell = ({row}: any) => {
                         className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
                         onClick={() => navigator.clipboard.writeText(admission.academicYear)}
                     >
-                        <TbCopy size={20} className="text-gray-30 mr-2  "/> Copy Degree Level
+                        <TbCopy size={20} className="text-gray-30 mr-2  "/> Copy Admission Year
                     </DropdownMenuItem>
 
                     <DropdownMenuItem

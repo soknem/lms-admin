@@ -112,6 +112,7 @@ export function CreateMaterialForm() {
     const {
         data: subjectData,
     } = useGetSubjectsQuery({page: 0, pageSize: 10});
+
     useEffect(() => {
         if (subjectData) {
             const subjectsOption = subjectData?.content?.map((subject: any) => ({
@@ -141,7 +142,6 @@ export function CreateMaterialForm() {
         }
     }, [sectionData, dispatch]);
 
-    console.log("Section", sections)
 
     const fileTypeOption = [
         {value: "curriculum", label: 'Curriculum'},
@@ -165,7 +165,6 @@ export function CreateMaterialForm() {
             fileData.append("file", values.fileName);
 
             const fileResponse = await createSingleFile(fileData).unwrap();
-            console.log(fileResponse)
 
             if (fileResponse) {
                 // File uploaded successfully, now create the faculty
@@ -186,13 +185,11 @@ export function CreateMaterialForm() {
                     isDraft: values.isDraft,
                 };
 
-                console.log("newMaterial:", newMaterial)
                 await createMaterial(newMaterial).unwrap();
                 resetForm();
                 // Handle success (e.g., show a success message or close the dialog)
                 refetchMaterials();
                 setIsOpen(false);
-                console.log("Create successfully")
 
             }
         } catch (error) {
@@ -212,7 +209,6 @@ export function CreateMaterialForm() {
             fileData.append("file", values.fileName);
 
             const fileResponse = await createSingleFile(fileData).unwrap();
-            console.log(fileResponse)
 
             if (fileResponse) {
                 // File uploaded successfully, now create the faculty
@@ -233,13 +229,11 @@ export function CreateMaterialForm() {
                     isDraft: values.isDraft,
                 };
 
-                console.log("newMaterial:", newMaterial)
                 await createMaterial(newMaterial).unwrap();
                 resetForm();
                 // Handle success (e.g., show a success message or close the dialog)
                 refetchMaterials();
                 setIsOpen(false);
-                console.log("Create successfully")
 
             }
         } catch (error) {
@@ -272,13 +266,11 @@ export function CreateMaterialForm() {
                 isDraft: values.isDraft,
             }
 
-            console.log("newMaterial:", newMaterial)
             await createMaterial(newMaterial).unwrap();
             resetForm();
             // Handle success (e.g., show a success message or close the dialog)
             refetchMaterials();
             setIsOpen(false);
-            console.log("Create successfully")
 
         } catch (error) {
             // Handle error (e.g., show an error message)

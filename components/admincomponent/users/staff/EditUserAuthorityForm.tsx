@@ -40,7 +40,6 @@ export default function EditUserAuthorityForm({ isVisible, onClose , staffUuid }
         if (isSingleStaffSuccess && singleStaffData) {
             const authorityNames = singleStaffData.authorities.map((authority: Authority) => authority.authorityName);
             formik.setFieldValue('authorityNames', authorityNames, false);
-            console.log('authority: ', authorityNames);
         }
     }, [isSingleStaffSuccess, singleStaffData]);
 
@@ -110,7 +109,6 @@ export default function EditUserAuthorityForm({ isVisible, onClose , staffUuid }
                 try {
                     await updateStaffAuthority({uuid,updatedData}).unwrap();
                     toast.success("Updated Authority successfully.");
-                    console.log("Authority formik: ",values)
                     resetForm();
                     onClose();
                 } catch (error) {

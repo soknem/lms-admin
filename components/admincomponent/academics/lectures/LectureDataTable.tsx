@@ -183,7 +183,6 @@ export function LectureDataTable<TData, TValue>({
 
   // const handleRowClick = (row : any) => {
   //   const uuid = table.getColumn('classCode'); // Adjust this according to your data structure
-  //   console.log('Clicked row UUID:', uuid?.id);
   // };
 
   const [isModalVisible, setIsModalVisible] = useState(false);

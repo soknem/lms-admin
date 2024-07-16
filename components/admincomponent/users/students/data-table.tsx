@@ -110,7 +110,6 @@ export function UserStudentTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const [isFocused, setIsFocused] = useState(false);
     const router = useRouter();

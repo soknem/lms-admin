@@ -39,11 +39,9 @@ const ActionsCell = ({row}: any) => {
         if (isDeleted) {
             await enableBanner(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Degree enabled successfully');
         } else {
             await disableBanner(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Degree disable successfully');
         }
         setIsCardVisible(false);
     };

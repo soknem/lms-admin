@@ -33,7 +33,7 @@ const initialValues = {
     address: "",
     logo: "",
     isDeleted: true,
-    isDraft: true
+    isDraft: false
 };
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
@@ -64,7 +64,7 @@ const RadioButton = ({field, value, label}: any) => {
                 {...field}
                 id={value}
                 value={value}
-                checked={field.value === value}
+                checked={String(field.value) === value}
             />
             <label className="pl-2" htmlFor={value}>
                 {label}
@@ -72,6 +72,7 @@ const RadioButton = ({field, value, label}: any) => {
         </div>
     );
 };
+
 
 const CustomInput = ({field, setFieldValue}: any) => {
     const [imagePreview, setImagePreview] = useState("");
@@ -182,7 +183,7 @@ export function CreateFacForm() {
                 >
                     {({isSubmitting, setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 items-center">
 
                                 {/* Faculty Title */}
                                 <div className={`${style.inputContainer}`}>
@@ -195,7 +196,7 @@ export function CreateFacForm() {
 
                                     <Field
                                         type="text"
-                                        placeholder="Faculty of Engineering"
+                                        placeholder="Faculty of Technology"
                                         name="name"
                                         id="name"
                                         className={`${style.input}`}
@@ -230,6 +231,7 @@ export function CreateFacForm() {
 
                                     <Field
                                         disabled
+                                        placeholder="faculty-of-technology"
                                         name="alias"
                                         id="alias"
                                         className={`${style.input}`}
@@ -280,7 +282,7 @@ export function CreateFacForm() {
                                 </div>
 
                                 {/* Faculty Image */}
-                                <div className="mb-4">
+                                <div className={`${style.inputContainer}`}>
                                     <label
                                         htmlFor="logo"
                                         className="block text-sm font-medium text-gray-700 my-2"

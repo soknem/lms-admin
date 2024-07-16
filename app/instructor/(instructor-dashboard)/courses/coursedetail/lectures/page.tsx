@@ -109,7 +109,6 @@ export default function Lecture() {
     // const filteredEndedLectureData = data.filter(
     //     (lecture) => lecture.status === 2 || lecture.status === 3
     // );
-    console.log("lecture data from lecture page: ", LectureData);
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">
             <Breadcrumb>

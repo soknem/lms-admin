@@ -281,7 +281,6 @@ const ActionCell = ({ row } : any) => {
 
     const generations = useSelector(selectGeneration);
 
-    console.log("Generation from column: ",generations)
 
     const { refetch: refetchGeneration } = useGetGenerationQuery({ page: 0, pageSize: 10 });
 
@@ -293,11 +292,9 @@ const ActionCell = ({ row } : any) => {
         if(isDeleted){
             await enableGeneration(genAlias).unwrap();
             setIsDeleted((prev :any) => !prev);
-            console.log('Generation enabled successfully');
         }else{
             await disableGeneration(genAlias).unwrap();
             setIsDeleted((prev : any) => !prev);
-            console.log('Generation disable successfully');
         }
         setIsCardVisible(false);
     };

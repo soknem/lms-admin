@@ -1,20 +1,10 @@
 "use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
 
 import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
+import {useState, useEffect, ChangeEvent} from "react";
 import {AdmissionType, StatusOption} from "@/lib/types/admin/admission";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import ActionsCell from "@/components/admincomponent/admissions/AdmissionActionCell";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
@@ -43,7 +33,6 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "academicYear") {
         return <span>{value.academicYear}</span>;
     }
-
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
@@ -96,7 +85,6 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "endDate") {
         return <span>{value ? value : "No Data"}</span>;
     }
-
     if (column.id === "remark") {
         return <span className={`line-clamp-1`}>{value ? value : "No Remark"}</span>;
     }

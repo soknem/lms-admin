@@ -135,7 +135,6 @@ export function PaymentTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const handleGenReset = (columnId: string) => {
         if (columnId === "generation") {

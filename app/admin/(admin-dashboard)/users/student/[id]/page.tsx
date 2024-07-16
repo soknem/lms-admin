@@ -24,7 +24,6 @@ export default function Users(props: Props) {
     const { data: stuData, isLoading: isStuLoading, error: stuError ,isSuccess: isStudentSuccess} = useGetStudentByUuidQuery(props.params.id);
 
     if(isStudentSuccess){
-        console.log("student data: ", stuData)
     }
 
     return (

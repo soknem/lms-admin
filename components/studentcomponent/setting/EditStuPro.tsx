@@ -55,7 +55,6 @@ export function EditStuProForm({
     const handleSubmit = async (values: StudentSetting, {resetForm}: FormikHelpers<StudentSetting>) => {
         try {
             const response = await patchStudentSettings(values).unwrap();
-            console.log(response);
             dispatch(setStudentSetting(values));
             resetForm();
         } catch (error) {
@@ -69,20 +68,15 @@ export function EditStuProForm({
             const formData = new FormData();
             formData.append("file", file);
 
-            console.log("Uploading image...", formData);
             try {
                 const response = await uploadProfileImage(formData).unwrap();
-                console.log("response", response);
                 const {name, uri} = response;
 
-                console.log("name", name);
-                console.log("uri", uri);
 
 
                 setProfileImagePreview(uri);
                 setFieldValue("profileImage", name);
 
-                console.log(`Image uploaded successfully: ${name}, ${uri}`);
             } catch (error) {
                 console.error("Failed to upload the image: ", error);
             }

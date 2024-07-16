@@ -92,7 +92,6 @@ export function CreateSectionForm() {
 
             await createSection(newSection).unwrap();
 
-            console.log("Create successfully", newSection)
             toast.success('Successfully created!');
 
             resetForm();
