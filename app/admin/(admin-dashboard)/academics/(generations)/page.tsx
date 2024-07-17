@@ -34,7 +34,7 @@ export default function Generation() {
     const genData: GenerationType[] = generations;
 
     return (
-        <main className='flex flex-col gap-4 h-full w-full p-9'>
+        <main className='flex flex-col gap-2 h-full w-full p-9'>
             <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
             <DataTable columns={columns} data={genData}/>
         </main>

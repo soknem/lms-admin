@@ -21,7 +21,7 @@ import {toast} from "react-hot-toast";
 import {useUpdateStaffMutation} from "@/lib/features/admin/user-management/staff/staff";
 
 
-export function EditStaffForm( {updateData} : any ) {
+export function EditStaffForm( {updateData,uuid} : any ) {
 
     console.log("data staff detail :" , updateData);
 
@@ -87,8 +87,6 @@ export function EditStaffForm( {updateData} : any ) {
 
     const handleUpdateStaff = async(values : any) => {
 
-        const uuid = updateData?.uuid;
-
         const educationValues = values.educations.map((education: { label: string; value: string }) => education.value);
 
         const skillValues = values.skills.map((skill: { label: string; value: string }) => skill.value);
@@ -137,6 +135,10 @@ export function EditStaffForm( {updateData} : any ) {
                 const pfImageResponse = await createSingleFile(pfImageFormData).unwrap();
                 console.log('Profile Image File uploaded:', pfImageResponse);
                 updatedData.profileImage = pfImageResponse.name;
+            }
+
+            if(values.email !== updateData.email){
+                updatedData.email = values.email;
             }
 
            await updateStaff({uuid,updatedData}).unwrap();
@@ -235,7 +237,7 @@ export function EditStaffForm( {updateData} : any ) {
                                                         className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
                                                         <IoCameraOutline className="w-5 h-5"/>
                                                         <input
-                                                            id="cv-dropzone-file"
+                                                            id="pf-dropzone-file"
                                                             type="file"
                                                             onChange={(e) => handleFileUpload(e, setPfImageFile)}
                                                             className="hidden"
@@ -367,23 +369,23 @@ export function EditStaffForm( {updateData} : any ) {
                     </div>
 
                     {/*Email*/}
-                    {/*<div>*/}
-                    {/*    <RequiredFieldLabelComponent labelText="Email"*/}
-                    {/*                                 labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>*/}
-                    {/*    <input*/}
-                    {/*        type="text"*/}
-                    {/*        name="email"*/}
-                    {/*        onChange={formik.handleChange}*/}
-                    {/*        value={formik.values.email}*/}
-                    {/*        className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "*/}
-                    {/*        placeholder="example@gmail.com"*/}
+                    <div>
+                        <RequiredFieldLabelComponent labelText="Email"
+                                                     labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                        <input
+                            type="text"
+                            name="email"
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            className="border-2 focus:border-lms-error  bg-gray-50  border-lms-grayBorder text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
+                            placeholder="example@gmail.com"
 
-                    {/*    />*/}
-                    {/*    {*/}
-                    {/*        typeof formik.errors.email === 'string' &&*/}
-                    {/*        <p className="text-red-700">{formik.errors.email}</p>*/}
-                    {/*    }*/}
-                    {/*</div>*/}
+                        />
+                        {
+                            typeof formik.errors.email === 'string' &&
+                            <p className="text-red-700">{formik.errors.email}</p>
+                        }
+                    </div>
 
                     {/* Phone number*/}
                     <div>

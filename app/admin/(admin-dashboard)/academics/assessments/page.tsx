@@ -45,6 +45,8 @@ import {
     selectEachSemesterAssessment,
     setEachSemesterAssessment
 } from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
+import FilterClassPopover from "@/components/common/filter/FilterClassPopover";
+import FilterCoursePopover from "@/components/common/filter/FilterCoursePopover";
 
 type TranscriptFilterType = {
     generationAlias: string;
@@ -54,40 +56,7 @@ type TranscriptFilterType = {
 
 export default function Assessment() {
 
-    // === Fetch Each Course data ====
-    const {data: courseData, error: courseError, isSuccess : isCourseSucess , isLoading: isCourseSucessLoading} = useGetAssessmentQuery({ page: 0, pageSize: 10 });
 
-    const [courses, setCourses] = useState([]);
-
-    useEffect(() => {
-        if (isCourseSucess) {
-            setCourses(courseData.content);
-        }
-        if (courseError) {
-            console.error("Failed to load course", courseError);
-        }
-    }, [courseData, courseError]);
-
-    const transformCourseData = (data : any) => {
-        return data.map((item : any) => ({
-            uuid: item.uuid,
-            cardId: item.student.cardId,
-            nameEn: item.student.nameEn,
-            gender: item.student.gender,
-            dob: item.student.dob,
-            class: item.classCode,
-            course: item.course.title,
-            midtermExamScore: item.midtermExamScore,
-            finalExamScore: item.finalExamScore,
-            attendanceScore: item.attendanceScore,
-            assignmentScore: item.assignmentScore,
-            miniProjectScore: item.miniProjectScore,
-            activityScore: item.activityScore,
-            grade: item.grade,
-            total: item.total,
-            status: item.student.studentStatus
-        }));
-    };
 
     // const semesterData: semesterAssessementType[] = semesterAssessments;
 
@@ -292,6 +261,82 @@ export default function Assessment() {
     };
 
 
+    // === class ===
+    const [openClasses, setOpenClasses] = useState(false);
+    const [selectedClasses, setSelectedClasses] = useState({ alias: '', label: '' });
+
+    const handleClassesChange = (year : any) => {
+        setSelectedClasses(year);
+    };
+
+    const handleClassesReset = () => {
+        setSelectedClasses({ alias: '', label: '' });
+        setSelectedCourse({ alias: '', label: '' });
+        setQueryParams((prevParams) => ({
+            ...prevParams,
+            classUuid: '',
+            courseUuid: ''
+        }));
+    };
+
+    // === course ===
+    const [openCourse, setOpenCourse] = useState(false);
+    const [selectedCourse,setSelectedCourse] = useState({ alias: '', label: '' });
+
+    const handleCourseChange = (year : any) => {
+        setSelectedCourse(year);
+    };
+
+    const handleCourseReset = () => {
+        setSelectedCourse({ alias: '', label: '' });
+    };
+
+    // === Fetch Each Course data ====
+    const [queryParams, setQueryParams] = useState({ page: 0, pageSize: 10, courseUuid: '', classUuid: '' });
+
+    const { data: courseData, error: courseError, isSuccess: isCourseSuccess, isLoading: isCourseLoading } = useGetAssessmentQuery(queryParams);
+
+    const handleCourseFilter = () => {
+        setQueryParams({
+            page: 0,
+            pageSize: 10,
+            courseUuid: selectedCourse.alias,
+            classUuid: selectedClasses.alias,
+        });
+    };
+
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        if (isCourseSuccess) {
+            setCourses(courseData.content);
+        }
+        if (courseError) {
+            console.error("Failed to load course", courseError);
+        }
+    }, [courseData, courseError]);
+
+    const transformCourseData = (data : any) => {
+        return data.map((item : any) => ({
+            uuid: item.uuid,
+            cardId: item.student.cardId,
+            nameEn: item.student.nameEn,
+            gender: item.student.gender,
+            dob: item.student.dob,
+            class: item.classCode,
+            course: item.course.title,
+            midtermExamScore: item.midtermExamScore,
+            finalExamScore: item.finalExamScore,
+            attendanceScore: item.attendanceScore,
+            assignmentScore: item.assignmentScore,
+            miniProjectScore: item.miniProjectScore,
+            activityScore: item.activityScore,
+            grade: item.grade,
+            total: item.total,
+            status: item.student.studentStatus
+        }));
+    };
+
 
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
@@ -390,7 +435,40 @@ export default function Assessment() {
                 </TabsContent>
 
                 <TabsContent value="course">
+                    {/* Filter */}
+                    <div className="flex items-center space-x-2">
+                        <FilterClassPopover
+                            open={openClasses}
+                            setOpen={setOpenClasses}
+                            selectedClass={selectedClasses}
+                            handleClassChange={handleClassesChange}
+                            handleReset={handleClassesReset}
+                        />
+
+                        <FilterCoursePopover
+                            open={openCourse}
+                            setOpen={setOpenCourse}
+                            selectedCourse={selectedCourse}
+                            handleCourseChange={handleCourseChange}
+                            handleReset={handleCourseReset}
+                            classUuid={selectedClasses.alias}
+                        />
+
+                        <Button onClick={handleCourseFilter} className=' text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
+                            Filter
+                        </Button>
+
+                    </div>
+
                     <CourseAssesmentDataTable columns={CourseAssessmentColumns} data={transformCourseData(courses)}/>
+                    {/*{*/}
+                    {/*    isCourseSuccess ? (*/}
+                    {/*        */}
+                    {/*    ): (*/}
+                    {/*        <></>*/}
+                    {/*    )*/}
+                    {/*}*/}
+
                 </TabsContent>
             </Tabs>
         </main>

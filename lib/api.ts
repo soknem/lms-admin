@@ -33,7 +33,7 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
             result = await baseQuery(args, api, extraOptions);
         } else {
             const res = await fetch(`${process.env.NEXT_PUBLIC_LMS_URL}/api/logout`, {
-                method: "POST",
+                 method: "POST",
                 credentials: "include",
             });
             const data = await res.json();
@@ -46,5 +46,5 @@ export const istadLmsApi = createApi({
     reducerPath: "istadLmsApi",
     baseQuery: baseQueryWithReAuth,
     endpoints: () => ({}),
-    tagTypes: ['Generations', 'Classes', 'Faculties', 'Degrees', 'StudyPrograms', 'Subjects', 'AcademicYears','StudentFromClass','Courses','CoursesByUuid','StudentFromClass','SingleClass','Instructors','Staffs','SingleStaff','SingleIns','SingleStaffAuthorities']
+    tagTypes: ['Generations', 'Classes', 'Faculties', 'Degrees', 'StudyPrograms', 'Subjects', 'AcademicYears','StudentFromClass','Courses','CoursesByUuid','StudentFromClass','SingleClass','Instructors','Staffs','SingleStaff','SingleIns','SingleStaffAuthorities','AllEachCourse','SingleStudent']
 });

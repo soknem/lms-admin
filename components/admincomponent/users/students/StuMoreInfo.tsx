@@ -10,8 +10,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { TbPencil} from "react-icons/tb";
 
-const MoreInfo = () => {
+type props = {
+  stuUuid: string
+}
+
+const MoreInfo = ({stuUuid} : props) => {
   const router = useRouter();
 
   return (
@@ -25,18 +30,13 @@ const MoreInfo = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="bg-white">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             className="focus:bg-background"
-            onClick={() => router.push("/admin/users/student/edit-student")}
+            onClick={() => router.push(`/admin/users/student/edit-student/${stuUuid}`)}
           >
-            Edit
+            <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
           </DropdownMenuItem>
-          {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-          {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-          <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-            Disable
-          </DropdownMenuItem>
+
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

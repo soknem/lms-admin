@@ -80,14 +80,20 @@ export default function StaffDetailComponent ({ id,imageSrc, name, position, lin
                 <div className="w-64 space-y-4">
                     {/* profile */}
                     <div className="bg-white  w-full  p-6 rounded-[8px]">
-                        <div className="h-48  overflow-hidden relative">
-                            <Image src={imageSrc} alt="admin" layout="fill" objectFit="cover"/>
+                        {imageSrc ? (
+                            <div className="h-48  overflow-hidden relative">
+                                <Image src={imageSrc} alt="admin" layout="fill" objectFit="cover"/>
+                            </div>
+                        ): (
+                            <div className="h-48  overflow-hidden relative">
+                                <Image src={placeholderImage} alt="admin" layout="fill" objectFit="cover"/>
+                            </div>
+                        )}
 
-                        </div>
 
                         <div className="flex justify-center gap-4 mt-6">
                             <Link href={linkedin} target="_blank" rel="noopener noreferrer">
-                                <ImLinkedin className="w-7 h-7 text-lms-primary"/>
+                            <ImLinkedin className="w-7 h-7 text-lms-primary"/>
                             </Link>
                             <Link href={github} target="_blank" rel="noopener noreferrer">
                                 <ImGithub className="w-7 h-7 text-lms-primary"/>

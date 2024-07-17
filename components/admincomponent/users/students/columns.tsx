@@ -111,7 +111,7 @@ const ActionCell = ({ row } : any) => {
             <DropdownMenuItem onClick={() => router.push(`users/student/${row.original.uuid}`)} className=" focus:bg-background font-medium">
               <TbFileImport  size={20} className="text-lms-gray-30 mr-2"  /> <p className="text-lms-gray-80" >View</p>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push(``)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+            <DropdownMenuItem onClick={() => router.push(`users/student/edit-student/${row.original.uuid}`)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
               <TbPencil size={20} className="text-lms-gray-30 mr-2"   /> <p className="text-lms-gray-80" >Edit</p>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -230,7 +230,7 @@ export const userStudentColumns: ColumnDef<UserStudentDetailType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "familyNumber",
+    accessorKey: "familyPhoneNumber",
     header: ({ column }) => {
       return (
         <Button

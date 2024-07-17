@@ -66,7 +66,7 @@ export default function StaffDetail(props: Props) {
                 </Breadcrumb>
                 <StaffDetailComponent
                     key={data?.uuid}
-                    id={data?.uuid}
+                    id={props.params.id}
                     imageSrc={data?.profileImage || placeholderImage}
                     name={data?.nameEn || "N/A"}
                     education={data?.educations || []}

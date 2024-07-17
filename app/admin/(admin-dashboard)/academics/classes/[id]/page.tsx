@@ -148,8 +148,17 @@ export default function ClassDetail(props: Props) {
               <TabsTrigger value="course">Courses</TabsTrigger>
             </TabsList>
 
+
+
             <TabsContent value="enrolledStudent">
-              <StudentDataTable columns={StuColumns} data={stuData.content}/>
+              {
+                (isStuSuccess) ? (
+                    <StudentDataTable columns={StuColumns} data={stuData.content}/>
+                ) : (
+                    <></>
+                )
+              }
+
             </TabsContent>
 
             <TabsContent value="course" className="bg-white p-6 space-y-4 rounded-lg">
