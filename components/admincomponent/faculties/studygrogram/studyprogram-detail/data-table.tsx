@@ -19,30 +19,11 @@ import {
 import {
     Table,
     TableBody,
-    TableCell,
+    TableCell, TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {FaSearch} from "react-icons/fa";
-import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
-import {
-    AddSubjectStudyProForm
-} from "@/components/admincomponent/faculties/studygrogram/setup-studyprogram/addSubjectToStuPro";
-
-
-//custom component import
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -63,7 +44,6 @@ export function StudyProgramDetailTable<TData, TValue>({
     const [allData, setData] = useState(() => [...data]);
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
-    const [selectedFilter, setSelectedFilter] = useState("All");
 
     const table = useReactTable({
         data,
@@ -113,27 +93,13 @@ export function StudyProgramDetailTable<TData, TValue>({
     });
 
 
-    const filterOptions = ["All", "Public", "Draft"];
-    const handleFilterChange = (value: string) => {
-        setSelectedFilter(value);
-        const filterValue =
-            value === "All"
-                ? ""
-                : value === "Public"
-                    ? false
-                    : value === "Draft"
-                        ? true
-                        : "";
-        table.getColumn("isDraft")?.setFilterValue(filterValue);
-    };
-
     return (
         <>
 
             {/* Table */}
             <div className="w-full rounded-md p-4 bg-white">
                 <Table>
-                    <TableHeader className="text-gray-30">
+                    <TableHeader className="text-lms-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
@@ -179,6 +145,15 @@ export function StudyProgramDetailTable<TData, TValue>({
                             </TableRow>
                         )}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={columns.length}>
+                                <p className="text-lms-gray-30 text-sm font-normal text-center">
+                                    A list of Subjects in Study Program
+                                </p>
+                            </TableCell>
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </div>
 

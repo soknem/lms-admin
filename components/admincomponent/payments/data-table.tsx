@@ -273,7 +273,7 @@ export function PaymentTable<TData, TValue>({
                     <p className="text-xl font-medium text-lms-black-90">
                         Earnings this semester
                     </p>
-                    <p className="text-4xl font-bold text-lms-primary">$ 8000.00</p>
+                    <p className="text-4xl font-bold text-lms-primary">$ 2000.00</p>
                 </div>
 
                 <div
@@ -281,7 +281,7 @@ export function PaymentTable<TData, TValue>({
                     <div className={`flex gap-2 items-center justify-center`}>
                         <p className="text-xl font-medium text-lms-black-90">To be paid</p>
                         <PiWarningCircleFill className={`w-5 h-5`}/></div>
-                    <p className="text-4xl font-bold text-[#A74AC7]">$ 800.00</p>
+                    <p className="text-4xl font-bold text-[#A74AC7]">$ 1000.00</p>
                 </div>
 
                 <div
@@ -297,7 +297,7 @@ export function PaymentTable<TData, TValue>({
                     <p className="text-xl font-medium text-lms-black-90">
                         Total students
                     </p>
-                    <p className="text-4xl font-bold text-[#008000]">150 people</p>
+                    <p className="text-4xl font-bold text-[#008000]">5 people</p>
                 </div>
 
                 {/*<div*/}

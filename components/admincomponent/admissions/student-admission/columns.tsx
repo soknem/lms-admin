@@ -18,6 +18,8 @@ import {
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
+import placeholderPf from "@/public/common/placeholderPf.png";
+import Image from "next/image";
 
 const TableCell = ({getValue, row, column, table}: any) => {
     const initialValue = getValue();
@@ -47,15 +49,18 @@ const TableCell = ({getValue, row, column, table}: any) => {
         const studentData = row.original;
         return (
             <div className="flex items-center">
-                <img
-                    src={studentData.avatar}
-                    alt={studentData.avatar}
+                <Image
+                    src={studentData.avatar || placeholderPf}
+                    alt="Profile placeholder"
+                    width={32}
+                    height={32}
                     className="w-8 h-8 rounded-full mr-2"
                 />
                 <span>{studentData.nameEn}</span>
             </div>
         );
     }
+
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (

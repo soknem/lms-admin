@@ -1,6 +1,4 @@
 "use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
 
 import {ColumnDef} from "@tanstack/react-table";
 import {ArrowUpDown} from "lucide-react";
@@ -9,7 +7,6 @@ import {Button} from "@/components/ui/button";
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
 
 import {AcademicYearType, DegreeType, StatusOption} from "@/lib/types/admin/faculty";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import ActionsCell from "@/components/admincomponent/faculties/academicyear/AcademicYearActionCell";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
@@ -137,21 +134,21 @@ const TableCell = ({getValue, row, column, table}: any) => {
 
 
 export const academicYearColumns: ColumnDef<AcademicYearType>[] = [
-    {
-        accessorKey: "alias",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    ALIAS
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
-        cell: TableCell,
-    },
+    // {
+    //     accessorKey: "alias",
+    //     header: ({column}) => {
+    //         return (
+    //             <Button
+    //                 variant="ghost"
+    //                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //             >
+    //                 ALIAS
+    //                 <ArrowUpDown className="ml-2 h-4 w-4"/>
+    //             </Button>
+    //         );
+    //     },
+    //     cell: TableCell,
+    // },
 
     {
         accessorKey: "academicYear",

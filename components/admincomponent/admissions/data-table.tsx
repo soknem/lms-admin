@@ -313,9 +313,9 @@ export function AdmissionTable<TData, TValue>({
 
             {/* Pagination */}
             <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredRowModel().rows.length} row(s)
-                </div>
+                {/*<div className="flex-1 text-sm text-muted-foreground">*/}
+                {/*    {table.getFilteredRowModel().rows.length} row(s)*/}
+                {/*</div>*/}
                 <Button
                     className="border-gray-30"
                     variant="outline"

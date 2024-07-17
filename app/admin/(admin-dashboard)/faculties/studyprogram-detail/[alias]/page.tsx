@@ -80,7 +80,7 @@ export default function Users(props: PropsParams) {
                             src={stuProData?.logo}
                             alt="preview"
                             fill
-                            style={{objectFit: 'contain'}}
+                            style={{objectFit: 'cover'}}
                         />
                     </div>
                 </div>
@@ -139,7 +139,7 @@ export default function Users(props: PropsParams) {
             </section>
 
             <Tabs defaultValue="foundation-year" className="w-full">
-                <TabsList>
+                <TabsList className={``}>
                     <TabsTrigger value="foundation-year" onClick={() => setCurrentYear(1)}>Foundation
                         Year</TabsTrigger>
                     <TabsTrigger value="second-year" onClick={() => setCurrentYear(2)}>Second Year</TabsTrigger>
@@ -148,7 +148,7 @@ export default function Users(props: PropsParams) {
                 </TabsList>
 
 
-                <TabsContent value="foundation-year" className={`flex gap-4`}>
+                <TabsContent value="foundation-year" className={`flex gap-4 p-0 `}>
                     {/* First Table for Year Filter */}
                     <StudyProgramDetailTable
                         alias={alias}
@@ -165,7 +165,7 @@ export default function Users(props: PropsParams) {
                     />
                 </TabsContent>
 
-                <TabsContent value="second-year" className={`flex gap-4`}>
+                <TabsContent value="second-year" className={`flex gap-4 p-0 m-0`}>
                     {/* First Table for Year Filter */}
                     <StudyProgramDetailTable
                         alias={alias}
@@ -182,7 +182,7 @@ export default function Users(props: PropsParams) {
                     />
                 </TabsContent>
 
-                <TabsContent value="third-year" className={`flex gap-4`}>
+                <TabsContent value="third-year" className={`flex gap-4 p-0 m-0`}>
                     {/* First Table for Year Filter */}
                     <StudyProgramDetailTable
                         alias={alias}
@@ -198,7 +198,7 @@ export default function Users(props: PropsParams) {
                         data={filterDataByYearAndSemester(3, 2)}
                     />
                 </TabsContent>
-                <TabsContent value="fourth-year" className={`flex gap-4`}>
+                <TabsContent value="fourth-year" className={`flex gap-4 p-0 m-0`}>
                     {/* First Table for Year Filter */}
                     <StudyProgramDetailTable
                         alias={alias}

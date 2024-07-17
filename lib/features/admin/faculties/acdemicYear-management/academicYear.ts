@@ -13,6 +13,7 @@ export const academicYearApi = istadLmsApi.injectEndpoints({
                 method: 'POST',
                 body: newAcademicYear,
             }),
+            invalidatesTags: [{type: 'AcademicYears', id: 'LIST'}],
         }),
         getAcademicYearByAlias: builder.query({
             query: (alias) => ({
@@ -26,6 +27,7 @@ export const academicYearApi = istadLmsApi.injectEndpoints({
                 method: 'PATCH',
                 body: updatedData,
             }),
+            invalidatesTags: [{type: 'AcademicYears', id: 'LIST'}],
         }),
         enableAcademicYearByAlias: builder.mutation<void, string>({
             query: (alias) => ({

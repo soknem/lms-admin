@@ -20,9 +20,12 @@ import {
 } from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import {AcademicYearType} from "@/lib/types/admin/faculty";
 import {toast} from "react-hot-toast";
+import slugify from "slugify";
 
 const validationSchema = Yup.object().shape({
-    alias: Yup.string().required('Alias is required'),
+    alias: Yup.string()
+        .required("Alias is required")
+        .matches(/^\d{4}-\d{4}$/, "Slug must be in the format year-year (e.g., 2020-2021)"),
     academicYear: Yup.string().required('Academic Year is required'),
     status: Yup.string().required('Status is required'),
     isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
@@ -51,7 +54,6 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
     const [editAcademicYear] = useEditAcademicYearByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
     const {data: academicYearData, isSuccess} = useGetAcademicYearByAliasQuery(alias);
-    const {refetch: refetchAcademicYear} = useGetAcademicYearsQuery({page: 0, pageSize: 10});
     const [initialValues, setInitialValues] = useState({
         alias: "",
         academicYear: "",
@@ -85,7 +87,6 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
 
             await editAcademicYear({alias: initialAlias, updatedData: editAcademicYearDataByAlias}).unwrap();
 
-            // Now update the alias if it has changed
             if (values.alias !== initialAlias) {
                 await editAcademicYear({
                     alias: values.alias,
@@ -94,7 +95,6 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
             }
 
             resetForm();
-            refetchAcademicYear();
             toast.success('Successfully created!');
             onClose();
         } catch (error) {
@@ -114,9 +114,10 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                 <Formik
                     enableReinitialize
                     initialValues={initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-1">
 
@@ -130,9 +131,21 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                                     </div>
                                     <Field
                                         type="text"
-                                        placeholder="academicYear"
+                                        placeholder="2023-2023"
                                         name="academicYear"
                                         id="academicYear"
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "academicYear",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
@@ -151,7 +164,9 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
+                                        disabled
                                         type="text"
+                                        placeholder="Associated Degree"
                                         name="alias"
                                         id="alias"
                                         className={` ${style.input}`}
@@ -163,7 +178,7 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between flex-wrap space-y-2`}>
+                                <div className={` ${style.inputContainer} flex w-full justify-between items-center`}>
 
                                     {/* isDraft */}
                                     <div className={``}>
@@ -206,19 +221,19 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value={1}
+                                                value="1"
                                                 label="Pending"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value={2}
+                                                value="2"
                                                 label="Started"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
-                                                value={3}
+                                                value="3"
                                                 label="Ended"
                                             />
                                         </div>
@@ -234,13 +249,14 @@ export function EditAcademicYearForm({alias, onClose}: { alias: string; onClose:
 
                             </div>
 
-                            {/* Submit Button */}
+                            {/* button submit */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Changes
+                                    {isSubmitting ? 'Editing...' : 'Save Change'}
                                 </Button>
                             </DialogFooter>
                         </Form>

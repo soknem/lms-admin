@@ -61,12 +61,10 @@ const RadioButton = ({field, value, label}: any) => {
 export function CreateAcademicYearForm() {
     const [isOpen, setIsOpen] = useState(false);
     const [createAcademicYear] = useCreateAcademicYearMutation();
-    const {refetch: refetchAcademicYear} = useGetAcademicYearsQuery({page: 0, pageSize: 10});
 
     const handleSubmit = async (values: AcademicYearType, createAcademicYear: any) => {
         try {
             await createAcademicYear(values).unwrap();
-            refetchAcademicYear();
             toast.success('Successfully created!');
             setIsOpen(false);
 
@@ -75,7 +73,6 @@ export function CreateAcademicYearForm() {
             toast.error('Failed to create academic year');
         }
     };
-
 
     return (
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
@@ -97,9 +94,9 @@ export function CreateAcademicYearForm() {
                     validationSchema={validationSchema}
                     onSubmit={(values) => handleSubmit(values, createAcademicYear)}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 items-center">
 
                                 {/* academicYear*/}
                                 <div className={` ${style.inputContainer}`}>
@@ -158,7 +155,7 @@ export function CreateAcademicYearForm() {
                                     />
                                 </div>
 
-                                <div className={`flex flex-col w-full justify-between space-y-2`}>
+                                <div className={` ${style.inputContainer} flex w-full justify-between items-center`}>
 
                                     {/* isDraft */}
                                     <div className={``}>
@@ -228,13 +225,14 @@ export function CreateAcademicYearForm() {
                                 </div>
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Add
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

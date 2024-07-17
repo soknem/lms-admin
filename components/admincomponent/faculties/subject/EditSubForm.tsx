@@ -72,6 +72,7 @@ const RadioButton = ({field, value, label}: any) => {
         </div>
     );
 };
+
 const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     const [imagePreview, setImagePreview] = useState(previewUrl);
     const fileInputRef = useRef<HTMLInputElement>(null);

@@ -11,23 +11,6 @@ import React, {useEffect, useState} from "react";
 import {TbAsterisk} from "react-icons/tb";
 import {useGetAcademicYearByAliasQuery} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
-            />
-            <label className="pl-2" htmlFor={value.toString()}>
-                {label}
-            </label>
-        </div>
-    );
-};
-
 export function ViewAcademicYeaForm({alias, onClose}: { alias: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [initialAlias, setInitialAlias] = useState("");
@@ -84,11 +67,6 @@ export function ViewAcademicYeaForm({alias, onClose}: { alias: string; onClose: 
                                         id="academicYear"
                                         className={` ${style.input}`}
                                     />
-                                    <ErrorMessage
-                                        name="academicYear"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
                                 </div>
 
                                 {/* Academic Year Alias*/}
@@ -104,11 +82,6 @@ export function ViewAcademicYeaForm({alias, onClose}: { alias: string; onClose: 
                                         name="alias"
                                         id="alias"
                                         className={` ${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="alias"
-                                        component="div"
-                                        className={`${style.error}`}
                                     />
                                 </div>
                             </div>

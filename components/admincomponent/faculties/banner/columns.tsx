@@ -38,7 +38,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
     }
 
     if (column.id === "description") {
-        return <span className={`line-clamp-1`}>{value || "No Description"}</span>;
+        return <span className={`w-[200px] line-clamp-1`}>{value || "No Description"}</span>;
     }
 
     if (column.id === "link") {

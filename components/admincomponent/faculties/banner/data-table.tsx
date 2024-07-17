@@ -54,7 +54,8 @@ export function BannerTable<TData, TValue>({
     const [allData, setData] = useState(() => [...data]);
     const [originalData, setOriginalData] = useState(() => [...data]);
     const [editedRows, setEditedRows] = useState({});
-    const [selectedFilter, setSelectedFilter] = useState("All");
+    const [selectedFilter, setSelectedFilter] = useState("Filter by visibility");
+    const [selectedFilterStatus, setSelectedFilterStatus] = useState("Filter by status");
 
     const table = useReactTable({
         data,
@@ -104,7 +105,6 @@ export function BannerTable<TData, TValue>({
     });
 
 
-
     const filterOptions = ["All", "Public", "Draft"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
@@ -117,6 +117,21 @@ export function BannerTable<TData, TValue>({
                         ? true
                         : "";
         table.getColumn("isDraft")?.setFilterValue(filterValue);
+    };
+
+    const filterStatus = ["All", "Active", "Disabled"];
+    const handleFilterStatusChange = (value: string) => {
+        // const displayValue = value === "All" ? "Filter by status" : value;
+        setSelectedFilterStatus(value);
+        const filterValue =
+            value === "All"
+                ? ""
+                : value === "Active"
+                    ? false
+                    : value === "Disabled"
+                        ? true
+                        : "";
+        table.getColumn("isDeleted")?.setFilterValue(filterValue);
     };
 
     return (
@@ -149,7 +164,7 @@ export function BannerTable<TData, TValue>({
                     <DropdownMenuTrigger asChild>
                         <Button
                             variant="outline"
-                            className=" justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
+                            className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
                             <TbFilter className='mr-2 h-4 w-4'/>
                             {selectedFilter}
@@ -159,49 +174,54 @@ export function BannerTable<TData, TValue>({
                         align="end"
                         className="border-[#E6E6E6] bg-white"
                     >
+                        {/* Title */}
+                        <div className="px-4 py-2 font-semibold text-lms-gray-30">
+                            Filter by visibility
+                        </div>
                         {filterOptions.map((option) => (
                             <DropdownMenuItem
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
-                                className={`cursor-pointer  ${
-                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
-                                    option
+                                className={`cursor-pointer ${
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") === option
                                 }`}
                             >
-                                {option}
+                                {option || "Filter by status"}
                             </DropdownMenuItem>
                         ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Column visibility */}
+                {/* Filter status*/}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white ml-auto text-lms-gray-30'
+                            variant="outline"
+                            className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
-                            <TbAdjustmentsHorizontal className='mr-2 h-4 w-4'/>
-                            Table View
+                            <TbFilter className='mr-2 h-4 w-4'/>
+                            {selectedFilterStatus}
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-white">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize focus:bg-background"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                );
-                            })}
+                    <DropdownMenuContent
+                        align="end"
+                        className="border-[#E6E6E6] bg-white"
+                    >
+                        {/* Title */}
+                        <div className="px-4 py-2 font-semibold text-lms-gray-30">
+                            Filter by status
+                        </div>
+                        {filterStatus.map((option) => (
+                            <DropdownMenuItem
+                                key={option}
+                                onSelect={() => handleFilterStatusChange(option)}
+                                className={`cursor-pointer ${
+                                    (table.getColumn("isDeleted")?.getFilterValue() || "All") === option
+                                }`}
+                            >
+                                {option}
+                            </DropdownMenuItem>
+                        ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
 
@@ -212,7 +232,7 @@ export function BannerTable<TData, TValue>({
             {/* Table */}
             <div className="w-full rounded-md p-4 bg-white">
                 <Table>
-                    <TableHeader className="text-gray-30">
+                    <TableHeader className="text-lms-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
