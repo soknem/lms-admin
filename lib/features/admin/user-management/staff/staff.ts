@@ -12,7 +12,7 @@ export const staffApi = istadLmsApi.injectEndpoints({
 
         // **** Get Single Staff *****
         getStaffByUuid: builder.query({
-            query: (uuid) => `/users/${uuid}`,
+            query: (uuid) => `/users/except-student/${uuid}`,
             providesTags: [{ type: 'SingleStaff', id: 'LIST' }],
         }),
 
@@ -33,7 +33,7 @@ export const staffApi = istadLmsApi.injectEndpoints({
                 method: 'PATCH',
                 body: updatedData,
             }),
-            invalidatesTags: [{ type: 'SingleStaff', id: 'LIST' },{ type: 'SingleIns', id: 'LIST' }],
+            invalidatesTags: [{ type: 'SingleStaff', id: 'LIST' },{ type: 'SingleIns', id: 'LIST' },{ type: 'Staffs', id: 'LIST' }],
         }),
 
         // **** Staff Enable & Disable *****

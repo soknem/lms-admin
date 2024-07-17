@@ -28,6 +28,8 @@ import { OptionType , courseAssessmentTableType } from "@/lib/types/admin/academ
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import StatusBadge from "@/components/common/StatusBadge";
+import {useUpdateCourseAssessmentMutation} from "@/lib/features/admin/academic-management/assesment/assessment";
+import useUpdateFieldData from "@/components/admincomponent/academics/assesments/eachCourse/useUpdateFieldData";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {
@@ -37,17 +39,41 @@ const TableCell = ({ getValue, row, column, table }: any) => {
     const tableMeta = table.options.meta;
     const [value, setValue] = useState(initialValue);
 
+    const [edited, setEdited] = useState(false);
+    const updateFieldData = useUpdateFieldData();
+
     useEffect(() => {
         setValue(initialValue);
     }, [initialValue]);
 
-    const onBlur = () => {
-        tableMeta?.updateData(row.index, column.id, value);
+    const onBlur = async () => {
+        if (edited) {
+            console.log('OnBlur - Value:', value); // Added log
+            tableMeta?.updateData(row.index, column.id, value);
+            await updateFieldData(row.original.uuid, column.id, value); // Call API to update field data
+            setEdited(false);
+        }
     };
 
-    const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const onSelectChange = async (e: ChangeEvent<HTMLSelectElement>) => {
         setValue(e.target.value);
         tableMeta?.updateData(row.index, column.id, e.target.value);
+        await updateFieldData(row.original.uuid, column.id, e.target.value); // Call API to update field data
+        setEdited(false);
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(`handleChange - Column: ${column.id}, Value: ${e.target.value}`); // Added log
+        setValue(e.target.value);
+        setEdited(true);
+
+        tableMeta?.setEditedRows((old: any) => ({
+            ...old,
+            [row.id]: {
+                ...old[row.id],
+                [column.id]: e.target.value,
+            },
+        }));
     };
 
 
@@ -71,49 +97,74 @@ const TableCell = ({ getValue, row, column, table }: any) => {
           }
     }
 
+    // const updateFieldData = async (uuid: string, columnId: string, value: any) => {
+    //     try {
+    //         const updatedData = { [columnId]: value }; // Construct the update body dynamically
+    //
+    //         await updateCourseAssessment({ uuid, updatedData });
+    //         console.log(`Field ${columnId} updated successfully with value:`, value);
+    //     } catch (error) {
+    //         console.error('Error updating field:', error);
+    //     }
+    // };
 
     if (tableMeta?.editedRows[row.id]) {
-
-        return columnMeta?.type === "select" ? (
-
-            //custom on only normal dropdown 
+        return columnMeta?.type === 'select' ? (
+            //custom on only normal dropdown
             <select
                 className="border-1 border-gray-30 rounded-md focus:to-primary"
                 onChange={onSelectChange}
                 value={initialValue}
             >
                 {columnMeta?.options?.map((option: OptionType) => (
-                    <option
-                        key={option.value}
-                        value={option.value}
-                    >
+                    <option key={option.value} value={option.value}>
                         {option.label}
                     </option>
                 ))}
-
             </select>
-        ) : (
-
-            //custom on normal input text
+        ) : accessorKey !== 'cardId' &&
+        accessorKey !== 'grade' &&
+        accessorKey !== 'total' &&
+        accessorKey !== 'course' &&
+        accessorKey !== 'class' &&
+        accessorKey !== 'dob' &&
+        accessorKey !== 'gender' &&
+        accessorKey !== 'nameEn' ? (
             <input
-                className="w-full p-2 border-1 border-gray-30 rounded-md bg-gray-100 "
+                className="w-full p-2 border-1 border-gray-30 rounded-md bg-gray-100"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={handleChange} // Use handleChange here
                 onBlur={onBlur}
-                type={columnMeta?.type || "text"}
+                type={columnMeta?.type || 'text'}
             />
-
+        ) : (
+            <span>{value}</span>
         );
     }
-    return <span>{value}</span>;
-};
+return <span>{value}</span>;
+}
 
-// Dynamic Edit on cell
+
 const EditCell = ({ row, table }: any) => {
     const meta = table.options.meta;
+    const updateFieldData = useUpdateFieldData();
 
     const setEditedRows = async (e: MouseEvent<HTMLButtonElement>) => {
         const action = e.currentTarget.name;
+        console.log(`Button clicked: ${action}`); // Added log
+
+        if (action === "done") {
+            const editedRow = meta?.editedRows[row.id];
+            console.log('Edited row:', editedRow); // Added log
+
+            if (editedRow) {
+                const columnIds = Object.keys(editedRow);
+                for (const columnId of columnIds) {
+                    console.log(`Updating field: ${columnId} with value: ${editedRow[columnId]}`); // Added log
+                    await updateFieldData(row.original.uuid, columnId, editedRow[columnId]);
+                }
+            }
+        }
 
         meta?.setEditedRows((old: any) => ({
             ...old,
@@ -129,18 +180,14 @@ const EditCell = ({ row, table }: any) => {
         <div>
             {meta?.editedRows[row.id] ? (
                 <div className="flex flex-row">
-
-                    <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel" >
-                        <RxCross2 size={20}  className="text-red-500"/>
+                    <button className="mr-3 bg-red-100 rounded-full p-1" onClick={setEditedRows} name="cancel">
+                        <RxCross2 size={20} className="text-red-500" />
                     </button>
-
-                    <button onClick={setEditedRows} name="done"className="bg-green-100 rounded-full p-1" >
+                    <button onClick={setEditedRows} name="done" className="bg-green-100 rounded-full p-1">
                         <IoCheckmarkSharp size={20} className="text-green-500" />
                     </button>
-
                 </div>
             ) : (
-
                 <button onClick={setEditedRows} name="edit">
                     <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
                 </button>
@@ -150,24 +197,8 @@ const EditCell = ({ row, table }: any) => {
 };
 
 
-export const CourseAssessmentColumns: ColumnDef<courseAssessmentTableType>[] = [
-    {
-        accessorKey: 'cardId',
-        header: ({ column }) => {
-            return (
-                <Button
-                    
-                    variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                   CARD ID
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </Button>
-            )
-        },
-        cell: TableCell,
 
-    },
+export const CourseAssessmentColumns: ColumnDef<courseAssessmentTableType>[] = [
     {
         accessorKey: 'nameEn',
         header: ({ column }) => {

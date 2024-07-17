@@ -30,7 +30,6 @@ type props = {
 const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
     const router = useRouter();
 
-
     const [isCardVisible, setIsCardVisible] = useState(false);
     const [isDeleted, setIsDeleted] = useState(isDeletedState);
 
@@ -95,8 +94,6 @@ const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
                             <></>
                         )
                     }
-
-
 
                     <DropdownMenuItem
                         className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}

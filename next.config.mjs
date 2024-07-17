@@ -8,8 +8,12 @@ const nextConfig = {
                 hostname: 'lms-api.istad.co',
                 pathname: '**',
             },
-        ],
-        domains: ['152.42.220.220', 'newogle.com'], // Add the domains you need
+            {
+                protocol: 'http',
+                hostname: '152.42.220.220',
+                pathname: '**',
+            },
+        ]
     }
 };
 
