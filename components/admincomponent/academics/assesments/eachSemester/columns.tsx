@@ -5,10 +5,6 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect, ChangeEvent } from 'react';
 import {OptionType, semesterAssessementType, CourseShortType} from "@/lib/types/admin/academics";
 import StatusBadge from "@/components/common/StatusBadge";
-import {useSelector} from "react-redux";
-import {
-    selectEachSemesterAssessment
-} from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
 
 const getUniqueSubjects = (data: semesterAssessementType[]) => {
     const subjectsSet = new Set<string>();
@@ -97,11 +93,11 @@ const initialData: semesterAssessementType[] = [
         classCode: "FY2025 - M1",
         academicYear: null,
         courses: [
-            { title: "Introduction to IT", score: 85 },
-            { title: "Programming Fundamental", score: 92 },
-            { title: "Intensive English Program I", score: 88 },
-            { title: "Academic Skill Development", score: 90 },
-            { title: "Mathematics I", score: 95 }
+            { title: "Entrepreneurship 101: From Idea to Business", score: 85 },
+            { title: "Data Science Fundamentals: Unlocking Insights", score: 92 },
+            { title: "Financial Literacy for Entrepreneurs: Managing Money Wisely", score: 88 },
+            // { title: "Academic Skill Development", score: 90 },
+            // { title: "Mathematics I", score: 95 }
         ],
         grade: "A",
         gpa: 0.0,
@@ -113,6 +109,7 @@ const initialData: semesterAssessementType[] = [
 ];
 
 const uniqueSubjects = getUniqueSubjects(initialData);
+
 const subjectColumns = uniqueSubjects.map((subject) => ({
     accessorKey: subject.replace(/\s+/g, ''),
     header: ({ column } : any) => (
@@ -131,7 +128,6 @@ const subjectColumns = uniqueSubjects.map((subject) => ({
         return subjectScore ?? '-';
     }
 }));
-
 
 export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     {
@@ -187,6 +183,7 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
         ),
         cell: TableCell,
     },
+
     {
         accessorKey: 'classCode',
         header: ({column}) => (
@@ -214,6 +211,7 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
         ),
         cell: TableCell,
     },
+
     {
         accessorKey: 'total',
         header: ({column}) => (
@@ -240,5 +238,3 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
         cell: TableCell,
     },
 ];
-
-
