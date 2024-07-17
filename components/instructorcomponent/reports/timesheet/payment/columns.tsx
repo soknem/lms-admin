@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { OptionType, TranscriptType } from "@/lib/types/admin/academics";
-import { PaymentType } from "@/lib/types/instructor/timesheet";
+import { TimesheetType } from "@/lib/types/instructor/timesheet";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -40,27 +40,27 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
-      // Custom on only normal dropdown
-      <select
-        className="border-1 border-gray-30 rounded-md focus:to-primary"
-        onChange={onSelectChange}
-        value={initialValue}
-      >
-        {columnMeta?.options?.map((option: OptionType) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        // Custom on only normal dropdown
+        <select
+            className="border-1 border-gray-30 rounded-md focus:to-primary"
+            onChange={onSelectChange}
+            value={initialValue}
+        >
+          {columnMeta?.options?.map((option: OptionType) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+          ))}
+        </select>
     ) : (
-      // Custom on normal input text
-      <input
-        className="w-full p-2 border-1 border-gray-30 rounded-md"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        type={columnMeta?.type || "text"}
-      />
+        // Custom on normal input text
+        <input
+            className="w-full p-2 border-1 border-gray-30 rounded-md"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={onBlur}
+            type={columnMeta?.type || "text"}
+        />
     );
   }
 
@@ -72,24 +72,24 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   return <span>{value}</span>;
 };
 
-export const PaymentColumns: ColumnDef<PaymentType>[] = [
+export const PaymentColumns: ColumnDef<TimesheetType>[] = [
   {
     accessorKey: "date",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          DATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            DATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "timeRange",
+    accessorKey: "session",
     header: ({ column }) => {
       return (
           <Button
@@ -101,25 +101,19 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
           </Button>
       );
     },
-    cell: ({ row }) => {
-      const { lectureStartTime, lectureEndTime } = row.original;
-      return (
-          <span>{`${lectureStartTime} - ${lectureEndTime}`}</span>
-      );
-    },
-
-
-  },  {
+    cell: TableCell,
+  },
+  {
     accessorKey: "theoryRate",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          THEORYRATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            THEORYRATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -128,55 +122,55 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "pwRate",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          // To customize the size of each column
-          className="w-[130px] flex justify-start items-start"
-        >
-          PW RATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              // To customize the size of each column
+              className="w-[130px] flex justify-start items-start"
+          >
+            PW RATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "theoryHours",
+    accessorKey: "theoryHour",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          // To customize the size of each column
-          className="w-[150px] flex justify-start items-start"
-        >
-          THEORYHOUR
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              // To customize the size of each column
+              className="w-[150px] flex justify-start items-start"
+          >
+            THEORYHOUR
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "pwHours",
+    accessorKey: "pwHour",
     header: ({ column }) => {
       return (
-        <Button variant="ghost">
-          PW HOUR
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button variant="ghost">
+            PW HOUR
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "totalAmount",
+    accessorKey: "total",
     header: ({ column }) => {
       return (
-        <Button variant="ghost">
-          TOTAL
-        </Button>
+          <Button variant="ghost">
+            TOTAL
+          </Button>
       );
     },
     cell: TableCell,

@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react'
 
-// Import from shad cn
+
+//import from shad cn
 import {
   ColumnDef,
   flexRender,
@@ -27,12 +28,15 @@ import {
 
 import { Input } from '@/components/ui/input'
 
+
 import { Button } from "@/components/ui/button"
 
 import { FaSearch } from "react-icons/fa";
 
 import { useRouter } from 'next/navigation'
-import { CalendarIcon } from "lucide-react";
+import {CalendarIcon} from "lucide-react";
+
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -50,9 +54,8 @@ export function StudentAttendanceDataTable<TData, TValue>({
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
   useRouter();
-
   const table = useReactTable({
-    data: allData,
+    data,
     columns,
     state: {
       sorting,
@@ -96,10 +99,14 @@ export function StudentAttendanceDataTable<TData, TValue>({
         );
       },
     },
-  });
+  })
+
+
+
 
   return (
       <>
+
         <div className='flex items-center justify-between gap-4 '>
           <div
               className="px-3 py-1.5 bg-white rounded-lg w-[280px] flex justify-start items-center text-left font-normal border-2"
@@ -118,16 +125,21 @@ export function StudentAttendanceDataTable<TData, TValue>({
                 onChange={(event) =>
                     table.getColumn("nameEn")?.setFilterValue(event.target.value)
                 }
+
                 className="border-[#E6E6E6] bg-white pl-10 text-lms-gray-30 "
             />
 
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <FaSearch className="text-gray-400" />
             </div>
+
           </div>
+
 
           <Button className="bg-lms-primary text-lms-white-80 hover:bg-lms-primary/80">Done</Button>
         </div>
+
+
 
         {/* Table */}
         <div className='rounded-md p-4 bg-white'>
@@ -135,16 +147,18 @@ export function StudentAttendanceDataTable<TData, TValue>({
             <TableHeader className='text-lms-gray-30'>
               {table.getHeaderGroups().map(headerGroup => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                              )}
-                        </TableHead>
-                    ))}
+                    {headerGroup.headers.map(header => {
+                      return (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                )}
+                          </TableHead>
+                      )
+                    })}
                   </TableRow>
               ))}
             </TableHeader>
@@ -158,7 +172,7 @@ export function StudentAttendanceDataTable<TData, TValue>({
                           data-state={row.getIsSelected() && 'selected'}
                       >
                         {row.getVisibleCells().map(cell => (
-                            <TableCell key={cell.id}>
+                            <TableCell key={cell.id} >
                               {flexRender(
                                   cell.column.columnDef.cell,
                                   cell.getContext()
@@ -178,11 +192,13 @@ export function StudentAttendanceDataTable<TData, TValue>({
                   </TableRow>
               )}
             </TableBody>
+
           </Table>
         </div>
 
         {/* Pagination */}
         <div className='flex items-center justify-end space-x-2 py-4'>
+
           <Button
               className='border-gray-30'
               variant='outline'
@@ -202,6 +218,9 @@ export function StudentAttendanceDataTable<TData, TValue>({
             Next
           </Button>
         </div>
+
+
       </>
   )
 }
+

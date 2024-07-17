@@ -1,12 +1,10 @@
-
-export type PaymentType={
+export type TimesheetType={
   date: string;
-  lectureStartTime: string;
-  lectureEndTime: string;
-  theoryHours: number;
-  theoryRate: number | null;
-  pwHours: number;
-  pwRate: number | null;
-  totalAmount: number | null;
-  
-  };
+  session: string;
+  theoryRate: number;
+  pwRate: number;
+  theoryHour: number;
+  pwHour: number;
+  total: string;
+
+};

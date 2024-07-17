@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+
+//import from shad cn
 import {
   ColumnDef,
   flexRender,
-  ColumnFiltersState,
+  SortingState,
   VisibilityState,
+  ColumnFiltersState,
   getCoreRowModel,
   getSortedRowModel,
   getFilteredRowModel,
@@ -17,10 +20,15 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+
+
+import { useRouter } from "next/navigation";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
 interface DataTableProps<TData, TValue> {
@@ -37,6 +45,8 @@ export function PaymentDataTable<TData, TValue>({
   const [allData, setData] = useState(() => [...data]);
   const [originalData, setOriginalData] = useState(() => [...data]);
   const [editedRows, setEditedRows] = useState({});
+
+  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -83,18 +93,10 @@ export function PaymentDataTable<TData, TValue>({
     },
   });
 
-  const calculateTotal = () => {
-    return data.reduce((total, row) => {
-      // @ts-ignore
-      const value = parseFloat(String(row.total)); // Convert row.total to a string first
-      return total + (isNaN(value) ? 0 : value);
-    }, 0).toFixed(2);
-  };
-
-
   return (
       <>
         {/* Table */}
+
         <div className="rounded-[10px] bg-lms-white-80">
           <p className="text-black_80 font-bold ml-4 mb-4">
             FY2025 - A1 Introduction to IT
@@ -102,7 +104,8 @@ export function PaymentDataTable<TData, TValue>({
           </p>
           <div className="flex justify-between p-4 ">
             <div>
-              <Label className="text-lms-gray-80">Generation</Label>
+              <Label className="text-lms-gray-80 ">Generation</Label>
+
               <p className="flex font-medium text-lms-black90">Generation 1</p>
             </div>
             <div>
@@ -124,8 +127,8 @@ export function PaymentDataTable<TData, TValue>({
             <div>
               <Label className="text-lms-gray-80">Major</Label>
               <div className="flex gap-2">
-                <p className="flex text-lms-black90 font-medium">
-                  Information Technology
+                <p className="flextext-lms-black90 font-medium">
+                  Information Techology
                 </p>
               </div>
             </div>
@@ -135,16 +138,18 @@ export function PaymentDataTable<TData, TValue>({
             <TableHeader className="text-lms-gray-30">
               {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                              )}
-                        </TableHead>
-                    ))}
+                    {headerGroup.headers.map((header) => {
+                      return (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                )}
+                          </TableHead>
+                      );
+                    })}
                   </TableRow>
               ))}
             </TableHeader>
@@ -170,7 +175,7 @@ export function PaymentDataTable<TData, TValue>({
                   <TableRow>
                     <TableCell
                         colSpan={columns.length}
-                        className="h-24 text-center"
+                        className="h-24 text-center "
                     >
                       No results.
                     </TableCell>
@@ -178,15 +183,16 @@ export function PaymentDataTable<TData, TValue>({
               )}
               <TableRow>
                 <TableCell
-                    colSpan={columns.length - 1}
-                    className="h-15 text-[18px] text-lms-black90 bg-lms-grayBorder"
+                    colSpan={columns.length}
+                    className="h-15  text-[18px] text-lms-black90 bg-lms-grayBorder "
                 >
                   Total
                 </TableCell>
                 <TableCell
-                    className="font-normal text-[18px] text-lms-black90 bg-lms-grayBorder"
+                    colSpan={columns.length}
+                    className="font-normal text-[18px] text-lms-black90 bg-lms-grayBorder  "
                 >
-                  ${calculateTotal()}
+                  $1200.00
                 </TableCell>
               </TableRow>
             </TableBody>
