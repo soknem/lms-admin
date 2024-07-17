@@ -159,7 +159,6 @@ const ActionCell = ({ row } : any) => {
 
   const classes = useSelector((state: RootState) => selectDetailClasses(state));
 
-  console.log("classes detail: ",classes)
 
 
   const handleOpenCard = () => {
@@ -170,12 +169,10 @@ const ActionCell = ({ row } : any) => {
     if(isDeleted){
       await enableClass(classUuid).unwrap();
       setIsDeleted((prev :any) => !prev);
-      console.log('Class enabled successfully');
 
     }else{
       await disableClass(classUuid).unwrap();
       setIsDeleted((prev : any) => !prev);
-      console.log('Class disable successfully');
     }
     setIsCardVisible(false);
   };

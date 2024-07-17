@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import React from "react";
-import {EditUserStaffForm} from "@/components/admincomponent/users/staff/EditUserStaffForm";
 import {EditStaffForm} from "@/components/admincomponent/users/staff/EditStaffForm";
 import {useGetStaffByUuidQuery} from "@/lib/features/admin/user-management/staff/staff";
 import {useGetInsDetailByUuidQuery} from "@/lib/features/admin/user-management/instructor/instructor";
@@ -22,7 +21,6 @@ export default function Users(props: Props) {
 
     const { data : staffData , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffByUuidQuery(props.params.id)
 
-    console.log("staff Data: ",staffData?.position || "Instructor");
 
     const { data : insData , error : insError,isSuccess: isInsSuccess ,isLoading: isInsLoading} = useGetInsDetailByUuidQuery(props.params.id)
 
@@ -51,8 +49,8 @@ export default function Users(props: Props) {
                 </BreadcrumbList>
             </Breadcrumb>
 
-            <section className="flex flex-grow  gap-6 p-6 bg-white rounded-[10px] justify-center items-center">
-                <EditStaffForm updateData={data} />
+            <section className="gap-6 p-6 bg-white rounded-[10px]">
+                <EditStaffForm uuid={props.params.id} updateData={data} />
             </section>
 
             <section>

@@ -68,7 +68,6 @@ export default function InstructorSidebarComponent({
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log("data from logout: ", data);
                 router.push("/login");
             }).catch((error) => {
             console.error("Error:", error);

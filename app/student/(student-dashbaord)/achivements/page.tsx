@@ -25,7 +25,6 @@ export default function Achievement() {
     const totalCourses = yearOfStudyData?.content.reduce((total: number, yearOfStudy: YearOfStudyAchievementContent) => total + yearOfStudy.course.length, 0) || 0;
 
 
-    console.log(" Year of study data", yearOfStudyData);
     const studentTitle = [
         "Name (KH)",
         "Name (EN)",

@@ -16,7 +16,6 @@ const CourseFilterComponent: React.FC = () => {
         const body = {globalOperator, specsDto};
         try {
             const result = await filterCourses({pageNumber: 0, pageSize: 25, body}).unwrap();
-            console.log(result.content)
         } catch (err) {
             console.error('Failed to filter courses from API:', err);
         }

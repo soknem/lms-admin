@@ -76,7 +76,6 @@ export function CardReset() {
                 confirmPassword: values.confirmPassword,
             }).unwrap();
 
-            console.log("Password reset successful");
             alert('Password reset successful!');
             router.push('/login');
 

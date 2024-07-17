@@ -5,30 +5,6 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect, ChangeEvent } from 'react';
 import {OptionType, semesterAssessementType, CourseShortType} from "@/lib/types/admin/academics";
 import StatusBadge from "@/components/common/StatusBadge";
-import {useSelector} from "react-redux";
-import {
-    selectEachSemesterAssessment
-} from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
-
-// const getUniqueSubjects = (data: semesterAssessementType[]) => {
-//     const subjectsSet = new Set<string>();
-//     data.forEach((item) => {
-//         item.subjects.forEach((subject) => {
-//             subjectsSet.add(subject.subjectName);
-//         });
-//     });
-//     return Array.from(subjectsSet);
-// };
-
-// const getUniqueSubjects = (data: semesterAssessementType[]) => {
-//     const subjectsSet = new Set<string>();
-//     data.forEach((item) => {
-//         item.courses.forEach((course) => {
-//             subjectsSet.add(course.title);
-//         });
-//     });
-//     return Array.from(subjectsSet);
-// };
 
 const getUniqueSubjects = (data: semesterAssessementType[]) => {
     const subjectsSet = new Set<string>();
@@ -37,7 +13,6 @@ const getUniqueSubjects = (data: semesterAssessementType[]) => {
             subjectsSet.add(course.title);
         });
     });
-    console.log("subject set: ",subjectsSet)
     return Array.from(subjectsSet);
 };
 
@@ -117,11 +92,11 @@ const initialData: semesterAssessementType[] = [
         classCode: "FY2025 - M1",
         academicYear: null,
         courses: [
-            { title: "Introduction to IT", score: 85 },
-            { title: "Programming Fundamental", score: 92 },
-            { title: "Intensive English Program I", score: 88 },
-            { title: "Academic Skill Development", score: 90 },
-            { title: "Mathematics I", score: 95 }
+            { title: "Entrepreneurship 101: From Idea to Business", score: 85 },
+            { title: "Data Science Fundamentals: Unlocking Insights", score: 92 },
+            { title: "Financial Literacy for Entrepreneurs: Managing Money Wisely", score: 88 },
+            // { title: "Academic Skill Development", score: 90 },
+            // { title: "Mathematics I", score: 95 }
         ],
         grade: "A",
         gpa: 0.0,
@@ -132,28 +107,8 @@ const initialData: semesterAssessementType[] = [
 
 ];
 
-// Dynamically generate subject columns
-// const uniqueSubjects = getUniqueSubjects(initialData);
-// const subjectColumns = uniqueSubjects.map((subject) => ({
-//     accessorKey: subject.replace(/\s+/g, ''),
-//     header: ({ column } : any) => (
-//         <Button
-//             variant='ghost'
-//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//         >
-//             {subject.toUpperCase()}
-//             <ArrowUpDown className='ml-2 h-4 w-4' />
-//         </Button>
-//     ),
-//     cell: ({ row }: any) => {
-//         const subjectScore = row.original.subjects.find(
-//             (sub: SubjectType) => sub.subjectName === subject
-//         )?.score;
-//         return subjectScore ?? '-';
-//     }
-// }));
-
 const uniqueSubjects = getUniqueSubjects(initialData);
+
 const subjectColumns = uniqueSubjects.map((subject) => ({
     accessorKey: subject.replace(/\s+/g, ''),
     header: ({ column } : any) => (
@@ -172,56 +127,6 @@ const subjectColumns = uniqueSubjects.map((subject) => ({
         return subjectScore ?? '-';
     }
 }));
-
-// const semesterStoreData = useSelector(selectEachSemesterAssessment)
-//
-// const uniqueSubjects = getUniqueSubjects(semesterStoreData);
-//
-// const subjectColumns = uniqueSubjects.map((subject) => ({
-//     accessorKey: subject.replace(/\s+/g, ''),
-//     header: ({ column } : any) => (
-//         <Button
-//             variant='ghost'
-//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//         >
-//             {subject.toUpperCase()}
-//             <ArrowUpDown className='ml-2 h-4 w-4' />
-//         </Button>
-//     ),
-//     cell: ({ row }: any) => {
-//         const subjectScore = row.original.courses.find(
-//             (course: CourseShortType) => course.title === subject
-//         )?.score;
-//         return subjectScore ?? '-';
-//     }
-// }));
-
-// export default function columnSemesterData() {
-//     // const semesterStoreData = useSelector(selectEachSemesterAssessment);
-//     const uniqueSubjects = getUniqueSubjects(initialData);
-//     const subjectColumns = uniqueSubjects.map((subject) => ({
-//         accessorKey: subject.replace(/\s+/g, ''),
-//         header: ({column}: any) => (
-//             <Button
-//                 variant='ghost'
-//                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//             >
-//                 {subject.toUpperCase()}
-//                 <ArrowUpDown className='ml-2 h-4 w-4'/>
-//             </Button>
-//         ),
-//         cell: ({row}: any) => {
-//             const subjectScore = row.original.courses.find(
-//                 (course: CourseShortType) => course.title === subject
-//             )?.score;
-//             return subjectScore ?? '-';
-//         }
-//     }));
-//
-//
-//
-//
-// }
 
 export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     {
@@ -277,6 +182,7 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
         ),
         cell: TableCell,
     },
+
     {
         accessorKey: 'classCode',
         header: ({column}) => (
@@ -304,6 +210,7 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
         ),
         cell: TableCell,
     },
+
     {
         accessorKey: 'total',
         header: ({column}) => (
@@ -330,5 +237,3 @@ export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
         cell: TableCell,
     },
 ];
-
-

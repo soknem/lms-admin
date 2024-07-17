@@ -8,8 +8,6 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { emailOrUsername, password } = body;
 
-        console.log("emailOrUsername: " + emailOrUsername);
-        console.log("password: " + password);
 
         // Make a POST request to the Our API
         const response = await fetch(

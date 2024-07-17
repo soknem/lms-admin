@@ -72,21 +72,18 @@ export default function AddInstructorForm() {
             cvFormData.append('file', cvFile);
 
             const cvResponse = await createSingleFile(cvFormData).unwrap();
-            console.log('CV File uploaded:', cvResponse);
 
             // Upload ID card file
             const idCardFormData = new FormData();
             idCardFormData.append('file', idCardFile);
 
             const idCardResponse = await createSingleFile(idCardFormData).unwrap();
-            console.log('ID Card File uploaded:', idCardResponse);
 
             // Upload Profile Image
             const imagePfFormData = new FormData();
             imagePfFormData.append('file', imagePfFile);
 
             const imagePfResponse = await createSingleFile(imagePfFormData).unwrap();
-            console.log('Pf File uploaded:', imagePfFile);
 
             const newInstructor = {
                 nameEn: values.nameEn,
@@ -109,12 +106,10 @@ export default function AddInstructorForm() {
                 profileImage: imagePfResponse.name
             };
 
-            console.log("New Instructor Data: ", newInstructor); // Debugging the new class data
 
             try {
                 await addInstructor(newInstructor).unwrap();
                 toast.success('Successfully created!');
-                console.log("Class created successfully"); // Debugging successful creation
             } catch (error) {
                 toast.error('Failed to create instructor!');
                 console.error("Error creating instructor: ", error); // Debugging the error
@@ -159,14 +154,12 @@ export default function AddInstructorForm() {
         //         .required("Required"),
         // }),
         onSubmit: values => {
-            // console.log(values)
             // handleAddInstructor(values);
             const formattedValues = {
                 ...values,
                 dob: birthDate ? format(birthDate, "yyyy-MM-dd") : "",
             };
             // dispatch(addLecture(formattedValues))
-            console.log("form values: ",values);
             handleAddInstructor(formattedValues);
         }
     })

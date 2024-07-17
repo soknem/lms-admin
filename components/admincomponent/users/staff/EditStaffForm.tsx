@@ -19,12 +19,10 @@ import {Calendar} from "@/components/ui/calendar";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {toast} from "react-hot-toast";
 import {useUpdateStaffMutation} from "@/lib/features/admin/user-management/staff/staff";
-import {useUpdateInsMutation} from "@/lib/features/admin/user-management/instructor/instructor";
 
 
-export function EditStaffForm( {updateData} : any ) {
+export function EditStaffForm( {updateData,uuid} : any ) {
 
-    console.log("data staff detail :" , updateData);
 
     const [profileImage, setProfileImage] = useState(updateData?.profileImage || '');
 
@@ -85,41 +83,62 @@ export function EditStaffForm( {updateData} : any ) {
     // update staff
     const [updateStaff, { isLoading : isStfLoading, isSuccess : isStfSucess, error: isStfError }] = useUpdateStaffMutation();
 
-    // updateInstructor
-    const [updateIns, { isLoading : isInsLoading, isSuccess : isInsSucess, error: isInsError }] = useUpdateInsMutation();
-
 
     const handleUpdateStaff = async(values : any) => {
 
-        const uuid = updateData?.uuid;
         const educationValues = values.educations.map((education: { label: string; value: string }) => education.value);
+
         const skillValues = values.skills.map((skill: { label: string; value: string }) => skill.value);
 
-        const updatedData = {
-            nameEn: values.nameEn,
-            nameKh: values.nameKh,
-            gender: selectedGender?.value,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            dob: values.dob,
-            educations: educationValues,
-            skills: skillValues,
-            birthPlace: values.birthPlace,
-            currentAddress: values.currentAddress,
-            bio: values.bio,
-            linkGit: values.linkGit,
-            linkLinkedin: values.linkLinkedin,
-            linkTelegram: values.linkTelegram,
-        };
 
         try {
-            if(values.position === "INSTRUCTOR"){
-                await updateIns({uuid,updatedData}).unwrap();
-            }else{
-                await updateStaff({uuid,updatedData}).unwrap();
+
+
+            const updatedData : any = {
+                nameEn: values.nameEn,
+                nameKh: values.nameKh,
+                gender: selectedGender?.value,
+                phoneNumber: values.phoneNumber,
+                dob: values.dob,
+                educations: educationValues,
+                skills: skillValues,
+                birthPlace: values.birthPlace,
+                currentAddress: values.currentAddress,
+                bio: values.bio,
+                linkGit: values.linkGit,
+                linkLinkedin: values.linkLinkedin,
+                linkTelegram: values.linkTelegram,
+            };
+
+
+
+            if (cvFile) {
+                const cvFormData = new FormData();
+                cvFormData.append('file', cvFile);
+                const cvResponse = await createSingleFile(cvFormData).unwrap();
+                updatedData.uploadCv = cvResponse.name;
             }
+
+            if (idCardFile) {
+                const idCardFormData = new FormData();
+                idCardFormData.append('file', idCardFile);
+                const idCardResponse = await createSingleFile(idCardFormData).unwrap();
+                updatedData.identityCard = idCardResponse.name;
+            }
+
+            if (pfImageFile) {
+                const pfImageFormData = new FormData();
+                pfImageFormData.append('file', pfImageFile);
+                const pfImageResponse = await createSingleFile(pfImageFormData).unwrap();
+                updatedData.profileImage = pfImageResponse.name;
+            }
+
+            if(values.email !== updateData.email){
+                updatedData.email = values.email;
+            }
+
+           await updateStaff({uuid,updatedData}).unwrap();
             toast.success('Successfully updated!');
-            console.log("Staff updated successfully");
         } catch (error) {
             toast.error('Failed to update staff!');
             console.error("Error update staff: ", error);
@@ -157,7 +176,6 @@ export function EditStaffForm( {updateData} : any ) {
                 ...values,
                 dob: birthDate ? format(birthDate, "yyyy-MM-dd") : "",
             };
-            console.log("Form values: ", formattedValues);
             handleUpdateStaff(formattedValues)
         }
     });
@@ -213,7 +231,7 @@ export function EditStaffForm( {updateData} : any ) {
                                                         className="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center absolute -right-4 -bottom-4 border-2">
                                                         <IoCameraOutline className="w-5 h-5"/>
                                                         <input
-                                                            id="cv-dropzone-file"
+                                                            id="pf-dropzone-file"
                                                             type="file"
                                                             onChange={(e) => handleFileUpload(e, setPfImageFile)}
                                                             className="hidden"
@@ -657,9 +675,9 @@ export function EditStaffForm( {updateData} : any ) {
                         <button
                             type="submit"
                             className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            disabled={isInsLoading || isStfLoading}
+                            disabled={isStfLoading}
                         >
-                            {(isInsLoading || isStfLoading) ? "Updating..." : "Update"}
+                            {(isStfLoading) ? "Updating..." : "Update"}
                         </button>
                     </div>
                 </div>

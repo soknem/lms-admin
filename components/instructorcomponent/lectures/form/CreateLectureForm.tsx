@@ -43,6 +43,7 @@ import {useAddLectureMutation, useGetLectureQuery} from "@/lib/features/admin/ac
 import {Class} from "@/lib/types/admin/academics";
 import Select, {ActionMeta, SingleValue} from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
+import Modal from "@/components/common/ModalComponent";
 
 
 type OptionType  = {
@@ -55,7 +56,12 @@ type DescriptionItem =  {
     field: string;
 }
 
-export default function CreateLectureForm() {
+type PropsType = {
+    isVisible: boolean;
+    onClose: () => void;
+};
+
+export default function CreateLectureForm({ isVisible, onClose }: PropsType) {
     const [selectedOption, setSelectedOption] = useState<SingleValue<{ value: string; label: string }> | null>(null);
     // dropdown
     const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
@@ -99,7 +105,6 @@ export default function CreateLectureForm() {
             const result = await createLecture(newLecture).unwrap();
             refetchLecture()
             toast.success('Successfully created!');
-            console.log('Lecture created successfully');
 
 
         } catch (err : any) {
@@ -118,83 +123,6 @@ export default function CreateLectureForm() {
                     marginBottom: '20px', // Add padding at the bottom of the toast
                 },
             });
-
-
-
-            // let errorMessage = 'Failed to create lecture';
-            // let errorDescription = '';
-            //
-            // if (Array.isArray(err.data.error.description)) {
-            //     errorDescription = err.data.error.description.map((d : DescriptionItem) => `${d.reason} (${d.field})`).join('<br/>');
-            // } else {
-            //     errorDescription = err.data.error.description;
-            // }
-            //
-            // console.error('Error creating lecture:', err);
-
-
-// Create the custom toast
-//             toast.custom((t) => (
-//                 <div
-//                     className={`${
-//                         t.visible ? 'animate-enter' : 'animate-leave'
-//                     } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-//                 >
-//                     <div className="flex-1 w-0 p-4">
-//                         <div className="flex items-start">
-//                             <div className="ml-3 flex-1">
-//                                 <p className="text-based font-medium text-red-600 font-bold flex ">
-//                                     <MdError className="w-6 h-6" /> {errorMessage}
-//                                 </p>
-//                                 <p className="mt-1 text-sm text-gray-500"
-//                                    dangerouslySetInnerHTML={{__html: errorDescription}}>
-//                                 </p>
-//                             </div>
-//                         </div>
-//                     </div>
-//                     <div className="flex border-l border-gray-200">
-//                         <button
-//                             onClick={() => toast.dismiss(t.id)}
-//                             className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-//                         >
-//                             Close
-//                         </button>
-//                     </div>
-//                 </div>
-//             ), {
-//                 style: {
-//                     marginBottom: '20px',
-//                 },
-//             });
-
-        //     toast.custom((t) => (
-        //         <div
-        //             className={`${
-        //                 t.visible ? 'animate-enter' : 'animate-leave'
-        //             } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        //         >
-        //             <div className="flex-1 w-0 p-4">
-        //                 <div className="flex items-start">
-        //                     <div className="ml-3 flex-1">
-        //                         <div className="flex items-center">
-        //                             <MdError className="w-6 h-6 mr-2" />
-        //                             <p className="text-base text-red-600 font-bold ">
-        //                                 {errorMessage}
-        //                             </p>
-        //                         </div>
-        //
-        //                         <p className="mt-1 text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: errorDescription }}></p>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     ), {
-        //         duration: 5000, // Set duration in milliseconds (e.g., 5000ms = 5 seconds)
-        //         style: {
-        //             marginBottom: '20px',
-        //         },
-        //     });
-        // }
 
     }}
 
@@ -246,7 +174,6 @@ export default function CreateLectureForm() {
         }
     }, [classData, classError, dispatch]);
 
-    console.log("single class data", Courses);
 
     const handleCourseChange = (selectedOption : any) => {
         // Extracting the UUID from the selected option
@@ -317,27 +244,18 @@ export default function CreateLectureForm() {
                 lectureDate: date ? format(date, "yyyy-MM-dd") : "",
             };
             // dispatch(addLecture(formattedValues))
-            console.log("Form values: ", formattedValues);
             handleCreateLecture(formattedValues);
 
         }
+
     })
 
+
     return(
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button className='text-lms-white-80 bg-lms-primary hover:bg-lms-primary/90'>
-                    <FiPlus className="mr-2 h-4 w-4 " /> Add Lecture
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-white w-[500px] h-[700px] overflow-y-scroll ">
-                <DialogHeader>
-                    <DialogTitle>Add Lecture</DialogTitle>
-                </DialogHeader>
-                <form
-                    className="space-y-4 md:space-y-6"
-                    onSubmit={formik.handleSubmit}
-                >
+        <Modal isVisible={isVisible} onClose={onClose}>
+            <h2 className="text-xl text-lms-black-90 font-bold mb-4">Create Lecture</h2>
+            <form className="w-[960px]  space-y-4 md:space-y-6 " onSubmit={formik.handleSubmit}>
+                <div className="grid grid-cols-2 gap-4">
                     {/* Lecture Date */}
                     <div>
                         <RequiredFieldLabelComponent labelText="Date"
@@ -489,14 +407,15 @@ export default function CreateLectureForm() {
 
                         {formik.errors.isDraft && <p className="text-red-700">{formik.errors.isDraft}</p>}
                     </div>
+                </div>
 
-                    <div className="flex justify-end">
-                        <Button type="submit"
-                                className=" text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]">Add</Button>
-                    </div>
-
-                </form>
-            </DialogContent>
-        </Dialog>
-    );
+                <div className="flex justify-end">
+                    <Button type="submit"
+                            className=" text-lms-white-80 bg-lms-primary hover:bg-lms-primary rounded-[8px]"
+                            disabled={isLoading}
+                    >{isLoading ? "Adding..." : "Add"}</Button>
+                </div>
+            </form>
+        </Modal>
+    )
 }

@@ -76,7 +76,6 @@ const handleSubmit = async (value: UserStudentType) => {
     //   body: JSON.stringify(value),
     // });
     // const data = await res.json()
-    // console.log("degree upload: ", data)
 };
 
 const RadioButton = ({field, value, label}: any) => {
@@ -102,7 +101,6 @@ const CustomInput = ({field, setFieldValue}: any) => {
     const handleUploadFile = (e: any) => {
         const file = e.target.files[0];
         const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
         setImagePreview(localUrl);
 
         setFieldValue(field.name, file);

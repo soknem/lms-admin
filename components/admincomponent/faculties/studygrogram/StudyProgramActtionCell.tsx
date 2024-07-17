@@ -40,11 +40,9 @@ const ActionsCell = ({row}: any) => {
         if (isDeleted) {
             await enableStudyProgram(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Study Program enabled successfully');
         } else {
             await disableStudyProgram(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Study Program disable successfully');
         }
         setIsCardVisible(false);
     };

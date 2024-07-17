@@ -18,6 +18,8 @@ import {
     useEnableClassMutation
 } from "@/lib/features/admin/academic-management/classes/classApi";
 import {useDisableStaffMutation, useEnableStaffMutation} from "@/lib/features/admin/user-management/staff/staff";
+import AddInstructorForm from "@/components/admincomponent/academics/classes/courses/form/addInstructor";
+import EditUserAuthorityForm from "@/components/admincomponent/users/staff/EditUserAuthorityForm";
 
 type props = {
     staffUuid : string
@@ -27,7 +29,6 @@ type props = {
 
 const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
     const router = useRouter();
-
 
     const [isCardVisible, setIsCardVisible] = useState(false);
     const [isDeleted, setIsDeleted] = useState(isDeletedState);
@@ -39,17 +40,27 @@ const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
         setIsCardVisible(true);
     };
 
+    // *** Edit Authority form ****
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleOpenModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
+
 
     const handleConfirm = async   (staffUuid : string) => {
         if(isDeleted){
             await enableStaff(staffUuid).unwrap();
             setIsDeleted((prev :any) => !prev);
-            console.log('Staff enabled successfully');
 
         }else{
             await disableStaff(staffUuid).unwrap();
             setIsDeleted((prev : any) => !prev);
-            console.log('Staff disable successfully');
         }
         setIsCardVisible(false);
     };
@@ -74,9 +85,15 @@ const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
                         <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={() => router.push(`edit-staff/${staffUuid}`)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
-                        <TbLockCog size={20} className="text-gray-30 mr-2"  /> Edit Authorities
-                    </DropdownMenuItem>
+                    {
+                        position !== "INSTRUCTOR" ? (
+                            <DropdownMenuItem onClick={handleOpenModal} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                                <TbLockCog size={20} className="text-gray-30 mr-2"  /> Edit Authorities
+                            </DropdownMenuItem>
+                        ) : (
+                            <></>
+                        )
+                    }
 
                     <DropdownMenuItem
                         className={`text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
@@ -102,6 +119,8 @@ const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
                     buttonTitle={isDeleted ? "Enable" : "Disable"}
                 />
             )}
+
+            <EditUserAuthorityForm isVisible={isModalVisible} onClose={handleCloseModal} staffUuid={staffUuid} />
         </div>
     )
 

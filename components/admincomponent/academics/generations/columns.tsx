@@ -37,9 +37,11 @@ import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
 import UpdateLectureForm from "@/components/admincomponent/academics/lectures/form/UpdateLectureForm";
 import {
     useDisableGenerationMutation,
-    useEnableGenerationMutation, useGetGenerationQuery
+    useEnableGenerationMutation, useGetGenerationQuery, useUpdateGenerationMutation
 } from "@/lib/features/admin/academic-management/generation/generation";
 import {selectGeneration} from "@/lib/features/admin/academic-management/generation/generationSlice";
+import EditClassForm from "@/components/admincomponent/academics/classes/EditClassForm";
+import EditGenForm from "@/components/admincomponent/academics/generations/EditGenForm";
 
 
 
@@ -273,17 +275,22 @@ const ActionCell = ({ row } : any) => {
     const [isCardVisible, setIsCardVisible] = useState(false);
     const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
 
-    // const [enableLecture, { isLoading, isError, isSuccess }] = useEnableLectureMutation();
-    // const [disableLecture] = useDisableLectureMutation();
-
     const [enableGeneration, setEnableGeneration] = useEnableGenerationMutation() ;
     const [disableGeneration, setDisableGeneration] = useDisableGenerationMutation();
 
     const generations = useSelector(selectGeneration);
 
-    console.log("Generation from column: ",generations)
 
-    const { refetch: refetchGeneration } = useGetGenerationQuery({ page: 0, pageSize: 10 });
+    // edit form
+    const [isFormVisible, setIsFormVisible] = useState(false);
+
+    const handleCloseForm = () => {
+        setIsFormVisible(false);
+    };
+
+    const handleEditClick = () => {
+        setIsFormVisible(true);
+    };
 
     const handleOpenCard = () => {
         setIsCardVisible(true);
@@ -293,11 +300,9 @@ const ActionCell = ({ row } : any) => {
         if(isDeleted){
             await enableGeneration(genAlias).unwrap();
             setIsDeleted((prev :any) => !prev);
-            console.log('Generation enabled successfully');
         }else{
             await disableGeneration(genAlias).unwrap();
             setIsDeleted((prev : any) => !prev);
-            console.log('Generation disable successfully');
         }
         setIsCardVisible(false);
     };
@@ -319,6 +324,9 @@ const ActionCell = ({ row } : any) => {
                 <DropdownMenuContent align='end' className="bg-white">
                     <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.alias)} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium ">
                         <TbCopy  size={20} className="text-gray-30 mr-2  "  /> Copy Alias
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleEditClick} className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium">
+                        <TbPencil size={20} className="text-gray-30 mr-2"  /> Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         className={` text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
@@ -343,6 +351,9 @@ const ActionCell = ({ row } : any) => {
                     onCancel={handleCancel}
                     buttonTitle={isDeleted ? "Enable" : "Disable"}
                 />
+            )}
+            {isFormVisible && (
+                <EditGenForm onClose={handleCloseForm} isVisible={isFormVisible} alias={row.original.alias} GenName={row.original.name} startGenYear={row.original.startYear} endGenYear={row.original.endYear}  />
             )}
         </div>
     );

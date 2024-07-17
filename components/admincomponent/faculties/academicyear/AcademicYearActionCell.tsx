@@ -35,11 +35,9 @@ const ActionsCell = ({row}: any) => {
         if (isDeleted) {
             await enableAcademicYear(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Faculty enabled successfully');
         } else {
             await disableAcademicYear(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Faculty disable successfully');
         }
         setIsCardVisible(false);
     };

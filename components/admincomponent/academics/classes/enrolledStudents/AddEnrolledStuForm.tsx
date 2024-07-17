@@ -52,7 +52,6 @@ export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
     const [addStudentToClass] = useAddStudentToClassMutation()
     const classUuid = selectedClass?.uuid
 
-    console.log("Student Data: ",stuData)
 
     const filterstudent = (inputValue: string) => {
         if (!stuData) return [];
@@ -90,7 +89,6 @@ export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
                     studentAdmissionUuid: values.studentAdmissionUuid.map((option: any) => option.value)
                 }).unwrap();
                 toast.success("Add students successfully.");
-                console.log("student formik: ",values)
 
                 onClose();
             } catch (error) {
@@ -105,7 +103,7 @@ export default function AddEnrolledStuForm({ isVisible, onClose }: PropsType) {
     return(
         <Modal isVisible={isVisible} onClose={onClose}>
             <h2 className="text-xl text-lms-black-90 font-bold mb-4">Add Enrolled Student</h2>
-            <form className="h-[400px] space-y-2 " onSubmit={formik.handleSubmit}>
+            <form className="h-[400px] w-[480px] space-y-2 " onSubmit={formik.handleSubmit}>
                 <AsyncSelect
                     isMulti
                     cacheOptions

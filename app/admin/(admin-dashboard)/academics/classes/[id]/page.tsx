@@ -42,7 +42,6 @@ async function getStudents(): Promise<StudentType[]> {
   )
   const data = await res.json()
 
-  // console.log("data from page: ",data);
   return data
 }
 
@@ -52,7 +51,6 @@ async function getCourses(): Promise<CourseType[]> {
   )
   const data = await res.json()
 
-  // console.log("data from page: ",data);
   return data
 }
 
@@ -81,8 +79,6 @@ export default function ClassDetail(props: Props) {
   if(isClassSuccess && isStuSuccess){
     dispatch(setSingleClass(classData))
     dispatch(setStudent({ students: stuData.content, totalElements: stuData.totalElements }));
-    console.log("classData: ",classData)
-    console.log("stuData: ",stuData)
   }
 
   if (isClassLoading) {
@@ -90,7 +86,6 @@ export default function ClassDetail(props: Props) {
   }
 
   // course
-  console.log("course data", coursesData)
 
 
   const courseSemester1 = coursesData?.content.filter((course :any) => course.yearOfStudy.semester === 1);
@@ -144,8 +139,17 @@ export default function ClassDetail(props: Props) {
               <TabsTrigger value="course">Courses</TabsTrigger>
             </TabsList>
 
+
+
             <TabsContent value="enrolledStudent">
-              <StudentDataTable columns={StuColumns} data={stuData.content}/>
+              {
+                (isStuSuccess) ? (
+                    <StudentDataTable columns={StuColumns} data={stuData.content}/>
+                ) : (
+                    <></>
+                )
+              }
+
             </TabsContent>
 
             <TabsContent value="course" className="bg-white p-6 space-y-4 rounded-lg">

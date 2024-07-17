@@ -62,7 +62,6 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
 
     const lectureToUpdate = lectureData?.find(lecture => lecture.uuid === uuid);
 
-    console.log("lecture to update: ",lectureToUpdate);
 
     useEffect(() => {
         if (classesData) {
@@ -77,7 +76,6 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
         }
     }, [classesData, classesError, dispatch]);
 
-    // console.log("classes: ", classes[0].value)
 
     useEffect(() => {
         if (classData) {
@@ -116,12 +114,10 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
                 courseUuid: selectedCourseUUID
             };
 
-            // console.log("start time from update : ", values.startTime )
 
             await updateLecture({ uuid, updatedData }).unwrap();
             refetchLecture();
             toast.success('Successfully updated!');
-            console.log('Lecture updated successfully');
         } catch (err: any) {
             let errorMessage = 'Failed to update lecture';
             if (Array.isArray(err.data.error.description)) {
@@ -172,7 +168,6 @@ export default function UpdateLectureForm({ uuid  ,lectureData,  onClose }: Prop
                 ...values,
                 lectureDate: date ? format(date, "yyyy-MM-dd") : "",
             };
-            console.log("Form values: ", formattedValues);
             handleUpdateLecture(formattedValues);
         }
     });

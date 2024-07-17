@@ -103,7 +103,6 @@ export function ScheduleTable<TData, TValue>({
     },
   });
 
-  console.log("data from page: ", data);
 
   const filterOptions = ["All", "Started", "Pending", "Ended"];
   const handleFilterChange = (value: string) => {

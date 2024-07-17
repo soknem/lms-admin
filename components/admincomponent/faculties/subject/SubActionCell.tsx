@@ -39,11 +39,9 @@ const ActionsCell = ({row}: any) => {
         if (isDeleted) {
             await enableSubject(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Subject enabled successfully');
         } else {
             await disableSubject(alias).unwrap();
             setIsDeleted((prev: any) => !prev);
-            console.log('Subject disable successfully');
         }
         setIsCardVisible(false);
     };

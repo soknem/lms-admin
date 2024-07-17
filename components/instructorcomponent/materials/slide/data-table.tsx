@@ -107,7 +107,6 @@ export function SlideTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const filterOptions = ["All", "Public", "Disable", "Draft"];
     const handleFilterChange = (value: string) => {

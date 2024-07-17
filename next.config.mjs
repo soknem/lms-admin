@@ -8,6 +8,11 @@ const nextConfig = {
                 hostname: 'lms-api.istad.co',
                 pathname: '**',
             },
+            {
+                protocol: 'http',
+                hostname: '152.42.220.220',
+                pathname: '**',
+            },
         ]
     }
 };

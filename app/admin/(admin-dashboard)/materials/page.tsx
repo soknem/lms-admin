@@ -1,7 +1,6 @@
 "use client"
-
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import React, {useCallback, useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/lib/store";
 import {useGetMaterialsQuery} from "@/lib/features/admin/materials/material";
@@ -12,7 +11,6 @@ import {useGetAllSectionQuery} from "@/lib/features/admin/materials/subjectMater
 import {selectSection, setSections} from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 import {SectionTable} from "@/components/admincomponent/materials/section/data-table";
 import {sectionColumns} from "@/components/admincomponent/materials/section/columns";
-
 
 export default function Materials() {
     const dispatch = useDispatch<AppDispatch>();
@@ -29,13 +27,11 @@ export default function Materials() {
         }
     }, [materialsData, dispatch]);
 
-    console.log("Materials", materials)
 
-
-    // Section of materials in each subject
     const {
         data: sectionsData,
     } = useGetAllSectionQuery({page: 0, pageSize: 10});
+
 
     const sections = useSelector((state: RootState) => selectSection(state));
 
@@ -44,10 +40,6 @@ export default function Materials() {
             dispatch(setSections(sectionsData));
         }
     }, [sectionsData, dispatch]);
-
-    // console.log("Sections", sectionsData)
-
-    const [currentFiletype, setCurrentYear] = useState("");
 
     const filterDataByFileType = (filetype: string) => {
         return materials.filter((item: any) => item.fileType === filetype);

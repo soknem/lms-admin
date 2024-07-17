@@ -21,6 +21,7 @@ import {
 } from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
 import React, {useState} from "react";
 import {toast} from "react-hot-toast";
+import slugify from "slugify";
 
 const initialValues = {
     alias: "",
@@ -96,7 +97,7 @@ export function CreateAcademicYearForm() {
                     validationSchema={validationSchema}
                     onSubmit={(values) => handleSubmit(values, createAcademicYear)}
                 >
-                    {() => (
+                    {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1">
 
@@ -110,9 +111,21 @@ export function CreateAcademicYearForm() {
                                     </div>
                                     <Field
                                         type="text"
-                                        placeholder="academicYear"
+                                        placeholder="2023-2023"
                                         name="academicYear"
                                         id="academicYear"
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "academicYear",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
@@ -131,6 +144,7 @@ export function CreateAcademicYearForm() {
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
+                                        disabled
                                         type="text"
                                         placeholder="Associated Degree"
                                         name="alias"

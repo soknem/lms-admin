@@ -38,6 +38,14 @@ export const generationApi = istadLmsApi.injectEndpoints({
             }),
             invalidatesTags: [{ type: 'Generations', id: 'LIST' }],
         }),
+        updateGeneration: builder.mutation<any, { alias: string, updatedData: any }>({
+            query: ({alias, updatedData}) => ({
+                url: `/generations/${alias}`,
+                method: 'PATCH',
+                body: updatedData,
+            }),
+            invalidatesTags: [{ type: 'Generations', id: 'LIST' }],
+        }),
     })
 })
 
@@ -47,4 +55,5 @@ export const {
     useFilterGenerationsMutation,
     useEnableGenerationMutation,
     useDisableGenerationMutation,
+    useUpdateGenerationMutation,
 } = generationApi;

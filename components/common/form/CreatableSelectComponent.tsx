@@ -29,7 +29,6 @@ const CreatableSelectComponent: React.FC<CreatableSelectComponentProps> = ({ lab
                 setValue((prev) => {
                     const newValue = [...prev, createOption(inputValue)];
                     formik.setFieldValue(fieldName, newValue.map(option => option.label));
-                    console.log(`New ${fieldName} value:`, newValue); // log the data
                     return newValue;
                 });
                 setInputValue('');

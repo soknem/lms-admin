@@ -31,7 +31,6 @@ export default function AddInstructorForm({ isVisible, onClose , courseUuid }: P
                 label: `${ins.username}`,
             }));
             setInstructors(formattedIns);
-            console.log("instructor from create class: ",formattedIns)
         }
         if (InsError) {
             console.error("failed to load instructor error", InsError);
@@ -63,7 +62,6 @@ export default function AddInstructorForm({ isVisible, onClose , courseUuid }: P
                     instructorUuid
                 }).unwrap();
                 toast.success("Add instructor successfully.");
-                console.log("instructor formik: ",values)
                 resetForm();
                 onClose();
             } catch (error) {
@@ -79,7 +77,7 @@ export default function AddInstructorForm({ isVisible, onClose , courseUuid }: P
     return(
         <Modal isVisible={isVisible} onClose={onClose}>
             <h2 className="text-xl text-lms-black-90 font-bold mb-4">Add Instructor To Course</h2>
-            <form className="z-50 h-[250px] space-y-2" onSubmit={formik.handleSubmit}>
+            <form className="z-50 w-[480px] h-[250px] space-y-2" onSubmit={formik.handleSubmit}>
                 <div>
                     <label className="block text-gray-700 font-semibold mb-2">
                         Instructor

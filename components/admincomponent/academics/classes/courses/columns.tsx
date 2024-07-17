@@ -221,11 +221,9 @@ const ActionCell = ({ row } : any) => {
             toast.success("Course enabled successfully")
             setIsDeleted((prev :any) => !prev);
 
-            console.log('Course enabled successfully');
 
         }else{
             await disableCourse(courseUuid).unwrap();
-            console.log('Course disable successfully');
             toast.success("Course enabled successfully")
             setIsDeleted((prev :any) => !prev);
 
@@ -248,7 +246,6 @@ const ActionCell = ({ row } : any) => {
                 instructorUuid
             }).unwrap();
             toast.success("Add instructor successfully.");
-            console.log('Add instructor successfully');
         setIsRemoveInsCardVisible(false);
     };
 
@@ -270,7 +267,6 @@ const ActionCell = ({ row } : any) => {
     // Edit Course
     const {data: courseData, error: courseError, isSuccess: isCourseSuccess} = useGetCourseByUuidQuery(row.original.uuid)
 
-    console.log("courseData", courseData);
 
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 

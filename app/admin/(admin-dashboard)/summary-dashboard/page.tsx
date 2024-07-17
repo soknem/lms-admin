@@ -28,7 +28,6 @@ export default  function Dashboard() {
     //     }
     // }, [dispatch, userProfile]);
     //
-    // console.log("profile", userProfile);
 
 
     const {data, error} = useGetSummaryQuery(any)

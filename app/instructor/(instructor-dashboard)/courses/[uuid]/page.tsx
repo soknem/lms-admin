@@ -7,10 +7,13 @@ import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import {useGetInstructorCourseByUuidQuery} from "@/lib/features/instructor/course/instructorCourse";
 import CourseDetailHeaderInstructor from "@/components/instructorcomponent/coursedetail/CourseDetailHeader";
 import {CourseResponse} from "@/lib/types/instructor/courseDetail";
+import {router} from "next/client";
 
 export default function CourseDetail({params}: PropsParam) {
     const uuid = params.uuid;
     const {data, error, isLoading} = useGetInstructorCourseByUuidQuery({uuid});
+
+    // Debugging console logs
 
     if (isLoading) {
         return <LoadingComponent/>;
@@ -49,6 +52,9 @@ export default function CourseDetail({params}: PropsParam) {
                 <BreadcrumbWithCustomSeparator
                     {...data}
                 />
+
+
+
             </section>
             <section className="mx-[100px]">
                 <TabComponent

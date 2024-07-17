@@ -6,6 +6,12 @@ export const stuAdmissionApi = istadLmsApi.injectEndpoints({
             query: ({page = 0, pageSize = 10}) =>
                 `/student-admissions?pageNumber=${page}&pageSize=${pageSize}`,
         }),
+        getAllStudentAdmissionByAdmissionUuid: builder.query({
+            query: (uuid) => ({
+                url: `/admissions/${uuid}/students`,
+                method: 'GET',
+            }),
+        }),
         createStudentAdmission: builder.mutation({
             query: (newStudentAdmission) => ({
                 url: '/student-admissions',
@@ -17,5 +23,6 @@ export const stuAdmissionApi = istadLmsApi.injectEndpoints({
 })
 export const {
     useGetStuAdmissionsQuery,
+    useGetAllStudentAdmissionByAdmissionUuidQuery,
     useCreateStudentAdmissionMutation
 } = stuAdmissionApi;

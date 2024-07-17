@@ -6,7 +6,6 @@ import YearSemesterTable from "@/components/studentcomponent/achievements/YearSe
 
 export default function AchievementTable({ allData }: AchievementTableProps) {
 
-    console.log("  DATA IN COMPONENT : " , allData)
     const tableData = allData.content.map((yearOfStudy, index) => {
         let rowNumber = 1;
         return {

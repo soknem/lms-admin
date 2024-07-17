@@ -94,7 +94,6 @@ export default function EditCourseForm({ isVisible, onClose , courseData }: Prop
                 courseStart: startDate ? format(startDate, "yyyy-MM-dd") : null,
                 courseEnd: endDate ? format(endDate, "yyyy-MM-dd") : null,
             };
-            console.log("Form values: ", formattedValues);
             handleEditCourse(formattedValues,setSubmitting ,resetForm)
         }
 
@@ -105,7 +104,7 @@ export default function EditCourseForm({ isVisible, onClose , courseData }: Prop
     return(
         <Modal isVisible={isVisible} onClose={onClose}>
             <h2 className="text-xl text-lms-black-90 font-bold mb-4">Update Course</h2>
-            <form className=" space-y-2 " onSubmit={formik.handleSubmit}>
+            <form className="w-[480px] space-y-2 " onSubmit={formik.handleSubmit}>
 
                 {/* Class Start  */}
                 <div>

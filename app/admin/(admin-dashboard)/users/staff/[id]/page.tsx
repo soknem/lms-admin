@@ -30,7 +30,6 @@ export default function StaffDetail(props: Props) {
 
     const { data : staffData , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffByUuidQuery(props.params.id)
 
-    console.log("staff Data: ",staffData?.position || "Instructor");
 
     const { data : insData , error : insError,isSuccess: isInsSuccess ,isLoading: isInsLoading} = useGetInsDetailByUuidQuery(props.params.id)
 
@@ -66,7 +65,7 @@ export default function StaffDetail(props: Props) {
                 </Breadcrumb>
                 <StaffDetailComponent
                     key={data?.uuid}
-                    id={data?.uuid}
+                    id={props.params.id}
                     imageSrc={data?.profileImage || placeholderImage}
                     name={data?.nameEn || "N/A"}
                     education={data?.educations || []}

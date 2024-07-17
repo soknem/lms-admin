@@ -16,7 +16,7 @@ import {
 import {DegreeType, FacultyType} from "@/lib/types/admin/faculty";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateDegreeMutation, useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
-import {useState} from "react";
+import React, {useState} from "react";
 import slugify from "slugify";
 import {toast} from "react-hot-toast";
 
@@ -24,7 +24,7 @@ const initialValues = {
     alias: "",
     level: "",
     description: "",
-    numberOfYear: 0,
+    numberOfYear: null,
     isDeleted: false,
     isDraft: false
 };
@@ -32,9 +32,8 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
     alias: Yup.string().required("Alias is required"),
     level: Yup.string().required('Level is required'),
-    numberOfYear: Yup.number().required('Number of years is required').positive().integer(),
+    numberOfYear: Yup.number().required('Number of years is required').positive("Number of years must be positive.").integer(),
     description: Yup.string(),
-    isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
     isDraft: Yup.boolean().required('Please specify if the degree is a draft'),
 });
 
@@ -46,7 +45,7 @@ const RadioButton = ({field, value, label}: any) => {
                 {...field}
                 id={value}
                 value={value}
-                checked={field.value === value}
+                checked={String(field.value) === value}
             />
             <label className="pl-2" htmlFor={value}>
                 {label}
@@ -57,7 +56,6 @@ const RadioButton = ({field, value, label}: any) => {
 
 export function CreateDeForm() {
     const [createDegree] = useCreateDegreeMutation();
-    const {refetch: refetchDegrees} = useGetDegreesQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
@@ -73,13 +71,10 @@ export function CreateDeForm() {
 
             await createDegree(newDegree).unwrap();
             resetForm();
-
-            refetchDegrees();
             setIsOpen(false);
             toast.success('Successfully created!');
 
         } catch (error) {
-            console.error("Error creating degree: ", error);
             toast.error('Failed to create degree!');
         } finally {
             setSubmitting(false);
@@ -106,9 +101,9 @@ export function CreateDeForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 items-center">
 
                                 {/* Degree Level*/}
                                 <div className={` ${style.inputContainer}`}>
@@ -154,6 +149,7 @@ export function CreateDeForm() {
                                     </div>
                                     <Field
                                         disabled
+                                        placeholder="associated-degree"
                                         type="text"
                                         name="alias"
                                         id="alias"
@@ -208,7 +204,7 @@ export function CreateDeForm() {
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between`}>
+                                <div className={`${style.inputContainer} flex w-full justify-between`}>
                                     {/* Visibility */}
                                     <div className={``}>
                                         <div className="flex">
@@ -248,8 +244,9 @@ export function CreateDeForm() {
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Add
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

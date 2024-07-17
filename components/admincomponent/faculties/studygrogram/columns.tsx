@@ -17,6 +17,8 @@ import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
+import logo_holder from "@/public/common/logo_holder.png";
+import Image from "next/image";
 
 const TableCell = ({getValue, row, column, table}: any) => {
     const initialValue = getValue();
@@ -48,10 +50,12 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "logo") {
         return (
             <div>
-                <img
-                    src={value || "https://via.placeholder.com/150"}
-                    // alt="Logo"
-                    className="w-12 h-12 rounded-full object-contain"
+                <Image
+                    width={48}
+                    height={48}
+                    src={value || logo_holder}
+                    alt="Logo placeholder"
+                    className="rounded-full object-center object-fill w-12 h-12"
                 />
             </div>
 

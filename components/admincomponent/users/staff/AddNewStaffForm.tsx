@@ -26,8 +26,10 @@ export default function AddNewStaffForm() {
     const [activeTab, setActiveTab] = useState("personal_info");
 
     const [cvFile, setCvFile] = useState<Blob | null>(null);
+
     const [idCardFile, setIdCardFile] = useState<Blob | null>(null);
 
+    const [imagePfFile, setImagePfFile] = useState<Blob | null>(null);
 
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, setFile: React.Dispatch<React.SetStateAction<Blob | null>>) => {
@@ -152,14 +154,23 @@ export default function AddNewStaffForm() {
             cvFormData.append('file', cvFile);
 
             const cvResponse = await createSingleFile(cvFormData).unwrap();
-            console.log('CV File uploaded:', cvResponse);
 
             // Upload ID card file
             const idCardFormData = new FormData();
             idCardFormData.append('file', idCardFile);
 
             const idCardResponse = await createSingleFile(idCardFormData).unwrap();
-            console.log('ID Card File uploaded:', idCardResponse);
+
+            // Upload Profile Image
+            let imagePfResponse = null;
+            if (imagePfFile) {
+                const imagePfFormData = new FormData();
+                imagePfFormData.append('file', imagePfFile);
+                imagePfResponse = await createSingleFile(imagePfFormData).unwrap();
+                console.log('Profile Image uploaded:', imagePfResponse);
+            } else {
+                console.log('No Profile Image file to upload');
+            }
 
             if (values.authorityNames.length > 0) {
 
@@ -185,15 +196,14 @@ export default function AddNewStaffForm() {
                     linkTelegram: values.linkTelegram,
                     uploadCv: cvResponse.name,
                     identityCard: idCardResponse.name,
+                    profileImage: imagePfResponse.name,
                     authorityNames: modifiedAuthorityNames
                 };
 
-                console.log("New Staff Data: ", newStaff); // Debugging the new class data
 
                 try {
                     await addStaff(newStaff).unwrap();
                     toast.success('Successfully created!');
-                    console.log("Staff created successfully");
                     resetForm()
                     setSubmitting(false);
                 } catch (error) {
@@ -232,6 +242,7 @@ export default function AddNewStaffForm() {
             uploadCv: "",
             identityCard: "",
             position: "",
+            profileImage: "",
             authorityNames: [
                 "faculty:write",
                 "faculty:update",
@@ -266,7 +277,6 @@ export default function AddNewStaffForm() {
                 dob: birthDate ? format(birthDate, "yyyy-MM-dd") : "",
             };
 
-            console.log("form values: ",values);
             handleAddStaff(formattedValues,{ setSubmitting ,resetForm });
         }
     })
@@ -724,6 +734,53 @@ export default function AddNewStaffForm() {
                                         {idCardFile && (
                                             <img src={URL.createObjectURL(idCardFile)} width={300}
                                                  alt="ID Card Uploaded Preview"/>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Image Pf File Upload */}
+                                <div>
+                                    <RequiredFieldLabelComponent labelText="Upload Profile Image"
+                                                                 labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
+                                    <div className="flex items-center justify-center w-full">
+                                        <label
+                                            htmlFor="pf-dropzone-file"
+                                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                        >
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg
+                                                    className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                                    aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 20 16"
+                                                >
+                                                    <path
+                                                        stroke="currentColor"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="2"
+                                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                                    />
+                                                </svg>
+                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                    <span className="font-semibold">Click to upload</span> or drag and drop
+                                                </p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF
+                                                    (MAX. 800x400px)</p>
+                                            </div>
+                                            <input
+                                                id="pf-dropzone-file"
+                                                type="file"
+                                                onChange={(e) => handleFileUpload(e, setImagePfFile)}
+                                                className="hidden"
+                                            />
+                                        </label>
+                                    </div>
+                                    <div className="w-full flex justify-center mt-6 ">
+                                        {imagePfFile && (
+                                            <img src={URL.createObjectURL(imagePfFile)} width={300}
+                                                 alt="Profile Image Uploaded Preview"/>
                                         )}
                                     </div>
                                 </div>

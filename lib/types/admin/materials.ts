@@ -13,7 +13,7 @@ export type MaterialType = {
     isDraft: boolean
     isDeleted: boolean,
     download: string,
-    section: string,
+    sectionUuid: string,
 };
 
 // **** Slide *****
@@ -46,6 +46,7 @@ export type CurriculumType = {
     subject: string;
     file: string;
 };
+
 // **** Video *****
 export type VideoType = {
     title: string;

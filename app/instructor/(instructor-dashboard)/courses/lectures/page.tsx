@@ -47,9 +47,10 @@ export default function Lecture() {
     const {data: LectureData,error:LectureError} = useGetLectureQuery({ page: 0, pageSize: 10 });
 
 
-    // Select assessment from Redux store
+
     const filteredCurrentLectureData: CurrentType[] = useSelector((state: RootState) => selectCurrents(state));
     const filteredEndedLectureData: EndedLectureType[] = useSelector((state: RootState) => selectEndeds(state));
+
 
     // Effect to update Redux store on data change
     useEffect(() => {
@@ -108,7 +109,6 @@ export default function Lecture() {
     // const filteredEndedLectureData = data.filter(
     //     (lecture) => lecture.status === 2 || lecture.status === 3
     // );
-    console.log("lecture data from lecture page: ", LectureData);
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">
             <Breadcrumb>

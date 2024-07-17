@@ -32,21 +32,8 @@ const TableCell = ({getValue, row, column, table}: any) => {
         tableMeta?.updateData(row.index, column.id, newValue);
     };
 
-    if (column.id === "logo") {
-        return (
-            <img
-                src={value}
-                alt="Logo"
-                className="w-12 h-12 rounded-full object-cover"
-            />
-        );
-    }
-
     if (column.id === "description") {
-        const words = value.split(" ");
-        const firstFiveWords = words.slice(0, 5).join(" ");
-        const displayText = words.length > 5 ? `${firstFiveWords}...` : firstFiveWords;
-        return <span>{displayText || "No Description"}</span>;
+        return <span className={`line-clamp-1`}>{value || "No Description"}</span>;
     }
 
     if (tableMeta?.editedRows[row.id]) {

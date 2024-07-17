@@ -1,6 +1,6 @@
 import React from "react";
-import {useRouter} from "next/navigation";
-import type {CourseDetail} from "@/lib/types/student/course";
+import { useRouter } from "next/navigation";
+import type { CourseDetail } from "@/lib/types/student/course";
 
 export default function     CourseDetailHeaderStudent({
                                                       year,
@@ -80,7 +80,7 @@ export default function     CourseDetailHeaderStudent({
                         {instructor?.nameEn || "Unknown Instructor"}
                     </p>
                     <p className="text-lms-gray-80 text-[18px]">
-                        {position || "Unknown Position"}
+                        {position || 'Unknown Position'}
                     </p>
                 </div>
                 <div className="flex items-center ml-[88px]">
@@ -121,6 +121,9 @@ export default function     CourseDetailHeaderStudent({
                     </div>
                 </div>
             </section>
+
+
         </section>
+
     );
 }
