@@ -8,17 +8,17 @@ export type PropsParam = {
 };
 
 export type CourseType = {
-    onClick: () => void;
     uuid: string;
     title: string;
-    credit: number;
-    logo: string;
-    description: string;
-    progress : string | null;
-    instructorProfileImage: string | null;
+    credit: number | null;
+    logo: string | null;
+    description: string | null;
+    instructorAvatar: string | null;
+    instructorProfileImage : string | null;
     instructorName: string | null;
-    year: number;
-    semester: number;
+    progress: number | null;
+    year: number | null;
+    semester: number | null;
 };
 
 export type StudentCourseType = {
@@ -33,11 +33,27 @@ export type StudentCourseType = {
 };
 
 
+
+
+
 export type InstructorType = {
     uuid: string;
-    nameEn: string;
-    instructorProfileImage: string;
-}
+    nameEn: string | null;
+    instructorProfileImage: string | null;
+};
+
+
+
+export type Module = {
+    title: string;
+    content: string;
+};
+
+export type Curriculum = {
+    modules: Module[] | null;
+};
+
+
 
 export type CourseDetail = {
     year: number;
@@ -49,12 +65,11 @@ export type CourseDetail = {
     theory: number;
     practice: number;
     internship?: number;
-    instructor: InstructorType;
-    instructorName: string | null;
-    instructorProfileImage: string | null;
+    instructor: InstructorType | null;
     position: string | null;
     studentProfileImage: string[];
     classesStart: Date | null;
+    curriculum?: Curriculum | null;
 };
 
 export type CourseDetailHeaderProps = {

@@ -29,7 +29,7 @@ export default function TabComponent() {
           </div>
 
           <TabsContent value="curriculum">
-            <CurriculumComponent/>
+            {/*<CurriculumComponent/>*/}
           </TabsContent>
           <TabsContent value="Slide">
             <SlideComponent/>

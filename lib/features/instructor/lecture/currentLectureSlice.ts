@@ -1,7 +1,7 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/lib/store";
-import {CurrentType} from "@/lib/types/instructor/lecture/lecture";
+import {CurrentType} from "@/lib/types/instructor/lecture";
 
 
 type CurrentState = {
