@@ -10,26 +10,6 @@ import {
     selectEachSemesterAssessment
 } from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
 
-// const getUniqueSubjects = (data: semesterAssessementType[]) => {
-//     const subjectsSet = new Set<string>();
-//     data.forEach((item) => {
-//         item.subjects.forEach((subject) => {
-//             subjectsSet.add(subject.subjectName);
-//         });
-//     });
-//     return Array.from(subjectsSet);
-// };
-
-// const getUniqueSubjects = (data: semesterAssessementType[]) => {
-//     const subjectsSet = new Set<string>();
-//     data.forEach((item) => {
-//         item.courses.forEach((course) => {
-//             subjectsSet.add(course.title);
-//         });
-//     });
-//     return Array.from(subjectsSet);
-// };
-
 const getUniqueSubjects = (data: semesterAssessementType[]) => {
     const subjectsSet = new Set<string>();
     data.forEach((item) => {
@@ -132,27 +112,6 @@ const initialData: semesterAssessementType[] = [
 
 ];
 
-// Dynamically generate subject columns
-// const uniqueSubjects = getUniqueSubjects(initialData);
-// const subjectColumns = uniqueSubjects.map((subject) => ({
-//     accessorKey: subject.replace(/\s+/g, ''),
-//     header: ({ column } : any) => (
-//         <Button
-//             variant='ghost'
-//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//         >
-//             {subject.toUpperCase()}
-//             <ArrowUpDown className='ml-2 h-4 w-4' />
-//         </Button>
-//     ),
-//     cell: ({ row }: any) => {
-//         const subjectScore = row.original.subjects.find(
-//             (sub: SubjectType) => sub.subjectName === subject
-//         )?.score;
-//         return subjectScore ?? '-';
-//     }
-// }));
-
 const uniqueSubjects = getUniqueSubjects(initialData);
 const subjectColumns = uniqueSubjects.map((subject) => ({
     accessorKey: subject.replace(/\s+/g, ''),
@@ -173,55 +132,6 @@ const subjectColumns = uniqueSubjects.map((subject) => ({
     }
 }));
 
-// const semesterStoreData = useSelector(selectEachSemesterAssessment)
-//
-// const uniqueSubjects = getUniqueSubjects(semesterStoreData);
-//
-// const subjectColumns = uniqueSubjects.map((subject) => ({
-//     accessorKey: subject.replace(/\s+/g, ''),
-//     header: ({ column } : any) => (
-//         <Button
-//             variant='ghost'
-//             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//         >
-//             {subject.toUpperCase()}
-//             <ArrowUpDown className='ml-2 h-4 w-4' />
-//         </Button>
-//     ),
-//     cell: ({ row }: any) => {
-//         const subjectScore = row.original.courses.find(
-//             (course: CourseShortType) => course.title === subject
-//         )?.score;
-//         return subjectScore ?? '-';
-//     }
-// }));
-
-// export default function columnSemesterData() {
-//     // const semesterStoreData = useSelector(selectEachSemesterAssessment);
-//     const uniqueSubjects = getUniqueSubjects(initialData);
-//     const subjectColumns = uniqueSubjects.map((subject) => ({
-//         accessorKey: subject.replace(/\s+/g, ''),
-//         header: ({column}: any) => (
-//             <Button
-//                 variant='ghost'
-//                 onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-//             >
-//                 {subject.toUpperCase()}
-//                 <ArrowUpDown className='ml-2 h-4 w-4'/>
-//             </Button>
-//         ),
-//         cell: ({row}: any) => {
-//             const subjectScore = row.original.courses.find(
-//                 (course: CourseShortType) => course.title === subject
-//             )?.score;
-//             return subjectScore ?? '-';
-//         }
-//     }));
-//
-//
-//
-//
-// }
 
 export const eachSemesterColumn: ColumnDef<semesterAssessementType>[] = [
     {

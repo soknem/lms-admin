@@ -27,14 +27,21 @@ export default function Users(props: Props) {
         console.log("student data: ", stuData)
     }
 
+    const openInNewTab = (url: string) => {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+        if (newWindow) {
+            newWindow.opener = null;
+        }
+    };
+
     return (
         <main className="flex flex-col h-full p-9 gap-6">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink>
-                            <Link href="/admin/users" legacyBehavior passHref>
-                                <BreadcrumbLink>STUDENT</BreadcrumbLink>
+                        <BreadcrumbLink asChild>
+                            <Link href="/admin/users" className='font-semibold text-gray-30 uppercase'>
+                                student
                             </Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
@@ -47,15 +54,15 @@ export default function Users(props: Props) {
             ) : stuError ? (
                 <p>Error loading student data</p>
             ) : (
-                <section className="flex flex-grow  gap-6 p-6">
+                <section className="flex flex-grow gap-6 p-6">
                     <div className="h-[557px] w-[404px] bg-white p-6 flex flex-col items-center rounded-[10px] gap-9 ">
                         <div className="h-[356px] w-[352px] rounded-[10px] relative">
                             <Image
                                 src={stuData?.profileImage || placeholderImage}
                                 alt="Placeholder Image"
-                                layout="fill" // Change layout to "fill"
-                                objectFit="cover" // Ensure the image covers the area without distorting the aspect ratio
-                                className="rounded-[10px]" // Apply rounded corners to the image as well
+                                layout="fill"
+                                objectFit="cover"
+                                className="rounded-[10px]"
                             />
                         </div>
 
@@ -67,7 +74,7 @@ export default function Users(props: Props) {
 
                     <div className="h-[557px] w-full bg-white p-6 flex flex-col  rounded-[10px] gap-9 relative">
                         <div className="absolute top-6 right-6">
-                            <MoreInfo/>
+                            <MoreInfo stuUuid={props.params.id} />
                         </div>
 
                         <p className="font-bold text-4xl">Personal Information</p>
@@ -115,20 +122,52 @@ export default function Users(props: Props) {
                         <div className="flex flex-col items-start w-full gap-2 ml-4">
                             <p className="font-bold text-2xl">Documents</p>
 
-                            <div className="flex justify-start w-full gap-16">
-                                <div className="flex items-center gap-3">
-                                    <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary"/>
-                                    <p className="font-medium text-xl">Certificate</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary"/>
-                                    <p className="font-medium text-xl">Certificate</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary"/>
-                                    <p className="font-medium text-xl">Certificate</p>
-                                </div>
-                            </div>
+                            {
+                                (stuData.highSchoolCertificate || stuData.vocationTrainingCertificate || stuData.anyValuableCertificate) ? (
+                                    <div className="flex justify-start w-full gap-16">
+                                        {stuData?.highSchoolCertificate ? (
+                                            <div className="flex items-center gap-3"
+                                                 onClick={() => openInNewTab(stuData?.highSchoolCertificate)}>
+                                                <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary"/>
+                                                <p className="font-medium text-xl">Certificate</p>
+                                            </div>
+                                        ) : (
+                                            <></>
+                                        )
+                                        }
+
+                                        {
+                                            stuData?.vocationTrainingCertificate ? (
+                                                <div className="flex items-center gap-3"
+                                                     onClick={() => openInNewTab(stuData?.vocationTrainingCertificate)}>
+                                                    <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary"/>
+                                                    <p className="font-medium text-xl">Certificate</p>
+                                                </div>
+                                            ) : (
+                                                <></>
+                                            )
+                                        }
+
+                                        {
+                                            stuData?.anyValuableCertificate ? (
+                                                <div className="flex items-center gap-3"
+                                                     onClick={() => openInNewTab(stuData?.anyValuableCertificate)}>
+                                                    <PiCertificateFill className="w-[80px] h-[80px] text-lms-primary"/>
+                                                    <p className="font-medium text-xl">Certificate</p>
+                                                </div>
+                                            ) : (
+                                                <></>
+                                            )
+                                        }
+
+
+                                    </div>
+                                ) : (
+                                    <p>No information available.</p>
+                                )
+                            }
+
+
                         </div>
                     </div>
                 </section>

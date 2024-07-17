@@ -51,7 +51,7 @@ export default function Users(props: Props) {
             </Breadcrumb>
 
             <section className="gap-6 p-6 bg-white rounded-[10px]">
-                <EditStaffForm updateData={data} />
+                <EditStaffForm uuid={props.params.id} updateData={data} />
             </section>
 
             <section>
