@@ -25,22 +25,6 @@ import * as Yup from "yup";
 import slugify from "slugify";
 import logo_holder from "@/public/common/logo_holder.png";
 
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
-            />
-            <label className="pl-2" htmlFor={value.toString()}>
-                {label}
-            </label>
-        </div>
-    );
-};
 
 const FILE_SIZE = 1024 * 1024 * 2; // 2MB
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
@@ -62,7 +46,22 @@ const validationSchema = Yup.object().shape({
     isDraft: Yup.boolean().required('Visibility is required'),
 });
 
-
+const RadioButton = ({field, value, label}: any) => {
+    return (
+        <div>
+            <input
+                type="radio"
+                {...field}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
+            />
+            <label className="pl-2" htmlFor={value.toString()}>
+                {label}
+            </label>
+        </div>
+    );
+};
 const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     const [imagePreview, setImagePreview] = useState(previewUrl);
     const fileInputRef = useRef<HTMLInputElement>(null);

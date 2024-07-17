@@ -23,6 +23,38 @@ import {
 } from "@/lib/features/admin/faculties/subject/subject";
 import {SubjectType} from "@/lib/types/admin/faculty";
 import {toast} from "react-hot-toast";
+import logo_holder from "@/public/common/logo_holder.png";
+import slugify from "slugify";
+
+
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+
+const validationSchema = Yup.object().shape({
+    title: Yup.string()
+        .required("Title is required")
+        .max(100, "Title must be at most 100 characters"),
+    logo: Yup.mixed()
+        .test("fileFormat", "Unsupported Format", (value: any) => {
+            if (!value) return true;
+            return SUPPORTED_FORMATS.includes(value.type);
+        })
+        .test("fileSize", "File Size is too large", (value: any) => {
+            if (!value) return true;
+            return value.size <= FILE_SIZE;
+        })
+        .nullable(),
+    duration: Yup.number()
+        .required("Duration is required"),
+    theory: Yup.number()
+        .required("Theory hours are required"),
+    practice: Yup.number()
+        .required("Practice hours are required"),
+    internship: Yup.number()
+        .required("Internship hours are required"),
+    isDraft: Yup.boolean()
+        .required("Draft status is required"),
+});
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -40,7 +72,6 @@ const RadioButton = ({field, value, label}: any) => {
         </div>
     );
 };
-
 const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     const [imagePreview, setImagePreview] = useState(previewUrl);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,16 +98,17 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
             >
                 {imagePreview ? (
                     <Image
-                        src={imagePreview}
+                        src={imagePreview || logo_holder}
                         alt="preview"
                         fill
                         style={{objectFit: "contain"}}
                     />
                 ) : (
-                    <img
-                        src={previewUrl}
-                        alt="faculty"
-                        className="w-full object-coverl"
+                    <Image
+                        src={previewUrl || logo_holder}
+                        alt="preview"
+                        fill
+                        className="w-full h-full rounded-full object-fill"
                     />
                 )}
                 <div
@@ -102,7 +134,6 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
     const [logo, setLogo] = useState(null);
     const [editSubject] = useEditSubjectByAliasMutation();
     const {data: subjectData, isSuccess} = useGetSubjectByAliasQuery(alias);
-    const {refetch: refetchSubjects} = useGetSubjectsQuery({page: 0, pageSize: 10});
     const [initialValues, setInitialValues] = useState({
         alias: "",
         title: "",
@@ -125,7 +156,7 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                 theory: subjectData.theory,
                 practice: subjectData.practice,
                 internship: subjectData.internship,
-                description: subjectData.description,
+                description: subjectData.description || "No description",
                 isDraft: subjectData.isDraft,
             });
             setInitialAlias(subjectData.alias);
@@ -137,14 +168,12 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
         try {
             let logoUrl = values.logo;
 
-            // Upload the logo file if it's a new file
             if (values.logo instanceof File) {
                 const fileData = new FormData();
                 fileData.append("file", values.logo);
                 const fileResponse = await createSingleFile(fileData).unwrap();
                 logoUrl = fileResponse.name; // Assuming the response contains the URL of the uploaded file
             } else if (values.logo === logo) {
-                // If the logo hasn't changed, set logoUrl to null
                 logoUrl = null;
             }
 
@@ -158,9 +187,6 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                 description: values.description,
                 isDraft: values.isDraft,
                 alias: values.alias,
-
-                // ...values,
-                // logo: logoUrl
             };
 
             await editSubject({alias: initialAlias, updatedData: editSubjectByAlias}).unwrap();
@@ -174,8 +200,7 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
             }
 
             resetForm();
-            refetchSubjects();
-            toast.success('Successfully created!');
+            toast.success('Successfully updated!');
 
             onClose()
         } catch (error) {
@@ -194,10 +219,11 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
 
                 <Formik
                     enableReinitialize
+                    validationSchema={validationSchema}
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col items-center justify-center gap-1">
 
@@ -220,9 +246,21 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
 
                                     <Field
                                         type="text"
-                                        placeholder="Introduction to IT"
+                                        placeholder="Introduction to Information Technology"
                                         name="title"
                                         id="title"
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "title",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                         className={` ${style.input}`}
                                     />
                                     <ErrorMessage
@@ -242,8 +280,9 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                     </div>
 
                                     <Field
+                                        disabled
+                                        placeholder="introduction-to-information-technology"
                                         type="text"
-                                        placeholder="Faculty of Engineering"
                                         name="alias"
                                         id="alias"
                                         className={`${style.input}`}
@@ -309,7 +348,6 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                     <Field
                                         as="textarea"
                                         rows={4}
-                                        placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}
@@ -359,8 +397,9 @@ export function EditSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Change
+                                    {isSubmitting ? 'Editing...' : 'Save Change'}
                                 </Button>
                             </DialogFooter>
                         </Form>
