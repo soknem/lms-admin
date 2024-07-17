@@ -117,7 +117,6 @@ export function CreateSubjectForm() {
             fileData.append("file", values.logo);
 
             const fileResponse = await createSingleFile(fileData).unwrap();
-            console.log(fileResponse)
 
             if (fileResponse) {
                 // File uploaded successfully, now create the faculty

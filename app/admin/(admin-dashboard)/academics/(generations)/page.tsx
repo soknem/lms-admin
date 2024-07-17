@@ -29,7 +29,6 @@ export default function Generation() {
         }
     }, [data, error, dispatch]);
 
-    // console.log("generation from page: " , generations)
 
     const genData: GenerationType[] = generations;
 

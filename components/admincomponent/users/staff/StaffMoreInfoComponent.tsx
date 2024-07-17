@@ -57,12 +57,10 @@ const MoreInfo = ({staffUuid,isDeletedState,position } : props) => {
         if(isDeleted){
             await enableStaff(staffUuid).unwrap();
             setIsDeleted((prev :any) => !prev);
-            console.log('Staff enabled successfully');
 
         }else{
             await disableStaff(staffUuid).unwrap();
             setIsDeleted((prev : any) => !prev);
-            console.log('Staff disable successfully');
         }
         setIsCardVisible(false);
     };

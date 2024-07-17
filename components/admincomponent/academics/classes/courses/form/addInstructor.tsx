@@ -31,7 +31,6 @@ export default function AddInstructorForm({ isVisible, onClose , courseUuid }: P
                 label: `${ins.username}`,
             }));
             setInstructors(formattedIns);
-            console.log("instructor from create class: ",formattedIns)
         }
         if (InsError) {
             console.error("failed to load instructor error", InsError);
@@ -63,7 +62,6 @@ export default function AddInstructorForm({ isVisible, onClose , courseUuid }: P
                     instructorUuid
                 }).unwrap();
                 toast.success("Add instructor successfully.");
-                console.log("instructor formik: ",values)
                 resetForm();
                 onClose();
             } catch (error) {

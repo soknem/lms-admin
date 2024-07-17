@@ -21,7 +21,6 @@ export default function Users(props: Props) {
 
     const { data : staffData , error : staffError,isSuccess: isStaffSuccess ,isLoading: isStaffLoading} = useGetStaffByUuidQuery(props.params.id)
 
-    console.log("staff Data: ",staffData?.position || "Instructor");
 
     const { data : insData , error : insError,isSuccess: isInsSuccess ,isLoading: isInsLoading} = useGetInsDetailByUuidQuery(props.params.id)
 

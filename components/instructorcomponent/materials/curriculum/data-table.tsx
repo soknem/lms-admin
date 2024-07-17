@@ -2,6 +2,7 @@
 
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
+import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 //import from shad cn
 import {
     ColumnDef,
@@ -35,11 +36,9 @@ import {
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
-import {FiPlus} from "react-icons/fi";
+import {CreateMaterialForm} from "@/components/instructorcomponent/materials/addMaterialForm";
 import {useRouter} from "next/navigation";
-
-//custom component import
+import {FiPlus} from "react-icons/fi";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -106,31 +105,31 @@ export function CurriculumTable<TData, TValue>({
         },
     });
 
-    // console.log("data from in curriculum: ", data);
+
 
     const filterOptions = ["All", "Public", "Disable", "Draft"];
-
-    const handleFilterChange = (value: any) => {
+    const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
+        const filterValue =
+            value === "All"
+                ? undefined
+                : value === "Public"
+                    ? 1
+                    : value === "Disable"
+                        ? 2
+                        : 3;
 
-        // Mapping filters options to corresponding numerical values
-        const filterValue = value === "All" ? undefined :
-            value === "Public" ? 1 :
-                value === "Disable" ? 2 :
-                    3;
-
-        // Applying the filters to the table
         table.getColumn("status")?.setFilterValue(filterValue);
     };
 
-
     return (
         <>
+            {/* Search */}
             <div className="flex items-center justify-between gap-4 ">
                 <div className="flex items-center py-4 w-full">
                     <div className="flex items-center w-full relative">
                         <Input
-                            placeholder="Search Slide"
+                            placeholder="Search Curriculum"
                             value={
                                 (table.getColumn("title")?.getFilterValue() as string) ?? ""
                             }
@@ -138,7 +137,7 @@ export function CurriculumTable<TData, TValue>({
                                 table.getColumn("title")?.setFilterValue(event.target.value)
                             }
 
-                            className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30 "
+                            className="border-[#E6E6E6] bg-white rounded-[10px] pl-10  text-lms-gray-30  "
                         />
 
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -209,10 +208,8 @@ export function CurriculumTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={() => {
-                    router.push("/admin/materials/add-materials")
-                }}>
-                    <FiPlus className="mr-2 h-4 w-4"/> Add Material
+                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/instructor/materials/add-materials")}}>
+                    <FiPlus className="mr-2 h-4 w-4" /> Add Material
                 </Button>
             </div>
 

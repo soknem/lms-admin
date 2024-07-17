@@ -14,6 +14,7 @@ export const studyProgramApi = istadLmsApi.injectEndpoints({
                 method: 'POST',
                 body: newStuProgram,
             }),
+            invalidatesTags: [{type: 'StudyPrograms', id: 'LIST'}],
         }),
         editStuProByAlias: builder.mutation({
             query: ({alias, updatedData}) => ({
@@ -21,6 +22,7 @@ export const studyProgramApi = istadLmsApi.injectEndpoints({
                 method: 'PATCH',
                 body: updatedData,
             }),
+            invalidatesTags: [{type: 'StudyPrograms', id: 'LIST'}],
         }),
         getStuProByAlias: builder.query({
             query: (alias) => ({

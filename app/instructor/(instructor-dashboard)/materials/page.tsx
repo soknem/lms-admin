@@ -1,84 +1,144 @@
-"use client"
+'use client'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, {useEffect, useState} from "react";
 
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import React, {useCallback, useEffect, useState} from "react";
+import { CurriculumTable } from "@/components/instructorcomponent/materials/curriculum/data-table";
+import { curriculumColumns } from "@/components/instructorcomponent/materials/curriculum/columns";
+import { SlideTable } from "@/components/instructorcomponent/materials/slide/data-table";
+import { slideColumns } from "@/components/instructorcomponent/materials/slide/columns";
+import { VideoTable } from "@/components/instructorcomponent/materials/video/data-table";
+import { videoColumns } from "@/components/instructorcomponent/materials/video/columns";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/lib/store";
-import {useGetMaterialsQuery} from "@/lib/features/instructor/meterials/meterials";
-import {selectMaterial, setMaterials} from "@/lib/features/instructor/meterials/intmeterialsSlice";
-import {MaterialTable} from "@/components/instructorcomponent/materials/data-table";
-import {materialColumns} from "@/components/instructorcomponent/materials/columns";
-import {useGetAllSectionQuery} from "@/lib/features/instructor/meterials/subjectMaterialSection/section";
-import {selectSection, setSections} from "@/lib/features/instructor/meterials/subjectMaterialSection/sectionSlice";
-import {SectionTable} from "@/components/instructorcomponent/materials/section/data-table";
-import {sectionColumns} from "@/components/instructorcomponent/materials/section/columns";
+import {RootState} from "@/lib/store";
+import {useFilterFilesMutation} from "@/lib/features/instructor/meterials/meterials";
+import {addOrUpdateFilter} from "@/lib/features/filters/filterSlice";
 
 
 export default function Materials() {
-  const dispatch = useDispatch<AppDispatch>();
 
-  // Materials
-  const {
-    data: materialsData,
-  } = useGetMaterialsQuery({page: 0, pageSize: 10});
-  const materials = useSelector((state: RootState) => selectMaterial(state));
+  const dispatch = useDispatch();
+  const curriculumFilterState = useSelector((state: RootState) => state.filter.curriculums);
+  const slideFilterState = useSelector((state: RootState) => state.filter.slides);
+  const videoFilterState = useSelector((state: RootState) => state.filter.videos);
+  const [filterCurriculums] = useFilterFilesMutation();
+  const [filterSlides] = useFilterFilesMutation();
+  const [filterVideos] = useFilterFilesMutation();
+  const [curriculumData, setCurriculumData] = useState({content: []});
+  const [slideData, setSlideData] = useState({content: []});
+  const [videoData, setVideoData] = useState({content: []});
+  const [activeTab, setActiveTab] = useState('curriculums');
 
-  useEffect(() => {
-    if (materialsData) {
-      dispatch(setMaterials(materialsData.content));
+
+  //get curriculum
+  // Function to apply the filter and fetch data
+  const applyFilterCurriculums = async () => {
+    const { globalOperator, specsDto } = curriculumFilterState;
+    const body = { globalOperator, specsDto };
+
+    try {
+      const curriculumData = await filterCurriculums({ pageNumber: 0, pageSize: 25, body }).unwrap();
+      setCurriculumData(curriculumData);
+    } catch (err) {
+      console.error('Failed to filter curriculum from API:', err);
     }
-  }, [materialsData, dispatch]);
-
-  console.log("Materials", materials)
-
-
-  // Section of materials in each subject
-  const {
-    data: sectionsData,
-  } = useGetAllSectionQuery({page: 0, pageSize: 10});
-
-  const sections = useSelector((state: RootState) => selectSection(state));
-
-  useEffect(() => {
-    if (sectionsData) {
-      dispatch(setSections(sectionsData));
-    }
-  }, [sectionsData, dispatch]);
-
-  // console.log("Sections", sectionsData)
-
-  const [currentFiletype, setCurrentYear] = useState("");
-
-  const filterDataByFileType = (filetype: string) => {
-    return materials.filter((item: any) => item.fileType === filetype);
   };
 
+  // Update the filter state when the component mounts
+  useEffect(() => {
+    const value = "application/pdf";
+    dispatch(addOrUpdateFilter({
+      filterType: 'curriculums',
+      filter: { column: 'contentType', value, operation: 'EQUAL', joinTable: null }
+    }));
+  }, [dispatch]);
+
+  // Apply the filter when the filter state changes
+  useEffect(() => {
+    if (curriculumFilterState.specsDto.length > 0) {
+      applyFilterCurriculums();
+    }
+  }, [curriculumFilterState]);
+
+
+
+  //get slide
+  // Function to apply the filter and fetch data
+  const applyFilterSlide = async () => {
+    const { globalOperator, specsDto } = slideFilterState;
+    const body = { globalOperator, specsDto };
+
+    try {
+      const slideData = await filterSlides({ pageNumber: 0, pageSize: 25, body }).unwrap();
+      setSlideData(slideData)
+    } catch (err) {
+      console.error('Failed to filter slide from API:', err);
+    }
+  };
+
+  // Update the filter state when the component mounts
+  useEffect(() => {
+    const value = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    dispatch(addOrUpdateFilter({
+      filterType: 'slides',
+      filter: { column: 'contentType', value, operation: 'EQUAL', joinTable: null }
+    }));
+  }, [dispatch]);
+
+  // Apply the filter when the filter state changes
+  useEffect(() => {
+    if (slideFilterState.specsDto.length > 0) {
+      applyFilterSlide();
+    }
+  }, [slideFilterState]);
+
+
+  //get video
+  // Function to apply the filter and fetch data
+  const applyFilterVideo = async () => {
+    const { globalOperator, specsDto } = videoFilterState;
+    const body = { globalOperator, specsDto };
+
+    try {
+      const videoData = await filterVideos({ pageNumber: 0, pageSize: 25, body }).unwrap();
+      setVideoData(videoData);
+    } catch (err) {
+      console.error('Failed to filter video from API:', err);
+    }
+  };
+
+  // Update the filter state when the component mounts
+  useEffect(() => {
+    const value = "video/mp4";
+    dispatch(addOrUpdateFilter({
+      filterType: 'videos',
+      filter: { column: 'contentType', value, operation: 'EQUAL', joinTable: null }
+    }));
+  }, [dispatch]);
+
+  // Apply the filter when the filter state changes
+  useEffect(() => {
+    if (videoFilterState.specsDto.length > 0) {
+      applyFilterVideo();
+    }
+  }, [videoFilterState]);
 
   return (
       <main className="flex flex-col h-full w-full p-9">
         <h2 className="mb-6 text-4xl text-lms-primary font-bold">Materials</h2>
-        <Tabs defaultValue="sections" className="w-full">
+        <Tabs defaultValue="curriculums" className="w-full">
           <TabsList>
-            <TabsTrigger value="sections">Section</TabsTrigger>
             <TabsTrigger value="curriculums">Curriculum</TabsTrigger>
             <TabsTrigger value="slide">Slide</TabsTrigger>
             <TabsTrigger value="video">Video</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="sections">
-            <SectionTable columns={sectionColumns} data={sections}/>
-          </TabsContent>
-
           <TabsContent value="curriculums">
-            <MaterialTable columns={materialColumns} data={filterDataByFileType("curriculum")}/>
+            <CurriculumTable columns={curriculumColumns} data={curriculumData.content} />
           </TabsContent>
-
           <TabsContent value="slide">
-            <MaterialTable columns={materialColumns} data={filterDataByFileType("slide")}/>
+            <SlideTable columns={slideColumns} data={slideData.content} />
           </TabsContent>
-
           <TabsContent value="video">
-            <MaterialTable columns={materialColumns} data={filterDataByFileType("youtubeVideo")}/>
+            <VideoTable columns={videoColumns} data={videoData.content} />
           </TabsContent>
         </Tabs>
       </main>

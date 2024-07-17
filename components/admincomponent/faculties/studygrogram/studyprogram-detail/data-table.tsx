@@ -112,7 +112,6 @@ export function StudyProgramDetailTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const filterOptions = ["All", "Public", "Draft"];
     const handleFilterChange = (value: string) => {

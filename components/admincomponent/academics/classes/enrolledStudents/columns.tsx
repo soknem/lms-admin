@@ -133,12 +133,10 @@ const HandleRemoveStudent = ({ row }: { row: any }) => {
     const selectedClass = useSelector((state: RootState) => selectSingleClass(state));
 
     if (row.original) {
-        console.log("Student selected:", row.original.uuid);
     } else {
         console.error("Row does not have an 'original' property");
     }
 
-    console.log("selected class: ", selectedClass?.uuid || "");
 
     const [deleteStudentFromClass, { isLoading, isError }] = useDeleteStudentFromClassMutation();
 
@@ -150,7 +148,6 @@ const HandleRemoveStudent = ({ row }: { row: any }) => {
             try {
                 await deleteStudentFromClass({ classUuid: selectedClass.uuid, studentUuid: row.original.uuid }).unwrap();
                 toast.success("Student removed successfully");
-                console.log("Student removed successfully");
                 refetchData()
             } catch (error) {
                 toast.error("Failed to remove student");

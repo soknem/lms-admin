@@ -39,7 +39,7 @@ export function ViewDeForm({alias, onClose}: { alias: string; onClose: () => voi
                 alias: degreeData.alias,
                 level: degreeData.level,
                 numberOfYears: degreeData.numberOfYears,
-                description: degreeData.description,
+                description: degreeData.description || "No description",
                 isDeleted: degreeData.isDeleted,
                 isDraft: degreeData.isDraft
             });
@@ -62,7 +62,7 @@ export function ViewDeForm({alias, onClose}: { alias: string; onClose: () => voi
                 >
                     {() => (
                         <Form className="py-4 rounded-lg w-full ">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 items-center">
 
                                 {/* Degree Level */}
                                 <div className={`${style.inputContainer}`}>

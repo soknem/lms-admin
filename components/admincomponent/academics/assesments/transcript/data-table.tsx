@@ -210,7 +210,6 @@ export function TranscriptDataTable<TData, TValue>({
 
   const handleGenChange = (selectedOption : any) => {
     setSelectedGeneration(selectedOption);
-    console.log("Selected generation alias:", selectedOption.alias);
   };
 
   const handleReset = () => {

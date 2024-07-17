@@ -51,14 +51,12 @@ export default function EditClassForm({ uuid  ,  onClose ,classData }:PropsType 
 
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log("class uuid: ",uuid)
 
     const [startDate, setStartDate] = useState<Date>()
     const [endDate, setEndDate] = useState<Date>()
 
     const classToUpdate = classData?.find(cls => cls.uuid === uuid);
 
-    console.log("classToUpdate", classToUpdate)
 
     const [selectedStatus, setSelectedStatus] = useState(1);
     const [selectInstructorUuid, setSelectedInstructorUuid] = useState<string>(classToUpdate?.instructor?.uuid || '');
@@ -75,7 +73,6 @@ export default function EditClassForm({ uuid  ,  onClose ,classData }:PropsType 
         }
     }, [classToUpdate]);
 
-    console.log("instructor id: ", classToUpdate.instructor.uuid)
 
     // *** Instructor ***
     const {data: InsData, error: InsError, isLoading: isInsLoading, isSuccess: isInsSuccess} = useGetInstructorQuery({page: 0, pageSize: 10});
@@ -87,7 +84,6 @@ export default function EditClassForm({ uuid  ,  onClose ,classData }:PropsType 
                 label: `${ins.username}`,
             }));
             setInstructors(formattedIns);
-            console.log("instructor from create class: ",formattedIns)
         }
         if (InsError) {
             console.error("failed to load instructor error", InsError);
@@ -123,12 +119,9 @@ export default function EditClassForm({ uuid  ,  onClose ,classData }:PropsType 
 
             };
 
-            // console.log("start time from update : ", values.startTime )
-            console.log("status",status)
 
             await updateClass({ uuid, updatedData }).unwrap();
             toast.success('Successfully updated!');
-            console.log('Class updated successfully');
         } catch (err: any) {
             let errorMessage = 'Failed to update class';
             if (Array.isArray(err.data.error.description)) {
@@ -171,7 +164,6 @@ export default function EditClassForm({ uuid  ,  onClose ,classData }:PropsType 
                 classStart: startDate ? format(startDate, "yyyy-MM-dd") : "",
                 classEnd: endDate ? format(endDate, "yyyy-MM-dd") : "",
             };
-            console.log("Form values: ", formattedValues);
             handleUpdateClass(formattedValues)
         }
     });

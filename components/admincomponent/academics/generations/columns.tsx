@@ -280,7 +280,6 @@ const ActionCell = ({ row } : any) => {
 
     const generations = useSelector(selectGeneration);
 
-    console.log("Generation from column: ",generations)
 
     // edit form
     const [isFormVisible, setIsFormVisible] = useState(false);
@@ -301,11 +300,9 @@ const ActionCell = ({ row } : any) => {
         if(isDeleted){
             await enableGeneration(genAlias).unwrap();
             setIsDeleted((prev :any) => !prev);
-            console.log('Generation enabled successfully');
         }else{
             await disableGeneration(genAlias).unwrap();
             setIsDeleted((prev : any) => !prev);
-            console.log('Generation disable successfully');
         }
         setIsCardVisible(false);
     };

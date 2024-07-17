@@ -70,7 +70,6 @@ export default function Assessment() {
     //             semester: 1,
     //         });
     //
-    //         console.log('Fetched data:', result);
     //     } catch (err) {
     //         console.error('Failed to fetch transcripts', err);
     //     }
@@ -123,7 +122,6 @@ export default function Assessment() {
                 year: selectedYear.alias,
             }).unwrap();
 
-            console.log('Fetched data:', result);
             setTranscripts(result.content)
 
             // Handle the fetched data as needed
@@ -169,7 +167,6 @@ export default function Assessment() {
                 semester: selectedSemester.alias
             }).unwrap();
 
-            console.log('Fetched data:', result);
             setSemesters(result.content)
             dispatch(setEachSemesterAssessment(result.content));
 
@@ -198,11 +195,9 @@ export default function Assessment() {
 
     };
 
-    console.log("semester filters", semesters);
 
 
 
-    // console.log("data semester from store: ",semesterStoreData)
 
 
     // ==== fetch generation ====
@@ -212,7 +207,6 @@ export default function Assessment() {
 
     const handleGenChange = (selectedOption : any) => {
         setSelectedGeneration(selectedOption);
-        console.log("Selected generation alias:", selectedOption.alias);
     };
 
     const handleReset = () => {
@@ -231,7 +225,6 @@ export default function Assessment() {
         setSelectedProgram({alias: '', label: ''});
     };
 
-    console.log("Study Program Selected: ",selectedProgram)
 
 
     // === semester ===
@@ -242,7 +235,6 @@ export default function Assessment() {
         setSelectedSemester(semester);
     };
 
-    console.log("semester:", selectedSemester);
 
     const handleSemesterReset = () => {
         setSelectedSemester({ alias: 1, label: '' });

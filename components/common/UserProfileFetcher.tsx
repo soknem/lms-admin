@@ -20,7 +20,6 @@ const UserProfileFetcher = ({ children }: UserProfileFetcherProps) => {
         }
     }, [dispatch, userProfile]);
 
-    console.log("profile", userProfile);
 
     return (
         <>

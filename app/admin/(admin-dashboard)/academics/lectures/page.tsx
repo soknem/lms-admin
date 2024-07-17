@@ -47,7 +47,6 @@ export default  function Lecture() {
     }
   }, [data, error, dispatch]);
 
-  console.log("lecture data from lecture page: ", LectureData);
 
 
   return (

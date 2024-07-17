@@ -48,17 +48,6 @@ const initialValues = {
     classCode: '',
 };
 
-const handleSubmit = async (value: PaymentType) => {
-    // const res = await fetch(`https://6656cd809f970b3b36c69232.mockapi.io/api/v1/degrees`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(value),
-    // });
-    // const data = await res.json()
-    // console.log("degree upload: ", data)
-};
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -83,7 +72,6 @@ const CustomInput = ({field, setFieldValue}: any) => {
     const handleUploadFile = (e: any) => {
         const file = e.target.files[0];
         const localUrl = URL.createObjectURL(file);
-        console.log(localUrl);
         setImagePreview(localUrl);
 
         setFieldValue(field.name, file);
@@ -127,39 +115,7 @@ export function ViewPayForm() {
 
                 <Formik
                     initialValues={initialValues}
-                    onSubmit={async (values) => {
-                        // create degree post
-                        const paymentPost: PaymentType = {
-                            uuid: values.uuid,
-                            usernameOrEmail: values.usernameOrEmail,
-                            gender: values.gender,
-                            discount: values.discount,
-                            paidAmount: values.paidAmount,
-                            balanceDue: values.balanceDue,
-                            courseFee: values.courseFee,
-                            paymentMethod: values.paymentMethod,
-                            status: values.status,
-                            remark: values.remark,
-                            paidDate: values.paidDate,
-                            originalPayment: values.originalPayment,
-                            totalPayment: values.totalPayment,
-                            studentName: values.studentName,
-                            studentProfile: values.studentProfile,
-                            paidReturn: values.paidReturn,
-                            academicFee: values.academicFee,
-                            generation: values.generation,
-                            degree: values.degree,
-                            faculty: values.faculty,
-                            academicYear: values.academicYear,
-                            studyProgram: values.studyProgram,
-                            year: values.year,
-                            semester: values.semester,
-                            classCode: values.classCode,
-                            shift: values.shift,
-                        };
-
-                        // post product
-                        handleSubmit(paymentPost);
+                    onSubmit={() => {
                     }}
                 >
                     {({setFieldValue}) => (

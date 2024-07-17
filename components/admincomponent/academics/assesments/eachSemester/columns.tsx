@@ -17,7 +17,6 @@ const getUniqueSubjects = (data: semesterAssessementType[]) => {
             subjectsSet.add(course.title);
         });
     });
-    console.log("subject set: ",subjectsSet)
     return Array.from(subjectsSet);
 };
 

@@ -44,6 +44,7 @@ import {instructorCourseApi} from "@/lib/features/instructor/course/instructorCo
 import sectionSlice from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 import {studentAchievementApi} from "@/lib/features/student/achievement/achievement";
 import userProfileSlice from "@/lib/features/userProfile/userProfileSlice";
+import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
 
 
 export const makeStore = () => {
@@ -60,6 +61,7 @@ export const makeStore = () => {
             lecture: lectureSlice,
             degree: degreeSlice,
             faculty: facultySlice,
+            banner: bannerSlice,
             student: studentSlice,
             studentCourse: studentCourseSlice,
             studyProgram: studyProgramSlice,

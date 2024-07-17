@@ -1,6 +1,6 @@
 // **** Payment *****
 export type PaymentType = {
-    // receipt_id: number;
+    receiptId: string;
     uuid: string,
     usernameOrEmail: string;
     gender: string;

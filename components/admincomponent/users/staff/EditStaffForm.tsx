@@ -23,7 +23,6 @@ import {useUpdateStaffMutation} from "@/lib/features/admin/user-management/staff
 
 export function EditStaffForm( {updateData,uuid} : any ) {
 
-    console.log("data staff detail :" , updateData);
 
     const [profileImage, setProfileImage] = useState(updateData?.profileImage || '');
 
@@ -117,7 +116,6 @@ export function EditStaffForm( {updateData,uuid} : any ) {
                 const cvFormData = new FormData();
                 cvFormData.append('file', cvFile);
                 const cvResponse = await createSingleFile(cvFormData).unwrap();
-                console.log('CV File uploaded:', cvResponse);
                 updatedData.uploadCv = cvResponse.name;
             }
 
@@ -125,7 +123,6 @@ export function EditStaffForm( {updateData,uuid} : any ) {
                 const idCardFormData = new FormData();
                 idCardFormData.append('file', idCardFile);
                 const idCardResponse = await createSingleFile(idCardFormData).unwrap();
-                console.log('ID Card File uploaded:', idCardResponse);
                 updatedData.identityCard = idCardResponse.name;
             }
 
@@ -133,7 +130,6 @@ export function EditStaffForm( {updateData,uuid} : any ) {
                 const pfImageFormData = new FormData();
                 pfImageFormData.append('file', pfImageFile);
                 const pfImageResponse = await createSingleFile(pfImageFormData).unwrap();
-                console.log('Profile Image File uploaded:', pfImageResponse);
                 updatedData.profileImage = pfImageResponse.name;
             }
 
@@ -143,7 +139,6 @@ export function EditStaffForm( {updateData,uuid} : any ) {
 
            await updateStaff({uuid,updatedData}).unwrap();
             toast.success('Successfully updated!');
-            console.log("Staff updated successfully");
         } catch (error) {
             toast.error('Failed to update staff!');
             console.error("Error update staff: ", error);
@@ -181,7 +176,6 @@ export function EditStaffForm( {updateData,uuid} : any ) {
                 ...values,
                 dob: birthDate ? format(birthDate, "yyyy-MM-dd") : "",
             };
-            console.log("Form values: ", formattedValues);
             handleUpdateStaff(formattedValues)
         }
     });

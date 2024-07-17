@@ -1,5 +1,5 @@
 "use client";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import {Formik, Form, Field, ErrorMessage, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "../style.module.css";
@@ -15,14 +15,19 @@ import {
 
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateAdmissionMutation, useGetAdmissionsQuery} from "@/lib/features/admin/admission-management/admission";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AdmissionType} from "@/lib/types/admin/admission";
-import {useSelector} from "react-redux";
-import {RootState} from "@/lib/store";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/lib/store";
 import {useGetAcademicYearsQuery} from "@/lib/features/admin/faculties/acdemicYear-management/academicYear";
-import {selectAcademicYear} from "@/lib/features/admin/faculties/acdemicYear-management/academicYearSlice";
-import {IoIosArrowDown} from "react-icons/io";
 import Select from "react-select";
+import {AcademicYearType, FacultyType} from "@/lib/types/admin/faculty";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {CalendarIcon} from "@radix-ui/react-icons";
+import {format} from "date-fns";
+import {Calendar} from "@/components/ui/calendar";
+import {toast} from "react-hot-toast";
 
 const initialValues = {
     uuid: "",
@@ -31,18 +36,65 @@ const initialValues = {
     endDate: "",
     telegramLink: "",
     remark: "",
-    status: 0,
+    status: 1,
     isDeleted: false,
 };
 
 const validationSchema = Yup.object().shape({
     academicYearAlias: Yup.string().required("Academic year is required"),
     openDate: Yup.date().required("Start date is required"),
-    endDate: Yup.date().required("End date is required"),
+    endDate: Yup.date()
+        .required("End date is required")
+        .min(Yup.ref('openDate'), "End date must be greater than start date"),
     remark: Yup.string(),
     status: Yup.string(),
-    isDeleted: Yup.boolean(),
 });
+
+const DatePickerField = ({field, form, label, ...props}: any) => {
+    const {setFieldValue} = form;
+    const {name, value} = field;
+
+    return (
+        <div className={style.inputContainer}>
+            <div className="flex">
+                <label className={`${style.label}`} htmlFor={name}>
+                    {label}
+                </label>
+                <TbAsterisk className="w-2 h-2 text-lms-error"/>
+            </div>
+            <Popover>
+                <PopoverTrigger asChild>
+                    <button
+                        type="button"
+                        className={cn(
+                            `${style.input}`,
+                            !value && "text-gray-600"
+                        )}
+                    >
+                        <div className={`flex`}>
+                            <CalendarIcon className="mr-2 h-4 w-4"/>
+                            {value ? format(new Date(value), "PPP") : <span>Pick a date</span>}
+                        </div>
+
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-white">
+                    <Calendar
+                        mode="single"
+                        selected={value ? new Date(value) : undefined}
+                        onSelect={(date) => setFieldValue(name, date ? date.toISOString().split('T')[0] : '')}
+                        initialFocus
+                    />
+                </PopoverContent>
+            </Popover>
+            <ErrorMessage
+                name={name}
+                component="div"
+                className={style.error}
+            />
+        </div>
+    );
+};
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -52,7 +104,7 @@ const RadioButton = ({field, value, label}: any) => {
                 {...field}
                 id={value}
                 value={value}
-                checked={field.value === value}
+                checked={String(field.value) === value}
             />
             <label className="pl-2" htmlFor={value}>
                 {label}
@@ -61,23 +113,27 @@ const RadioButton = ({field, value, label}: any) => {
     );
 };
 
-
 export function CreateAmsForm() {
+    const dispatch = useDispatch<AppDispatch>();
     const [createAdmission] = useCreateAdmissionMutation();
-    const {refetch: refetchAdms} = useGetAdmissionsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
+    const [academicYears, setAcademicYears] = useState([]);
+
     const {
-        data
-    } = useGetAcademicYearsQuery({page: 0, pageSize: 10});
-    const academicYears = useSelector((state: RootState) => selectAcademicYear(state));
+        data: academicYearData,
+    } = useGetAcademicYearsQuery({page: 0, pageSize: 0});
 
+    useEffect(() => {
+        if (academicYearData) {
+            const academicYearOption = academicYearData?.content?.map((academicYear: AcademicYearType) => ({
+                value: academicYear.alias,
+                label: academicYear.academicYear,
+            }));
+            setAcademicYears(academicYearOption);
+        }
+    }, [academicYearData, dispatch]);
 
-    const academicYearOption = academicYears.map(academicYear => ({
-        value: academicYear.alias,
-        label: academicYear.academicYear
-    }));
-
-    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+    const handleSubmit = async (values: AdmissionType, {setSubmitting, resetForm}: FormikHelpers<AdmissionType>) => {
         try {
             const newAdmission: AdmissionType = {
                 uuid: values.uuid,
@@ -92,15 +148,12 @@ export function CreateAmsForm() {
 
             await createAdmission(newAdmission).unwrap();
             resetForm();
-            // Handle success (e.g., show a success message or close the dialog)
-            refetchAdms();
+            toast.success('Successfully created!');
             setIsOpen(false);
-            // console.log("Update successfully")
 
 
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating admission: ", error);
+            toast.error('Failed to create admission!');
         } finally {
             setSubmitting(false);
         }
@@ -115,7 +168,7 @@ export function CreateAmsForm() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[480px] bg-white ">
+            <DialogContent className="w-[480px] bg-white" onInteractOutside={(e) => e.preventDefault()}>
 
                 <DialogHeader>
                     <DialogTitle className={`text-2xl font-semibold`}>Add Admission</DialogTitle>
@@ -126,7 +179,7 @@ export function CreateAmsForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {() => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="flex flex-col gap-1 items-center">
 
@@ -139,57 +192,31 @@ export function CreateAmsForm() {
                                         </label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-
-
-                                    <Select options={academicYearOption}/>
+                                    <Select
+                                        options={academicYears}
+                                        onChange={(selectedOption: any) => setFieldValue('academicYearAlias', selectedOption ? selectedOption.value : '')}/>
                                     <ErrorMessage
-                                        name="academicYear"
+                                        name="academicYearAlias"
                                         component="div"
                                         className={style.error}
                                     />
                                 </div>
 
-                                {/*openDate*/}
-                                <div className={style.inputContainer}>
-                                    <div className="flex">
-                                        <label className={style.label} htmlFor="openDate">
-                                            Open Date
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        type="date"
-                                        name="openDate"
-                                        id="openDate"
-                                        className={style.input}
-                                    />
-                                    <ErrorMessage
-                                        name="openDate"
-                                        component="div"
-                                        className={style.error}
-                                    />
-                                </div>
+                                {/*Start Date*/}
+                                <Field
+                                    name="openDate"
+                                    component={DatePickerField}
+                                    label="Open Date"
+                                    setFieldValue={setFieldValue}
+                                />
 
-                                {/*endDate*/}
-                                <div className={style.inputContainer}>
-                                    <div className="flex">
-                                        <label className={style.label} htmlFor="endDate">
-                                            End Date
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        type="date"
-                                        name="endDate"
-                                        id="endDate"
-                                        className={style.input}
-                                    />
-                                    <ErrorMessage
-                                        name="endDate"
-                                        component="div"
-                                        className={style.error}
-                                    />
-                                </div>
+                                {/*End Date*/}
+                                <Field
+                                    name="endDate"
+                                    component={DatePickerField}
+                                    label="End Date"
+                                    setFieldValue={setFieldValue}
+                                />
 
                                 {/*telegramLink*/}
                                 <div className={style.inputContainer}>
@@ -243,19 +270,19 @@ export function CreateAmsForm() {
                                                 name="status"
                                                 component={RadioButton}
                                                 value="1"
-                                                label="Public"
+                                                label="Opening"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="2"
-                                                label="Draft"
+                                                label="Closed"
                                             />
                                             <Field
                                                 name="status"
                                                 component={RadioButton}
                                                 value="3"
-                                                label="Disabled"
+                                                label="Finish"
                                             />
                                         </div>
                                         <ErrorMessage
@@ -265,44 +292,17 @@ export function CreateAmsForm() {
                                         />
                                     </div>
 
-                                    {/*isDeleted*/}
-                                    <div className={``}>
-                                        <div className="flex">
-                                            <label className={style.label} htmlFor="isDeleted">
-                                                Status
-                                            </label>
-                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                        </div>
-                                        <div className="flex gap-4 h-[40px] items-center">
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="true"
-                                                label="Yes"
-                                            />
-                                            <Field
-                                                name="isDeleted"
-                                                component={RadioButton}
-                                                value="false"
-                                                label="No"
-                                            />
-                                        </div>
-                                        <ErrorMessage
-                                            name="isDeleted"
-                                            component="div"
-                                            className={style.error}
-                                        />
-                                    </div>
                                 </div>
                             </div>
 
-                            {/* button submit */}
+                            {/* Submit Button */}
                             <DialogFooter>
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Add
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

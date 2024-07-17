@@ -22,12 +22,13 @@ import {
     useGetDegreesQuery
 } from "@/lib/features/admin/faculties/degree/degree";
 import {toast} from "react-hot-toast";
+import slugify from "slugify";
 
 const validationSchema = Yup.object().shape({
-    alias: Yup.string().required('Alias is required'),
+    alias: Yup.string().required("Alias is required"),
     level: Yup.string().required('Level is required'),
+    numberOfYear: Yup.number().required('Number of years is required').positive("Number of years must be positive.").integer(),
     description: Yup.string(),
-    isDeleted: Yup.boolean().required('Please specify if the degree is deleted'),
     isDraft: Yup.boolean().required('Please specify if the degree is a draft'),
 });
 
@@ -53,7 +54,6 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
     const [editDegree] = useEditDegreeByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
     const {data: degreeData, isSuccess} = useGetDegreeByAliasQuery(alias);
-    const {refetch: refetchDegree} = useGetDegreesQuery({page: 0, pageSize: 10});
     const [initialValues, setInitialValues] = useState({
         alias: "",
         level: "",
@@ -84,7 +84,7 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
                 alias: values.alias,
                 level: values.level,
                 numberOfYear: values.numberOfYear,
-                description: values.description,
+                description: values.description || "No description",
                 isDeleted: values.isDeleted,
                 isDraft: values.isDraft,
             };
@@ -100,12 +100,10 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
             }
 
             resetForm();
-            refetchDegree();
             onClose();
             toast.success('Successfully updated!');
 
         } catch (error) {
-            console.error("Error updating degree: ", error);
             toast.error('Failed to edit degree!');
 
         } finally {
@@ -126,23 +124,36 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {() => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full">
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 items-center">
 
-                                {/* Degree Level */}
-                                <div className={`${style.inputContainer}`}>
+                                {/* Degree Level*/}
+                                <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="level">
                                             Level
                                         </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
                                         type="text"
+                                        placeholder="Associated Degree"
                                         name="level"
                                         id="level"
-                                        className={`${style.input}`}
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "level",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
+                                        className={` ${style.input}`}
                                     />
                                     <ErrorMessage
                                         name="level"
@@ -151,19 +162,21 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
                                     />
                                 </div>
 
-                                {/* Degree Alias */}
-                                <div className={`${style.inputContainer}`}>
+                                {/* Degree Alias*/}
+                                <div className={` ${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="alias">
                                             Slug
                                         </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
                                     <Field
+                                        disabled
+                                        placeholder="associated-degree"
                                         type="text"
                                         name="alias"
                                         id="alias"
-                                        className={`${style.input}`}
+                                        className={` ${style.input}`}
                                     />
                                     <ErrorMessage
                                         name="alias"
@@ -191,7 +204,7 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between`}>
+                                <div className={`${style.inputContainer} flex w-full justify-between`}>
 
                                     {/* Visibility */}
                                     <div className={``}>
@@ -230,8 +243,9 @@ export function EditDeForm({alias, onClose}: { alias: string; onClose: () => voi
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Changes
+                                    {isSubmitting ? 'Editing...' : ' Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </Form>

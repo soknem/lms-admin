@@ -17,11 +17,13 @@ import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {
     useEditFacultyByAliasMutation,
-    useGetFacultiesQuery,
     useGetFacultyByAliasQuery
 } from "@/lib/features/admin/faculties/faculty/faculty";
 import {IoCameraOutline} from "react-icons/io5";
 import {toast} from "react-hot-toast";
+import * as Yup from "yup";
+import slugify from "slugify";
+import logo_holder from "@/public/common/logo_holder.png";
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -39,6 +41,27 @@ const RadioButton = ({field, value, label}: any) => {
         </div>
     );
 };
+
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+
+const validationSchema = Yup.object().shape({
+    alias: Yup.string().required('Slug is required'),
+    name: Yup.string().required('Title of faculty is required'),
+    address: Yup.string().required('Address is required'),
+    logo: Yup.mixed()
+        .nullable()
+        .test("fileFormat", "Unsupported Format", (value: any) => {
+            if (!value) return true; // Allow null or undefined values
+            return SUPPORTED_FORMATS.includes(value.type);
+        })
+        .test("fileSize", "File Size is too large", (value: any) => {
+            if (!value) return true; // Allow null or undefined values
+            return value.size <= FILE_SIZE;
+        }),
+    isDraft: Yup.boolean().required('Visibility is required'),
+});
+
 
 const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
     const [imagePreview, setImagePreview] = useState(previewUrl);
@@ -66,16 +89,17 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
             >
                 {imagePreview ? (
                     <Image
-                        src={imagePreview}
+                        src={imagePreview || logo_holder}
                         alt="preview"
                         fill
                         style={{objectFit: "contain"}}
                     />
                 ) : (
-                    <img
-                        src={previewUrl}
-                        alt="faculty"
-                        className="w-full h-full rounded-full"
+                    <Image
+                        src={previewUrl || logo_holder}
+                        alt="preview"
+                        fill
+                        className="w-full h-full rounded-full object-fill"
                     />
                 )}
                 <div
@@ -95,18 +119,16 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
 };
 
 export function EditFacForm({alias, onClose}: { alias: string; onClose: () => void }) {
-    const router = useRouter();
     const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
     const [editFaculty] = useEditFacultyByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
     const [logo, setLogo] = useState(null);
     const {data: facultyData, isSuccess} = useGetFacultyByAliasQuery(alias);
-    const {refetch: refetchFaculties} = useGetFacultiesQuery({page: 0, pageSize: 10});
     const [initialValues, setInitialValues] = useState({
         alias: "",
         name: "",
-        description: "",
+        description: "No Description",
         address: "",
         logo: "",
         isDeleted: false,
@@ -118,7 +140,7 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
             setInitialValues({
                 alias: facultyData.alias,
                 name: facultyData.name,
-                description: facultyData.description,
+                description: facultyData.description || "No description",
                 address: facultyData.address,
                 logo: facultyData.logo,
                 isDeleted: facultyData.isDeleted,
@@ -131,31 +153,29 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            let logoUrl = values.logo;
+            let logoName = values.logo;
 
             // Upload the logo file if it's a new file
             if (values.logo instanceof File) {
                 const fileData = new FormData();
                 fileData.append("file", values.logo);
                 const fileResponse = await createSingleFile(fileData).unwrap();
-                logoUrl = fileResponse.name; // Assuming the response contains the URL of the uploaded file
+                logoName = fileResponse.name; // Assuming the response contains the URL of the uploaded file
             } else if (values.logo === logo) {
-                logoUrl = null;
+                logoName = null
             }
-
 
             const edtFacultyByAlias: FacultyType = {
                 alias: values.alias, // Use the initial alias
                 name: values.name,
                 description: values.description,
                 address: values.address,
-                logo: logoUrl,
+                logo: logoName,
                 isDeleted: values.isDeleted,
                 isDraft: values.isDraft,
 
             };
 
-            console.log("Updated Data", edtFacultyByAlias)
 
             await editFaculty({alias: initialAlias, updatedData: edtFacultyByAlias}).unwrap();
 
@@ -166,17 +186,12 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                     updatedData: {...edtFacultyByAlias, alias: values.alias}
                 }).unwrap();
             }
-
-
             resetForm();
-            refetchFaculties();
             onClose();
-            console.log("Update successfully")
             toast.success('Successfully updated!');
 
 
         } catch (error) {
-            console.error("Error updating faculty: ", error);
             toast.error('Failed to edit faculty!');
         } finally {
             setSubmitting(false);
@@ -193,9 +208,10 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                 <Formik
                     enableReinitialize
                     initialValues={initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({isSubmitting, setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-1 items-center justify-center">
 
@@ -209,46 +225,58 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                     />
                                 </div>
 
-                                {/* Faculty Alias */}
-                                <div className={`${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="alias">
-                                            Slug
-                                        </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
-                                    </div>
-
-                                    <Field
-                                        type="text"
-                                        name="alias"
-                                        id="alias"
-                                        // setFieldValue={setFieldValue}
-                                        className={`${style.input}`}
-                                    />
-                                    <ErrorMessage
-                                        name="alias"
-                                        component="div"
-                                        className={`${style.error}`}
-                                    />
-                                </div>
-
                                 {/* Faculty Title */}
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">
                                         <label className={`${style.label}`} htmlFor="name">
                                             Title
                                         </label>
-                                        <TbAsterisk className="w-2 h-2 text-lms-error"/>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
 
                                     <Field
                                         type="text"
+                                        placeholder="Faculty of Engineering"
                                         name="name"
                                         id="name"
                                         className={`${style.input}`}
+                                        onChange={(e: any) => {
+                                            setFieldValue(
+                                                "name",
+                                                e.target.value
+                                            );
+                                            setFieldValue(
+                                                "alias",
+                                                slugify(e.target.value, {
+                                                    lower: true,
+                                                })
+                                            );
+                                        }}
                                     />
                                     <ErrorMessage
                                         name="name"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* Faculty Alias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="alias">
+                                            Slug
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
+                                    <Field
+                                        disabled
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}
+                                    />
+                                    <ErrorMessage
+                                        name="alias"
                                         component="div"
                                         className={`${style.error}`}
                                     />
@@ -290,7 +318,7 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                     />
                                 </div>
 
-                                <div className={`flex w-full justify-between`}>
+                                <div className={`${style.inputContainer} flex w-full justify-between`}>
 
                                     {/* isDraft */}
                                     <div className={``}>
@@ -332,8 +360,9 @@ export function EditFacForm({alias, onClose}: { alias: string; onClose: () => vo
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Change
+                                    {isSubmitting ? 'Editing...' : 'Save Change'}
                                 </Button>
                             </DialogFooter>
                         </Form>
