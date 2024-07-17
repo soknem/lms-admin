@@ -21,6 +21,7 @@ import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {EditCurriculumForm} from "@/components/admincomponent/materials/curriculum/EditCurriculumForm";
 import {EditSlideForm} from "@/components/admincomponent/materials/slide/EditSlideForm";
 import {EditVideoForm} from "@/components/admincomponent/materials/video/EditVideoForm";
+import {VscPreview} from "react-icons/vsc";
 
 const ActionsCell = ({row}: any) => {
     const [isCardVisible, setIsCardVisible] = useState(false);
@@ -91,6 +92,15 @@ const ActionsCell = ({row}: any) => {
                         <TbFileImport size={20} className="text-gray-30 mr-2"/>
                         View
                     </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
+                        // onClick={handleViewClick}
+                    >
+                        <VscPreview size={20} className="text-gray-30 mr-2"/>
+                        Preview
+                    </DropdownMenuItem>
+
                     <DropdownMenuItem
                         className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
                         onClick={handleEditClick}

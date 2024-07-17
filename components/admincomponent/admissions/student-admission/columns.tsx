@@ -1,6 +1,4 @@
 "use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
 
 import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal, ArrowUpDown} from "lucide-react";
@@ -17,7 +15,6 @@ import {
     StatusOption,
     StudentAdmissionType,
 } from "@/lib/types/admin/admission";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
