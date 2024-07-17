@@ -1,6 +1,6 @@
-"use client";
+'use client';
 import {Formik, Form, Field, ErrorMessage, useFormik} from "formik";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import RequiredFieldLabelComponent from "@/components/common/RequiredFieldLabelComponent";
 import {IoCameraOutline} from "react-icons/io5";
 import Select from "react-select";
@@ -69,20 +69,26 @@ export function EditStudentForm( {updateData} : any ) {
     // **** Gender ****
     const [selectedGender, setSelectedGender] = useState(initialGender);
 
-    const handleGenderChange = (selectedOption: any) => {
-        const value = selectedOption?.value;
-        setSelectedGender(value);
+    const prevUpdateData = useRef(updateData);
+
+    const handleGenderChange = (selectedOption : any) => {
+        setSelectedGender(selectedOption);
+        formik.setFieldValue('gender', selectedOption?.value);
     };
 
     useEffect(() => {
-        setSelectedGender(initialGender);
-        formik.setFieldValue('gender', initialGender?.value);
+        if (prevUpdateData.current !== updateData) {
+            const newInitialGender = genderList.find(option => option.value === updateData?.gender);
+            setSelectedGender(newInitialGender);
+            formik.setFieldValue('gender', newInitialGender?.value);
 
-        if (updateData && updateData.dob) {
-            setBirthDate(new Date(updateData.dob));
-            formik.setFieldValue('dob', new Date(updateData.dob));
+            if (updateData && updateData.dob) {
+                setBirthDate(new Date(updateData.dob));
+                formik.setFieldValue('dob', new Date(updateData.dob));
+            }
+
+            prevUpdateData.current = updateData;
         }
-
     }, [updateData]);
 
 
@@ -110,16 +116,18 @@ export function EditStudentForm( {updateData} : any ) {
 
     const [selectedStatus, setSelectedStatus] = useState(initialStatus);
 
-    const handleStatusChange = (selectedOption: any) => {
-        const value = selectedOption?.value;
-        setSelectedStatus(value);
+    const handleStatusChange = (selectedOption : any) => {
+        setSelectedStatus(selectedOption);
+        formik.setFieldValue('studentStatus', selectedOption?.value);
     };
 
     useEffect(() => {
-        setSelectedStatus(initialStatus);
-        formik.setFieldValue('status', initialStatus?.value);
-
-    }, [updateData]);
+        if (prevUpdateData.current !== updateData) {
+            setSelectedStatus(initialStatus);
+            formik.setFieldValue('studentStatus', initialStatus?.value);
+            prevUpdateData.current = updateData;
+        }
+    }, [updateData, initialStatus]);
 
 
     // update student
@@ -143,6 +151,7 @@ export function EditStudentForm( {updateData} : any ) {
                 dob: values.dob,
                 birthPlace: values.birthPlace,
                 currentAddress: values.currentAddress,
+                studentStatus: selectedStatus?.value
 
             };
 
@@ -477,13 +486,10 @@ export function EditStudentForm( {updateData} : any ) {
                             options={statusList}
                             onChange={handleStatusChange}
                             value={selectedStatus}
-
                         />
-                        {
-                            typeof formik.errors.gender === 'string' &&
-                            <p className="text-red-700">{formik.errors.gender}</p>
+                        {typeof formik.errors.studentStatus === 'string' &&
+                            <p className="text-red-700">{formik.errors.studentStatus}</p>
                         }
-
                     </div>
 
 
@@ -531,7 +537,7 @@ export function EditStudentForm( {updateData} : any ) {
                             <RequiredFieldLabelComponent labelText="Upload HighSchool Certificate File"
                                                          labelClassName={` block mb-2 text-sm font-medium text-gray-900 dark:text-white`}/>
                             <div className="flex items-center justify-center w-full">
-                                <label
+                            <label
                                     htmlFor="hs-dropzone-file"
                                     className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                                     >
