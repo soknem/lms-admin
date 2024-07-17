@@ -3,16 +3,14 @@ import React from "react";
 import {BreadcrumbWithCustomSeparator} from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
 import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
 import type {PropsParam} from "@/lib/types/student/course";
-import CourseDetailHeaderStudent from "@/components/studentcomponent/coursedetail/CourseDetailHeaderStudent";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import {useGetInstructorCourseByUuidQuery} from "@/lib/features/instructor/course/instructorCourse";
+import CourseDetailHeaderInstructor from "@/components/instructorcomponent/coursedetail/CourseDetailHeader";
+import {CourseResponse} from "@/lib/types/instructor/courseDetail";
 
 export default function CourseDetail({params}: PropsParam) {
     const uuid = params.uuid;
     const {data, error, isLoading} = useGetInstructorCourseByUuidQuery({uuid});
-
-    // Debugging console logs
-    console.log("useGetCourseDetailQuery response:", {data, error, isLoading});
 
     if (isLoading) {
         return <LoadingComponent/>;
@@ -26,10 +24,12 @@ export default function CourseDetail({params}: PropsParam) {
         return <div>No course data available.</div>;
     }
 
+    const courseDetails: CourseResponse = data;
+
     return (
         <main>
             <section className="bg-white py-[35px]">
-                <CourseDetailHeaderStudent
+                <CourseDetailHeaderInstructor
                     year={data.year}
                     semester={data.semester}
                     courseTitle={data.courseTitle}
@@ -38,9 +38,8 @@ export default function CourseDetail({params}: PropsParam) {
                     credit={data.credit}
                     theory={data.theory}
                     practice={data.practice}
+                    internship={data.internship}
                     instructor={data.instructor}
-                    instructorProfileImage={data.instructorProfileImage}
-                    instructorName={data.instructorName}
                     position={data.position}
                     studentProfileImage={data.studentProfileImage}
                     classesStart={data.classesStart}
@@ -52,7 +51,11 @@ export default function CourseDetail({params}: PropsParam) {
                 />
             </section>
             <section className="mx-[100px]">
-                <TabComponent/>
+                <TabComponent
+                    courseTitle={courseDetails.courseTitle}
+                    courseDescription={courseDetails.courseDescription || "Unknown Description"}
+                    curriculumData={courseDetails.curriculum || null}
+                />
             </section>
         </main>
     );

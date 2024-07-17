@@ -7,9 +7,6 @@ import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
 import { useGetStudentCourseQuery } from "@/lib/features/student/course/studentCourse";
-import { selectLoading, setLoading, selectError, setError, setCourses } from "@/lib/features/student/course/studentCourseSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/lib/store";
 import { StudentCourseType, CourseType } from "@/lib/types/student/course";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import { CardCourseComponent } from "@/components/studentcomponent/courses/card/CardCourseComponent";
@@ -19,10 +16,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
 export default function Course() {
-    const dispatch = useDispatch<AppDispatch>();
-    const { data = {}, error, isLoading } = useGetStudentCourseQuery();
-    const loading = useSelector(selectLoading);
-    const fetchError = useSelector(selectError);
+    const { data = {}, error, isLoading} = useGetStudentCourseQuery();
     const [allData, setData] = useState<StudentCourseType | null>(null);
     const [openCourse, setOpenCourse] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
@@ -33,18 +27,13 @@ export default function Course() {
     const router = useRouter();
 
     useEffect(() => {
-        if (Object.keys(data).length > 0) {
-            dispatch(setLoading());
+        if (data && data.courses) {
             setData(data);
-            setFilteredCourses(data.courses); // Set initial courses
         }
-        if (error) {
-            dispatch(setError(error.toString()));
-        }
-    }, [data, error, dispatch]);
+    }, [data]);
 
     useEffect(() => {
-        let filtered = data.courses;
+        let filtered = allData?.courses || [];
         if (selectedCourse) {
             const selectedCourseNumber = Number(selectedCourse);
             filtered = filtered.filter((course: CourseType) => course.semester === selectedCourseNumber);
@@ -55,15 +44,17 @@ export default function Course() {
             );
         }
         setFilteredCourses(filtered);
-    }, [selectedCourse, searchTerm, data.courses]);
+    }, [selectedCourse, searchTerm, allData]);
 
-    if (!allData) {
+
+
+    if (isLoading || !allData) {
         return <LoadingComponent />;
     }
 
-    const filterBySemester = data.courses.reduce((semester: number[], item: CourseType) => {
-        if (!semester.includes(item.semester)) {
-            semester.push(item.semester);
+    const filterBySemester = allData.courses.reduce((semester: number[], item: CourseType) => {
+        if (!semester.includes(item.semester as number)) {
+            semester.push(item.semester as number);
         }
         return semester;
     }, []);
@@ -172,23 +163,23 @@ export default function Course() {
                         <CardCourseComponent
                             key={index}
                             onClick={() => router.push(`/student/courses/${course.uuid}`)}
-                            title={course.title}
-                            credit={course.credit}
-                            semester={course.semester}
-                            year={course.year}
-                            description={course.description}
+                            title={course.title || 'No title'}
+                            credit={course.credit || 0}
+                            semester={course.semester || 0}
+                            year={course.year || 0}
+                            description={course.description || 'No description available'}
                             uuid={course.uuid}
-                            logo={course.logo || 'default_logo_path'}
-                            progress={course.progress || null}
-                            instructorProfileImage={course.instructorProfileImage || 'default_avatar_path'}
-                            instructorName={course.instructorName || 'default_name'}
+                            logo={course.logo || 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png'}
+                            progress={course.progress || 0}
+                            instructorProfileImage={course.instructorProfileImage || 'https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg'}
+                            instructorName={course.instructorName || 'Unknown Instructor'}
                         />
                     ))}
                 </div>
 
-                <Stack spacing={2} className=" mb-10 w-full  ">
+                <Stack spacing={2} className="mb-10 w-full">
                     <Pagination
-                        className=" flex w-full justify-end "
+                        className="flex w-full justify-end"
                         count={Math.ceil(filteredCourses.length / itemsPerPage)}
                         variant="outlined"
                         shape="rounded"

@@ -27,7 +27,7 @@ import { OptionType, LectureType } from "@/lib/types/admin/academics";
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import StatusBadge from "@/components/common/StatusBadge";
-import {CurrentType} from "@/lib/types/instructor/lecture/lecture";
+import {CurrentType} from "@/lib/types/instructor/lecture";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {

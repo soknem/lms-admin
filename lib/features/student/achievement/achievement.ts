@@ -5,6 +5,7 @@ export const studentAchievementApi = istadLmsApi.injectEndpoints({
     endpoints: (builder) => ({
         getStudentAchievement: builder.query<any, void>({
             query: () => `/students/achievement`,
+            providesTags: [{type:'StudentData' , id:"LIST"}]
         }),
         getYearOfStudyAchievement: builder.query<any, void>({
             query: () => `/students/year-of-study-achievement`,

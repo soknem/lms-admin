@@ -31,7 +31,6 @@ import {
   selectSingleClass,
   setSingleClass
 } from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
-import {setCourses} from "@/lib/features/student/course/studentCourseSlice";
 import React from "react";
 import {setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
 
@@ -93,9 +92,6 @@ export default function ClassDetail(props: Props) {
   // course
   console.log("course data", coursesData)
 
-  if(isCourseSuccess){
-    dispatch(setCourses(coursesData))
-  }
 
   const courseSemester1 = coursesData?.content.filter((course :any) => course.yearOfStudy.semester === 1);
   const courseSemester2 = coursesData?.content.filter((course :any) => course.yearOfStudy.semester === 2);

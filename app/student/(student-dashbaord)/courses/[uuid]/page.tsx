@@ -6,13 +6,11 @@ import {useGetCourseDetailQuery} from "@/lib/features/student/course/studentCour
 import type {PropsParam} from "@/lib/types/student/course";
 import CourseDetailHeaderStudent from "@/components/studentcomponent/coursedetail/CourseDetailHeaderStudent";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
+import type {CourseDetail} from "@/lib/types/student/course";
 
 export default function CourseDetail({params}: PropsParam) {
     const uuid = params.uuid;
     const {data, error, isLoading} = useGetCourseDetailQuery({uuid});
-
-    // Debugging console logs
-    console.log("useGetCourseDetailQuery response:", {data, error, isLoading});
 
     if (isLoading) {
         return <LoadingComponent/>;
@@ -25,6 +23,8 @@ export default function CourseDetail({params}: PropsParam) {
     if (!data) {
         return <div>No course data available.</div>;
     }
+
+    const courseDetails: CourseDetail = data;
 
     return (
         <main>
@@ -39,20 +39,21 @@ export default function CourseDetail({params}: PropsParam) {
                     theory={data.theory}
                     practice={data.practice}
                     instructor={data.instructor}
-                    instructorProfileImage={data.instructorProfileImage}
-                    instructorName={data.instructorName}
+                    internship={data.internship}
                     position={data.position}
                     studentProfileImage={data.studentProfileImage}
                     classesStart={data.classesStart}
                 />
             </section>
             <section className="p-5 mx-[100px]">
-                <BreadcrumbWithCustomSeparator
-                    {...data}
-                />
+                <BreadcrumbWithCustomSeparator {...data} />
             </section>
             <section className="mx-[100px]">
-                <TabComponent/>
+                <TabComponent
+                    courseTitle={courseDetails.courseTitle}
+                    courseDescription={courseDetails.courseDescription}
+                    curriculumData={courseDetails.curriculum || null}
+                />
             </section>
         </main>
     );

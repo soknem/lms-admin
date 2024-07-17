@@ -1,82 +1,66 @@
-"use client";
+'use client'
 import React from "react";
-import Image from "next/image";
 import {useRouter} from "next/navigation";
+import {CourseResponse} from "@/lib/types/instructor/courseDetail";
 
-// Data structure for course details
-const courseData = {
-    // Course metadata
-    semester: "Semester 1",
-    title: "C++ PROGRAMMING",
-    description:
-        "C++ is one of the world's most popular programming languages. C++ can be found in today's operating systems, Graphical User Interfaces, and embedded systems",
-    credits: {
-        total: 3,
-        theory: 2,
-        practice: 1,
-    },
-    instructor: {
-        name: "Chan Samangrathnana",
-        title: "IT Instructor",
-        image: "/intructor.jpg",
-    },
-    studentsJoined: 30,
-    classStart: "Oct 26, 2024",
-    logo: "/logocourse.png",
-    studentImages: [
-        "/admin.png",
-        "/student3.jpg",
-        "/student2.jpg",
-        "/student3.jpg",
-        "/student2.jpg",
-        "/student2.jpg",
-    ],
-};
-/**
- * Component to display detailed information about a course.
- */
-
-export default function CourseDetailHeader() {
+export default function CourseDetailHeaderInstructor({
+                                                         year,
+                                                         semester,
+                                                         courseTitle,
+                                                         courseDescription,
+                                                         courseLogo,
+                                                         credit,
+                                                         theory,
+                                                         practice,
+                                                         internship,
+                                                         instructor,
+                                                         position,
+                                                         studentProfileImage,
+                                                         classesStart
+                                                     }: CourseResponse) {
     const router = useRouter();
-    const handleNavigate = () => {
-        router.push("/instructor/courses/int-profile");
-    };
 
     return (
-        <main>
-            {/* Course Overview Section */}
-            <section className="mx-[90px] flex flex-col-2 ">
+        <section>
+            <section className="mx-[90px] flex flex-col-2 justify-between">
                 <div className="h-[250px]">
-                    {/* Semester Badge */}
-                    <span
-                        className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
-            {courseData.semester}
-          </span>
-                    {/* Course Title */}
+                    <span className="px-[25px] mx-2 py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
+                        Year {year || "N/A"}
+                    </span>
+                    <span className="px-[25px] py-1 text-sm font-semibold text-white bg-lms-secondary rounded-full mb-10">
+                        Semester {semester || "N/A"}
+                    </span>
+
                     <h2 className="text-[40px] font-bold text-lms-black90 mt-[14px]">
-                        {courseData.title}
+                        {courseTitle?.toUpperCase() || "Course Title"}
                     </h2>
-                    {/* Course Description */}
+
                     <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
-                        {courseData.description}
+                        {courseDescription || "Course Description"}
                     </p>
-                    {/* Credits Information */}
+
                     <div className="flex items-center mt-[20px]">
-            <span className="mr-4 font-semibold">
-              Credit: {courseData.credits.total}
-            </span>
+
+
                         <span className="mr-4 font-semibold">
-              | Theory: {courseData.credits.theory}
-            </span>
+                            Credit: {credit || "N/A"}
+                        </span>
                         <span className="mr-4 font-semibold">
-              | Practice: {courseData.credits.practice}
-            </span>
+                            | Theory: {theory || "N/A"}
+                        </span>
+                        <span className="mr-4 font-semibold">
+                            | Practice: {practice || "N/A"}
+                        </span>
+                        <span className="mr-4 font-semibold">
+                            | Internship: {internship || "N/A"}
+                        </span>
+
+
                     </div>
                 </div>
-                {/* Course Logo */}
                 <div className="ml-[88px]">
-                    <Image
-                        src={courseData.logo}
+                    <img
+                        src={courseLogo || ''}
                         alt="Course Logo"
                         width={215}
                         height={215}
@@ -84,52 +68,68 @@ export default function CourseDetailHeader() {
                     />
                 </div>
             </section>
-            {/* Instructor and Students Section */}
-            <div className="flex items-center -[20px]  mx-[90px]">
-                <Image
-                    className="w-[60px] h-[60px] rounded-full  mr-4"
-                    onClick={handleNavigate}
-                    src={courseData.instructor.image}
+            <section className="flex items-center mx-[90px] mt-[50px] ">
+                <img
+                    onClick={() =>
+                        router.push(`/instructor/view-profile/${instructor?.uuid}`)
+                    }
+                    className="w-[60px] h-[60px] rounded-full mr-4"
+                    src={
+                        instructor?.instructorProfileImage ||
+                        "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"
+                    }
                     alt="Instructor"
                     width={60}
                     height={60}
                 />
                 <div>
                     <p className="font-bold text-[20px] text-lms-primary">
-                        {courseData.instructor.name}
+                        {instructor?.nameEn || "Unknown Instructor"}
                     </p>
                     <p className="text-lms-gray-80 text-[18px]">
-                        {courseData.instructor.title}
+                        {position || "Unknown Position"}
                     </p>
                 </div>
-                {/* Student Images and Class Details */}
                 <div className="flex items-center ml-[88px]">
                     <div className="flex -space-x-6 items-center">
-                        {courseData.studentImages.map((src, index) => (
-                            <Image
-                                key={index}
-                                src={src}
-                                alt={`Student ${index + 1}`}
-                                width={40}
-                                height={40}
-                                className="h-[40px] w-[40px] rounded-full object-cover ring-2 ring-white"
-                            />
-                        ))}
+                        {studentProfileImage?.length > 0 ? (
+                            studentProfileImage.map((src: string, index: number) => (
+                                <img
+                                    key={index}
+                                    src={
+                                        src ||
+                                        "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"
+                                    }
+                                    alt={`Student ${index + 1}`}
+                                    width={40}
+                                    height={40}
+                                    className="h-[40px] w-[40px] rounded-full object-cover ring-2 ring-white"
+                                />
+                            ))
+                        ) : (
+                            <span>No students joined</span>
+                        )}
                     </div>
                     <div className="flex items-center ml-2">
                         <div className="mr-2 font-bold">
-                            {courseData.studentsJoined}
+                            <div className="text-lms-primary ml-10">
+                                {studentProfileImage?.length || 0}
+                            </div>
                             <div className="text-lms-gray-80">Students Joined</div>
                         </div>
                     </div>
-
-
                     <div className="mx-[100px] mt-5">
                         <span className="text-lms-gray-80 font-bold">Class Start:</span>
-                        <span className="ml-2 font-bold ">{courseData.classStart}</span>
+                        <span className="ml-2 font-bold">
+              {classesStart
+                  ? new Date(classesStart).toLocaleDateString()
+                  : "Unknown"}
+            </span>
                     </div>
                 </div>
-            </div>
-        </main>
+            </section>
+        </section>
     );
 }
+
+

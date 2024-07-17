@@ -9,7 +9,6 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import Attendences from "@/app/instructor/(instructor-dashboard)/courses/coursedetail/lectures/data/Attendances.json"
 import {
     StudentAttendanceDataTable
 } from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceDataTable";
@@ -18,7 +17,7 @@ import {
 } from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns";
 import {useDispatch, useSelector} from "react-redux";
 import {useGetStudentAttendanceQuery} from "@/lib/features/instructor/studentAttendance/studentAttendance";
-import {CurrentType, StudentAttendanceType} from "@/lib/types/instructor/lecture/lecture";
+import {CurrentType, StudentAttendanceType} from "@/lib/types/instructor/lecture";
 import {RootState} from "@/lib/store";
 import {
     selectStudentAttendances,

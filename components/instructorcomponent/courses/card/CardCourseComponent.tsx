@@ -1,6 +1,5 @@
 import * as React from "react";
 import Image from "next/image";
-
 import {
     Card,
     CardContent,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import courseCardData from "./CourseCardData"; // Adjust the path as needed
 import {useRouter} from "next/navigation";
-import {CourseType} from "@/lib/types/instructor/coursedetail/int-coursedetail";
+import {CourseType} from "@/lib/types/instructor/courseDetail";
 
 type CourseCardProps = CourseType;
 
@@ -21,7 +20,10 @@ export function CardCourseComponent({
                                         semester,
                                         year,
                                         description,
+                                        instructorProfileImage,
+                                        logo,
                                         onClick,
+                                        progress,
                                         uuid,
                                     }: CourseCardProps) {
     const router = useRouter();
@@ -30,47 +32,48 @@ export function CardCourseComponent({
         if (text.length <= maxLength) {
             return text;
         }
-        return text.substring(0, maxLength) + '...';
+        return text.substring(0, maxLength) + "...";
     };
 
     const maxLength = 120; // Adjust this value based on your needs
 
     return (
-        <Card className="w-[566px] h-[299px] bg-white " onClick={onClick}>
+        <Card
+            className="w-[566px] h-[299px] bg-white transition-transform duration-300 transform hover:scale-[101%] relative custom-border-animation"
+            onClick={onClick}
+        >
             <CardHeader className="mx-[40px]">
-                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1 ">
+                <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3">
-                    {truncateDescription(description, maxLength).toUpperCase()}
+                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3 md:h-[70px]">
+                    {description}
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex mx-[40px]">
-                <div className="flex items-center -space-x-4 ">
-                    {courseCardData.images.map((image, index) => (
-                        <Image
-                            onClick={() => router.push("/instructor/courses/int-profile")}
-                            key={index}
-                            src={image.src}
-                            alt={image.alt}
-                            width={64}
-                            height={64}
-                            className=" h-[64px] w-[64] rounded-full object-cover ring-2 ring-white"
-                        />
-                    ))}
-                </div>
+            <CardContent className="flex justify-around relative ">
+                <img
+                    src={logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
+                    alt="Course Logo"
+                    className="h-[45px] w-[45px] rounded-full object-cover ring-2 ring-white mt-8"
+                />
+
+                <img
+                    src={instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                    alt="Instructor Profile"
+                    className=" absolute left-[98px] h-[45px] w-[45px] rounded-full object-cover ring-2 ring-white mt-8 "
+                />
                 <div className="mt-4 ml-[100px]">
                     <div className="flex gap-4">
                         <p>Year: {year}</p>
-                        <p>Semester : {semester}</p>
+                        <p>Semester: {semester}</p>
                     </div>
-                    <p>Credit : {credit} credits</p>
-                    <div className="flex items-center gap-4 ">
-                        <p>Progress :</p>
+                    <p>Credit: {credit} credits</p>
+                    <div className="flex items-center gap-4">
+                        <p>Progress:</p>
                         <div className="relative pt-3 flex-1">
                             <div className="overflow-hidden h-2 w-[85px] mb-2 text-xs flex rounded bg-gray-200">
                                 <div
-                                    style={{width: "50%"}}
+                                    style={{width: `${progress}%`}}
                                     className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lms-success"
                                 ></div>
                             </div>

@@ -9,7 +9,7 @@ import { OptionType } from "@/lib/types/admin/academics";
 
 // icons
 import { ArrowUpDown } from 'lucide-react'
-import {StudentAttendanceType} from "@/lib/types/instructor/lecture/lecture";
+import {StudentAttendanceType} from "@/lib/types/instructor/lecture";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
     const initialValue = getValue();

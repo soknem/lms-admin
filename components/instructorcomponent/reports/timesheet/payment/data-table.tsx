@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import {
   ColumnDef,
   flexRender,
-  SortingState,
   VisibilityState,
   ColumnFiltersState,
   getCoreRowModel,
@@ -97,42 +96,42 @@ export function PaymentDataTable<TData, TValue>({
     <>
       {/* Table */}
 
-      <div className="rounded-[10px] bg-lms-white-80">
-        <p className="text-black_80 font-bold ml-4 mb-4">
-          FY2025 - A1 Introduction to IT
-          <span className="text-lms-success">( Paid )</span>
-        </p>
-        <div className="flex justify-between p-4 ">
-          <div>
-            <Label className="text-lms-gray-80 ">Generation</Label>
-            
-            <p className="flex font-medium text-lms-black90">Generation 1</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Year</Label>
-            <p className="flex font-medium text-lms-black90">Foundation Year</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Academic Year</Label>
-            <p className="flex font-medium text-lms-black90">2024-2025</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Degree</Label>
-            <p className="flex font-medium text-lms-black90">Bachelor</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Department</Label>
-            <p className="flex font-medium text-lms-black90">IT</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Major</Label>
-            <div className="flex gap-2">
-              <p className="flextext-lms-black90 font-medium">
-                Information Techology
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="rounded-[10px] border-gray-500 w-full">
+        {/*<p className="text-black_80 font-bold ml-4 mb-4">*/}
+        {/*  FY2025 - A1 Introduction to IT*/}
+        {/*  <span className="text-lms-success">( Paid )</span>*/}
+        {/*</p>*/}
+        {/*<div className="flex justify-between p-4 ">*/}
+        {/*  <div>*/}
+        {/*    <Label className="text-lms-gray-80 ">Generation</Label>*/}
+        {/*    */}
+        {/*    <p className="flex font-medium text-lms-black90">Generation 1</p>*/}
+        {/*  </div>*/}
+        {/*  <div>*/}
+        {/*    <Label className="text-lms-gray-80">Year</Label>*/}
+        {/*    <p className="flex font-medium text-lms-black90">Foundation Year</p>*/}
+        {/*  </div>*/}
+        {/*  <div>*/}
+        {/*    <Label className="text-lms-gray-80">Academic Year</Label>*/}
+        {/*    <p className="flex font-medium text-lms-black90">2024-2025</p>*/}
+        {/*  </div>*/}
+        {/*  <div>*/}
+        {/*    <Label className="text-lms-gray-80">Degree</Label>*/}
+        {/*    <p className="flex font-medium text-lms-black90">Bachelor</p>*/}
+        {/*  </div>*/}
+        {/*  <div>*/}
+        {/*    <Label className="text-lms-gray-80">Department</Label>*/}
+        {/*    <p className="flex font-medium text-lms-black90">IT</p>*/}
+        {/*  </div>*/}
+        {/*  <div>*/}
+        {/*    <Label className="text-lms-gray-80">Major</Label>*/}
+        {/*    <div className="flex gap-2">*/}
+        {/*      <p className="flextext-lms-black90 font-medium">*/}
+        {/*        Information Techology*/}
+        {/*      </p>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
 
         <Table>
           <TableHeader className="text-lms-gray-30">

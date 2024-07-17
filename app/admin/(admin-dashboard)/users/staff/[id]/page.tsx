@@ -75,7 +75,6 @@ export default function StaffDetail(props: Props) {
                     linkedin={data?.linkLinkedin || "N/A"}
                     github={data?.linkGit || "N/A"}
                     mail={data?.email || "N/A"}
-
                     currentAddress={data?.currentAddress || "N/A"}
                     birthPlace={data?.birthPlace || "N/A"}
                     linkTelegram={data?.linkTelegram || "N/A"}
@@ -84,8 +83,6 @@ export default function StaffDetail(props: Props) {
                     identityCard={data?.identityCard}
                     phoneNumber={data?.phoneNumber || "N/A"}
                     bio={data?.bio || "N/A"}
-
-                    profileImage={data?.profileImage || placeholderImage}
                     isDeleted={data?.isDeleted || false}
 
                 />
