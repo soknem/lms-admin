@@ -40,6 +40,7 @@ import {studentAchievementApi} from "@/lib/features/student/achievement/achievem
 import userProfileSlice from "@/lib/features/userProfile/userProfileSlice";
 import {studentSettingApi} from "@/lib/features/student/setting/StudentSetting";
 import {paymentApi} from "@/lib/features/instructor/report/timesheet/payment/payment";
+import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
 
 
 export const makeStore = () => {
@@ -58,6 +59,7 @@ export const makeStore = () => {
             lecture: lectureSlice,
             degree: degreeSlice,
             faculty: facultySlice,
+            banner: bannerSlice,
             student: studentSlice,
             studyProgram: studyProgramSlice,
             setupStudyProgram: yearStuProSlice,

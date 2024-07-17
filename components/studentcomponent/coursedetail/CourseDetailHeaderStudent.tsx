@@ -93,6 +93,7 @@ export default function     CourseDetailHeaderStudent({
                                         src ||
                                         "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"
                                     }
+
                                     alt={`Student ${index + 1}`}
                                     width={40}
                                     height={40}

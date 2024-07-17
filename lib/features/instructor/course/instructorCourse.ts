@@ -35,7 +35,7 @@ export const instructorCourseApi = istadLmsApi.injectEndpoints({
                 }
 
             ),
-            invalidatesTags: [{type: 'InstructorSetting', id: 'LIST'},{type: 'PfImage', id: 'LIST'}],
+            invalidatesTags: [{type: 'InstructorSetting', id: 'LIST'},{type: 'PfImage' , id : "LIST"}],
         }),
 
 
