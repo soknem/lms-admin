@@ -1,0 +1,49 @@
+import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ReportComponent from "./student/ReportComponent";
+import ReportInstructorComponent from "./instructor/ReportInstructorComponent";
+import ReportStaffComponent from "./staff/ReportStaffComponent";
+import ReportAdmissionComponent from "./admission/ReportAdmissionComponent";
+import StudentpayComponent from "./student's pay/Student'spayComponent";
+import StudentpayComponent2 from "@/components/admincomponent/reports/student's pay/Student'spayComponent copy";
+import EarningsReportComponent from "@/components/admincomponent/reports/earning/EarningComponent";
+
+export default function TabComponent() {
+  return (
+    <div>
+      <Tabs defaultValue="student">
+        <TabsList>
+          <div className="w-full flex items-end justify-end">
+            <TabsTrigger value="student">Student</TabsTrigger>
+            <TabsTrigger value="instructor">Instructor</TabsTrigger>
+            <TabsTrigger value="staff">Staff</TabsTrigger>
+            <TabsTrigger value="admission">Admission</TabsTrigger>
+            <TabsTrigger value="payment">Student payment</TabsTrigger>
+            <TabsTrigger value="earning">Earning</TabsTrigger>{" "}
+          </div>
+        </TabsList>
+        <TabsContent value="student">
+          <ReportComponent />
+        </TabsContent>
+        {/*<TabsContent value="instructor">*/}
+        {/*  <ReportInstructorComponent />*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="staff">*/}
+        {/*  <ReportStaffComponent />*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="admission">*/}
+        {/*  <ReportAdmissionComponent />*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="payment">*/}
+        {/*  <StudentpayComponent />*/}
+        {/*  <div className="mt-4">*/}
+        {/*    <StudentpayComponent2 />*/}
+        {/*  </div>*/}
+        {/*</TabsContent>*/}
+        {/*<TabsContent value="earning">*/}
+        {/*  <EarningsReportComponent />*/}
+        {/*</TabsContent>*/}
+      </Tabs>
+    </div>
+  );
+}

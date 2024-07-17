@@ -1,19 +1,27 @@
-
-// @ts-ignore
+'use client'
 import { userStudentColumns } from "@/components/admincomponent/users/students/columns";
-// @ts-ignore
 import { UserStudentTable } from "@/components/admincomponent/users/students/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRouter } from "next/navigation";
 import { getStudent } from "@/lib/endpoints/MokApi";
-// @ts-ignore
-import StaffList from "@/components/adminComponent/users/staff/StaffList";
+import StaffList from "@/components/admincomponent/users/staff/StaffList";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useGetStudentQuery} from "@/lib/features/admin/user-management/student/student";
+import {useEffect} from "react";
+import {useGetStaffQuery} from "@/lib/features/admin/user-management/staff/staff";
 
 
-export default async function Users() {
+export default function Users() {
 
-  const userStuData = await getStudent();
+  // === student ===
+  const { data: studentData, error: studentError, isLoading: studentLoading, isSuccess: isStudentSuccess } = useGetStudentQuery({ page: 0, pageSize: 10 });
 
+  let stuData = [];
+
+  if(isStudentSuccess){
+    stuData = studentData.content;
+    console.log("student data: ", stuData)
+  }
 
 
   return (
@@ -27,7 +35,7 @@ export default async function Users() {
           </TabsList>
 
           <TabsContent value="student">
-            <UserStudentTable columns={userStudentColumns} data={userStuData}/> 
+            <UserStudentTable columns={userStudentColumns} data={stuData}/>
           </TabsContent>
 
           <TabsContent value="staff">
@@ -35,6 +43,7 @@ export default async function Users() {
           </TabsContent>
         </Tabs>
       </div>
+
     </main>
   );
 }

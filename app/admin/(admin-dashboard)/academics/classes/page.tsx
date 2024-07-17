@@ -1,29 +1,70 @@
-import React from "react";
-import { ClassType } from "@/lib/types/admin/academics";
-// @ts-ignore
+'use client'
+
+import React, {useEffect} from "react";
+import {ClassDetailResponseType, ClassTableFormType} from "@/lib/types/admin/academics";
 import { columns } from "@/components/admincomponent/academics/classes/columns";
-// @ts-ignore
 import { DataTable } from "@/components/admincomponent/academics/classes/data-table";
+import {useGetClassesQuery} from "@/lib/features/admin/academic-management/classes/classApi";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/lib/store";
+import {setLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
+import {setClasses} from "@/lib/features/admin/academic-management/classes/classSlice";
+import {
+  selectDetailClassCoursesByUuid,
+  selectDetailClasses,
+  setDetailClasses
+} from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
 
 
-async function getClasses(): Promise<ClassType[]> {
-  const res = await fetch(
-    'https://6656cd809f970b3b36c69232.mockapi.io/api/v1/classes'
-  )
-  const data = await res.json()
+export default function Class() {
 
-  // console.log("data from page: ",data);
-  return data
-}
+  const dispatch = useDispatch<AppDispatch>();
 
-export default async function Class() {
-  const data = await getClasses()
+  const {data, error} = useGetClassesQuery({ page: 0, pageSize: 10 })
+
+  const DetailClassData = useSelector((state: RootState) => selectDetailClasses(state));
+
+  const CoursesData = useSelector((state: RootState) => selectDetailClassCoursesByUuid(state,"271cf40e-e4bc-4ec6-a587-1fd1d780867d"));
+
+  useEffect(() => {
+    if(data) {
+      console.log("class from page : ",data.content)
+      dispatch(setDetailClasses(data.content))
+    }
+    if(error){
+      console.error("failed to load class", error);
+    }
+  }, [data, error, dispatch]);
+
+  console.log("detail class from class page: ", DetailClassData)
+
+  console.log("detail class course page: ",CoursesData)
+
+  const transformToClassTableData = (data : any[] )   => {
+    return data.map(item => ({
+      uuid: item.uuid,
+      year: item.year,
+      classStart: item?.classStart || "N/A",
+      classEnd: item?.classEnd || "N/A",
+      classCode: item?.classCode || "N/A",
+      shift: item?.shift?.name || "N/A",
+      studyProgram: item?.studyProgram?.studyProgramName || "N/A",
+      generation: item?.generation?.name || "N/A",
+      isDraft: item.isDraft,
+      instructor: item.instructor?.nameEn || "N/A",
+      isDeleted: item.isDeleted ,
+      status: item?.status || 1,
+      academicYear: item?.academicYear?.academicYear || "N/A",
+    }));
+  };
+
+  console.log("transformToClassTableData", transformToClassTableData(DetailClassData));
 
   return (
     <main >
       <section className="flex flex-col gap-2 h-full w-full p-9">
-        <h1 className=' text-3xl font-bold text-lms-primary '>Class</h1>
-        <DataTable columns={columns} data={data} />
+        <h1 className=' text-3xl font-bold text-lms-primary '>Classes</h1>
+        <DataTable columns={columns} data={transformToClassTableData(DetailClassData)} />
       </section>
 
     </main>

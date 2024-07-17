@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { FormikErrors, FormikTouched } from "formik";
+import {MdErrorOutline} from "react-icons/md";
 
 interface CustomErrorMessageProps {
   errors: FormikErrors<any>;
@@ -22,9 +23,13 @@ export function CustomErrorMessagePass({
 
     if (touched[fieldName] && typeof errorMessage === "string") {
       toast({
-        variant: "default",
-        title: "Validation Password Error",
-        description: errorMessage,
+        variant: "red",
+        description: (
+            <div className="flex items-center ">
+              <MdErrorOutline size={20} className="mr-2 text-red-500" />
+              {errorMessage}
+            </div>
+        ),
       });
     }
   }, [errors, touched, fieldName, toast]);

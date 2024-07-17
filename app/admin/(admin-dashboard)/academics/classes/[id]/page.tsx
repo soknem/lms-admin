@@ -1,4 +1,4 @@
-
+'use client'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Breadcrumb,
@@ -10,17 +10,30 @@ import {
 } from "@/components/ui/breadcrumb"
 import Link from 'next/link'
 import { Input } from '@/components/ui/input';
-import { StudentType, CourseType } from "@/lib/types/admin/academics";
+import {StudentType, CourseType, ResCourseType, LectureRespondType} from "@/lib/types/admin/academics";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
-// @ts-ignore
 import { StudentDataTable } from "@/components/admincomponent/academics/classes/enrolledStudents/data-table";
-// @ts-ignore
 import { StuColumns } from "@/components/admincomponent/academics/classes/enrolledStudents/columns";
-// @ts-ignore
 import { CourseDataTable } from "@/components/admincomponent/academics/classes/courses/data-table";
-// @ts-ignore
 import { CourseColumns } from "@/components/admincomponent/academics/classes/courses/columns";
+import {
+  useGetClassByUuidQuery,
+  useGetClassCourseByUuidQuery, useGetStudentFromClassQuery
+} from "@/lib/features/admin/academic-management/classes/classApi";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/lib/store";
+import {
+  selectDetailClasses,
+  setDetailClasses
+} from "@/lib/features/admin/academic-management/detail-classes/detailClassesSlice";
+import {
+  selectSingleClass,
+  setSingleClass
+} from "@/lib/features/admin/academic-management/detail-classes/singleClassSlice";
+import {setCourses} from "@/lib/features/student/course/studentCourseSlice";
+import React from "react";
+import {setStudent} from "@/lib/features/admin/user-management/student/studentSlice";
 
 
 
@@ -44,15 +57,73 @@ async function getCourses(): Promise<CourseType[]> {
   return data
 }
 
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 
-export default async function ClassDetail() {
-  const stuData = await getStudents()
 
-  const courseData = await getCourses()
+export default function ClassDetail(props: Props) {
+
+  const selectedClass = useSelector((state: RootState) => selectSingleClass(state));
+
+  // course
+  const { data: coursesData, isLoading: isCourseLoading, isSuccess: isCourseSuccess, error: courseError } = useGetClassCourseByUuidQuery(props.params.id);
+
+  // class data
+  const { data: classData, isLoading: isClassLoading,isSuccess: isClassSuccess, isError: isClassError, error: classError } = useGetClassByUuidQuery(props.params.id);
+
+  const { data: stuData, isLoading: isStuDataLoading,isSuccess: isStuSuccess, isError: isStuError, error: stuError } = useGetStudentFromClassQuery(props.params.id);
 
 
-  return (
+  const dispatch = useDispatch();
+
+  if(isClassSuccess && isStuSuccess){
+    dispatch(setSingleClass(classData))
+    dispatch(setStudent({ students: stuData.content, totalElements: stuData.totalElements }));
+    console.log("classData: ",classData)
+    console.log("stuData: ",stuData)
+  }
+
+  if (isClassLoading) {
+    return <p>Loading...</p>;
+  }
+
+  // course
+  console.log("course data", coursesData)
+
+  if(isCourseSuccess){
+    dispatch(setCourses(coursesData))
+  }
+
+  const courseSemester1 = coursesData?.content.filter((course :any) => course.yearOfStudy.semester === 1);
+  const courseSemester2 = coursesData?.content.filter((course :any) => course.yearOfStudy.semester === 2);
+
+  const transformToCourseData = (courses : any[]) : any[] => {
+    return courses?.map(course => ({
+          uuid: course.uuid,
+          subject: course.subject.title,
+          startDate: course.courseStart ? new Date(course.courseStart) : null,
+          endDate: course.courseEnd ? new Date(course.courseEnd) : null,
+          status: course.status,
+          instructor: course.instructor ? course.instructor.nameEn : "N/A",
+          instructorUuid: course.instructor ? course.instructor.uuid : null,
+          semester: course.yearOfStudy.semester,
+          year: course.yearOfStudy.year,
+          visibility: true,
+          isDeleted: course.isDeleted
+        }));
+  };
+
+
+
+  const totalCourses = selectedClass?.courses.length;
+  const courseS1 = courseSemester1?.length || 1
+  const courseS2 = courseSemester2?.length || 1
+
+
+      return (
     <main>
       <section className="flex flex-col gap-4 h-full w-full p-9">
         <Breadcrumb >
@@ -64,11 +135,11 @@ export default async function ClassDetail() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="font-semibold text-lms-primary uppercase">FY2025 - A1</BreadcrumbPage>
+              <BreadcrumbPage className="font-semibold text-lms-primary uppercase">{classData?.classCode || "N/A" }</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className=' text-3xl font-bold text-lms-primary'>FY2025 - A1</h1>
+        <h1 className=' text-3xl font-bold text-lms-primary'>{classData?.classCode || "N/A"}</h1>
         <div>
           <Tabs defaultValue="enrolledStudent" className="w-full">
 
@@ -77,54 +148,66 @@ export default async function ClassDetail() {
               <TabsTrigger value="course">Courses</TabsTrigger>
             </TabsList>
 
+
+
             <TabsContent value="enrolledStudent">
-              <StudentDataTable columns={StuColumns} data={stuData} />
+              {
+                (isStuSuccess) ? (
+                    <StudentDataTable columns={StuColumns} data={stuData.content}/>
+                ) : (
+                    <></>
+                )
+              }
+
             </TabsContent>
 
             <TabsContent value="course" className="bg-white p-6 space-y-4 rounded-lg">
               <div className='flex justify-between '>
                 <div>
                   <Label className='text-lms-gray-30'>Generation</Label>
-                  <p className='flex font-medium text-lms-black-90'>Generation 1</p>
+                  <p className='flex font-medium text-lms-black-90'>{selectedClass?.generation?.name || "N/A"}</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Year</Label>
-                  <p className='flex font-medium text-lms-black-90'>Foundation Year</p>
+                  <p className='flex font-medium text-lms-black-90'>{selectedClass?.year || "N/A"}</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Academic Year</Label>
-                  <p className='flex font-medium text-lms-black-90'>2024-2025</p>
-                </div>
-
-                <div>
-                  <Label className='text-lms-gray-30'>Degree</Label>
-                  <p className='flex font-medium text-lms-black-90'>Bachelor</p>
+                  <p className='flex font-medium text-lms-black-90'>{classData?.academicYear?.academicYear || "N/A"}</p>
                 </div>
 
                 <div>
                   <Label className='text-lms-gray-30'>Study Program</Label>
-                  <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
+                  <p className='flex font-medium text-lms-black-90'>{selectedClass?.studyProgram.studyProgramName || "N/A"}</p>
                 </div>
 
                 <div>
-                  <Label className='text-lms-gray-30'>Enrolled Student</Label>
+                  <Label className='text-lms-gray-30'>Shift</Label>
+                  <p className='flex font-medium text-black'>{selectedClass?.shift.name || "N/A"}</p>
+                </div>
+
+                <div>
+                  <Label className='text-lms-gray-30'>Total Courses</Label>
                   <div className='flex gap-2'>
-                    <p className='flex text-lms-gray-30'>Total:<span className='ml-2 text-lms-black-90 font-medium'>10</span></p>
-                    <p className='flex text-lms-gray-30'>Male: <span className='ml-2 text-lms-black-90 font-medium'>5</span></p>
-                    <p className='flex text-lms-gray-30'>Female: <span className='ml-2 text-lms-black-90 font-medium'>5</span></p>
+                    <p className='flex text-lms-gray-30'>Total:<span
+                        className='ml-2 text-lms-black-90 font-medium'>{totalCourses || "N/A"}</span></p>
+                    <p className='flex text-lms-gray-30'>Semester I: <span
+                        className='ml-2 text-lms-black-90 font-medium'>{courseS1 || "N/A"}</span></p>
+                    <p className='flex text-lms-gray-30'>Semester II: <span
+                        className='ml-2 text-lms-black-90 font-medium'>{courseS2 || "N/A"}</span></p>
                   </div>
 
 
                 </div>
               </div>
               <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
-                <AccordionItem value="item-1"  >
+                <AccordionItem value="item-1">
                   <AccordionTrigger>SEMESTER I</AccordionTrigger>
                   <AccordionContent>
 
-                    <CourseDataTable columns={CourseColumns} data={courseData} />
+                    <CourseDataTable columns={CourseColumns} data={transformToCourseData(courseSemester1)} />
 
                   </AccordionContent>
                 </AccordionItem>
@@ -132,7 +215,7 @@ export default async function ClassDetail() {
                   <AccordionTrigger>SEMESTER II</AccordionTrigger>
                   <AccordionContent>
 
-                    <CourseDataTable columns={CourseColumns} data={courseData} />
+                    <CourseDataTable columns={CourseColumns} data={transformToCourseData(courseSemester2)} />
 
                   </AccordionContent>
                 </AccordionItem>

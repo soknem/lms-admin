@@ -1,0 +1,715 @@
+"use client";
+import {Formik, Form, Field, ErrorMessage} from "formik";
+import * as Yup from "yup";
+import {Button} from "@/components/ui/button";
+import style from "./style.module.css";
+import {FiUploadCloud} from "react-icons/fi";
+
+import React, {useEffect, useState} from "react";
+import Image from "next/image";
+import {IoIosArrowDown} from "react-icons/io";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Separator} from "@/components/ui/separator";
+import {TbAsterisk} from "react-icons/tb";
+import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
+import {useCreateMaterialMutation, useGetMaterialsQuery} from "@/lib/features/admin/materials/material";
+import {MaterialType} from "@/lib/types/admin/materials";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
+import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
+import {useDispatch, useSelector} from "react-redux";
+
+const initialValues = {
+    uuid: '',
+    title: '',
+    contentType: '',
+    fileType: '',
+    extension: '',
+    description: '',
+    size: 0,
+    fileName: '',
+    fileUrl: '',
+    subject: '',
+    isDraft: false,
+    isDeleted: false,
+    download: '',
+    section: '',
+};
+
+const validationSchema = Yup.object().shape({});
+
+const CustomInputFile = ({field, form: {setFieldValue, values}, label, placeholder, previewField}: any) => {
+    const handleUploadFile = (e: any) => {
+        const file = e.target.files[0];
+        const localUrl = URL.createObjectURL(file);
+        setFieldValue(field.name, file); // Set the field value in Formik
+        setFieldValue(previewField, localUrl); // Set the preview URL in Formik
+    };
+
+    return (
+        <div className="w-full">
+            <input
+                type="file"
+                onChange={handleUploadFile}
+                className="hidden"
+                id={field.name}
+            />
+            <label
+                htmlFor={field.name}
+                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[215px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+            >
+                {!values[previewField] ? (
+                    <div className="flex flex-col items-center justify-center gap-4">
+                        <FiUploadCloud className="text-lms-primary text-[34px]"/>
+                        <p className="text-center text-md text-black">
+                            Select a file or drag and drop here
+                        </p>
+                        <p className="text-center text-md text-lms-gray-30">
+                            JPG, PNG or PDF, file size no more than 10MB
+                        </p>
+                    </div>
+                ) : (
+                    <img
+                        src={values[previewField]}
+                        alt="preview"
+                        className="object-cover h-full w-full"
+                    />
+                )}
+            </label>
+        </div>
+    );
+};
+
+const RadioButton = ({field, value, label}: any) => {
+    return (
+        <div>
+            <input
+                type="radio"
+                {...field}
+                id={value}
+                value={value}
+                checked={field.value === value}
+            />
+            <label className="pl-2" htmlFor={value}>
+                {label}
+            </label>
+        </div>
+    );
+};
+
+export function CreateMaterialForm() {
+    const dispatch = useDispatch<AppDispatch>();
+    const [createSingleFile] = useCreateSingleFileMutation();
+    const [createMaterial] = useCreateMaterialMutation();
+    const {refetch: refetchMaterials} = useGetMaterialsQuery({page: 0, pageSize: 10});
+    const [isOpen, setIsOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState("curriculum");
+
+    const {
+        data: subjectData,
+    } = useGetSubjectsQuery({page: 0, pageSize: 10});
+    const subjects = useSelector((state: RootState) => selectSubject(state));
+
+    useEffect(() => {
+        if (subjectData) {
+            dispatch(setSubjects(subjectData.content));
+        }
+    }, [subjectData, dispatch]);
+    const handleNext = (currentTab: any) => {
+        if (currentTab === "curriculum") {
+            setActiveTab("slide");
+        } else if (currentTab === "slide") {
+            setActiveTab("video");
+        }
+    };
+
+    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+        try {
+            // Upload the logo file
+            const fileData = new FormData();
+            fileData.append("file", values.fileName);
+
+            const fileResponse = await createSingleFile(fileData).unwrap();
+            console.log(fileResponse)
+
+            if (fileResponse) {
+                // File uploaded successfully, now create the faculty
+                const newMaterial: MaterialType = {
+                    uuid: values.uuid,
+                    title: values.title,
+                    section: values.section,
+                    subject: values.subject,
+                    fileType: values.fileType,
+                    download: values.download,
+                    fileUrl: fileResponse.fileUrl,
+                    isDeleted: values.isDeleted,
+                    description: values.description,
+                    contentType: values.contentType,
+                    extension: values.extension,
+                    size: values.size,
+                    fileName: fileResponse.fileName,
+                    isDraft: values.isDraft,
+                };
+
+                await createMaterial(newMaterial).unwrap();
+                resetForm();
+                // Handle success (e.g., show a success message or close the dialog)
+                refetchMaterials();
+                setIsOpen(false);
+                // console.log("Update successfully")
+
+            }
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error("Error creating faculty: ", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
+
+        <div
+            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] h-full items-center-center rounded-[10px] none-scroll-bar">
+
+            <section className="h-[90px] flex items-center mx-10 ">
+                <h1 className="text-3xl font-bold text-lms-black-90">Add Materials</h1>
+            </section>
+
+
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+            >
+                {({setFieldValue}) => (
+                    <Form className="py-4 rounded-lg w-full flex justify-center items-center">
+
+                        <Tabs value={activeTab}
+                              onValueChange={setActiveTab}
+                              defaultValue="faculty"
+                              className="w-full py-0 my-0">
+
+                            <TabsList
+                                className="bg-lms-background w-full h-[150px]  rounded-none px-10 ">
+
+                                <div className="flex items-center justify-center container gap-[20px]">
+
+                                    <div className={`flex flex-col justify-center items-center gap-4`}>
+                                        <TabsTrigger
+                                            value="curriculum"
+                                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                                        >
+                                            1
+                                        </TabsTrigger>
+                                        <span className="text-lms-primary text-lg ">Curriculum</span>
+                                    </div>
+
+                                    <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
+
+                                    <div className={`flex flex-col justify-center items-center gap-4`}>
+                                        <TabsTrigger
+                                            value="slide"
+                                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                                        >
+                                            2
+                                        </TabsTrigger>
+                                        <span className="text-lms-primary text-lg ">Slide</span>
+                                    </div>
+
+                                    <div className="h-[1px] w-[200px] bg-gray-300 dark:bg-gray-700"></div>
+
+                                    <div className={`flex flex-col justify-center items-center gap-4`}>
+                                        <TabsTrigger
+                                            value="video"
+                                            className="dark:text-gray-300 dark:hover:text-white bg-white rounded-full border border-lms-primary h-[50px] w-[50px] text-[32px] font-bold text-lms-primary flex items-center justify-center text-center"
+                                        >
+                                            3
+                                        </TabsTrigger> <span
+                                        className="text-lms-primary text-lg ">Video</span>
+                                    </div>
+
+                                </div>
+                            </TabsList>
+
+
+                            {/*  Curriculum Information */}
+                            <TabsContent value="curriculum"
+                                         className={`flex justify-center h-full items-center flex-col gap-9 mx-10  py-0 my-0`}>
+                                <div className="border-b-2 w-full py-6">
+                                    <h1 className="text-2xl font-bold text-lms-black-90 ">Curriculum</h1>
+                                </div>
+
+                                {/* Add your form fields for personal information here */}
+                                <div className="flex flex-col gap-4 items-center justify-center">
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="alias">
+                                                Alias
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            type="text"
+                                            placeholder="Faculty of Engineering"
+                                            name="alias"
+                                            id="alias"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="alias"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="title">
+                                                Title
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            type="text"
+                                            name="title"
+                                            placeholder="Web Design Curriculum"
+                                            id="title"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="title"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={` ${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="subjectAlias">
+                                                Subject
+                                            </label>
+                                            {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                        </div>
+
+                                        <Field as="select" name="subjectAlias" id="subjectAlias"
+                                               className={` ${style.input}`}>
+                                            <option value="" label="Select Subject"/>
+                                            {Array.isArray(subjects) && subjects.map(subject => (
+                                                <option key={subject.alias} value={subject.title}
+                                                        label={subject.title}/>
+                                            ))}
+
+                                        </Field>
+
+                                        {/*<ErrorMessage*/}
+                                        {/*    name="degree.level"*/}
+                                        {/*    component="div"*/}
+                                        {/*    className={`${style.error}`}*/}
+                                        {/*/>*/}
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <label className={`${style.label}`} htmlFor="description">
+                                            Description
+                                        </label>
+                                        <Field
+                                            // as="textarea"
+                                            type="text"
+                                            name="description"
+                                            id="description"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="description"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <label className={`${style.label}`} htmlFor="fileName">
+                                            File Upload
+                                        </label>
+                                        <Field
+                                            type="file"
+                                            name="fileName"
+                                            id="fileName"
+                                            component={CustomInputFile}
+                                            previewField="curriculumPreview"
+                                        />
+                                        <ErrorMessage
+                                            name="fileName"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    {/* isDraft */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end w-full container mx-auto">
+                                    <Button
+                                        type="button"
+                                        className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                        onClick={() => handleNext(activeTab)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="slide"
+                                         className={`flex justify-center h-full items-center flex-col gap-9 mx-10  py-0 my-0`}>
+                                <div className="border-b-2 w-full py-6">
+                                    <h1 className="text-2xl font-bold text-lms-black-90 ">Slide</h1>
+                                </div>
+
+                                {/* Add your form fields for education information here */}
+                                <div className="flex flex-col gap-4 items-center justify-center">
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="alias">
+                                                Alias
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            type="text"
+                                            placeholder="Faculty of Engineering"
+                                            name="alias"
+                                            id="alias"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="alias"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="title">
+                                                Title
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            type="text"
+                                            name="title"
+                                            placeholder="Web Design Curriculum"
+                                            id="title"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="title"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={` ${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="subjectAlias">
+                                                Subject
+                                            </label>
+                                            {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                        </div>
+
+                                        <Field as="select" name="subjectAlias" id="subjectAlias"
+                                               className={` ${style.input}`}>
+                                            <option value="" label="Select Subject"/>
+                                            {Array.isArray(subjects) && subjects.map(subject => (
+                                                <option key={subject.alias} value={subject.title}
+                                                        label={subject.title}/>
+                                            ))}
+
+                                        </Field>
+                                        
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <label className={`${style.label}`} htmlFor="description">
+                                            Description
+                                        </label>
+                                        <Field
+                                            // as="textarea"
+                                            type="text"
+                                            name="description"
+                                            id="description"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="description"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <label className={`${style.label}`} htmlFor="fileName">
+                                            File Upload
+                                        </label>
+                                        <Field
+                                            type="file"
+                                            name="fileName"
+                                            id="fileName"
+                                            component={CustomInputFile}
+                                            // setFieldValue={setFieldValue}
+                                            // uploadedFile={uploadedFileIdentity}
+                                            // setUploadedFile={setUploadedFileIdentity}
+                                            previewField="slidePreview"
+                                        />
+                                        <ErrorMessage
+                                            name="fileName"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    {/* isDraft */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end w-full container mx-auto">
+                                    <Button
+                                        type="button"
+                                        className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                        onClick={() => handleNext(activeTab)}
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
+                            </TabsContent>
+
+                            {/* Video Information */}
+                            <TabsContent value="video"
+                                         className={`flex justify-center h-full items-center flex-col gap-9 mx-10  py-0 my-0`}>
+
+                                <div className="border-b-2 w-full py-6">
+                                    <h1 className="text-2xl font-bold text-lms-black-90 ">Video</h1>
+                                </div>
+
+                                {/* Add your form fields for school information here */}
+                                <div className="flex flex-col gap-4 items-center justify-center">
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="alias">
+                                                Alias
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            type="text"
+                                            placeholder="Faculty of Engineering"
+                                            name="alias"
+                                            id="alias"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="alias"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="title">
+                                                Title
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <Field
+                                            type="text"
+                                            name="title"
+                                            placeholder="Web Design Curriculum"
+                                            id="title"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="title"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={` ${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="subjectAlias">
+                                                Subject
+                                            </label>
+                                            {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                        </div>
+
+                                        <Field as="select" name="subjectAlias" id="subjectAlias"
+                                               className={` ${style.input}`}>
+                                            <option value="" label="Select Subject"/>
+                                            {Array.isArray(subjects) && subjects.map(subject => (
+                                                <option key={subject.alias} value={subject.title}
+                                                        label={subject.title}/>
+                                            ))}
+
+                                        </Field>
+
+                                        {/*<ErrorMessage*/}
+                                        {/*    name="degree.level"*/}
+                                        {/*    component="div"*/}
+                                        {/*    className={`${style.error}`}*/}
+                                        {/*/>*/}
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <label className={`${style.label}`} htmlFor="description">
+                                            Description
+                                        </label>
+                                        <Field
+                                            // as="textarea"
+                                            type="text"
+                                            name="description"
+                                            id="description"
+                                            className={`${style.input}`}
+                                        />
+                                        <ErrorMessage
+                                            name="description"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    <div className={`${style.inputContainer}`}>
+                                        <label className={`${style.label}`} htmlFor="fileName">
+                                            File Upload
+                                        </label>
+                                        <Field
+                                            type="file"
+                                            name="fileName"
+                                            id="fileName"
+                                            component={CustomInputFile}
+                                            // setFieldValue={setFieldValue}
+                                            // uploadedFile={uploadedFileIdentity}
+                                            // setUploadedFile={setUploadedFileIdentity}
+                                            previewField="videoPreview"
+                                        />
+                                        <ErrorMessage
+                                            name="fileName"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+
+                                    {/* isDraft */}
+                                    <div className={`${style.inputContainer}`}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Draft"
+                                            />
+                                        </div>
+
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end w-full container mx-auto">
+                                    <Button type="submit"
+                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">
+                                        Upload
+                                    </Button>
+                                </div>
+
+                            </TabsContent>
+                        </Tabs>
+                    </Form>
+                )}
+            </Formik>
+
+        </div>
+    );
+}

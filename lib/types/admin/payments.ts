@@ -1,29 +1,35 @@
 // **** Payment *****
 export type PaymentType = {
-    receipt_id: number;
-    name: string;
-    profile_image: string;
+    // receipt_id: number;
+    uuid: string,
+    usernameOrEmail: string;
     gender: string;
-    date: number;
     discount: number;
-    total_payment: number;
-    balance_due: number;
-    academic_fee: number;
-    payment_method: string;
-    status: string;
+    paidAmount: number;
+    balanceDue: number;
+    courseFee: number;
+    paymentMethod: string;
+    status: boolean;
     remark: string;
-    generation: string;
-    year: string;
-    academic: string;
-    degree: string;
-    faculty: string;
-    major: string;
-    class: string;
-    shift: string;
-    id: string;
+    paidDate: string;
+    originalPayment: number;
+    totalPayment: number;
+    studentName: string,
+    studentProfile: string,
+    paidReturn: number,
+    academicFee: number,
+    generation: string,
+    degree: string,
+    faculty: string,
+    academicYear: string,
+    studyProgram: string;
+    year: number,
+    "semester": number,
+    classCode: string,
+    shift: string,
 };
 
 export type StatusOption = {
     label: string;
-    value: string;
+    value: boolean;
 };

@@ -1,34 +1,42 @@
-import React from "react";
-
-import { GenerationType } from "@/lib/types/admin/academics";
+'use client'
+import React, {useEffect, useState} from "react";
+import {GenerationType} from "@/lib/types/admin/academics";
 import generaitions from "@/app/admin/(admin-dashboard)/academics/(generations)/data/generations.json"
-// @ts-ignore
-import { columns } from "@/components/admincomponent/academics/generations/columns";
-// @ts-ignore
-import { DataTable } from "@/components/admincomponent/academics/generations/data-table";
+import {columns} from "@/components/admincomponent/academics/generations/columns";
+import {DataTable} from "@/components/admincomponent/academics/generations/data-table";
+import {useGetGenerationQuery} from "@/lib/features/admin/academic-management/generation/generation";
+import {AppDispatch, RootState} from "@/lib/store";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    selectGeneration,
+    setGenerations
+} from "@/lib/features/admin/academic-management/generation/generationSlice";
 
-// async function getGenerations(): Promise<GenerationType[]> {
-//   const res = await fetch(
-//     "https://6656cd809f970b3b36c69232.mockapi.io/api/v1/generations"
-//   );
-//   const data = await res.json();
+export default function Generation() {
 
-//   // console.log("data from page: ",data);
-//   return data;
-// }
+    const dispatch = useDispatch<AppDispatch>();
+    const {data, error, isLoading} = useGetGenerationQuery({page: 0, pageSize: 10});
+
+    const generations = useSelector((state: RootState) => selectGeneration(state));
 
 
-export  default  function page() {
-    // const data = await getGenerations()
+    useEffect(() => {
+        if (data) {
+            dispatch(setGenerations(data.content));
+        }
+        if (error) {
+            console.error("failed to load generation", error);
+        }
+    }, [data, error, dispatch]);
 
-    const genData : GenerationType[] = generaitions;
-    
+    // console.log("generation from page: " , generations)
+
+    const genData: GenerationType[] = generations;
+
     return (
-      <main className='py-9'>
-        <div className='container'>
-          <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
-          <DataTable columns={columns} data={genData} />
-        </div>
-      </main>
+        <main className='flex flex-col gap-2 h-full w-full p-9'>
+            <h1 className='mb-4 text-3xl font-bold text-lms-primary '>Generation</h1>
+            <DataTable columns={columns} data={genData}/>
+        </main>
     )
 }

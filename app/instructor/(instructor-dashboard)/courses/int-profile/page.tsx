@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, {useEffect} from "react";
 import Link from 'next/link';
 import {
     Breadcrumb,
@@ -10,8 +11,9 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import instructorProfile from "@/public/intructor.jpg";
-import StaffDetailComponent from "@/components/adminComponent/users/staff/StaffDetailComponent";
-// import InstructorDetail from "@/components/adminComponent/users/staff/InstructorDetail";
+import StaffDetailComponent from "@/components/admincomponent/users/staff/StaffDetailComponent";
+
+
 
 const insData = {
     id: "000001",
@@ -45,17 +47,17 @@ export default function StaffDetail() {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <StaffDetailComponent
-                    key={insData.id}
-                    id={insData.id}
-                    imageSrc={insData.imageSrc}
-                    name={insData.name}
-                    education={insData.education}
-                    position={insData.position}
-                    linkedin={insData.linkedin}
-                    github={insData.github}
-                    mail={insData.mail}
-                />
+                {/*<StaffDetailComponent*/}
+                {/*    key={insData.id}*/}
+                {/*    id={insData.id}*/}
+                {/*    imageSrc={insData.imageSrc}*/}
+                {/*    name={insData.name}*/}
+                {/*    education={insData.education}*/}
+                {/*    position={insData.position}*/}
+                {/*    linkedin={insData.linkedin}*/}
+                {/*    github={insData.github}*/}
+                {/*    mail={insData.mail}*/}
+                {/*/>*/}
             </section>
         </main>
     );

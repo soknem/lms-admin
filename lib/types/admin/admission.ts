@@ -1,28 +1,46 @@
 // **** Admissions *****
 export type AdmissionType = {
-  academic_year: string;
-  start_date: string;
-  end_date: string;
-  telegram_group: string;
-  remark: string;
-  status: string;
+    uuid: string;
+    status: number;
+    remark: string;
+    openDate: string;
+    endDate: string;
+    academicYearAlias: string;
+    telegramLink: string;
+    isDeleted: boolean;
 };
 
 // ****Student Admissions *****
 export type StudentAdmissionType = {
-  profile: {
-    name: string;
-    profile: string;
-  };
-  email: string;
-  degree: string;
-  shift: string;
-  study_program: string;
-  status: string;
-  generation: string;
+    nameEn: string,
+    nameKh: string,
+    email: string,
+    highSchool: string,
+    phoneNumber: string,
+    dob: string,
+    pob: string,
+    bacIiGrade: string,
+    gender: string,
+    avatar: string,
+    address: string,
+    guardianContact: string,
+    guardianRelationShip: string,
+    knownIstad: string,
+    identity: string,
+    biography: string,
+    isDeleted: boolean,
+    shiftAlias: string,
+    studyProgramAlias: string,
+    degreeAlias: string,
+    admission: string,
+    diplomaSession: string,
+    classStudent: string,
+    highSchoolCertificate: string,
+    vocationTrainingIiiCertificate: string,
+    anyValuableCertificate: string,
 };
 
 export type StatusOption = {
-  label: string;
-  value: string;
+    label: string;
+    value: number;
 };
