@@ -7,7 +7,6 @@ import { FaBook } from "react-icons/fa6";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TbFilter } from "react-icons/tb";
 import { useGetInstructorCourseQuery } from "@/lib/features/instructor/course/instructorCourse";
-import { selectLoading, setLoading, selectError, setError, setCourses } from "@/lib/features/instructor/course/instructorcourseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { InstructorCourseType, InCourseType } from "@/lib/types/instructor/course";
@@ -22,8 +21,6 @@ export default function Course() {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { data = {}, error, isLoading } = useGetInstructorCourseQuery();
-    const loading = useSelector(selectLoading);
-    const fetchError = useSelector(selectError);
     const [allData, setData] = useState<InstructorCourseType | null>(null);
     const [openCourse, setOpenCourse] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<number | null>(null);
@@ -34,12 +31,8 @@ export default function Course() {
 
     useEffect(() => {
         if (Object.keys(data).length > 0) {
-            dispatch(setLoading());
             setData(data);
             setFilteredCourses(data.courses);
-        }
-        if (error) {
-            dispatch(setError(error.toString()));
         }
     }, [data, error, dispatch]);
 
@@ -65,8 +58,8 @@ export default function Course() {
     }
 
     const filterBySemester = data.courses.reduce((semester: number[], item: InCourseType) => {
-        if (!semester.includes(item.semester)) {
-            semester.push(item.semester);
+        if (!semester.includes(item.semester as number)) {
+            semester.push(item.semester as number);
         }
         return semester;
     }, []);
@@ -178,15 +171,16 @@ export default function Course() {
                         <CardCourseComponent
                             key={index}
                             onClick={() => router.push(`/instructor/courses/${course.uuid}`)}
-                            title={course.title}
-                            credit={course.credit}
-                            semester={course.semester}
-                            year={course.year}
-                            description={course.description}
-                            instructorProfileImage={course.instructorProfileImage || 'default_profile_image'}
+                            title={course.title || 'No title'}
+                            credit={course.credit || 0}
+                            semester={course.semester || 0}
+                            year={course.year || 0}
+                            description={course.description || 'No description'}
+                            instructorProfileImage={course.instructorProfileImage || 'https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg'}
                             uuid={course.uuid}
-                            logo={course.logo || 'default_logo_path'}
-                            instructorName={course.instructorName || 'default_name'}
+                            progress={course.progress || 0}
+                            logo={course.logo || 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png'}
+                            instructorName={course.instructorName || 'Unknown Instructor'}
                         />
                     ))}
                 </div>

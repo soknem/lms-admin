@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 
 // types
 import { OptionType } from "@/lib/types/admin/academics";
-import { StudentAttendanceType } from "@/lib/types/instructor/lecture/lecture";
 
 // icons
 import { ArrowUpDown } from 'lucide-react';
+import {StudentAttendanceType} from "@/lib/types/instructor/lecture";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
     const initialValue = getValue();

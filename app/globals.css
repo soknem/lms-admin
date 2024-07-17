@@ -13,3 +13,33 @@ body {
 .khmer-font {
   font-family: var(--font-suwannaphum), serif;
 }
+
+
+
+
+
+@keyframes border-animation {
+  0% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: lightgray;
+  }
+  100% {
+    border-color: transparent;
+  }
+}
+
+.custom-border-animation::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: inherit;
+  pointer-events: none; /* Ensures the border does not interfere with hover effects */
+  transition: border-color 0.3s ease-in-out;
+}
+
+.custom-border-animation:hover::before {
+  animation: border-animation 2s infinite;
+}

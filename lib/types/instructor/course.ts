@@ -1,15 +1,16 @@
 // types.ts
 export type InCourseType = {
     uuid: string;
-    title: string;
-    credit: number;
+    title: string ;
+    credit: number | null;
     logo: string | null;
-    description: string;
+    description: string | null;
     instructorAvatar: string | null;
     instructorProfileImage : string | null;
     instructorName: string | null;
-    year: number;
-    semester: number;
+    progress: number | null;
+    year: number | null;
+    semester: number | null;
 };
 
 export type InstructorCourseType = {
