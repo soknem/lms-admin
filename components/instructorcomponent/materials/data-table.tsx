@@ -2,7 +2,6 @@
 
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
-//import from shad cn
 import {
     ColumnDef,
     flexRender,
@@ -39,17 +38,15 @@ import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 import {FiPlus} from "react-icons/fi";
 import {useRouter} from "next/navigation";
 
-//custom component import
-
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function CurriculumTable<TData, TValue>({
-                                                   columns,
-                                                   data,
-                                               }: DataTableProps<TData, TValue>) {
+export function MaterialTable<TData, TValue>({
+                                                 columns,
+                                                 data,
+                                             }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -106,21 +103,19 @@ export function CurriculumTable<TData, TValue>({
         },
     });
 
-    // console.log("data from in curriculum: ", data);
+    const filterOptions = ["All", "Public", "Draft"];
 
-    const filterOptions = ["All", "Public", "Disable", "Draft"];
-
-    const handleFilterChange = (value: any) => {
+    const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
-
-        // Mapping filters options to corresponding numerical values
-        const filterValue = value === "All" ? undefined :
-            value === "Public" ? 1 :
-                value === "Disable" ? 2 :
-                    3;
-
-        // Applying the filters to the table
-        table.getColumn("status")?.setFilterValue(filterValue);
+        const filterValue =
+            value === "All"
+                ? ""
+                : value === "Public"
+                    ? false
+                    : value === "Draft"
+                        ? true
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
     };
 
 
@@ -168,7 +163,7 @@ export function CurriculumTable<TData, TValue>({
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
                                 className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
                                     option
                                 }`}
                             >
