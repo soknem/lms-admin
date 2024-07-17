@@ -1,15 +1,15 @@
 'use client'
-import { ColumnDef } from '@tanstack/react-table'
-import { Button } from '@/components/ui/button'
-import { useState, useEffect, ChangeEvent } from 'react'
-import { Input } from "@/components/ui/input"
+import { ColumnDef } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { useState, useEffect, ChangeEvent } from 'react';
+import { Input } from "@/components/ui/input";
 
 // types
 import { OptionType } from "@/lib/types/admin/academics";
+import { StudentAttendanceType } from "@/lib/types/instructor/lecture/lecture";
 
 // icons
-import { ArrowUpDown } from 'lucide-react'
-import {StudentAttendanceType} from "@/lib/types/instructor/lecture/lecture";
+import { ArrowUpDown } from 'lucide-react';
 
 const TableCell = ({ getValue, row, column, table }: any) => {
     const initialValue = getValue();
@@ -115,20 +115,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'nameKh',
-        header: ({ column }) => (
-            <Button
-                variant='ghost'
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                FULLNAME(KH)
-                <ArrowUpDown className='ml-2 h-4 w-4' />
-            </Button>
-        ),
-        cell: TableCell,
-    },
-    {
-        accessorKey: 'gender',
+        accessorKey: 'gender', // Assuming this maps to the gender in your table
         header: ({ column }) => (
             <Button
                 variant='ghost'
@@ -141,7 +128,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'P',
+        accessorKey: 'P', // Assuming this maps to the 'P' status in your table
         header: () => (
             <Button variant='ghost' className="pl-4">
                 P
@@ -150,7 +137,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'EA',
+        accessorKey: 'EA', // Assuming this maps to the 'EA' status in your table
         header: () => (
             <Button variant='ghost' className="pl-4">
                 EA
@@ -159,7 +146,7 @@ export const StudentAttendanceColumns: ColumnDef<StudentAttendanceType>[] = [
         cell: TableCell,
     },
     {
-        accessorKey: 'UA',
+        accessorKey: 'UA', // Assuming this maps to the 'UA' status in your table
         header: () => (
             <Button variant='ghost' className="pl-4">
                 UA

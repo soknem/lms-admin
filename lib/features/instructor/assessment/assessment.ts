@@ -6,6 +6,8 @@ export const assessmentApi = istadLmsApi.injectEndpoints({
         getAssessment: builder.query<any,void>({
             query: () => `/instructors/assessments`,
         }),
+
+
     }),
 });
 

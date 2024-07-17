@@ -3,11 +3,12 @@ import type {RootState} from "@/lib/store";
 import {UserStudentDetailType} from "@/lib/types/admin/user";
 
 type StudentState = {
+    data: any;
     students: UserStudentDetailType[];
     totalElements: number;
 }
 
-const initialState: StudentState = {
+const initialState: { students: any[]; totalElements: number } = {
     students: [] ,
     totalElements: 0
 }

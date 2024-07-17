@@ -1,8 +1,6 @@
 "use client";
 
-import React, {useState} from "react";
-
-//import from shad cn
+import React, { useState } from "react";
 import {
     ColumnDef,
     flexRender,
@@ -32,15 +30,11 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {Input} from "@/components/ui/input";
-
-import {Button} from "@/components/ui/button";
-
-import {TbSearch} from "react-icons/tb";
-
-import {useMediaQuery} from "usehooks-ts";
-
-import {FaSearch} from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { TbSearch, TbFilter, TbAdjustmentsHorizontal } from "react-icons/tb";
+import { useMediaQuery } from "usehooks-ts";
+import { FaSearch } from "react-icons/fa";
 import {
     Command,
     CommandEmpty,
@@ -56,13 +50,9 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {TbFilter} from "react-icons/tb";
-
-import {TbAdjustmentsHorizontal} from "react-icons/tb";
-import {useRouter} from "next/navigation";
-
-import {DatePickerWithRange} from "@/components/common/DatePickerWithRange";
-import {Label} from "@radix-ui/react-dropdown-menu";
+import { useRouter } from "next/navigation";
+import { DatePickerWithRange } from "@/components/common/DatePickerWithRange";
+import { Label } from "@radix-ui/react-dropdown-menu";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -82,13 +72,13 @@ export function AttendanceData<TData, TValue>({
 
     // filters
     const [openAtt, setopenAtt] = useState(false);
-    const [selectedAtt, setselectedAtt] = React.useState<any>(null);
+    const [selectedAtt, setselectedAtt] = useState<any>(null);
 
     const [openClass, setOpenClass] = useState(false);
-    const [selectedClass, setSelectedClass] = React.useState<any>(null);
+    const [selectedClass, setSelectedClass] = useState<any>(null);
 
     const [openCourse, setOpenCourse] = useState(false);
-    const [selectedCourse, setSelectedCourse] = React.useState<any>(null);
+    const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
     const router = useRouter();
 
@@ -181,37 +171,37 @@ export function AttendanceData<TData, TValue>({
     return (
         <>
             <div className="flex items-center gap-4 ">
-                <DatePickerWithRange/>
+                <DatePickerWithRange />
 
-                {/* filters Isemester */}
+                {/* filters semester */}
                 <Popover open={openAtt} onOpenChange={setopenAtt}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="outline"
                             className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
-                            <TbFilter className="mr-2 h-4 w-4"/>
+                            <TbFilter className="mr-2 h-4 w-4" />
                             {selectedAtt ? <>{selectedAtt}</> : <> Filter semester</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter Instructor..."/>
+                            <CommandInput placeholder="Filter semester..." />
 
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
                                 <CommandGroup>
-                                    {FilteredSem.map((ins, index) => (
+                                    {FilteredSem.map((sem, index) => (
                                         <CommandItem
                                             key={index}
-                                            value={ins}
+                                            value={sem}
                                             onSelect={(value) => {
                                                 setselectedAtt(value);
-                                                table.getColumn("instructor")?.setFilterValue(value);
+                                                table.getColumn("semester")?.setFilterValue(value);
                                                 setopenAtt(false);
                                             }}
                                         >
-                                            {ins}
+                                            {sem}
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>
@@ -235,13 +225,13 @@ export function AttendanceData<TData, TValue>({
                             variant="outline"
                             className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
-                            <TbFilter className="mr-2 h-4 w-4"/>
+                            <TbFilter className="mr-2 h-4 w-4" />
                             {selectedClass ? <>{selectedClass}</> : <> Filter Class</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter class..."/>
+                            <CommandInput placeholder="Filter class..." />
 
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
@@ -252,7 +242,7 @@ export function AttendanceData<TData, TValue>({
                                             value={cs}
                                             onSelect={(value) => {
                                                 setSelectedClass(value);
-                                                table.getColumn("class")?.setFilterValue(value);
+                                                table.getColumn("classCode")?.setFilterValue(value);
                                                 setOpenClass(false);
                                             }}
                                         >
@@ -280,13 +270,13 @@ export function AttendanceData<TData, TValue>({
                             variant="outline"
                             className="justify-center bg-white text-lms-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
-                            <TbFilter className="mr-2 h-4 w-4"/>
+                            <TbFilter className="mr-2 h-4 w-4" />
                             {selectedCourse ? <>{selectedCourse}</> : <> Filter Course</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter Course..."/>
+                            <CommandInput placeholder="Filter course..." />
 
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
@@ -297,7 +287,7 @@ export function AttendanceData<TData, TValue>({
                                             value={course}
                                             onSelect={(value) => {
                                                 setSelectedCourse(value);
-                                                table.getColumn("class")?.setFilterValue(value);
+                                                table.getColumn("courseTitle")?.setFilterValue(value);
                                                 setOpenCourse(false);
                                             }}
                                         >
@@ -309,7 +299,7 @@ export function AttendanceData<TData, TValue>({
                         </Command>
                         {selectedCourse && (
                             <Button
-                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none"
+                                className="bg-slate-50 hover:bg-slate-100 w-full rounded-none "
                                 onClick={() => handleReset("course")}
                             >
                                 Reset
@@ -317,85 +307,69 @@ export function AttendanceData<TData, TValue>({
                         )}
                     </PopoverContent>
                 </Popover>
-
-                {/* Column visibility */}
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild></DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-white ">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize focus:bg-background"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                );
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
             </div>
+            <div className="rounded-md border bg-white p-4">
+                <div className='flex justify-between p-5 '>
+                    <div>
+                        <Label className='text-lms-gray-30'>Generation</Label>
+                        <p className='flex font-medium text-lms-black-90'>Generation 1</p>
+                    </div>
 
-            {/* Table */}
-            <div className="rounded-md p-4 bg-lms-white-80  ">
-                <div className="flex justify-between p-4 ">
                     <div>
-                        <Label className="text-lms-gray-80 ">Generation</Label>
+                        <Label className='text-lms-gray-30'>Year</Label>
+                        <p className='flex font-medium text-lms-black-90'>Foundation Year</p>
+                    </div>
 
-                        <p className="flex font-medium text-lms-black90">Generation 1</p>
-                    </div>
                     <div>
-                        <Label className="text-lms-gray-80">Year</Label>
-                        <p className="flex font-medium text-lms-black90">Foundation Year</p>
+                        <Label className='text-lms-gray-30'>Academic Year</Label>
+                        <p className='flex font-medium text-lms-black-90'>2024-2025</p>
                     </div>
+
                     <div>
-                        <Label className="text-lms-gray-80">Academic Year</Label>
-                        <p className="flex font-medium text-lms-black90">2024-2025</p>
+                        <Label className='text-lms-gray-30'>Degree</Label>
+                        <p className='flex font-medium text-lms-black-90'>Bachelor</p>
                     </div>
+
                     <div>
-                        <Label className="text-lms-gray-80">Study Program</Label>
-                        <p className="flex font-medium text-lms-black90">Information Technology</p>
+                        <Label className='text-lms-gray-30'>Study Program</Label>
+                        <p className='flex font-medium text-lms-black-90'>Software Engineer</p>
                     </div>
+
                     <div>
-                        <Label className="text-lms-gray-80">Course</Label>
-                        <p className="flex font-medium text-lms-black90">Web Design</p>
+                        <Label className='text-lms-gray-30'>Class</Label>
+                        <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>
                     </div>
+
                     <div>
-                        <Label className="text-lms-gray-80">Class</Label>
-                        <p className="flextext-lms-black90 font-medium">
-                            Istad 01</p>
-                    </div>
-                    <div>
-                        <Label className="text-lms-gray-80">Duration</Label>
-                        <p className="flextext-lms-black90 font-medium">
-                            11/02/2021-12/02/2024</p>
+                        <Label className='text-lms-gray-30'>Course</Label>
+                        <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>
                     </div>
 
 
                 </div>
-                <div className="bg-lms-transcript-header p-4 rounded-md">
-                    <p className="text-lms-gray-80 font-semibold">Scores Point</p>
-                    <div className="flex gap-6 text-lms-black90">
-                        <p>
-                            Present <span className="font-bold">P</span>
-                        </p>
-                        <p>
-                            Excused Absent <span className="font-bold">EA = -0.5pt</span>
-                        </p>
-                        <p>
-                            Unexcused Absent <span className="font-bold">UA = -1pt</span>
-                        </p>
+                <div className='p-4 bg-blue-50 rounded-b-sm mb-2'>
+                    <Label className='text-lms-gray-30'>Score Point</Label>
+                    <div className='flex gap-20 mt-2'>
+                        <div className='flex justify-between'>
+                            <span className='font-medium text-lms-black-90'>Present (P) </span>
+                            <span className='font-medium text-lms-black-90'> +1pt</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span className='font-medium text-lms-black-90'>Excused Absent (EA) </span>
+                            <span className='font-medium text-lms-black-90'> -0.5pt</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span className='font-medium text-lms-black-90'>Unexcused Absent (UA) </span>
+                            <span className='font-medium text-lms-black-90'> -1pt</span>
+                        </div>
                     </div>
                 </div>
+
+
                 <Table>
-                    <TableHeader className="text-lms-gray-30">
+
+                    <TableHeader className="bg-white">
+
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
@@ -413,8 +387,7 @@ export function AttendanceData<TData, TValue>({
                             </TableRow>
                         ))}
                     </TableHeader>
-
-                    <TableBody>
+                    <TableBody className="bg-white">
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
@@ -433,10 +406,7 @@ export function AttendanceData<TData, TValue>({
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center "
-                                >
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
                                     No results.
                                 </TableCell>
                             </TableRow>

@@ -6,6 +6,7 @@ import type {PropsParam} from "@/lib/types/student/course";
 import CourseDetailHeaderStudent from "@/components/studentcomponent/coursedetail/CourseDetailHeaderStudent";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import {useGetInstructorCourseByUuidQuery} from "@/lib/features/instructor/course/instructorCourse";
+import {router} from "next/client";
 
 export default function CourseDetail({params}: PropsParam) {
     const uuid = params.uuid;
@@ -50,8 +51,19 @@ export default function CourseDetail({params}: PropsParam) {
                 <BreadcrumbWithCustomSeparator
                     {...data}
                 />
+
+
+
             </section>
             <section className="mx-[100px]">
+                <section className="flex justify-end">
+                    <button
+                        onClick={() => router.push("/instructors/courses/96457aa5-2790-4ad8-88e7-e767e0a1f49a/lectures")}
+                        className="px-4 py-2 bg-lms-primary text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                    >
+                        Lecture
+                    </button>
+                </section>
                 <TabComponent/>
             </section>
         </main>

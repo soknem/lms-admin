@@ -71,6 +71,16 @@ const TableCell = ({ getValue, row, column, table }: any) => {
         );
     }
 
+    if (accessorKey === "student") {
+        return (
+            <span className={` px-3 py-1 rounded-[10px]`}>
+                {value?.nameEn}
+            </span>
+        );
+    }
+
+
+
     if (column.id === "id") {
         return <span>{value}</span>;
     }
@@ -147,18 +157,18 @@ const EditCell = ({ row, table }: any) => {
 };
 
 export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
+    // {
+    //     accessorKey: 'student.cardId',
+    //     header: ({column}) => (
+    //         <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+    //             CARD ID <ArrowUpDown className='ml-2 h-4 w-4'/>
+    //         </Button>
+    //     ),
+    //     cell: TableCell,
+    //     meta: {type: 'text'},
+    // },
     {
-        accessorKey: 'student.cardId',
-        header: ({column}) => (
-            <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                CARD ID <ArrowUpDown className='ml-2 h-4 w-4'/>
-            </Button>
-        ),
-        cell: TableCell,
-        meta: {type: 'text'},
-    },
-    {
-        accessorKey: 'student.nameEn',
+        accessorKey: 'student',
         header: ({column}) => (
             <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
                 FULLNAME(EN) <ArrowUpDown className='ml-2 h-4 w-4'/>
@@ -166,6 +176,10 @@ export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
         ),
         cell: TableCell,
         meta: {type: 'text'},
+        filterFn: (row, columnId, filterValue) => {
+            const student = row.original.student.nameEn.toLowerCase();
+            return student.includes(filterValue.toLowerCase());
+        },
     },
     {
         accessorKey: 'student.gender',
@@ -188,25 +202,25 @@ export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
         cell: TableCell,
         meta: {type: 'date'},
     },
-    {
-        accessorKey: 'classCode',
-        header: ({column}) => (
-            <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    className="w-[130px] flex justify-start items-start">
-                CLASS <ArrowUpDown className='ml-2 h-4 w-4'/>
-            </Button>
-        ),
-        cell: TableCell,
-        meta: {type: 'text'},
-    },
-    {
-        accessorKey: 'course',
-        header: ({column}) => (
-            <Button variant='ghost'> COURSE <ArrowUpDown className='ml-2 h-4 w-4'/> </Button>
-        ),
-        cell: TableCell,
-        meta: {type: 'text'},
-    },
+    // {
+    //     accessorKey: 'classCode',
+    //     header: ({column}) => (
+    //         <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //                 className="w-[130px] flex justify-start items-start">
+    //             CLASS <ArrowUpDown className='ml-2 h-4 w-4'/>
+    //         </Button>
+    //     ),
+    //     cell: TableCell,
+    //     meta: {type: 'text'},
+    // },
+    // {
+    //     accessorKey: 'course',
+    //     header: ({column}) => (
+    //         <Button variant='ghost'> COURSE <ArrowUpDown className='ml-2 h-4 w-4'/> </Button>
+    //     ),
+    //     cell: TableCell,
+    //     meta: {type: 'text'},
+    // },
     {
         accessorKey: 'midtermExamScore',
         header: ({column}) => (

@@ -88,7 +88,8 @@ export const makeStore = () => {
             ended: endedLectureSlice,
             teaching:teachingSlice,
             studentAttendance: studentAttendanceSlice,
-            userProfile: userProfileSlice
+            userProfile: userProfileSlice,
+            studentReport: studentSlice,
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })
