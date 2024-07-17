@@ -1,20 +1,14 @@
 "use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
 
 import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
+import {useState, useEffect, ChangeEvent} from "react";
 import {AdmissionType, StatusOption} from "@/lib/types/admin/admission";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
+import ActionsCell from "@/components/admincomponent/admissions/AdmissionActionCell";
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
+import {Label} from "@/components/ui/label";
+import StatusBadge from "@/components/common/StatusBadge";
 
 const TableCell = ({getValue, row, column, table}: any) => {
     const initialValue = getValue();
@@ -39,7 +33,6 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "academicYear") {
         return <span>{value.academicYear}</span>;
     }
-
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
@@ -74,7 +67,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
                         : value === 2
                             ? "Ended text-white bg-red-500 px-3 py-1 rounded-[10px]"
                             : value === 3
-                                ? "Achieved bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
+                                ? "Finish bg-gray-200 text-gray-500 px-3 py-1 rounded-[10px]"
                                 : ""
                 }
             >
@@ -83,7 +76,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
             : value === 2
                 ? "Ended"
                 : value === 3
-                    ? "Achieved"
+                    ? "Finish"
                     : ""}
       </span>
         );
@@ -92,13 +85,40 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "endDate") {
         return <span>{value ? value : "No Data"}</span>;
     }
-
     if (column.id === "remark") {
         return <span className={`line-clamp-1`}>{value ? value : "No Remark"}</span>;
     }
 
     if (column.id === "telegramLink") {
         return <span>{value ? value : "No Link"}</span>;
+    }
+
+    // Custom rendering for specific columns
+    if (column.id === 'isDeleted') {
+        const DisplayValue = value.toString();
+
+        if (tableMeta?.editedRows[row.id]) {
+            return (
+                //custom year selector only
+                <RadioGroup defaultValue="comfortable" className="flex">
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="false" id="active"/>
+                        <Label htmlFor="active">Active</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="disable"/>
+                        <Label htmlFor="disable">Disable</Label>
+                    </div>
+                </RadioGroup>
+            );
+        } else {
+
+            if (DisplayValue === 'false') {
+                return <StatusBadge type="success" status="Active"/>
+            } else {
+                return <StatusBadge type="error" status="Disabled"/>
+            }
+        }
     }
 
     return <span>{value}</span>;
@@ -164,7 +184,31 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
     },
 
     {
+        accessorKey: "remark",
+        header: () => {
+            return <div>DESCRIPTION</div>;
+        },
+        cell: TableCell,
+    },
+
+    {
         accessorKey: "status",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    REMARK
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: TableCell,
+    },
+
+    {
+        accessorKey: "isDeleted",
         header: ({column}) => {
             return (
                 <Button
@@ -180,43 +224,7 @@ export const admissionColumns: ColumnDef<AdmissionType>[] = [
     },
 
     {
-        accessorKey: "remark",
-        header: () => {
-            return <div>REMARK</div>;
-        },
-        cell: TableCell,
-    },
-
-    {
         id: "actions",
-        cell: ({row}) => {
-            const admission = row.original;
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4"/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-white">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            className="focus:bg-background"
-                            onClick={() =>
-                                navigator.clipboard.writeText(admission.academicYearAlias)
-                            }
-                        >
-                            Copy ID
-                        </DropdownMenuItem>
-                        {/* <DropdownMenuSeparator className="bg-background px-2" /> */}
-                        {/* <DropdownMenuItem className="focus:bg-background" >Edit</DropdownMenuItem> */}
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-background">
-                            Disable
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
+        cell: ActionsCell,
     },
 ];

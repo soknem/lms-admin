@@ -22,6 +22,7 @@ export default function Payments() {
     } = useGetPaymentsQuery({page: 0, pageSize: 10});
     const payments = useSelector((state: RootState) => selectPayment(state));
 
+
     useEffect(() => {
         if (paymentsData) {
             dispatch(setPayments(paymentsData.content));

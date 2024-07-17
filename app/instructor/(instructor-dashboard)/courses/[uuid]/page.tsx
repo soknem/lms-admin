@@ -13,7 +13,6 @@ export default function CourseDetail({params}: PropsParam) {
     const {data, error, isLoading} = useGetInstructorCourseByUuidQuery({uuid});
 
     // Debugging console logs
-    console.log("useGetCourseDetailQuery response:", {data, error, isLoading});
 
     if (isLoading) {
         return <LoadingComponent/>;

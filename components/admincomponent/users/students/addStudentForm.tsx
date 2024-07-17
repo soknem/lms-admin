@@ -54,7 +54,6 @@ const handleSubmit = async (value: UserStudentType) => {
     //   body: JSON.stringify(value),
     // });
     // const data = await res.json()
-    // console.log("degree upload: ", data)
 };
 
 const RadioButton = ({field, value, label}: any) => {

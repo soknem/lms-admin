@@ -11,7 +11,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 
-import {StudyProgramType} from "@/lib/types/admin/faculty";
+import {DegreeType, FacultyType, StudyProgramType} from "@/lib/types/admin/faculty";
 import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import {TbAsterisk} from "react-icons/tb";
@@ -20,25 +20,40 @@ import {AppDispatch, RootState} from "@/lib/store";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {
     useEditStuProByAliasMutation,
-    useGetStudyProgramsQuery, useGetStuProByAliasQuery
+    useGetStuProByAliasQuery
 } from "@/lib/features/admin/faculties/studyProgram/studyprogram";
-import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
-import {selectFaculty, setFaculties} from "@/lib/features/admin/faculties/faculty/facultySlice";
-import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
-import {selectDegree, setDegrees} from "@/lib/features/admin/faculties/degree/degreeSlice";
+
 import {IoCameraOutline} from "react-icons/io5";
 import {toast} from "react-hot-toast";
+import logo_holder from "@/public/common/logo_holder.png";
+import slugify from "slugify";
+import {useGetFacultiesQuery} from "@/lib/features/admin/faculties/faculty/faculty";
+import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
 
-// const validationSchema = Yup.object().shape({
-//     alias: Yup.string().required("Required"),
-//     studyProgramName: Yup.string().required("Required"),
-//     logo: Yup.string().required("Required"),
-//     description: Yup.string(),
-//     isDeleted: Yup.boolean().required("Required"),
-//     isDraft: Yup.boolean().required("Required"),
-//     degreeAlias: Yup.string().required("Required"),
-//     facultyAlias: Yup.string().required("Required")
-// });
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+
+const validationSchema = Yup.object().shape({
+    alias: Yup.string()
+        .required('Alias is required'),
+    studyProgramName: Yup.string()
+        .required('Study Program Name is required'),
+    logo: Yup.mixed()
+        .test("fileFormat", "Unsupported Format", (value: any) => {
+            if (!value) return true;
+            return SUPPORTED_FORMATS.includes(value.type);
+        })
+        .test("fileSize", "File Size is too large", (value: any) => {
+            if (!value) return true;
+            return value.size <= FILE_SIZE;
+        })
+        .nullable(),
+    isDraft: Yup.boolean(),
+    degreeAlias: Yup.string()
+        .required('Degree Alias is required'),
+    facultyAlias: Yup.string()
+        .required('Faculty Alias is required'),
+});
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -83,16 +98,17 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
             >
                 {imagePreview ? (
                     <Image
-                        src={imagePreview}
+                        src={imagePreview || logo_holder}
                         alt="preview"
                         fill
                         style={{objectFit: "contain"}}
                     />
                 ) : (
-                    <img
-                        src={previewUrl}
-                        alt="faculty"
-                        className="w-full h-full rounded-full"
+                    <Image
+                        src={previewUrl || logo_holder}
+                        alt="preview"
+                        fill
+                        className="w-full h-full rounded-full object-fill"
                     />
                 )}
                 <div
@@ -116,11 +132,15 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
     const [open, setOpen] = useState(true);
     const [createSingleFile] = useCreateSingleFileMutation();
     const [editStuProgram] = useEditStuProByAliasMutation();
-
     const [initialAlias, setInitialAlias] = useState("");
     const [logo, setLogo] = useState(null);
     const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
-    const {refetch: refetchStuPrograms} = useGetStudyProgramsQuery({page: 0, pageSize: 10});
+    const [faculties, setFaculties] = useState<{ value: string; label: string }[]>([]);
+    const [degrees, setDegrees] = useState<{ value: string; label: string }[]>([]);
+    const {
+        data: facultiesData,
+    } = useGetFacultiesQuery({page: 0, pageSize: 0});
+
     const [initialValues, setInitialValues] = useState({
         alias: "",
         studyProgramName: "",
@@ -132,29 +152,39 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
         facultyAlias: "",
     });
 
-    const {
-        data: facultiesData,
-    } = useGetFacultiesQuery({page: 0, pageSize: 10});
-    const faculties = useSelector((state: RootState) => selectFaculty(state));
-
     useEffect(() => {
         if (facultiesData) {
-            dispatch(setFaculties(facultiesData.content));
+            const facultiesOption = facultiesData?.content?.map((faculty: FacultyType) => ({
+                value: faculty.alias,
+                label: faculty.name
+            }));
+            setFaculties(facultiesOption);
         }
-
     }, [facultiesData, dispatch]);
+    const getFacultiesLabel = (value: string) => {
+        const option = faculties.find(option => option.value === value);
+        return option ? option.label : '';
+    };
 
     const {
         data: degreesData,
-    } = useGetDegreesQuery({page: 0, pageSize: 10});
-    const degrees = useSelector((state: RootState) => selectDegree(state));
+    } = useGetDegreesQuery({page: 0, pageSize: 0});
 
     useEffect(() => {
         if (degreesData) {
-            dispatch(setDegrees(degreesData.content));
+            const degreesOption = degreesData?.content?.map((degree: DegreeType) => ({
+                value: degree.alias,
+                label: degree.level
+            }));
+            setDegrees(degreesOption);
         }
-
     }, [degreesData, dispatch]);
+
+    const getDegreesLabel = (value: string) => {
+        const option = degrees.find(option => option.value === value);
+        return option ? option.label : '';
+    };
+
 
     useEffect(() => {
         if (isSuccess && stuProData) {
@@ -162,7 +192,7 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                 alias: stuProData.alias,
                 studyProgramName: stuProData.studyProgramName,
                 logo: stuProData.logo,
-                description: stuProData.description,
+                description: stuProData.description || "No description",
                 isDraft: stuProData.isDraft,
                 degreeAlias: stuProData.degree.alias,
                 facultyAlias: stuProData.faculty.alias,
@@ -214,12 +244,10 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
             }
 
             resetForm();
-            refetchStuPrograms();
             onClose();
             toast.success('Successfully updated!');
 
         } catch (error) {
-            console.error("Failed to edit study program", error);
             toast.error('Failed to update study program');
         } finally {
             setSubmitting(true);
@@ -240,7 +268,7 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                     onSubmit={handleSubmit}
 
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full ">
                             <div className="grid gap-x-4 grid-cols-2 gap-1 items-center justify-center">
 
@@ -261,7 +289,21 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                                         <label className={`${style.label}`} htmlFor="studyProgramName">Title</label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field type="text" name="studyProgramName" id="studyProgramName"
+                                    <Field placeholder={`Master of Computer Science`} type="text"
+                                           name="studyProgramName"
+                                           id="studyProgramName"
+                                           onChange={(e: any) => {
+                                               setFieldValue(
+                                                   "studyProgramName",
+                                                   e.target.value
+                                               );
+                                               setFieldValue(
+                                                   "alias",
+                                                   slugify(e.target.value, {
+                                                       lower: true,
+                                                   })
+                                               );
+                                           }}
                                            className={`${style.input}`}/>
                                 </div>
 
@@ -271,14 +313,62 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                                         <label className={`${style.label}`} htmlFor="alias">Slug</label>
                                         <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                     </div>
-                                    <Field type="text" name="alias" id="alias" className={`${style.input}`}/>
+                                    <Field
+                                        disabled
+                                        placeholder={`master-of-computer-science`}
+                                        type="text"
+                                        name="alias"
+                                        id="alias"
+                                        className={`${style.input}`}/>
+                                    <ErrorMessage
+                                        name="alias"
+                                        component="div"
+                                        className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* facultyAlias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="facultyAlias">Faculty</label>
+                                    </div>
+
+                                    <Field
+                                        disabled
+                                        type="text"
+                                        name="fileType"
+                                        id="fileType"
+                                        value={getFacultiesLabel(initialValues.facultyAlias)} // Set value to pre-populate
+                                        onChange={(option: any) => setFieldValue("facultyAlias", option?.value)}
+                                        className={`${style.input}`}
+                                    />
+                                </div>
+
+                                {/* degreeAlias */}
+                                <div className={`${style.inputContainer}`}>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="degreeAlias">Degree</label>
+                                    </div>
+                                    <Field
+                                        disabled
+                                        type="text"
+                                        name="fileType"
+                                        id="fileType"
+                                        value={getDegreesLabel(initialValues.degreeAlias)} // Set value to pre-populate
+                                        onChange={(option: any) => setFieldValue("degreeAlias", option?.value)}
+                                        className={`${style.input}`}
+                                    />
                                 </div>
 
                                 {/* description */}
                                 <div className={`${style.inputContainer}`}>
                                     <label className={`${style.label}`} htmlFor="description">Description</label>
-                                    <Field as={`textarea`} name="description" id="description"
-                                           className={`${style.input}`}/>
+                                    <Field
+                                        as={`textarea`}
+                                        rows={4}
+                                        name="description"
+                                        id="description"
+                                        className={`${style.input}`}/>
                                 </div>
 
                                 {/* isDraft */}
@@ -300,8 +390,9 @@ export function EditStudyProForm({alias, onClose}: { alias: string; onClose: () 
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Changes
+                                    {isSubmitting ? 'Editing...' : 'Save Changes'}
                                 </Button>
                             </DialogFooter>
                         </Form>

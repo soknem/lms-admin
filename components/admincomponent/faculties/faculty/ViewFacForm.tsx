@@ -14,23 +14,8 @@ import React, {useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import {useGetFacultyByAliasQuery} from "@/lib/features/admin/faculties/faculty/faculty";
 import {TbAsterisk} from "react-icons/tb";
-
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
-            />
-            <label className="pl-2" htmlFor={value.toString()}>
-                {label}
-            </label>
-        </div>
-    );
-};
+import {FacultyType} from "@/lib/types/admin/faculty";
+import logo_holder from "@/public/common/logo_holder.png";
 
 const CustomInput = ({previewUrl}: any) => {
     const [imagePreview, setImagePreview] = useState(previewUrl);
@@ -47,10 +32,11 @@ const CustomInput = ({previewUrl}: any) => {
                         style={{objectFit: "contain"}}
                     />
                 ) : (
-                    <img
-                        src={previewUrl}
-                        alt="faculty"
-                        className="w-full h-full rounded-full"
+                    <Image
+                        src={previewUrl || logo_holder}
+                        alt="preview"
+                        fill
+                        className="w-full h-full rounded-full object-fill"
                     />
                 )}
             </div>
@@ -78,7 +64,7 @@ export function ViewFacForm({alias, onClose}: { alias: string; onClose: () => vo
             setInitialValues({
                 alias: facultyData.alias,
                 name: facultyData.name,
-                description: facultyData.description,
+                description: facultyData.description || "No description",
                 address: facultyData.address,
                 logo: facultyData.logo,
                 isDeleted: facultyData.isDeleted,

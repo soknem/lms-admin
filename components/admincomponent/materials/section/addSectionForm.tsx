@@ -57,6 +57,9 @@ export function CreateSectionForm() {
     const [createSection] = useCreateSectionMutation();
     const {refetch: refetchSections} = useGetAllSectionQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
+    const [curriculumData, setCurriculumData] = useState({});
+    const [slideData, setSlideData] = useState({});
+    const [videoData, setVideoData] = useState({});
 
     const {
         data: subjectData,
@@ -76,6 +79,8 @@ export function CreateSectionForm() {
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
+
+
             const newSection: SectionType = {
                 uuid: values.uuid,
                 title: values.title,
@@ -87,7 +92,6 @@ export function CreateSectionForm() {
 
             await createSection(newSection).unwrap();
 
-            console.log("Create successfully", newSection)
             toast.success('Successfully created!');
 
             resetForm();
@@ -171,35 +175,38 @@ export function CreateSectionForm() {
                                 </div>
 
                                 {/* isDraft */}
-                                {/*<div className={``}>*/}
-                                {/*    <div className="flex">*/}
-                                {/*        <label className={`${style.label}`} htmlFor="isDraft">*/}
-                                {/*            Visibility*/}
-                                {/*        </label>*/}
-                                {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
-                                {/*    </div>*/}
+                                <div className={`flex w-full justify-between`}>
+                                    {/* Visibility */}
+                                    <div className={``}>
+                                        <div className="flex">
+                                            <label className={`${style.label}`} htmlFor="isDraft">
+                                                Visibility
+                                            </label>
+                                            <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        </div>
+                                        <div className="flex gap-4 h-[40px] items-center">
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="false"
+                                                label="Public"
+                                            />
+                                            <Field
+                                                name="isDraft"
+                                                component={RadioButton}
+                                                value="true"
+                                                label="Draft"
+                                            />
+                                        </div>
 
-                                {/*    <div className="flex gap-4 h-[40px] items-center">*/}
-                                {/*        <Field*/}
-                                {/*            name="isDraft"*/}
-                                {/*            component={RadioButton}*/}
-                                {/*            value="false"*/}
-                                {/*            label="Public"*/}
-                                {/*        />*/}
-                                {/*        <Field*/}
-                                {/*            name="isDraft"*/}
-                                {/*            component={RadioButton}*/}
-                                {/*            value="true"*/}
-                                {/*            label="Draft"*/}
-                                {/*        />*/}
-                                {/*    </div>*/}
+                                        <ErrorMessage
+                                            name="isDraft"
+                                            component={RadioButton}
+                                            className={`${style.error}`}
+                                        />
+                                    </div>
 
-                                {/*    <ErrorMessage*/}
-                                {/*        name="isDraft"*/}
-                                {/*        component={RadioButton}*/}
-                                {/*        className={`${style.error}`}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
+                                </div>
 
                             </div>
 

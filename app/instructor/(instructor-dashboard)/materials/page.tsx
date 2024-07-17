@@ -38,7 +38,6 @@ export default function Materials() {
     try {
       const curriculumData = await filterCurriculums({ pageNumber: 0, pageSize: 25, body }).unwrap();
       setCurriculumData(curriculumData);
-      console.log("curriculum body= ",body);
     } catch (err) {
       console.error('Failed to filter curriculum from API:', err);
     }
@@ -71,7 +70,6 @@ export default function Materials() {
     try {
       const slideData = await filterSlides({ pageNumber: 0, pageSize: 25, body }).unwrap();
       setSlideData(slideData)
-      console.log("slide body = ",body);
     } catch (err) {
       console.error('Failed to filter slide from API:', err);
     }
@@ -103,7 +101,6 @@ export default function Materials() {
     try {
       const videoData = await filterVideos({ pageNumber: 0, pageSize: 25, body }).unwrap();
       setVideoData(videoData);
-      console.log("video body= ",body);
     } catch (err) {
       console.error('Failed to filter video from API:', err);
     }

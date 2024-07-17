@@ -94,7 +94,6 @@ export default function EditCourseForm({ isVisible, onClose , courseData }: Prop
                 courseStart: startDate ? format(startDate, "yyyy-MM-dd") : null,
                 courseEnd: endDate ? format(endDate, "yyyy-MM-dd") : null,
             };
-            console.log("Form values: ", formattedValues);
             handleEditCourse(formattedValues,setSubmitting ,resetForm)
         }
 

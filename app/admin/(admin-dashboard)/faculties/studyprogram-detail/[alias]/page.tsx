@@ -34,14 +34,10 @@ type PropsParams = {
 
 export default function Users(props: PropsParams) {
 
-    console.log("props", props)
-
     const alias = props.params.alias;
     const dispatch = useDispatch<AppDispatch>();
 
     const {data: stuProData, isSuccess} = useGetStuProByAliasQuery(alias);
-
-    console.log("stuProData", stuProData?.studyProgramName)
 
     const {
         data: setupStuProsData,
@@ -210,7 +206,7 @@ export default function Users(props: PropsParams) {
                         columns={studyProgramDetailColumns}
                         data={filterDataByYearAndSemester(4, 1)}
                     />
-                    
+
                     {/* Second Table for Semester Filter */}
                     <StudyProgramDetailTable
                         alias={alias}

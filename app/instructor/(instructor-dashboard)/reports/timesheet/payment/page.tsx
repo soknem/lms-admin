@@ -23,7 +23,6 @@ export default function Payment() {
     // Log data content for debugging
     useEffect(() => {
         if (data) {
-            console.log(data.content);
         }
     }, [data]);
 

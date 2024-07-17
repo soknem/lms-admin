@@ -28,7 +28,6 @@ export default function Class() {
 
   useEffect(() => {
     if(data) {
-      console.log("class from page : ",data.content)
       dispatch(setDetailClasses(data.content))
     }
     if(error){
@@ -36,9 +35,7 @@ export default function Class() {
     }
   }, [data, error, dispatch]);
 
-  console.log("detail class from class page: ", DetailClassData)
 
-  console.log("detail class course page: ",CoursesData)
 
   const transformToClassTableData = (data : any[] )   => {
     return data.map(item => ({
@@ -58,7 +55,6 @@ export default function Class() {
     }));
   };
 
-  console.log("transformToClassTableData", transformToClassTableData(DetailClassData));
 
   return (
     <main >

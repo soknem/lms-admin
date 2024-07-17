@@ -74,7 +74,6 @@ export function AddSubjectStudyProForm({alias, year}: { alias: string; year: num
                 year: year,
             }).unwrap();
             setUuids(response);
-            console.log("UUIDs: ", response);
         } catch (error) {
             console.error("Error fetching UUIDs: ", error);
         }

@@ -13,6 +13,7 @@ export const degreeApi = istadLmsApi.injectEndpoints({
                 method: 'POST',
                 body: newDegree,
             }),
+            invalidatesTags: [{type: 'Degrees', id: 'LIST'}],
         }),
         getDegreeByAlias: builder.query({
             query: (alias) => ({
@@ -26,6 +27,7 @@ export const degreeApi = istadLmsApi.injectEndpoints({
                 method: 'PATCH',
                 body: updatedData,
             }),
+            invalidatesTags: [{type: 'Degrees', id: 'LIST'}],
         }),
         enableDegreeByAlias: builder.mutation<void, string>({
             query: (alias) => ({

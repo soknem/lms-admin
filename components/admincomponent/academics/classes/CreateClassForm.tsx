@@ -96,7 +96,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
         label: `${sp.studyProgramName}`,
       }));
       setStudyPrograms(formattedProgram);
-      console.log("study program: ", formattedProgram)
     }
     if (studyProgramError) {
       console.error("failed to load study program", studyProgramError);
@@ -114,7 +113,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
 
   const [shifts, setShifts] = useState([]);
 
-  console.log("Shift from create: ", shiftData);
 
   useEffect(() => {
     if (shiftData) {
@@ -123,7 +121,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
         label: `${sp.name}`,
       }));
       setShifts(formattedShift);
-      console.log("Shift Formatted: ", formattedShift);
     }
     if (shiftError) {
       console.error("failed to load shift error", shiftError);
@@ -133,7 +130,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
   const handleShiftChange = (selectedOption: any) => {
     const alias = selectedOption?.value;
     formik.setFieldValue('shiftAlias', alias);
-    console.log("Selected Shift Alias:", alias);
   };
 
 
@@ -151,7 +147,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
         label: `${ins.username}`,
       }));
       setInstructors(formattedIns);
-      console.log("instructor from create class: ",formattedIns)
     }
     if (InsError) {
       console.error("failed to load instructor error", InsError);
@@ -175,7 +170,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
         label: `${aca.academicYear}`,
       }));
       setAcademicYears(formattedAca);
-      console.log("academic year from create class: ", formattedAca)
     }
     if (InsError) {
       console.error("failed to load academic year error", academicError);
@@ -208,12 +202,10 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
       shiftAlias: values.shiftAlias,
     };
 
-    console.log("New Class Data: ", newClass); // Debugging the new class data
 
     try {
       await createClass(newClass).unwrap();
       toast.success('Successfully created!');
-      console.log("Class created successfully"); // Debugging successful creation
     } catch (error) {
       toast.error('Failed to create Class!');
       console.error("Error creating class: ", error); // Debugging the error
@@ -256,7 +248,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
       status: Yup.number().required("Status is required"),
     }),
     // onSubmit: (values) => {
-    //   console.log("Create Class Form Values: ", values);
     //   handleCreateClass(values);
     // },
     onSubmit: (values) => {
@@ -266,7 +257,6 @@ export default function CreateClassForm({ isVisible, onClose }: PropsType) {
         classEnd: endDate ? format(endDate,"yyyy-MM-dd") : ""
       };
       // dispatch(addLecture(formattedValues))
-      console.log("form values: ",values);
       handleCreateClass(formattedValues);
     }
   });

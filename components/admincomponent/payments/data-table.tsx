@@ -51,6 +51,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import {CreatePayForm} from "./CreatePayForm";
+import {PiWarningCircleFill} from "react-icons/pi";
 
 //custom component import
 
@@ -135,7 +136,6 @@ export function PaymentTable<TData, TValue>({
         },
     });
 
-    console.log("data from page: ", data);
 
     const handleGenReset = (columnId: string) => {
         if (columnId === "generation") {
@@ -146,8 +146,8 @@ export function PaymentTable<TData, TValue>({
     };
 
     const FilteredGen = data.reduce((generation: string[], item: any) => {
-        if (!generation.includes(item.generation)) {
-            generation.push(item.generation);
+        if (!generation?.includes(item?.generation)) {
+            generation?.push(item?.generation);
         }
         return generation;
     }, []);
@@ -160,9 +160,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredAcaYear = data.reduce((academicYear: string[], item: any) => {
-        if (!academicYear.includes(item.academicYear)) {
-            academicYear.push(item.academicYear);
+    const FilteredAcaYear = data?.reduce((academicYear: string[], item: any) => {
+        if (!academicYear?.includes(item?.academicYear)) {
+            academicYear?.push(item?.academicYear);
         }
         return academicYear;
     }, []);
@@ -175,9 +175,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredFaculty = data.reduce((faculty: string[], item: any) => {
-        if (!faculty.includes(item.faculty)) {
-            faculty.push(item.faculty);
+    const FilteredFaculty = data?.reduce((faculty: string[], item: any) => {
+        if (!faculty?.includes(item?.faculty)) {
+            faculty?.push(item?.faculty);
         }
         return faculty;
     }, []);
@@ -190,9 +190,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredDegree = data.reduce((degree: string[], item: any) => {
-        if (!degree.includes(item.degree)) {
-            degree.push(item.degree);
+    const FilteredDegree = data?.reduce((degree: string[], item: any) => {
+        if (!degree?.includes(item?.degree)) {
+            degree?.push(item?.degree);
         }
         return degree;
     }, []);
@@ -205,9 +205,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredStuPro = data.reduce((studyProgram: string[], item: any) => {
-        if (!studyProgram.includes(item.studyProgram)) {
-            studyProgram.push(item.studyProgram);
+    const FilteredStuPro = data?.reduce((studyProgram: string[], item: any) => {
+        if (!studyProgram?.includes(item?.studyProgram)) {
+            studyProgram?.push(item?.studyProgram);
         }
         return studyProgram;
     }, []);
@@ -220,9 +220,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredClass = data.reduce((classCode: string[], item: any) => {
-        if (!classCode.includes(item.classCode)) {
-            classCode.push(item.classCode);
+    const FilteredClass = data?.reduce((classCode: string[], item: any) => {
+        if (!classCode?.includes(item?.classCode)) {
+            classCode?.push(item?.classCode);
         }
         return classCode;
     }, []);
@@ -235,9 +235,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredShift = data.reduce((shift: string[], item: any) => {
-        if (!shift.includes(item.shift)) {
-            shift.push(item.shift);
+    const FilteredShift = data?.reduce((shift: string[], item: any) => {
+        if (!shift?.includes(item?.shift)) {
+            shift?.push(item?.shift);
         }
         return shift;
     }, []);
@@ -250,9 +250,9 @@ export function PaymentTable<TData, TValue>({
         setData([...originalData]);
     };
 
-    const FilteredYear = data.reduce((year: number[], item: any) => {
-        if (!year.includes(item.year)) {
-            year.push(item.year);
+    const FilteredYear = data?.reduce((year: number[], item: any) => {
+        if (!year?.includes(item?.year)) {
+            year?.push(item?.year);
         }
         return year;
     }, []);
@@ -267,44 +267,46 @@ export function PaymentTable<TData, TValue>({
 
     return (
         <>
-            <section className="w-full  bg-white rounded flex flex-wrap items-center gap-9 p-6">
+            <section className="w-full  bg-white rounded flex flex-wrap items-center justify-center gap-9 p-6">
                 <div
-                    className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
-                        Earnings this semester
+                    className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
+                    <p className="text-xl font-medium text-lms-black-90">
+                        Total Earning
                     </p>
                     <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
                 </div>
 
                 <div
-                    className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">To be paid</p>
+                    className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
+                    <div className={`flex gap-2 items-center justify-center`}>
+                        <p className="text-xl font-medium text-lms-black-90">To be paid</p>
+                        <PiWarningCircleFill className={`w-5 h-5`}/></div>
                     <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
                 </div>
 
                 <div
-                    className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
+                    className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
+                    <p className="text-xl font-medium text-lms-black-90">
                         Earnings this semester
                     </p>
                     <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
                 </div>
 
                 <div
-                    className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
+                    className="w-[310px] h-[136px] bg-[#9C51B6] bg-opacity-10 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
+                    <p className="text-xl font-medium text-lms-black-90">
                         Total students
                     </p>
-                    <p className="text-4xl font-bold text-lms-primary">150 people</p>
+                    <p className="text-4xl font-bold text-[#A74AC7]">150 people</p>
                 </div>
 
-                <div
-                    className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-center">
-                    <p className="text-2xl font-medium text-lms-black-90">
-                        Students to be paid:
-                    </p>
-                    <p className="text-4xl font-bold text-[#F5A524]">20 people</p>
-                </div>
+                {/*<div*/}
+                {/*    className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">*/}
+                {/*    <p className="text-xl font-medium text-lms-black-90">*/}
+                {/*        Students to be paid:*/}
+                {/*    </p>*/}
+                {/*    <p className="text-4xl font-bold text-[#F5A524]">20 people</p>*/}
+                {/*</div>*/}
             </section>
 
             {/* Search */}
@@ -392,15 +394,15 @@ export function PaymentTable<TData, TValue>({
                 <CreatePayForm/>
             </div>
 
-            <div className="flex items-center  gap-4 w-full flex-wrap">
+            <div className="flex items-center gap-4 w-full flex-wrap">
                 {/* filters generation */}
                 <Popover open={openGeneration} onOpenChange={setOpenGeneration}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedGen ? <>{selectedGen}</> : <> Filter by generation</>}
+                            {selectedGen ? <>{selectedGen}</> : <>Filter by generation</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
@@ -420,7 +422,7 @@ export function PaymentTable<TData, TValue>({
                                                 setOpenGeneration(false);
                                             }}
                                         >
-                                            {` ${generation}`}
+                                            {generation}
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>
@@ -441,10 +443,10 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openYear} onOpenChange={setOpenYear}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedYear ? <>{`Year ${selectedYear}`}</> : <> Filter by year</>}
+                            {selectedYear ? <>{`Year ${selectedYear}`}</> : <>Filter by year</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
@@ -486,11 +488,10 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openAcademicYear} onOpenChange={setOpenAcademicYear}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedAcademicYear ? <>{selectedAcademicYear}</> : <> Filter by academic
-                                year</>}
+                            {selectedAcademicYear ? <>{selectedAcademicYear}</> : <>Filter by academic year</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
@@ -531,15 +532,15 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openFaculty} onOpenChange={setOpenFaculty}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedFaculty ? <>{selectedFaculty}</> : <> Filter by faculty</>}
+                            {selectedFaculty ? <>{selectedFaculty}</> : <>Filter by faculty</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter Degree..."/>
+                            <CommandInput placeholder="Filter Faculty..."/>
 
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
@@ -575,10 +576,10 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openDegree} onOpenChange={setOpenDegree}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedDegree ? <>{selectedDegree}</> : <> Filter by degree</>}
+                            {selectedDegree ? <>{selectedDegree}</> : <>Filter by degree</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
@@ -619,10 +620,10 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openStuPro} onOpenChange={setOpenStuPro}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedStuPro ? <>{selectedStuPro}</> : <> Filter by study program</>}
+                            {selectedStuPro ? <>{selectedStuPro}</> : <>Filter by study program</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
@@ -663,15 +664,15 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openClass} onOpenChange={setOpenClass}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedClass ? <>{selectedClass}</> : <> Filter by class</>}
+                            {selectedClass ? <>{selectedClass}</> : <>Filter by class</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter Study Program..."/>
+                            <CommandInput placeholder="Filter Class..."/>
 
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
@@ -707,15 +708,15 @@ export function PaymentTable<TData, TValue>({
                 <Popover open={openShift} onOpenChange={setOpenShift}>
                     <PopoverTrigger asChild>
                         <Button
-                            variant='outline' className='border-[#E6E6E6] bg-white w-[200px] text-lms-gray-30'
+                            variant='outline' className='border-[#E6E6E6] bg-white text-lms-gray-30'
                         >
                             <TbFilter className="mr-2 h-4 w-4"/>
-                            {selectedShift ? <>{selectedShift}</> : <> Filter shift</>}
+                            {selectedShift ? <>{selectedShift}</> : <>Filter shift</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter Study Program..."/>
+                            <CommandInput placeholder="Filter Shift..."/>
 
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
@@ -751,51 +752,50 @@ export function PaymentTable<TData, TValue>({
             {/* Table */}
             <div className="w-full rounded-md p-4 bg-white">
                 {/* class detail information */}
-                <div className="flex flex-wrap gap-2 p-4 w-full">
-                    <div className="min-w-[150px]">
+                <div className="flex flex-wrap gap-4 p-4 w-full">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Generation</Label>
                         <p className="flex font-medium text-black">{selectedGen || "All Generations"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Year</Label>
                         <p className="flex font-medium text-black">{selectedYear ? `Year ${selectedYear}` : "All Years"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Academic Year</Label>
                         <p className="flex font-medium text-black">{selectedAcademicYear || "All Academic Year"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
-                        <Label className="text-gray-30">Faulty</Label>
+                    <div className="flex-grow min-w-[150px]">
+                        <Label className="text-gray-30">Faculty</Label>
                         <p className="flex font-medium text-black">{selectedFaculty || "All Faculties"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Degree</Label>
                         <p className="flex font-medium text-black">{selectedDegree || "All Degrees"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Study Program</Label>
                         <p className="flex font-medium text-black">{selectedStuPro || "All Study Program"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Class</Label>
                         <p className="flex font-medium text-black">{selectedClass || "All Classes"}</p>
                     </div>
 
-                    <div className=" min-w-[150px]">
+                    <div className="flex-grow min-w-[150px]">
                         <Label className="text-gray-30">Shift</Label>
                         <p className="flex font-medium text-black">{selectedShift || "All Shifts"}</p>
                     </div>
                 </div>
 
-
                 <Table>
-                    <TableHeader className="text-gray-30">
+                    <TableHeader className="text-lms-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.filter(header => !header.column.columnDef.enableHiding).map((header) => {

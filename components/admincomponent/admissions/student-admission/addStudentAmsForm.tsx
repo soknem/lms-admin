@@ -136,7 +136,7 @@ export function AddStudentAmsForm() {
     };
 
 
-    const CustomInputFile = ({field, form: {setFieldValue, values}, label, placeholder, previewField}: any) => {
+    const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: any) => {
         const handleUploadFile = (e: any) => {
             const file = e.target.files[0];
             const localUrl = URL.createObjectURL(file);
@@ -239,7 +239,6 @@ export function AddStudentAmsForm() {
             const res = await createStuAdmission(newStuAdmission).unwrap();
             resetForm();
             refetchStuAdmissions();
-            console.log("Update successfully");
         } catch (error) {
             // Handle error (e.g., show an error message)
             console.error("Error creating faculty: ", error);
