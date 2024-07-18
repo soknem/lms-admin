@@ -5,8 +5,8 @@ import TabReportComponent from "@/components/instructorcomponent/reports/timeshe
 
 export default function Report() {
     return (
-        <main className="h-full w-full p-9">
-            <h2 className="text-4xl text-lms-primary font-bold">Timesheet</h2>
+        <main className="h-full w-full p-9 ">
+            <h2 className="text-4xl border-gray-900 text-lms-primary font-bold">Timesheet</h2>
             <div className="mt-4">
                 <TabReportComponent/>
             </div>

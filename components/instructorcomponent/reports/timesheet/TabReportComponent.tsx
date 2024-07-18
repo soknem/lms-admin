@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Teaching from "@/app/instructor/(instructor-dashboard)/reports/timesheet/teaching/page";
 import { DateComponent } from "@/components/instructorcomponent/reports/timesheet/DateComponent";
-import Payment from "@/app/instructor/(instructor-dashboard)/reports/timesheet/payment/page";
+import PaymentPage from "@/app/instructor/(instructor-dashboard)/reports/timesheet/payment/page";
 
 export default function TabReportComponent() {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -11,10 +11,7 @@ export default function TabReportComponent() {
     return (
         <div>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <div className="flex justify-between">
-                    <div>
-                        <DateComponent selectedDate={selectedDate} onDateChange={setSelectedDate} />
-                    </div>
+                <div className="flex justify-end">
                     <TabsList>
                         <TabsTrigger className="rounded-[7px]" value="payment">
                             Payment History
@@ -26,7 +23,7 @@ export default function TabReportComponent() {
                 </div>
                 <TabsContent value="payment">
                     <div className="bg-white">
-                        <Payment selectedDate={selectedDate} />
+                        <PaymentPage />
                     </div>
                 </TabsContent>
                 <TabsContent value="teaching">

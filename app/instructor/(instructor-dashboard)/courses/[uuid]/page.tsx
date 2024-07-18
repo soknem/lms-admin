@@ -8,11 +8,13 @@ import {useGetInstructorCourseByUuidQuery} from "@/lib/features/instructor/cours
 import CourseDetailHeaderInstructor from "@/components/instructorcomponent/coursedetail/CourseDetailHeader";
 import {CourseResponse} from "@/lib/types/instructor/courseDetail";
 import {router} from "next/client";
+import {useDispatch} from "react-redux";
+import {setCourseTitle} from "@/lib/features/instructor/course/getCourseTitleSlice";
 
 export default function CourseDetail({params}: PropsParam) {
     const uuid = params.uuid;
     const {data, error, isLoading} = useGetInstructorCourseByUuidQuery({uuid});
-
+    const dispatch = useDispatch();
     // Debugging console logs
 
     if (isLoading) {
@@ -28,6 +30,10 @@ export default function CourseDetail({params}: PropsParam) {
     }
 
     const courseDetails: CourseResponse = data;
+
+    if(data){
+        dispatch(setCourseTitle(data.courseTitle));
+    }
 
     return (
         <main>
@@ -55,6 +61,7 @@ export default function CourseDetail({params}: PropsParam) {
             </section>
             <section className="mx-[100px]">
                 <TabComponent
+                    courseUuid={uuid}
                     courseTitle={courseDetails.courseTitle}
                     courseDescription={courseDetails.courseDescription || "Unknown Description"}
                     curriculumData={courseDetails.curriculum || null}

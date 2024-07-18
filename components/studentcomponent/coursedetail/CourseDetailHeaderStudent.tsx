@@ -61,11 +61,11 @@ export default function     CourseDetailHeaderStudent({
                         alt="Course Logo"
                         width={300}
                         height={0}
-                        className="h-[200px]"
+                        className="h-auto"
                     />
                 </div>
             </section>
-            <section className="flex items-center mx-[90px] ">
+            <section className="flex items-center mx-[90px] mt-12 ">
                 <img
                     onClick={() =>
                         router.push(`/instructor/view-profile/${instructor?.uuid}`)
@@ -87,11 +87,11 @@ export default function     CourseDetailHeaderStudent({
                         {position || 'Unknown Position'}
                     </p>
                 </div>
-                <div className="flex items-center ml-[88px]">
+                <div className="flex items-center ml-[88px] ">
                     <div className="flex -space-x-7 items-center cursor-pointer">
                         {studentProfileImage?.length > 0 ? (
                             studentProfileImage.map((src: string, index: number) => (
-                                <img
+                                <Image
                                     key={index}
                                     src={
                                         src ||
@@ -101,7 +101,7 @@ export default function     CourseDetailHeaderStudent({
                                     alt={`Student ${index + 1}`}
                                     width={40}
                                     height={40}
-                                    className="h-[40px] w-[40px] hover:scale-[100%] rounded-full object-cover ring-2 ring-white"
+                                    className=" h-[40px] hover:scale-[100%] rounded-full object-cover ring-2 ring-white"
                                 />
                             ))
                         ) : (

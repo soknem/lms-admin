@@ -41,6 +41,7 @@ import userProfileSlice from "@/lib/features/userProfile/userProfileSlice";
 import {studentSettingApi} from "@/lib/features/student/setting/StudentSetting";
 import {paymentApi} from "@/lib/features/instructor/report/timesheet/payment/payment";
 import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
+import getCourseTitleSlice from "@/lib/features/instructor/course/getCourseTitleSlice";
 
 
 export const makeStore = () => {
@@ -85,7 +86,8 @@ export const makeStore = () => {
             ended: endedLectureSlice,
             teaching: teachingSlice,
             studentAttendance: studentAttendanceSlice,
-            userProfile: userProfileSlice
+            userProfile: userProfileSlice,
+            singleCourse: getCourseTitleSlice
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })

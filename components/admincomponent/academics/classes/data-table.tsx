@@ -414,34 +414,36 @@ export function DataTable<TData extends { uuid: string }, TValue>({
       {/* table footer */}
       <div className='px-4 w-full flex justify-between items-center'>
 
-        <div className="text-base text-muted-foreground">
-          Showing <strong>1-5</strong> of <strong>10</strong>{" "}
-          classes
-        </div>
+        {/*<div className="text-base text-muted-foreground">*/}
+        {/*  Showing <strong>1-5</strong> of <strong>10</strong>{" "}*/}
+        {/*  classes*/}
+        {/*</div>*/}
 
 
-        {/* Pagination */}
-        <div className='flex items-center justify-end space-x-2 py-4'>
 
-          <Button
+      </div>
+
+      {/* Pagination */}
+      <div className='flex items-center justify-end space-x-2 py-4'>
+
+        <Button
             className='border-gray-30'
             variant='outline'
             size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
+        >
+          Previous
+        </Button>
+        <Button
             className='border-gray-30 '
             variant='outline'
             size='sm'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+        >
+          Next
+        </Button>
       </div>
       {/* CreateClassForm Modal */}
       <CreateClassForm isVisible={isModalVisible} onClose={handleCloseModal}/>

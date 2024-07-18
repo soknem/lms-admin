@@ -20,7 +20,7 @@ import {
 import {
     Table,
     TableBody,
-    TableCell,
+    TableCell, TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -271,33 +271,33 @@ export function PaymentTable<TData, TValue>({
                 <div
                     className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
                     <p className="text-xl font-medium text-lms-black-90">
-                        Total Earning
+                        Earnings this semester
                     </p>
-                    <p className="text-4xl font-bold text-lms-primary">$ 1000.00</p>
+                    <p className="text-4xl font-bold text-lms-primary">$ 8000.00</p>
+                </div>
+
+                <div
+                    className="w-[310px] h-[136px] bg-[#9C51B6] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
+                    <div className={`flex gap-2 items-center justify-center`}>
+                        <p className="text-xl font-medium text-lms-black-90">To be paid</p>
+                        <PiWarningCircleFill className={`w-5 h-5`}/></div>
+                    <p className="text-4xl font-bold text-[#A74AC7]">$ 800.00</p>
                 </div>
 
                 <div
                     className="w-[310px] h-[136px] bg-[#FFD338] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
-                    <div className={`flex gap-2 items-center justify-center`}>
-                        <p className="text-xl font-medium text-lms-black-90">To be paid</p>
-                        <PiWarningCircleFill className={`w-5 h-5`}/></div>
-                    <p className="text-4xl font-bold text-[#F5A524]">$ 800.00</p>
-                </div>
-
-                <div
-                    className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
                     <p className="text-xl font-medium text-lms-black-90">
-                        Earnings this semester
+                        Lifetime Earning
                     </p>
-                    <p className="text-4xl font-bold text-[#008000]">$ 8000.00</p>
+                    <p className="text-4xl font-bold text-[#F5A524]">$ 8000.00</p>
                 </div>
 
                 <div
-                    className="w-[310px] h-[136px] bg-[#9C51B6] bg-opacity-10 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
+                    className="w-[310px] h-[136px] bg-[#18C964] bg-opacity-10 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
                     <p className="text-xl font-medium text-lms-black-90">
                         Total students
                     </p>
-                    <p className="text-4xl font-bold text-[#A74AC7]">150 people</p>
+                    <p className="text-4xl font-bold text-[#008000]">150 people</p>
                 </div>
 
                 {/*<div*/}
@@ -313,7 +313,7 @@ export function PaymentTable<TData, TValue>({
             <div className="flex items-center justify-between gap-4 ">
                 <div className="flex items-center w-full relative">
                     <Input
-                        placeholder="Search Curriculum"
+                        placeholder="Search Payment"
                         value={
                             (table.getColumn("student")?.getFilterValue() as string) ?? ""
                         }
@@ -841,7 +841,36 @@ export function PaymentTable<TData, TValue>({
                             </TableRow>
                         )}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={columns.length}>
+                                <p className="text-lms-gray-30 text-sm font-normal text-center">
+                                    A list of Payments
+                                </p>
+                            </TableCell>
+                        </TableRow>
+                    </TableFooter>
                 </Table>
+            </div>
+
+            {/* status Remark */}
+            <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
+                <p className='text-lms-success font-bold '>Remark :</p>
+                <div className='flex gap-2 text-gray-500 '>
+                    <p className='font-semibold text-lms-success'>Paid</p>
+                    <p className='khmer-font'>បង់ប្រាក់រួចរាល់</p>
+                </div>
+
+                <div className='flex gap-2 text-gray-500'>
+                    <p className='font-semibold text-lms-accent '>Partailly</p>
+                    <p className='khmer-font'>បង់ប្រាក់មិនទាន់គ្រប់</p>
+                </div>
+
+                <div className='flex gap-2 text-gray-500'>
+                    <p className='font-semibold text-lms-error'>Unpaid</p>
+                    <p className='khmer-font'>មិនទាន់បានបង់ប្រាក់</p>
+                </div>
+
             </div>
 
             {/* Pagination */}

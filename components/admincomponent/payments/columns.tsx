@@ -35,7 +35,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
     if (column.id === "student") {
         const studentData = row.original;
         return (
-            <div className="flex items-center">
+            <div className="flex items-center w-[200px]">
                 <img
                     src={studentData.studentProfile}
                     alt={studentData.studentName}
@@ -46,9 +46,16 @@ const TableCell = ({getValue, row, column, table}: any) => {
         );
     }
 
-    // if (column.id === "remark") {
-    //     return <span className={`line-clamp-1`}>{value || "No Remark"}</span>;
-    // }
+    if (column.id === "gender") {
+        return (
+            <span className={
+                value === "F" ? "text-white bg-lms-accent px-3 py-1 rounded-[10px]"
+                    : ""
+            }>
+            {value === "F" ? "Female" : "Male"}
+        </span>
+        );
+    }
 
     if (column.id === "discount") {
         return <span className={`text-lms-error`}>{value} %</span>;

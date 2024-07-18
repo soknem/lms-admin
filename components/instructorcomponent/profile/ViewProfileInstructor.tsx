@@ -145,7 +145,7 @@ export default function ViewProfileInstructor({
 
                     <section className="col-span-2 mt-4 h-full">
 
-                        <div className=" flex gap-x-[4  0px] ">
+                        <div className=" flex gap-x-[40px] ">
 
                             <section className="w-[50%] ">
                                 {skillArray.length !== 0 && (

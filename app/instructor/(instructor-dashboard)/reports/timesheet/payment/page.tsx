@@ -1,26 +1,19 @@
 'use client'
-import { PaymentColumns } from "@/components/instructorcomponent/reports/timesheet/payment/columns";
-import { PaymentDataTable } from "@/components/instructorcomponent/reports/timesheet/payment/data-table";
-import { useEffect } from "react";
-import { useGetPaymentQuery } from "@/lib/features/instructor/report/timesheet/payment/payment";
-import { PaymentType } from "@/lib/types/instructor/timesheet";
+import React, { useState } from "react";
+import PaymentComponent from "@/components/instructorcomponent/reports/timesheet/payment/PaymentComponent";
+import { DateComponent } from "@/components/instructorcomponent/reports/timesheet/DateComponent";
 
-type PaymentProps = {
-    selectedDate: Date;
-}
-
-export default function Payment({ selectedDate }: PaymentProps) {
-    const { data, error } = useGetPaymentQuery();
-
-    const payments: PaymentType[] = data?.payments || [];
-
-    useEffect(() => {
-        console.log("PAYMENT DATA: ", data);
-    }, [data]);
+export default function PaymentPage() {
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     return (
-        <main className="flex flex-col gap-4 h-full w-full p-9">
-            <PaymentDataTable columns={PaymentColumns} allData={payments} selectedDate={selectedDate || null} />
-        </main>
+        <div className="relative h-full">
+            <div className="absolute top-[-20px] left-0 right-0"> {/* Adjust the position with top-[-20px] */}
+                <DateComponent selectedDate={selectedDate} onDateChange={setSelectedDate} />
+            </div>
+            <div className="mt-8"> {/* Add margin to ensure there's space for DateComponent */}
+                <PaymentComponent selectedDate={selectedDate} />
+            </div>
+        </div>
     );
 }
