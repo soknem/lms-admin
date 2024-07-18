@@ -41,9 +41,9 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function TeachingDataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+                                                   columns,
+                                                   data,
+                                                 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [allData, setData] = useState(() => [...data]);
@@ -71,134 +71,134 @@ export function TeachingDataTable<TData, TValue>({
       revertData: (rowIndex: number, revert: boolean) => {
         if (revert) {
           setData((old) =>
-            old.map((row, index) =>
-              index === rowIndex ? originalData[rowIndex] : row
-            )
+              old.map((row, index) =>
+                  index === rowIndex ? originalData[rowIndex] : row
+              )
           );
         } else {
           setOriginalData((old) =>
-            old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
+              old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
           );
         }
       },
       updateData: (rowIndex: number, columnId: string, value: string) => {
         setData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex],
-                [columnId]: value,
-              };
-            }
-            return row;
-          })
+            old.map((row, index) => {
+              if (index === rowIndex) {
+                return {
+                  ...old[rowIndex],
+                  [columnId]: value,
+                };
+              }
+              return row;
+            })
         );
       },
     },
   });
 
- 
+
   return (
-    <>
-      {/* Table */}
-      <div className="rounded-[10px] bg-lms-white-80">
-        <p className="text-black_80 font-bold ml-4 mb-4">
-          FY2025 - A1 Introduction to IT
-        </p>
-        <div className="flex justify-between p-4">
-          <div>
-            <Label className="text-lms-gray-80">Generation</Label>
-            <p className="flex font-medium text-black">Generation 1</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Year</Label>
-            <p className="flex font-medium text-black">Foundation Year</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Academic Year</Label>
-            <p className="flex font-medium text-black">2024-2025</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Degree</Label>
-            <p className="flex font-medium text-black">Bachelor</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Department</Label>
-            <p className="flex font-medium text-black">IT</p>
-          </div>
-          <div>
-            <Label className="text-lms-gray-80">Major</Label>
-            <div className="flex gap-2">
-              <p className="flex text-black font-medium">
-                Information Technology
-              </p>
+      <>
+        {/* Table */}
+        <div className="rounded-[10px] bg-lms-white-80">
+          <p className="text-black_80 font-bold ml-4 mb-4">
+            FY2025 - A1 Introduction to IT
+          </p>
+          <div className="flex justify-between p-4">
+            <div>
+              <Label className="text-lms-gray-80">Generation</Label>
+              <p className="flex font-medium text-black">Generation 1</p>
+            </div>
+            <div>
+              <Label className="text-lms-gray-80">Year</Label>
+              <p className="flex font-medium text-black">Foundation Year</p>
+            </div>
+            <div>
+              <Label className="text-lms-gray-80">Academic Year</Label>
+              <p className="flex font-medium text-black">2024-2025</p>
+            </div>
+            <div>
+              <Label className="text-lms-gray-80">Degree</Label>
+              <p className="flex font-medium text-black">Bachelor</p>
+            </div>
+            <div>
+              <Label className="text-lms-gray-80">Department</Label>
+              <p className="flex font-medium text-black">IT</p>
+            </div>
+            <div>
+              <Label className="text-lms-gray-80">Major</Label>
+              <div className="flex gap-2">
+                <p className="flex text-black font-medium">
+                  Information Technology
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <Table>
-          <TableHeader className="text-lms-gray-30">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
+          <Table>
+            <TableHeader className="text-lms-gray-30">
+              {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                                ? null
+                                : flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext()
+                                )}
+                          </TableHead>
+                      );
+                    })}
+                  </TableRow>
+              ))}
+            </TableHeader>
 
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                      <TableRow
+                          key={row.id}
+                          data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                            <TableCell key={cell.id}>
+                              {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                              )}
+                            </TableCell>
+                        ))}
+                      </TableRow>
+                  ))
+              ) : (
+                  <TableRow>
+                    <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center "
+                    >
+                      No results.
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
+                  </TableRow>
+              )}
+              <TableRow className="bg-lms-grayBorder">
                 <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center "
+                    colSpan={columns.length - 1}
+                    className="h-15  text-[18px] text-lms-black90 "
                 >
-                  No results.
+                  Total
+                </TableCell>
+                <TableCell
+                    className="font-normal text-[18px] text-lms-black90"
+                >
+                  $2100.00
                 </TableCell>
               </TableRow>
-            )}
-            <TableRow className="bg-lms-grayBorder">
-              <TableCell
-                colSpan={columns.length - 1}
-                className="h-15  text-[18px] text-lms-black90 "
-              >
-                Total
-              </TableCell>
-              <TableCell
-                className="font-normal text-[18px] text-lms-black90"
-              >
-                $1200.00
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </div>
-    </>
+            </TableBody>
+          </Table>
+        </div>
+      </>
   );
 }

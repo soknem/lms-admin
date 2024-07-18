@@ -12,6 +12,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/lib/store";
 import {useFilterFilesMutation} from "@/lib/features/instructor/meterials/meterials";
 import {addOrUpdateFilter} from "@/lib/features/filters/filterSlice";
+import {SectionTable} from "@/components/admincomponent/materials/section/data-table";
+import {sectionColumns} from "@/components/admincomponent/materials/section/columns";
+import {selectSection} from "@/lib/features/admin/materials/subjectMaterialSection/sectionSlice";
 
 
 export default function Materials() {
@@ -121,16 +124,22 @@ export default function Materials() {
       applyFilterVideo();
     }
   }, [videoFilterState]);
+  const sections = useSelector((state: RootState) => selectSection(state));
+
 
   return (
       <main className="flex flex-col h-full w-full p-9">
         <h2 className="mb-6 text-4xl text-lms-primary font-bold">Materials</h2>
         <Tabs defaultValue="curriculums" className="w-full">
           <TabsList>
+            <TabsTrigger value="section">Section</TabsTrigger>
             <TabsTrigger value="curriculums">Curriculum</TabsTrigger>
             <TabsTrigger value="slide">Slide</TabsTrigger>
             <TabsTrigger value="video">Video</TabsTrigger>
           </TabsList>
+          <TabsContent value="sections">
+            <SectionTable columns={sectionColumns} data={sections}/>
+          </TabsContent>
           <TabsContent value="curriculums">
             <CurriculumTable columns={curriculumColumns} data={curriculumData.content} />
           </TabsContent>

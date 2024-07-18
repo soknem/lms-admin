@@ -1,4 +1,5 @@
 'use client'
+import React, { useEffect, useState } from 'react';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -8,8 +9,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import lectures from "../data/lectures.json";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     InstructorCurrentLectureDataTable
 } from "@/components/instructorcomponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
@@ -22,52 +22,25 @@ import {
 import {
     InstructorEndedLectureColumns
 } from "@/components/instructorcomponent/lectures/end-lecture/InstructorEndedLectureColumns";
-import {Filter} from "lucide-react";
-import {useDispatch, useSelector} from "react-redux";
-import {useGetAssessmentQuery} from "@/lib/features/instructor/assessment/assessment";
-import {AssessmentType} from "@/lib/types/instructor/assessment";
-import {RootState} from "@/lib/store";
-import {selectAssessment, setAssessment} from "@/lib/features/instructor/assessment/assessmentSlice";
-import React, {useEffect} from "react";
-import {useGetCurrentLectureQuery} from "@/lib/features/instructor/lecture/currentLecture";
-import {CurrentType, EndedLectureType} from "@/lib/types/instructor/lecture";
-import {selectCurrents, setCurrents} from "@/lib/features/instructor/lecture/currentLectureSlice";
-import {useGetEndedLectureQuery} from "@/lib/features/instructor/endLecture/endedLecture";
-import {selectEndeds, setEndeds} from "@/lib/features/instructor/endLecture/endedLectureSlice";
-import {useGetLectureQuery} from "@/lib/features/instructor/lectureadd/lecture";
-import {selectLecture, setLecture} from "@/lib/features/instructor/lectureadd/lectureSlice";
-import {LectureRespondType} from "@/lib/types/admin/academics";
-import {LectureDataTable} from "@/components/admincomponent/academics/lectures/LectureDataTable";
-import {LectureColumns} from "@/components/admincomponent/academics/lectures/LectureColumns";
-import type {PropsParam} from "@/lib/types/student/course";
-import {selectCourseTitle} from "@/lib/features/instructor/course/getCourseTitleSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetCurrentLectureQuery } from "@/lib/features/instructor/lecture/currentLecture";
+import { useGetEndedLectureQuery } from "@/lib/features/instructor/endLecture/endedLecture";
+import { selectCurrents, setCurrents } from "@/lib/features/instructor/lecture/currentLectureSlice";
+import { selectEndeds, setEndeds } from "@/lib/features/instructor/endLecture/endedLectureSlice";
+import { RootState } from "@/lib/store";
 
-export default function Lecture({params}: PropsParam) {
-    const uuid = params.uuid;
-
+export default function Lecture() {
     const dispatch = useDispatch();
-    const {data: CurrentData, error: Currenterror} = useGetCurrentLectureQuery();
-    const {data: EndedData, error: Endederror} = useGetEndedLectureQuery();
-    const {data: LectureData,error:LectureError} = useGetLectureQuery({ page: 0, pageSize: 10 });
+    const { data: CurrentData, error: Currenterror } = useGetCurrentLectureQuery();
+    const { data: EndedData, error: Endederror } = useGetEndedLectureQuery();
 
-    if(CurrentData){
-        console.log("current ",CurrentData)
-    }
-
-    if(EndedData){
-        console.log("End ",EndedData)
-    }
-
-    const filteredCurrentLectureData: CurrentType[] = useSelector((state: RootState) => selectCurrents(state));
-    const filteredEndedLectureData: EndedLectureType[] = useSelector((state: RootState) => selectEndeds(state));
-
-    const courseTitle = localStorage.getItem('courseTitle');
+    const filteredCurrentLectureData = useSelector((state: RootState) => selectCurrents(state));
+    const filteredEndedLectureData = useSelector((state: RootState) => selectEndeds(state));
 
     // Effect to update Redux store on data change
     useEffect(() => {
         if (CurrentData) {
             dispatch(setCurrents(CurrentData.content));
-
         }
         if (Currenterror) {
             console.error("Failed to load current", Currenterror);
@@ -77,77 +50,34 @@ export default function Lecture({params}: PropsParam) {
     useEffect(() => {
         if (EndedData) {
             dispatch(setEndeds(EndedData.content));
-
         }
         if (Endederror) {
             console.error("Failed to load ended", Endederror);
         }
     }, [EndedData, Endederror, dispatch]);
 
-    const transformToLectureData = (data : any[]) : LectureRespondType[] => {
-        return data.map(item  => ({
-            uuid: item.uuid ,
-            startTime: item.startTime,
-            endTime: item.endTime,
-            lectureDate: item.lectureDate,
-            isDeleted: item.isDeleted,
-            isDraft: item.isDraft,
-            status: item.status,
-            teachingType: item.teachingType,
-            classCode: item.classCode,
-            courseTitle: item.course ? item.course.title : 'N/A',
-            courseUuid: item.course ? item.course.uuid : 'N/A',
-            instructorName: item.course && item.course.instructor ? item.course.instructor.nameEn : 'N/A',
-            instructorUuid: item.course && item.course.instructor ? item.course.instructor.uuid : 'N/A',
-            session: `${item.startTime}-${item.endTime}`,
-        }));
-    };
+    const [activeTab, setActiveTab] = useState("current"); // State for managing active tab
 
-    useEffect(() => {
-        if(LectureData) {
-            dispatch(setLecture(transformToLectureData(LectureData.content)))
-        }
-        if(LectureError){
-            console.error("failed to load lecture", LectureError);
-        }
-    }, [LectureData, LectureError, dispatch]);
-
-    // console.log("data con: ",LectureData.content?.course[0].title)
-
-    // // Filter data for current and ended lectures
-    // const filteredCurrentLectureData = data.filter(
-    //     (lecture) => lecture.status === 1
-    // );
-    //
-    // const filteredEndedLectureData = data.filter(
-    //     (lecture) => lecture.status === 2 || lecture.status === 3
-    // );
     return (
         <section className="flex flex-col gap-4 h-full w-full p-9">
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link
-                                href="/instructor/courses"
-                                className="font-semibold text-gray-30 uppercase"
-                            >
+                            <Link href="/instructor/courses" className="font-semibold text-gray-30 uppercase">
                                 COURSE
                             </Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator/>
+                    <BreadcrumbSeparator />
                     <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                            <Link
-                                href="/instructor/courses/coursedetail"
-                                className="font-semibold text-gray-30 uppercase"
-                            >
-                                {courseTitle}
+                            <Link href="/instructor/courses/coursedetail" className="font-semibold text-gray-30 uppercase">
+                                INTRODUCTION TO IT
                             </Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator/>
+                    <BreadcrumbSeparator />
                     <BreadcrumbItem>
                         <BreadcrumbPage className="font-semibold text-lms-primary uppercase">
                             LECTURE
@@ -155,9 +85,9 @@ export default function Lecture({params}: PropsParam) {
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-            <h1 className=" text-3xl font-bold text-lms-primary">Lectures</h1>
+            <h1 className="text-3xl font-bold text-lms-primary">Lectures</h1>
 
-            <Tabs defaultValue="current" className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="grid w-[400px] grid-cols-2">
                     <TabsTrigger value="current">Current Teaching Session</TabsTrigger>
                     <TabsTrigger value="ended">Ended Teaching Session</TabsTrigger>
@@ -176,7 +106,6 @@ export default function Lecture({params}: PropsParam) {
                         data={filteredEndedLectureData}
                     />
                 </TabsContent>
-
             </Tabs>
         </section>
     );

@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {MaterialType, StatusOption} from "@/lib/types/instructor/materials";
+import {MaterialType, StatusOption} from "@/lib/types/admin/materials";
 import {BiSolidMessageSquareEdit} from "react-icons/bi";
 
 const TableCell = ({getValue, row, column, table}: any) => {

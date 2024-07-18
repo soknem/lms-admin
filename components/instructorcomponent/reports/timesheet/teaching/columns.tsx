@@ -42,22 +42,22 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
 export const TeachingColumns: ColumnDef<TeachingType>[] = [
   {
-    accessorKey: "lectureDate",
+    accessorKey: "date",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          DATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            DATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "timeRange",
+    accessorKey: "session",
     header: ({ column }) => {
       return (
           <Button
@@ -76,13 +76,13 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
     accessorKey: "schedule",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          SCHEDULE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            SCHEDULE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -91,31 +91,31 @@ export const TeachingColumns: ColumnDef<TeachingType>[] = [
     accessorKey: "teachingType",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          //to  customize the size of each column
-          className="w-[160px] flex justify-start items-start"
-        >
-          TEACHING TYPE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              //to  customize the size of each column
+              className="w-[160px] flex justify-start items-start"
+          >
+            TEACHING TYPE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "paidStatus",
+    accessorKey: "status",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          //to  customize the size of each column
-          className="w-[130px] flex justify-start items-start"
-        >
-          STATUS
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              //to  customize the size of each column
+              className="w-[130px] flex justify-start items-start"
+          >
+            STATUS
+          </Button>
       );
     },
     cell: TableCell,

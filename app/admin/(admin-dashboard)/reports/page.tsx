@@ -7,7 +7,6 @@ import ReportInstructorComponent from "@/components/admincomponent/reports/instr
 import ReportStaffComponent from "@/components/admincomponent/reports/staff/ReportStaffComponent";
 import ReportAdmissionComponent from "@/components/admincomponent/reports/admission/ReportAdmissionComponent";
 import StudentpayComponent from "@/components/admincomponent/reports/student's pay/Student'spayComponent";
-import StudentpayComponent2 from "@/components/admincomponent/reports/student's pay/Student'spayComponent copy";
 import EarningsReportComponent from "@/components/admincomponent/reports/earning/EarningComponent";
 
 
@@ -57,9 +56,9 @@ export default async function Report() {
                         </TabsContent>
                         <TabsContent value="payment">
                             <StudentpayComponent/>
-                            <div className="mt-4">
-                                <StudentpayComponent2/>
-                            </div>
+                            {/*<div className="mt-4">*/}
+                            {/*    <StudentpayComponent/>*/}
+                            {/*</div>*/}
                         </TabsContent>
                         <TabsContent value="earning">
                             <EarningsReportComponent/>
@@ -67,10 +66,7 @@ export default async function Report() {
                     </Tabs>
 
                 </div>
-                {/*<div className="">*/}
-                {/*    /!* eslint-disable-next-line react/jsx-no-undef *!/*/}
-                {/*    <ReportComponent/>*/}
-                {/*</div>*/}
+
 
 
             </div>

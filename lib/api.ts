@@ -74,7 +74,8 @@ export const istadLmsApi = createApi({
         'SingleIns',
         'SingleStaffAuthorities',
         'AllEachCourse',
-        'SingleStudent'
+        'SingleStudent',
+        'studentApi',
     ]
 
 });
