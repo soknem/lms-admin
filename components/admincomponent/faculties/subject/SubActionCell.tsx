@@ -3,7 +3,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
@@ -11,10 +10,6 @@ import {MoreHorizontal} from "lucide-react";
 import {EditSubjectForm} from "@/components/admincomponent/faculties/subject/EditSubForm";
 import {ViewSubjectForm} from "@/components/admincomponent/faculties/subject/VeiwSubForm";
 import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
-import {
-    useDisableFacultyByAliasMutation,
-    useEnableFacultyByAliasMutation
-} from "@/lib/features/admin/faculties/faculty/faculty";
 import {
     useDisableSubjectByAliasMutation,
     useEnableSubjectByAliasMutation
