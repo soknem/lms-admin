@@ -39,14 +39,14 @@ export default function TabComponent(
                         <TabsTrigger value="Mini Project">Mini Project</TabsTrigger>
                     </TabsList>
 
-                    <button onClick={
-                        () => router.push(`/instructor/courses/lectures/${courseUuid}`)
-                    } className=" relative flex border border-blue-800 text-lms-primary pl-4 pr-10 justify-center rounded-lg py-1.5 font-medium text-lg  ">
-                        <p>Lecture</p>
-                        <div className=" absolute top-[11px] right-[15px]">
-                            <FaArrowRight />
-                        </div>
-                    </button>
+                    {/*<button onClick={*/}
+                    {/*    () => router.push(`/instructor/courses/lectures/${courseUuid}`)*/}
+                    {/*} className=" relative flex border border-blue-800 text-lms-primary pl-4 pr-10 justify-center rounded-lg py-1.5 font-medium text-lg  ">*/}
+                    {/*    <p>Lecture</p>*/}
+                    {/*    <div className=" absolute top-[11px] right-[15px]">*/}
+                    {/*        <FaArrowRight />*/}
+                    {/*    </div>*/}
+                    {/*</button>*/}
                 </section>
 
 

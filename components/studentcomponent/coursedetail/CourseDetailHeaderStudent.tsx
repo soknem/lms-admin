@@ -59,13 +59,13 @@ export default function     CourseDetailHeaderStudent({
                     <Image
                         src={courseLogo || 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png'}
                         alt="Course Logo"
-                        width={300}
+                        width={270}
                         height={0}
-                        className="h-auto"
+                        className="h-[270px]"
                     />
                 </div>
             </section>
-            <section className="flex items-center mx-[90px] mt-12 ">
+            <section className="flex items-center mx-[90px] ">
                 <img
                     onClick={() =>
                         router.push(`/instructor/view-profile/${instructor?.uuid}`)
