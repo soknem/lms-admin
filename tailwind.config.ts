@@ -22,7 +22,7 @@ const config = {
                 lms: {
                     "transcript-header": "#E5EAFA",
                     "gray-30": "#808897",
-                    "white-80": "#FFFBFB",
+                    "white-80": "#FFFFFF",
                     primary: "#253C95",
                     background: "#F5F5F5",
                     secondary: "#F20A14",

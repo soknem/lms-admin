@@ -380,21 +380,26 @@ export function UserStudentTable<TData, TValue>({
                 </Table>
             </div>
 
-            <div className="w-full bg-white rounded-[10px] ">
-                <div className="flex my-4 p-4 justify-between container mx-auto">
-                    <p className="text-lms-success text-lg font-medium">
-                        Active-<span className="khmer-font">សិស្សកំពុងសិក្សា</span>
-                    </p>
-                    <p className="text-lms-error text-lg font-medium">
-                        Disable-
-                        <span className="khmer-font">សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</span>
-                    </p>
-                    <p className="text-lms-gray-30 text-lg font-medium">
-                        Hiatus-<span className="khmer-font">សិស្សព្យួរការសិក្សា</span>
-                    </p>
-                    <p className="text-lms-error text-lg font-medium">
-                        Drop-<span className="khmer-font">សិស្សបោះបង់ការសិក្សា</span>
-                    </p>
+            <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
+                <p className='text-lms-success font-bold '>Status :</p>
+                <div className='flex gap-2 text-gray-500 '>
+                    <p className='font-semibold text-lms-success'>Active</p>
+                    <p className='khmer-font'>សិស្សកំពុងសិក្សា</p>
+                </div>
+
+                <div className='flex gap-2 text-gray-500'>
+                    <p className='font-semibold text-lms-accent '>Hiatus</p>
+                    <p className='khmer-font'>សិស្សព្យួរការសិក្សា</p>
+                </div>
+
+                <div className='flex gap-2 text-gray-500'>
+                    <p className='font-semibold text-lms-error'>Drop</p>
+                    <p className='khmer-font'>សិស្សបោះបង់ការសិក្សា</p>
+                </div>
+
+                <div className='flex gap-2 text-gray-500'>
+                    <p className='font-semibold text-lms-error'>Disable</p>
+                    <p className='khmer-font'>សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</p>
                 </div>
             </div>
 
