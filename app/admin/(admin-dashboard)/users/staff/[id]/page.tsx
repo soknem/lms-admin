@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 import instructorProfile from "@/public/intructor.jpg";
-import StaffDetailComponent from "@/components/admincomponent/users/staff/StaffDetailComponent";
+import InstructorProfileComponent from "@/components/instructorcomponent/coursedetail/InstructorProfileComponent";
 import {useSelector} from "react-redux";
 import {selectLecture} from "@/lib/features/admin/academic-management/lecture/lectureSlice";
 import {selectStaffByUUID} from "@/lib/features/admin/user-management/staff/staffSlice";
@@ -63,10 +63,10 @@ export default function StaffDetail(props: Props) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <StaffDetailComponent
+                <InstructorProfileComponent
                     key={data?.uuid}
                     id={props.params.id}
-                    imageSrc={data?.profileImage || placeholderImage}
+                    profileImage={data?.profileImage || placeholderImage}
                     name={data?.nameEn || "N/A"}
                     education={data?.educations || []}
                     skills={data?.skills || []}
@@ -77,13 +77,10 @@ export default function StaffDetail(props: Props) {
                     currentAddress={data?.currentAddress || "N/A"}
                     birthPlace={data?.birthPlace || "N/A"}
                     linkTelegram={data?.linkTelegram || "N/A"}
-                    nameKh={data?.nameKh || "N/A"}
                     uploadCv={data?.uploadCv}
                     identityCard={data?.identityCard}
                     phoneNumber={data?.phoneNumber || "N/A"}
                     bio={data?.bio || "N/A"}
-                    isDeleted={data?.isDeleted || false}
-
                 />
             </section>
         </main>

@@ -1,10 +1,21 @@
-// AchievementTable.tsx
 import React from "react";
 import { AchievementTableProps } from "@/lib/types/student/achievement";
 import YearSemesterTable from "@/components/studentcomponent/achievements/YearSemesterTable";
 
 
 export default function AchievementTable({ allData }: AchievementTableProps) {
+
+    type Course = {
+        score: number;
+        credit: number;
+    }
+
+    const calculateGPA = (courses: Course[]) => {
+        const totalPoints = courses.reduce((acc, course) => acc + (course.score * course.credit), 0);
+        const totalCredits = courses.reduce((acc, course) => acc + course.credit, 0);
+        const gpa =  totalPoints / totalCredits;
+        return parseFloat(gpa.toFixed(2));
+    };
 
     const tableData = allData.content.map((yearOfStudy, index) => {
         let rowNumber = 1;
@@ -17,7 +28,8 @@ export default function AchievementTable({ allData }: AchievementTableProps) {
                 score: course.score,
                 credit: course.credit,
                 grade: course.grade,
-            }))
+            })),
+            gpa: calculateGPA(yearOfStudy.course)
         };
     });
 
@@ -29,6 +41,7 @@ export default function AchievementTable({ allData }: AchievementTableProps) {
                     year={yearOfStudy.year}
                     semester={yearOfStudy.semester}
                     courses={yearOfStudy.courses}
+                    gpa={yearOfStudy.gpa}
                 />
             ))}
         </section>

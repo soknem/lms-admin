@@ -1,12 +1,10 @@
-
-export type PaymentType={
+export type PaymentType = {
   date: string;
   lectureStartTime: string;
   lectureEndTime: string;
   theoryHours: number;
-  theoryRate: number | null;
+  theoryRate: number;
   pwHours: number;
-  pwRate: number | null;
-  totalAmount: number | null;
-  
-  };
+  pwRate: number;
+  totalOfSession: number;
+};

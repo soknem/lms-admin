@@ -22,7 +22,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-function YearSemesterTable({ year, semester, courses }: YearSemesterTableProps) {
+function YearSemesterTable({ year, semester, courses , gpa }: YearSemesterTableProps) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -110,7 +110,7 @@ function YearSemesterTable({ year, semester, courses }: YearSemesterTableProps) 
             </div>
             <div className="flex gap-6">
                 <h1 className="text-sm text-lms-primary font-medium">Total Course: {courses.length}</h1>
-                <h1 className="text-sm text-lms-primary font-medium">GPA: 4.0</h1>
+                <h1 className="text-sm text-lms-primary font-medium">GPA: {gpa}</h1>
                 <h1 className="text-sm text-lms-primary font-medium">Credit: {courses.reduce((sum, course) => sum + course.credit, 0)}</h1>
             </div>
         </section>

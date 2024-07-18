@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import type { CourseDetail } from "@/lib/types/student/course";
+import Image from "next/image";
 
 export default function     CourseDetailHeaderStudent({
                                                       year,
@@ -36,7 +37,7 @@ export default function     CourseDetailHeaderStudent({
                     <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
                         {courseDescription || "Course Description"}
                     </p>
-                    <div className="flex items-center mt-[20px]">
+                    <div className="flex items-center mt-[25px]">
                         <span className="mr-4 font-semibold">
                             Credit: {credit || "N/A"}
                         </span>
@@ -51,17 +52,20 @@ export default function     CourseDetailHeaderStudent({
                         </span>
                     </div>
                 </div>
-                <div className="ml-[88px]">
-                    <img
-                        src={courseLogo}
+                <div
+                    className="mt-[30px] w-[500px] flex justify-center "
+                    // style={{backgroundImage: `url(${courseLogo})`}}
+                >
+                    <Image
+                        src={courseLogo || 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png'}
                         alt="Course Logo"
-                        width={215}
-                        height={215}
-                        className="w-[215px] h-[215px]"
+                        width={300}
+                        height={0}
+                        className="h-[200px]"
                     />
                 </div>
             </section>
-            <section className="flex items-center mx-[90px] mt-[50px]">
+            <section className="flex items-center mx-[90px] ">
                 <img
                     onClick={() =>
                         router.push(`/instructor/view-profile/${instructor?.uuid}`)

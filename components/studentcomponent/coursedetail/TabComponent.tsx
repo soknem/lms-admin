@@ -5,7 +5,6 @@ import { Curriculum} from "@/lib/types/student/course";
 import CurriculumComponent from "@/components/studentcomponent/coursedetail/CurriculumComponent";
 import SlideComponent from "@/components/studentcomponent/coursedetail/SlideComponent";
 import VideoComponent from "@/components/studentcomponent/coursedetail/VideoComponent";
-import { FaArrowRight } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
 type TabComponentProps = {
@@ -38,14 +37,6 @@ export default function TabComponent(
                         <TabsTrigger value="Mini Project">Mini Project</TabsTrigger>
                     </TabsList>
 
-                    <button onClick={
-                        () => router.push("/instructor/courses/lectures")
-                    } className=" relative flex border border-blue-800 text-lms-primary pl-4 pr-10 justify-center rounded-lg py-1.5 font-medium text-lg  ">
-                        <p>Lecture</p>
-                        <div className=" absolute top-[11px] right-[15px]">
-                            <FaArrowRight />
-                        </div>
-                    </button>
                 </section>
 
 

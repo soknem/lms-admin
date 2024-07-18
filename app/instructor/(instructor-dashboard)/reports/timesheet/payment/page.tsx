@@ -5,23 +5,22 @@ import { useEffect } from "react";
 import { useGetPaymentQuery } from "@/lib/features/instructor/report/timesheet/payment/payment";
 import { PaymentType } from "@/lib/types/instructor/timesheet";
 
-// Define TimesheetType if not already defined
+type PaymentProps = {
+    selectedDate: Date;
+}
 
-export default function Payment() {
+export default function Payment({ selectedDate }: PaymentProps) {
     const { data, error } = useGetPaymentQuery();
 
-    // Handle undefined data by providing a fallback value
-    const paymentData: PaymentType[] = data?.content || [];
+    const payments: PaymentType[] = data?.payments || [];
 
-    // Log data content for debugging
     useEffect(() => {
+        console.log("PAYMENT DATA: ", data);
     }, [data]);
-
-
 
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
-            <PaymentDataTable columns={PaymentColumns} data={paymentData} />
+            <PaymentDataTable columns={PaymentColumns} allData={payments} selectedDate={selectedDate || null} />
         </main>
     );
 }

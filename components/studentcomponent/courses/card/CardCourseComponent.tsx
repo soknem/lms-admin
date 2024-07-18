@@ -46,16 +46,22 @@ export function CardCourseComponent({
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex justify-around relative">
-                <img
+                <Image
                     src={logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                     alt="Course Logo"
-                    className="h-[45px] w-[45px] rounded-full object-cover ring-2 ring-white mt-8"
+                    width={45}
+                    height={45}
+                    quality={100}
+                    className="rounded-full h-[45px] object-cover ring-2 ring-white mt-8"
                 />
 
-                <img
+                <Image
                     src={instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
                     alt="Instructor Profile"
-                    className=" absolute left-[98px] h-[45px] w-[45px] rounded-full object-cover ring-2 ring-white mt-8 "
+                    width={45}
+                    height={45}
+                    quality={100}
+                    className=" absolute left-[98px] rounded-full object-cover ring-2 ring-white mt-8 "
                 />
 
                 <div className="mt-4 ml-[100px]">
