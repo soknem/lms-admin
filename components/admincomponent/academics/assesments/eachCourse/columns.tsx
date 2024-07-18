@@ -97,16 +97,13 @@ const TableCell = ({ getValue, row, column, table }: any) => {
           }
     }
 
-    // const updateFieldData = async (uuid: string, columnId: string, value: any) => {
-    //     try {
-    //         const updatedData = { [columnId]: value }; // Construct the update body dynamically
-    //
-    //         await updateCourseAssessment({ uuid, updatedData });
-    //         console.log(`Field ${columnId} updated successfully with value:`, value);
-    //     } catch (error) {
-    //         console.error('Error updating field:', error);
-    //     }
-    // };
+    if (column.id === "gender") {
+        return (
+            <span className={value === "F" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "F" ? "Female" : value === "M" ? "Male" : ""}
+      </span>
+        );
+    }
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === 'select' ? (

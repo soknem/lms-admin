@@ -29,12 +29,12 @@ import {
 import { TbFilter } from 'react-icons/tb';
 import { useRouter } from 'next/navigation';
 
-interface DataTableProps<TData extends { generation: string; academic: string; major: string; }, TValue> {
+interface DataTableProps<TData extends { generation: string; academic: string; studyProgram: string; }, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function FilterReport<TData extends { generation: string; academic: string; major: string; }, TValue>({
+export function FilterReport<TData extends { generation: string; academic: string; studyProgram: string; }, TValue>({
                                                                                                                  columns,
                                                                                                                  data,
                                                                                                              }: DataTableProps<TData, TValue>) {
@@ -50,8 +50,8 @@ export function FilterReport<TData extends { generation: string; academic: strin
     const [openAcademic, setOpenAcademic] = useState(false);
     const [selectedAcademic, setSelectedAcademic] = useState<string | null>(null);
 
-    const [openMajor, setOpenMajor] = useState(false);
-    const [selectedMajor, setSelectedMajor] = useState<string | null>(null);
+    const [openStudyProgram, setOpenStudyProgram] = useState(false);
+    const [selectedStudyProgram, setSelectedStudyProgram] = useState<string | null>(null);
 
     const router = useRouter();
 
@@ -78,8 +78,8 @@ export function FilterReport<TData extends { generation: string; academic: strin
             setSelectedGen(null);
         } else if (columnId === 'academic') {
             setSelectedAcademic(null);
-        } else if (columnId === 'major') {
-            setSelectedMajor(null);
+        } else if (columnId === 'studyProgram') {
+            setSelectedStudyProgram(null);
         }
         table.getColumn(columnId)?.setFilterValue('');
         setAllData(originalData);
@@ -88,7 +88,7 @@ export function FilterReport<TData extends { generation: string; academic: strin
     // Filter unique values for each filter category
     const filteredGen = Array.from(new Set(data.map(item => item.generation)));
     const filteredAcademic = Array.from(new Set(data.map(item => item.academic)));
-    const filteredMajor = Array.from(new Set(data.map(item => item.major)));
+    const filteredStudyProgram = Array.from(new Set(data.map(item => item.studyProgram)));
 
     return (
         <>
@@ -182,39 +182,39 @@ export function FilterReport<TData extends { generation: string; academic: strin
                 </Popover>
 
                 {/* Filter for Major */}
-                <Popover open={openMajor} onOpenChange={setOpenMajor}>
+                <Popover open={openStudyProgram} onOpenChange={setOpenStudyProgram}>
                     <PopoverTrigger asChild>
                         <Button
                             variant="outline"
                             className="justify-center bg-white text-gray-30 border-lms-grayBorder hover:bg-white/60"
                         >
                             <TbFilter className="mr-2 h-4 w-4" />
-                            {selectedMajor ? <>{selectedMajor}</> : <>Filter Major</>}
+                            {selectedStudyProgram ? <>{selectedStudyProgram}</> : <>Filter StudyProgram</>}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0 bg-white" align="start">
                         <Command>
-                            <CommandInput placeholder="Filter Major..." />
+                            <CommandInput placeholder="Filter studyProgram..." />
                             <CommandList>
                                 <CommandEmpty>No results found.</CommandEmpty>
                                 <CommandGroup>
-                                    {filteredMajor.map((major, index) => (
+                                    {filteredStudyProgram.map((studyProgram, index) => (
                                         <CommandItem
                                             key={index}
-                                            value={major}
+                                            value={studyProgram}
                                             onSelect={() => {
-                                                setSelectedMajor(major);
-                                                table.getColumn('major')?.setFilterValue(major);
-                                                setOpenMajor(false);
+                                                setSelectedStudyProgram(studyProgram);
+                                                table.getColumn('studyProgram')?.setFilterValue(studyProgram);
+                                                setOpenStudyProgram(false);
                                             }}
                                         >
-                                            {major}
+                                            {studyProgram}
                                         </CommandItem>
                                     ))}
                                 </CommandGroup>
                             </CommandList>
                         </Command>
-                        {selectedMajor && (
+                        {selectedStudyProgram && (
                             <Button
                                 className="bg-slate-50 hover:bg-slate-100 w-full rounded-none"
                                 onClick={() => handleReset('major')}

@@ -12,14 +12,15 @@ type TabComponentProps = {
     courseTitle: string;
     courseDescription: string;
     curriculumData: Curriculum | null;
+    courseUuid: string;
 }
 
 export default function TabComponent(
-    {
-
+    {courseUuid,
                                          curriculumData,
                                          courseTitle,
-                                         courseDescription
+                                         courseDescription,
+
                                      }: TabComponentProps
 ) {
 
@@ -39,7 +40,7 @@ export default function TabComponent(
                     </TabsList>
 
                     <button onClick={
-                        () => router.push("/instructor/courses/lectures")
+                        () => router.push(`/instructor/courses/lectures/${courseUuid}`)
                     } className=" relative flex border border-blue-800 text-lms-primary pl-4 pr-10 justify-center rounded-lg py-1.5 font-medium text-lg  ">
                         <p>Lecture</p>
                         <div className=" absolute top-[11px] right-[15px]">

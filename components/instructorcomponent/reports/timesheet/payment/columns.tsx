@@ -40,27 +40,27 @@ const TableCell = ({ getValue, row, column, table }: any) => {
 
   if (tableMeta?.editedRows[row.id]) {
     return columnMeta?.type === "select" ? (
-      // Custom on only normal dropdown
-      <select
-        className="border-1 border-gray-30 rounded-md focus:to-primary"
-        onChange={onSelectChange}
-        value={initialValue}
-      >
-        {columnMeta?.options?.map((option: OptionType) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        // Custom on only normal dropdown
+        <select
+            className="border-1 border-gray-30 rounded-md focus:to-primary"
+            onChange={onSelectChange}
+            value={initialValue}
+        >
+          {columnMeta?.options?.map((option: OptionType) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+          ))}
+        </select>
     ) : (
-      // Custom on normal input text
-      <input
-        className="w-full p-2 border-1 border-gray-30 rounded-md"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        type={columnMeta?.type || "text"}
-      />
+        // Custom on normal input text
+        <input
+            className="w-full p-2 border-1 border-gray-30 rounded-md"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={onBlur}
+            type={columnMeta?.type || "text"}
+        />
     );
   }
 
@@ -77,13 +77,13 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "date",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          DATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            DATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -113,13 +113,13 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "theoryRate",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          THEORYRATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            THEORYRATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -128,15 +128,15 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "pwRate",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          // To customize the size of each column
-          className="w-[130px] flex justify-start items-start"
-        >
-          PW RATE
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              // To customize the size of each column
+              className="w-[130px] flex justify-start items-start"
+          >
+            PW RATE
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -145,15 +145,15 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "theoryHours",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          // To customize the size of each column
-          className="w-[150px] flex justify-start items-start"
-        >
-          THEORYHOUR
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              // To customize the size of each column
+              className="w-[150px] flex justify-start items-start"
+          >
+            THEORYHOUR
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -162,10 +162,10 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "pwHours",
     header: ({ column }) => {
       return (
-        <Button variant="ghost">
-          PW HOUR
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button variant="ghost">
+            PW HOUR
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       );
     },
     cell: TableCell,
@@ -174,9 +174,9 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "totalAmount",
     header: ({ column }) => {
       return (
-        <Button variant="ghost">
-          TOTAL
-        </Button>
+          <Button variant="ghost">
+            TOTAL
+          </Button>
       );
     },
     cell: TableCell,

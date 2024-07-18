@@ -2,9 +2,9 @@
 export type MaterialType = {
     uuid: string,
     title: string;
-    description: string;
     contentType: string;
     extension: string;
+    description: string;
     size: number;
     fileName: string,
     subjectAlias: null,

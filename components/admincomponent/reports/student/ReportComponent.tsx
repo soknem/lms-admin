@@ -13,26 +13,13 @@ import {
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableFooter,
-    TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-
-const genders = [
-    {
-        gender: "Female",
-        percent: "70%",
-        totalAmount: "250",
-    },
-    {
-        gender: "Male",
-        percent: "30%",
-        totalAmount: "150",
-    },
-];
+import { useGetStudentQuery } from "@/lib/features/admin/report/student/student";
+import { StudentReportData } from "@/lib/types/admin/report";
 
 Chart.register(
     BarController,
@@ -45,33 +32,61 @@ Chart.register(
 );
 
 const ReportComponent: React.FC = () => {
+    const generation = "generation-1";
+    const studyProgram = "software-engineering";
+    const academicYear = "2024-2025";
+    const { data, isLoading, error } = useGetStudentQuery({ generation, studyProgram, academicYear });
+
     const chartContainer = useRef<HTMLCanvasElement | null>(null);
     const myChart = useRef<Chart | null>(null);
 
     useEffect(() => {
-        if (chartContainer.current) {
-            const labels = ["Semester 1", "Semester 2"];
-            const data = {
+        if (data && chartContainer.current) {
+            const labels = ["Total Students"];
+            const chartData = {
                 labels: labels,
                 datasets: [
                     {
                         label: "Female",
-                        data: [70, 55], // Percentages for Female students
+                        data: [data.totalFemalePercentage],
                         borderColor: "red",
                         backgroundColor: "red",
                     },
                     {
                         label: "Male",
-                        data: [30, 45], // Percentages for Male students
+                        data: [data.totalMalePercentage],
                         borderColor: "blue",
                         backgroundColor: "blue",
+
+                    },
+                    {
+                        label: "Drop",
+                        data: [data.totalDroppedStudentPercentage],
+                        borderColor: "pink",
+                        backgroundColor: "pink",
+
+                    },
+                    {
+                        label: "Active",
+                        data: [data.totalActiveStudentPercentage],
+                        borderColor: "green",
+                        backgroundColor: "green",
+
+                    },
+                    {
+                        label: "Hiatus",
+                        data: [data.totalHiatusStudentPercentage],
+                        borderColor: "orange",
+                        backgroundColor: "orange",
+
+
                     },
                 ],
             };
 
             const config: any = {
                 type: "bar",
-                data: data,
+                data: chartData,
                 options: {
                     responsive: true,
                     scales: {
@@ -92,7 +107,7 @@ const ReportComponent: React.FC = () => {
                             },
                         },
                         title: {
-                            display: "top",
+                            display: true,
                             text: "Total Student",
                         },
                         tooltip: {
@@ -113,7 +128,6 @@ const ReportComponent: React.FC = () => {
                 },
             };
 
-            // Destroy the previous chart instance if it exists
             if (myChart.current) {
                 myChart.current.destroy();
             }
@@ -121,47 +135,67 @@ const ReportComponent: React.FC = () => {
             myChart.current = new Chart(chartContainer.current, config);
         }
 
-        // Cleanup function to destroy the chart when the component unmounts or before re-rendering
         return () => {
             if (myChart.current) {
                 myChart.current.destroy();
             }
         };
-    }, []);
+    }, [data]);
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error loading data</div>;
 
     return (
-        <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
-            <div className="chart-container w-full h-96 md:w-1/2 mx-10">
+        <div className="bg-lms-white-80 p-4 h-full flex justify-between rounded-xl">
+            <div className="w-[700px] h-[700px] mt-5">
                 <canvas ref={chartContainer}></canvas>
             </div>
-            <div className="mt-9 mx-10">
-                <Table className="w-[500px]">
-                    <TableHeader>
+            <div className="mx-15 mt-6">
+                <Table className="w-[400px]">
+                    <TableHeader className="font-bold text-[15px]  bg-lms-transcript-header">
                         <TableRow>
-                            <TableHead>STUDENT</TableHead>
-                            <TableHead>TOTAL</TableHead>
-                            <TableHead>PERCENT</TableHead>
+                            <TableCell>STUDENT</TableCell>
+                            <TableCell>TOTAL</TableCell>
+                            <TableCell>PERCENT</TableCell>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {genders.map((gender) => (
-                            <TableRow key={gender.gender}>
-                                <TableCell className="font-medium">{gender.gender}</TableCell>
-                                <TableCell>{gender.totalAmount}</TableCell>
-                                <TableCell>{gender.percent}</TableCell>
-                            </TableRow>
-                        ))}
+                        <TableRow>
+                            <TableCell className="font-medium">Female</TableCell>
+                            <TableCell>{data.totalFemale}</TableCell>
+                            <TableCell>{data.totalFemalePercentage}%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className="font-medium">Male</TableCell>
+                            <TableCell>{data.totalMale}</TableCell>
+                            <TableCell>{data.totalMalePercentage}%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className="font-medium">Drop</TableCell>
+                            <TableCell>{data.totalDroppedStudent}</TableCell>
+                            <TableCell>{data.totalDroppedStudentPercentage}%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className="font-medium">Active</TableCell>
+                            <TableCell>{data.totalActiveStudent}</TableCell>
+                            <TableCell>{data.totalActiveStudentPercentage}%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell className="font-medium">Hiatus</TableCell>
+                            <TableCell>{data.totalHiatusStudent}</TableCell>
+                            <TableCell>{data.totalHiatusStudentPercentage}%</TableCell>
+                        </TableRow>
                     </TableBody>
-                    <TableFooter>
-                        <TableRow className="bg-lms-background">
-                            <TableCell>TOTAL</TableCell>
-                            <TableCell>200</TableCell>
-                            <TableCell>100%</TableCell>
+                    <TableFooter className="bg-lms-background ">
+                        <TableRow className="font-bold ">
+                            <TableCell>Total Student</TableCell>
+                            <TableCell></TableCell>
+                            <TableCell className="">{data.totalStudent}</TableCell>
+
                         </TableRow>
                     </TableFooter>
                 </Table>
             </div>
-
         </div>
     );
 };

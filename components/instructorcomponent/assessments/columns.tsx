@@ -36,8 +36,8 @@ type StatusMapping = {
 
 const statusMapping: StatusMapping = {
     1: { label: "Active", className: "text-[#548164] bg-green-200" },
-    2: { label: "Hiatus", className: "text-white bg-red-500" },
-    3: { label: "Drop", className: "text-white bg-gray-500" },
+    2: { label: "Hiatus", className: "text-white bg-lms-accent" },
+    3: { label: "Drop", className: "text-white bg-lms-error" },
     4: { label: "Delete", className: "text-lms-white-80 bg-lms-error" }
 };
 
@@ -157,16 +157,16 @@ const EditCell = ({ row, table }: any) => {
 };
 
 export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
-    // {
-    //     accessorKey: 'student.cardId',
-    //     header: ({column}) => (
-    //         <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-    //             CARD ID <ArrowUpDown className='ml-2 h-4 w-4'/>
-    //         </Button>
-    //     ),
-    //     cell: TableCell,
-    //     meta: {type: 'text'},
-    // },
+    {
+        accessorKey: 'student.cardId',
+        header: ({column}) => (
+            <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                CARD ID <ArrowUpDown className='ml-2 h-4 w-4'/>
+            </Button>
+        ),
+        cell: TableCell,
+        meta: {type: 'text'},
+    },
     {
         accessorKey: 'student',
         header: ({column}) => (
@@ -202,25 +202,25 @@ export const InstructorCourseAssessmentColumns: ColumnDef<AssessmentType>[] = [
         cell: TableCell,
         meta: {type: 'date'},
     },
-    // {
-    //     accessorKey: 'classCode',
-    //     header: ({column}) => (
-    //         <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //                 className="w-[130px] flex justify-start items-start">
-    //             CLASS <ArrowUpDown className='ml-2 h-4 w-4'/>
-    //         </Button>
-    //     ),
-    //     cell: TableCell,
-    //     meta: {type: 'text'},
-    // },
-    // {
-    //     accessorKey: 'course',
-    //     header: ({column}) => (
-    //         <Button variant='ghost'> COURSE <ArrowUpDown className='ml-2 h-4 w-4'/> </Button>
-    //     ),
-    //     cell: TableCell,
-    //     meta: {type: 'text'},
-    // },
+    {
+        accessorKey: 'classCode',
+        header: ({column}) => (
+            <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    className="w-[130px] flex justify-start items-start">
+                CLASS <ArrowUpDown className='ml-2 h-4 w-4'/>
+            </Button>
+        ),
+        cell: TableCell,
+        meta: {type: 'text'},
+    },
+    {
+        accessorKey: 'course',
+        header: ({column}) => (
+            <Button variant='ghost'> COURSE <ArrowUpDown className='ml-2 h-4 w-4'/> </Button>
+        ),
+        cell: TableCell,
+        meta: {type: 'text'},
+    },
     {
         accessorKey: 'midtermExamScore',
         header: ({column}) => (

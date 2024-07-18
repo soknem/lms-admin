@@ -58,17 +58,17 @@ export default  function Dashboard() {
                 <DashboardCard label="Students" total={student} Icon={PiStudent} value2={DropStudent}
                                value1={ActiveStudent} subLabel1="Active" subLabel2="Drop"/>
 
-                <DashboardCard label="Courses" total={ActiveCourse} Icon={PiBooks} value2={DropStudent}
-                               value1={ActiveCourse} subLabel1="Started" subLabel2="Ended"/>
+                <DashboardCard label="Courses" total={ActiveCourse} Icon={PiBooks} value2="3"
+                               value1="2" subLabel1="Started" subLabel2="Ended"/>
 
-                <DashboardCard label="Classes" total={ActiveClass} Icon={SiGoogleclassroom} value2={DropStudent}
-                               value1={ActiveCourse} subLabel1="Started" subLabel2="Ended"/>
+                <DashboardCard label="Classes" total={ActiveClass} Icon={SiGoogleclassroom} value2="2"
+                               value1="1" subLabel1="Started" subLabel2="Ended"/>
 
-                <DashboardCard label="Users" total={NewUser} Icon={PiUsers } value2={DropStudent} value1={ActiveCourse}
+                <DashboardCard label="Users" total={NewUser} Icon={PiUsers } value2="6" value1="5"
                                subLabel1="Female" subLabel2="Male"/>
 
-                <DashboardCard label="Student Payment" total={Payment} Icon={PiMoney} value2={DropStudent}
-                               value1={ActiveCourse} subLabel1="Female" subLabel2="Male"/>
+                <DashboardCard label="Student Payment" total={7} Icon={PiMoney} value2="5"
+                               value1="2" subLabel1="Female" subLabel2="Male"/>
 
 
             </div>

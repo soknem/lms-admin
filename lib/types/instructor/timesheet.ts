@@ -1,4 +1,3 @@
-
 export type PaymentType={
   date: string;
   lectureStartTime: string;
@@ -8,5 +7,5 @@ export type PaymentType={
   pwHours: number;
   pwRate: number | null;
   totalAmount: number | null;
-  
-  };
+
+};

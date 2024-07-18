@@ -47,6 +47,8 @@ import {
 } from "@/lib/features/admin/academic-management/assesment/assessmentEachSemesterSlice";
 import FilterClassPopover from "@/components/common/filter/FilterClassPopover";
 import FilterCoursePopover from "@/components/common/filter/FilterCoursePopover";
+import {ArrowUpDown} from "lucide-react";
+import StatusBadge from "@/components/common/StatusBadge";
 
 type TranscriptFilterType = {
     generationAlias: string;
@@ -195,10 +197,71 @@ export default function Assessment() {
 
     };
 
+    const transformSemesterData = (data : any) => {
+        return data.map((item : any) => ({
+            fullname: item.nameEn,
+            gender: item.gender,
+            dob: item.dob,
+            class: item.classCode,
+            ...item.courses,
+            grade: item.grade,
+            total: item.total,
+            gpa: item.gpa,
+            status: item.status,
+
+        }));
+    };
+
+    const createColumns = (data : any) => {
+        if (data.length === 0) return [];
+
+        const sampleItem = data[0];
+        const keys = Object.keys(sampleItem);
+
+        return keys.map(key => ({
+            accessorKey: key,
+            header: ({ column } : any) => (
+                <Button variant='ghost' className="w-[200px] flex justify-start items-start">
+                    <div className="truncate">
+                        {key.toUpperCase()}
+                    </div>
+                    <ArrowUpDown className='ml-2 h-4 w-4'/>
+                </Button>
+            ),
+            cell: ({ cell } : any) => {
+                const value = cell.getValue();
+                if (key === 'status') {
+                    switch (value) {
+                        case 1:
+                            return <StatusBadge type="success" status="Active" />;
+                        case 2:
+                            return <StatusBadge type="warning" status="Hiatus" />;
+                        case 3:
+                            return <StatusBadge type="error" status="Drop" />;
+                        case 4:
+                            return <StatusBadge type="error" status="Disable" />;
+                        default:
+                            return <span className='bg-gray-200 text-gray-500'>Unknown</span>;
+                    }
+                }
+
+                if(key === 'gender') {
+                    return (
+                        <span className={value === "F" ? "font-semibold text-orange-400" : "font-semibold"}>
+        {value === "F" ? "Female" : value === "M" ? "Male" : ""}
+      </span>
+                    );
+                }
+                return <div>{value}</div>;
+            }
+        }));
+    };
 
 
 
+    const transformedData = transformSemesterData(semesters);
 
+    const Semestercolumns = createColumns(transformedData);
 
     // ==== fetch generation ====
     const [openGeneration, setOpenGeneration] = useState(false);
@@ -423,7 +486,7 @@ export default function Assessment() {
 
                     </div>
 
-                    <SemesterDataTable columns={eachSemesterColumn} data={semesters}/>
+                    <SemesterDataTable columns={Semestercolumns} data={transformedData}/>
                 </TabsContent>
 
                 <TabsContent value="course">

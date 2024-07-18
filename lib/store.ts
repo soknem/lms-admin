@@ -41,6 +41,9 @@ import userProfileSlice from "@/lib/features/userProfile/userProfileSlice";
 import {studentSettingApi} from "@/lib/features/student/setting/StudentSetting";
 import {paymentApi} from "@/lib/features/instructor/report/timesheet/payment/payment";
 import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
+import instructorSlice from "@/lib/features/admin/report/instructor/instructorSlice";
+import studentPaymentSlice from "@/lib/features/admin/report/studentPayment/studentPaymentSlice";
+import getCourseTitleSlice from "@/lib/features/instructor/course/getCourseTitleSlice";
 
 
 export const makeStore = () => {
@@ -61,6 +64,7 @@ export const makeStore = () => {
             faculty: facultySlice,
             banner: bannerSlice,
             student: studentSlice,
+            instructor: instructorSlice,
             studyProgram: studyProgramSlice,
             setupStudyProgram: yearStuProSlice,
             subject: subjectSlice,
@@ -85,7 +89,9 @@ export const makeStore = () => {
             ended: endedLectureSlice,
             teaching: teachingSlice,
             studentAttendance: studentAttendanceSlice,
-            userProfile: userProfileSlice
+            userProfile: userProfileSlice,
+            studentPayment: studentPaymentSlice,
+            singleCourse: getCourseTitleSlice
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })

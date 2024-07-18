@@ -76,6 +76,7 @@ export const istadLmsApi = createApi({
         'AllEachCourse',
         'SingleStudent',
         'StudentAdmissions',
+        'studentApi',
     ]
 
 });

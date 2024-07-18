@@ -52,5 +52,4 @@ export const {
     useCreateMaterialMutation,
     useGetMaterialByAliasQuery,
     useUpdateMaterialByAliasMutation,
-
 } = materialApi;

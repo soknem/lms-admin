@@ -7,7 +7,6 @@ import ReportInstructorComponent from "@/components/admincomponent/reports/instr
 import ReportStaffComponent from "@/components/admincomponent/reports/staff/ReportStaffComponent";
 import ReportAdmissionComponent from "@/components/admincomponent/reports/admission/ReportAdmissionComponent";
 import StudentpayComponent from "@/components/admincomponent/reports/student's pay/Student'spayComponent";
-import StudentpayComponent2 from "@/components/admincomponent/reports/student's pay/Student'spayComponent copy";
 import EarningsReportComponent from "@/components/admincomponent/reports/earning/EarningComponent";
 
 
@@ -23,25 +22,26 @@ export default async function Report() {
         <main className="p-9">
             <h2 className="text-4xl text-lms-primary font-bold mb-6">Reports</h2>
 
-            <div className="flex justify-end">
-                <FilterReport columns={columns} data={data}/>
-            </div>
-
-
             <div>
 
                 <div className="">
                     <Tabs defaultValue="student">
-                        <TabsList>
-                            <div className="w-full flex items-end justify-end">
-                                <TabsTrigger value="student">Student</TabsTrigger>
-                                <TabsTrigger value="instructor">Instructor</TabsTrigger>
-                                <TabsTrigger value="staff">Staff</TabsTrigger>
-                                <TabsTrigger value="admission">Admission</TabsTrigger>
-                                <TabsTrigger value="payment">Student payment</TabsTrigger>
-                                <TabsTrigger value="earning">Earning</TabsTrigger>{" "}
+                        <div className="flex justify-between items-center mb-4">
+                            <TabsList>
+                                <div className="w-full flex items-end justify-end">
+                                    <TabsTrigger value="student">Student</TabsTrigger>
+                                    <TabsTrigger value="instructor">Instructor</TabsTrigger>
+                                    <TabsTrigger value="staff">Staff</TabsTrigger>
+                                    <TabsTrigger value="admission">Admission</TabsTrigger>
+                                    <TabsTrigger value="payment">Student payment</TabsTrigger>
+                                    <TabsTrigger value="earning">Earning</TabsTrigger>{" "}
+                                </div>
+                            </TabsList>
+                            <div >
+                                <FilterReport columns={columns} data={data}/>
                             </div>
-                        </TabsList>
+                        </div>
+
                         <TabsContent value="student">
                             <ReportComponent/>
                         </TabsContent>
@@ -56,9 +56,9 @@ export default async function Report() {
                         </TabsContent>
                         <TabsContent value="payment">
                             <StudentpayComponent/>
-                            <div className="mt-4">
-                                <StudentpayComponent2/>
-                            </div>
+                            {/*<div className="mt-4">*/}
+                            {/*    <StudentpayComponent/>*/}
+                            {/*</div>*/}
                         </TabsContent>
                         <TabsContent value="earning">
                             <EarningsReportComponent/>
@@ -66,10 +66,7 @@ export default async function Report() {
                     </Tabs>
 
                 </div>
-                {/*<div className="">*/}
-                {/*    /!* eslint-disable-next-line react/jsx-no-undef *!/*/}
-                {/*    <ReportComponent/>*/}
-                {/*</div>*/}
+
 
 
             </div>
