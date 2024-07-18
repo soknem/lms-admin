@@ -121,31 +121,31 @@ const EditCell = ({ row, table }: any) => {
   };
 
   return (
-      <div>
-        {meta?.editedRows[row.id] ? (
-            <div>
-              <button
-                  className="mr-3 bg-red-100 rounded-full p-1"
-                  onClick={setEditedRows}
-                  name="cancel"
-              >
-                <RxCross2 size={20} className="text-red-500" />
-              </button>
+    <div>
+      {meta?.editedRows[row.id] ? (
+        <div>
+          <button
+            className="mr-3 bg-red-100 rounded-full p-1"
+            onClick={setEditedRows}
+            name="cancel"
+          >
+            <RxCross2 size={20} className="text-red-500" />
+          </button>
 
-              <button
-                  onClick={setEditedRows}
-                  name="done"
-                  className="bg-green-100 rounded-full p-1"
-              >
-                <IoCheckmarkSharp size={20} className="text-green-500" />
-              </button>
-            </div>
-        ) : (
-            <button onClick={setEditedRows} name="edit">
-              <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
-            </button>
-        )}
-      </div>
+          <button
+            onClick={setEditedRows}
+            name="done"
+            className="bg-green-100 rounded-full p-1"
+          >
+            <IoCheckmarkSharp size={20} className="text-green-500" />
+          </button>
+        </div>
+      ) : (
+        <button onClick={setEditedRows} name="edit">
+          <BiSolidMessageSquareEdit size={24} className="text-lms-primary" />
+        </button>
+      )}
+    </div>
   );
 };
 

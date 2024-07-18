@@ -26,6 +26,11 @@ import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
 import {useGetStudentQuery} from "@/lib/features/admin/user-management/student/student";
 import Select from "react-select";
 import {selectStudyProgram} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {CalendarIcon} from "@radix-ui/react-icons";
+import {format} from "date-fns";
+import {Calendar} from "@/components/ui/calendar";
 
 const initialValues = {
     receiptId: '',
@@ -72,6 +77,52 @@ const validationSchema = Yup.object().shape({
     paymentMethod: Yup.string().required("Required"),
     // remark: Yup.string(),
 });
+
+const DatePickerField = ({field, form, label, ...props}: any) => {
+    const {setFieldValue} = form;
+    const {name, value} = field;
+
+    return (
+        <div className={style.inputContainer}>
+            <div className="flex">
+                <label className={`${style.label}`} htmlFor={name}>
+                    {label}
+                </label>
+                <TbAsterisk className="w-2 h-2 text-lms-error"/>
+            </div>
+            <Popover>
+                <PopoverTrigger asChild>
+                    <button
+                        type="button"
+                        className={cn(
+                            `${style.input}`,
+                            !value && "text-gray-600"
+                        )}
+                    >
+                        <div className={`flex`}>
+                            <CalendarIcon className="mr-2 h-4 w-4"/>
+                            {value ? format(new Date(value), "PPP") : <span>Pick a date</span>}
+                        </div>
+
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-white">
+                    <Calendar
+                        mode="single"
+                        selected={value ? new Date(value) : undefined}
+                        onSelect={(date) => setFieldValue(name, date ? date.toISOString().split('T')[0] : '')}
+                        initialFocus
+                    />
+                </PopoverContent>
+            </Popover>
+            <ErrorMessage
+                name={name}
+                component="div"
+                className={style.error}
+            />
+        </div>
+    );
+};
 
 export function CreatePayForm() {
 
@@ -348,21 +399,28 @@ export function CreatePayForm() {
                                     <ErrorMessage name="paidAmount" component="div" className={`${style.error}`}/>
                                 </div>
 
-                                <div className={` ${style.inputContainer}`}>
-                                    <div className="flex">
-                                        <label className={`${style.label}`} htmlFor="paidDate">
-                                            Paid Date
-                                        </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
-                                    </div>
-                                    <Field
-                                        type="date"
-                                        name="paidDate"
-                                        id="paidDate"
-                                        className={` ${style.input}`}
-                                    />
-                                    <ErrorMessage name="paidDate" component="div" className={`${style.error}`}/>
-                                </div>
+                                {/*<div className={` ${style.inputContainer}`}>*/}
+                                {/*    <div className="flex">*/}
+                                {/*        <label className={`${style.label}`} htmlFor="paidDate">*/}
+                                {/*            Paid Date*/}
+                                {/*        </label>*/}
+                                {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
+                                {/*    </div>*/}
+                                {/*    <Field*/}
+                                {/*        type="date"*/}
+                                {/*        name="paidDate"*/}
+                                {/*        id="paidDate"*/}
+                                {/*        className={` ${style.input}`}*/}
+                                {/*    />*/}
+                                {/*    <ErrorMessage name="paidDate" component="div" className={`${style.error}`}/>*/}
+                                {/*</div>*/}
+                                <Field
+                                    name="paidDate"
+                                    component={DatePickerField}
+                                    label="Open Date"
+                                    setFieldValue={setFieldValue}
+                                />
+
 
                                 <div className={`${style.inputContainer}`}>
                                     <div className="flex">

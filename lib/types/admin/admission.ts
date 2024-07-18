@@ -38,6 +38,7 @@ export type StudentAdmissionType = {
     highSchoolCertificate: string,
     vocationTrainingIiiCertificate: string,
     anyValuableCertificate: string,
+    uuid: string,
 };
 
 export type StatusOption = {

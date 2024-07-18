@@ -8,17 +8,15 @@ import {FiPlus} from "react-icons/fi";
 import React, {useEffect, useState} from "react";
 import {TbAsterisk} from "react-icons/tb";
 import {SectionType} from "@/lib/types/admin/materials";
-import {AppDispatch, RootState} from "@/lib/store";
-import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
-import {selectSubject, setSubjects} from "@/lib/features/admin/faculties/subject/subjectSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "@/lib/store";
+import {useDispatch} from "react-redux";
 import {
-    useCreateSectionMutation,
-    useGetAllSectionQuery
+    useCreateSectionMutation
 } from "@/lib/features/admin/materials/subjectMaterialSection/section";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {toast} from "react-hot-toast";
 import Select from "react-select";
+import {useGetIntsSubjectsQuery} from "@/lib/features/instructor/meterials/meterials";
 
 const initialValues = {
     uuid: '',
@@ -34,6 +32,18 @@ const validationSchema = Yup.object().shape({
     subjectAlias: Yup.string().required('Subject Alias is required'),
     isDraft: Yup.boolean().required('Draft status is required'),
 });
+
+const customStyles = {
+    menu: (provided: any) => ({
+        ...provided,
+        maxHeight: '200px', // You can adjust the height as needed
+    }),
+    menuList: (provided: any) => ({
+        ...provided,
+        maxHeight: '150px', // Ensure this matches the menu height
+        overflowY: 'auto', // Adds vertical scroll
+    }),
+};
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -56,26 +66,26 @@ export function CreateSectionForm() {
     const dispatch = useDispatch<AppDispatch>();
     const [createSection] = useCreateSectionMutation();
     const [isOpen, setIsOpen] = useState(false);
+    const [subjects, setSubjects] = useState([]);
 
     const {
         data: subjectData,
-    } = useGetSubjectsQuery({page: 0, pageSize: 10});
-    const subjects = useSelector((state: RootState) => selectSubject(state));
+    } = useGetIntsSubjectsQuery({page: 0, pageSize: 10});
+
+    console.log(subjectData);
 
     useEffect(() => {
         if (subjectData) {
-            dispatch(setSubjects(subjectData.content));
+            const subjectsOption = subjectData?.content?.map((subject: any) => ({
+                value: subject.alias,
+                label: subject.title
+            }));
+            setSubjects(subjectsOption);
         }
     }, [subjectData, dispatch]);
 
-    const subjectOptions = subjects.map(subject => ({
-        value: subject.alias,
-        label: subject.title
-    }));
-
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-
 
             const newSection: SectionType = {
                 uuid: values.uuid,
@@ -87,15 +97,13 @@ export function CreateSectionForm() {
             };
 
             await createSection(newSection).unwrap();
-
             toast.success('Successfully created!');
-
             resetForm();
             setIsOpen(false);
 
 
         } catch (error) {
-            toast.error('Failed to create faculty!');
+            toast.error('Failed to create section!');
         } finally {
             setSubmitting(false);
         }
@@ -121,7 +129,7 @@ export function CreateSectionForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full flex flex-col justify-start gap-4">
                             <div className="flex flex-col gap-3">
 
@@ -158,7 +166,9 @@ export function CreateSectionForm() {
                                     <Select
                                         name="subjectAlias"
                                         onChange={(option: any) => setFieldValue("subjectAlias", option.value)}
-                                        options={subjectOptions}
+                                        options={subjects}
+                                        placeholder="Select subject"
+                                        styles={customStyles}
                                     />
                                     <ErrorMessage
                                         name="subjectAlias"
@@ -208,8 +218,9 @@ export function CreateSectionForm() {
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Add
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

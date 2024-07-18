@@ -22,7 +22,7 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
         <html lang="en" suppressHydrationWarning>
         <body
             className={cn(
-                "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background ",
+                "min-h-screen min-w-screen flex flex-col none-scroll-bar overflow-x-auto bg-lms-background",
                 inter.variable, suwannaphum.variable
             )}
         >
@@ -34,11 +34,14 @@ export default function RootLayoutParent({children}: RootLayoutProps) {
                             <NavbarComponent/>
                         </nav>
 
-                        <section className="flex flex-grow overflow-hidden">
+                        <section className="flex flex-grow h-[calc(100vh-72px)]">
                             <aside className="flex">
                                 <AdminSidebarComponent/>
                             </aside>
 
+
+                            {/*className="flex-grow overflow-auto text-lms-black-90"*/}
+                            
                             <section className="flex-grow overflow-auto none-scroll-bar text-lms-black-90 ">
                                 {children}
                             </section>

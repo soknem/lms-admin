@@ -127,7 +127,7 @@ export function EditSectionForm({uuid, onClose}: { uuid: string; onClose: () => 
                     // validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {() => (
+                    {({isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full">
                             <div className="flex flex-col gap-3">
 
@@ -193,8 +193,9 @@ export function EditSectionForm({uuid, onClose}: { uuid: string; onClose: () => 
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Changes
+                                    {isSubmitting ? 'Editing...' : 'Save Change'}
                                 </Button>
                             </DialogFooter>
                         </Form>

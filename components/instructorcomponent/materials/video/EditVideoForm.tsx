@@ -12,20 +12,11 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 
-import {DegreeType} from "@/lib/types/admin/faculty";
 import React, {useEffect, useState} from "react";
 import {TbAsterisk} from "react-icons/tb";
-
-import {
-    useEditDegreeByAliasMutation,
-    useGetDegreeByAliasQuery,
-    useGetDegreesQuery
-} from "@/lib/features/admin/faculties/degree/degree";
 import {toast} from "react-hot-toast";
 import {useGetMaterialByAliasQuery, useUpdateMaterialByAliasMutation} from "@/lib/features/admin/materials/material";
 import {MaterialType} from "@/lib/types/admin/materials";
-import Select from "react-select";
-import {FiUploadCloud} from "react-icons/fi";
 
 const validationSchema = Yup.object().shape({});
 
@@ -35,60 +26,18 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
+                id={value}
+                value={value}
+                checked={field.value === value}
             />
-            <label className="pl-2" htmlFor={value.toString()}>
+            <label className="pl-2" htmlFor={value}>
                 {label}
             </label>
         </div>
     );
 };
 
-const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: any) => {
-    const handleUploadFile = (e: any) => {
-        const file = e.target.files[0];
-        const localUrl = URL.createObjectURL(file);
-        setFieldValue(field.name, file); // Set the field value in Formik
-        setFieldValue(previewField, localUrl); // Set the preview URL in Formik
-    };
-
-    return (
-        <div className="w-full">
-            <input
-                type="file"
-                onChange={handleUploadFile}
-                className="hidden"
-                id={field.name}
-            />
-            <label
-                htmlFor={field.name}
-                className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[215px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
-            >
-                {!values[previewField] ? (
-                    <div className="flex flex-col items-center justify-center gap-4">
-                        <FiUploadCloud className="text-lms-primary text-[34px]"/>
-                        <p className="text-center text-md text-black">
-                            Select a file or drag and drop here
-                        </p>
-                        <p className="text-center text-md text-lms-gray-30">
-                            JPG, PNG or PDF, file size no more than 10MB
-                        </p>
-                    </div>
-                ) : (
-                    <img
-                        src={values[previewField]}
-                        alt="preview"
-                        className="object-contain h-full w-full"
-                    />
-                )}
-            </label>
-        </div>
-    );
-};
-
-export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
+export function EditVideoForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [editMaterial] = useUpdateMaterialByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -109,6 +58,7 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
         download: '',
         section: '',
     });
+
 
     useEffect(() => {
         if (isSuccess && materialData) {
@@ -131,6 +81,8 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
             setInitialAlias(materialData.uuid);
         }
     }, [isSuccess, materialData]);
+
+    console.log("materialData", materialData);
 
     const fileTypeOption = [
         {value: "curriculum", label: 'Curriculum'},
@@ -195,10 +147,10 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                 <Formik
                     enableReinitialize
                     initialValues={initialValues}
-                    // validationSchema={validationSchema}
+                    validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue, isSubmitting}) => (
+                    {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full">
 
                             <div className="flex flex-col gap-1 items-center justify-center">
@@ -232,7 +184,7 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                         <label className={`${style.label}`} htmlFor="fileType">
                                             File Type
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
                                     </div>
 
                                     <Field
@@ -269,16 +221,20 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                     />
                                 </div>
 
+                                {/*fileName*/}
                                 <div className={`${style.inputContainer}`}>
-                                    <label className={`${style.label}`} htmlFor="fileName">
-                                        File Upload
-                                    </label>
+                                    <div className="flex">
+                                        <label className={`${style.label}`} htmlFor="fileName">
+                                            Youtube Video
+                                        </label>
+                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                    </div>
+
                                     <Field
-                                        type="file"
+                                        type="text"
                                         name="fileName"
                                         id="fileName"
-                                        component={CustomInputFile}
-                                        previewField="curriculumPreview"
+                                        className={`${style.input}`}
                                     />
                                     <ErrorMessage
                                         name="fileName"
@@ -328,9 +284,8 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                                    disabled={isSubmitting}
                                 >
-                                    {isSubmitting ? 'Editing...' : 'Save Change'}
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>

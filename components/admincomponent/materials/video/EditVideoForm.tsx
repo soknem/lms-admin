@@ -35,11 +35,11 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value}
-                value={value}
-                checked={field.value === value}
+                id={value.toString()}
+                value={value.toString()}
+                checked={field.value.toString() === value.toString()}
             />
-            <label className="pl-2" htmlFor={value}>
+            <label className="pl-2" htmlFor={value.toString()}>
                 {label}
             </label>
         </div>
@@ -115,7 +115,7 @@ export function EditVideoForm({uuid, onClose}: { uuid: string; onClose: () => vo
             setInitialValues({
                 uuid: materialData.uuid,
                 title: materialData.title,
-                contentType: materialData.contentType,
+                contentType: materialData.contentType || 'video',
                 fileType: materialData.fileType,
                 extension: materialData.extension,
                 description: materialData.description,
@@ -143,7 +143,7 @@ export function EditVideoForm({uuid, onClose}: { uuid: string; onClose: () => vo
             const editMaterialByUuid: MaterialType = {
                 uuid: values.uuid,
                 title: values.title,
-                contentType: values.contentType,
+                contentType: values.contentType || 'video',
                 fileType: values.fileType,
                 extension: values.extension,
                 description: values.description,
@@ -198,7 +198,7 @@ export function EditVideoForm({uuid, onClose}: { uuid: string; onClose: () => vo
                     // validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue}) => (
+                    {({setFieldValue, isSubmitting}) => (
                         <Form className="py-4 rounded-lg w-full">
 
                             <div className="flex flex-col gap-1 items-center justify-center">
@@ -332,8 +332,9 @@ export function EditVideoForm({uuid, onClose}: { uuid: string; onClose: () => vo
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Save Changes
+                                    {isSubmitting ? 'Editing...' : 'Save Change'}
                                 </Button>
                             </DialogFooter>
                         </Form>

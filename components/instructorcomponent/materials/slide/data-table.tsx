@@ -36,7 +36,8 @@ import {
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {CreateMaterialForm} from "@/components/instructorcomponent/materials/addMaterialForm";
+import {CommandInput} from "@/components/ui/command";
+import { CreateMaterialForm } from "../addMaterialForm";
 import {FiPlus} from "react-icons/fi";
 import {useRouter} from "next/navigation";
 
@@ -209,7 +210,7 @@ export function SlideTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/instructor/materials/add-materials")}}>
+                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/admin/materials/add-materials")}}>
                     <FiPlus className="mr-2 h-4 w-4" /> Add Material
                 </Button>
             </div>

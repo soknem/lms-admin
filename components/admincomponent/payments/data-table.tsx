@@ -267,7 +267,7 @@ export function PaymentTable<TData, TValue>({
 
     return (
         <>
-            <section className="w-full  bg-white rounded flex flex-wrap items-center justify-center gap-9 p-6">
+            <section className="w-full  bg-white rounded flex flex-wrap items-start justify-start gap-9 p-6">
                 <div
                     className="w-[310px] h-[136px] bg-[#ABC3FF] bg-opacity-20 rounded-[10px] flex flex-col gap-4 justify-center items-start px-4">
                     <p className="text-xl font-medium text-lms-black-90">

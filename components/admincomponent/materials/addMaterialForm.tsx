@@ -253,7 +253,7 @@ export function CreateMaterialForm() {
                 fileUrl: values.fileUrl,
                 isDeleted: values.isDeleted,
                 description: values.description,
-                contentType: values.contentType,
+                contentType: values.contentType || "video",
                 extension: values.extension,
                 size: values.size,
                 fileName: values.fileName,
@@ -266,6 +266,7 @@ export function CreateMaterialForm() {
             setIsOpen(false);
 
         } catch (error) {
+            console.log(error);
             toast.error('Failed to create video!');
         } finally {
             setSubmitting(false);

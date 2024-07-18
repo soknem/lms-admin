@@ -1,60 +1,33 @@
 "use client";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import {Formik, Form, Field, ErrorMessage, FormikHelpers} from "formik";
 import * as Yup from "yup";
 import {Button} from "@/components/ui/button";
 import style from "./style.module.css";
 import {FiUploadCloud} from "react-icons/fi";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {IoIosArrowDown} from "react-icons/io";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {TbAsterisk} from "react-icons/tb";
 import {StudentAdmissionType} from "@/lib/types/admin/admission";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
 import {
-    useCreateStudentAdmissionMutation, useGetStuAdmissionsQuery
+    useGetStuAdmsByUuidQuery,
+    useUpdateStuAdmsByUuidMutation
 } from "@/lib/features/admin/admission-management/students-admission-management/stuAdmission";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/lib/store";
-import {selectDegree} from "@/lib/features/admin/faculties/degree/degreeSlice";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/lib/store";
 import {useGetDegreesQuery} from "@/lib/features/admin/faculties/degree/degree";
-import {useGetStudyProgramsQuery} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
-import {selectStudyProgram} from "@/lib/features/admin/faculties/studyProgram/studyProgramSlice";
 import {
-    selectError,
-    selectLoading,
-} from "@/lib/features/admin/faculties/faculty/facultySlice";
+    useGetStudyProgramsQuery
+} from "@/lib/features/admin/faculties/studyProgram/studyprogram";
 import {useGetShiftQuery} from "@/lib/features/admin/faculties/shift/shift";
-import {selectShift, setShift} from "@/lib/features/admin/faculties/shift/shiftSlice";
-
-const initialValues = {
-    uuid: "",
-    isDeleted: "",
-    nameEn: "",
-    nameKh: "",
-    email: "",
-    highSchool: "",
-    phoneNumber: "",
-    dob: "",
-    pob: "",
-    bacIiGrade: "",
-    gender: "",
-    avatar: "",
-    address: "",
-    guardianContact: "",
-    guardianRelationShip: "",
-    knownIstad: "",
-    identity: "",
-    biography: "",
-    shiftAlias: "",
-    studyProgramAlias: "",
-    degreeAlias: "",
-    admission: "",
-    diplomaSession: "",
-    classStudent: "",
-    highSchoolCertificate: "",
-    vocationTrainingIiiCertificate: "",
-    anyValuableCertificate: "",
-};
+import Select from "react-select";
+import {DegreeType, StudyProgramType} from "@/lib/types/admin/faculty";
+import {ShiftType} from "@/lib/types/admin/academics";
+import {toast} from "react-hot-toast";
+import Image from "next/image";
+import logo_holder from "@/public/common/logo_holder.png";
+import {DialogFooter} from "@/components/ui/dialog";
 
 const validationSchema = Yup.object().shape({
     nameEn: Yup.string()
@@ -89,44 +62,134 @@ const validationSchema = Yup.object().shape({
     dob: Yup.string().matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format (YYYY-MM-DD)').required('Date of Birth is required'),
 });
 
-export function AddStudentAmsForm() {
+export function EditStudentAmsForm({uuid}: { uuid: string }) {
     const dispatch = useDispatch<AppDispatch>();
     const [createAvatar] = useCreateSingleFileMutation();
     const [createIdentity] = useCreateSingleFileMutation();
     const [createHighSchoolCertificate] = useCreateSingleFileMutation();
     const [createVocationTrainingIiiCertificate] = useCreateSingleFileMutation();
     const [createAnyValuableCertificate] = useCreateSingleFileMutation();
-    const [createStuAdmission] = useCreateStudentAdmissionMutation();
-    const {refetch: refetchStuAdmissions} = useGetStuAdmissionsQuery({page: 0, pageSize: 10});
+    const {data: studentAdmissionData, isSuccess} = useGetStuAdmsByUuidQuery(uuid);
+    const [editStudentAdmissions] = useUpdateStuAdmsByUuidMutation();
+    const [initialAlias, setInitialAlias] = useState("");
+    const [avatar, setAvatar] = useState(null);
+    const [identity, setIdentity] = useState(null);
+    const [highSchoolCertificate, setHighSchoolCertificate] = useState(null);
+    const [vocationTrainingIiiCertificate, setVocationTrainingIiiCertificate] = useState(null);
+    const [anyValuableCertificate, setAnyValuableCertificate] = useState(null);
     const [activeTab, setActiveTab] = useState("personal_info");
+    const [studyPrograms, setStudyPrograms] = useState([]);
+    const [degrees, setDegrees] = useState([]);
+    const [shifts, setShifts] = useState([]);
+    const [initialValues, setInitialValues] = useState({
+        isDeleted: false,
+        uuid: "",
+        nameEn: "",
+        nameKh: "",
+        email: "",
+        highSchool: "",
+        phoneNumber: "",
+        dob: "",
+        pob: "",
+        bacIiGrade: "",
+        gender: "",
+        avatar: "",
+        address: "",
+        guardianContact: "",
+        guardianRelationShip: "",
+        knownIstad: "",
+        identity: "",
+        biography: "",
+        shiftAlias: "",
+        studyProgramAlias: "",
+        degreeAlias: "",
+        admission: "",
+        diplomaSession: "",
+        classStudent: "",
+        highSchoolCertificate: "",
+        vocationTrainingIiiCertificate: "",
+        anyValuableCertificate: "",
+    });
 
     const {
         data: shiftsData
-    } = useGetShiftQuery({page: 0, pageSize: 10});
-    // const shifts = useSelector((state: RootState) => selectShift(state));
-
-    const shifts = useSelector((state: RootState) => selectShift(state));
-    const shiftsLoading = useSelector(selectLoading);
-    const shiftsError = useSelector(selectError);
-
+    } = useGetShiftQuery({page: 0, pageSize: 0});
     useEffect(() => {
         if (shiftsData) {
-            dispatch(setShift(shiftsData.content));
+            const shiftsOption = shiftsData?.content?.map((shift: ShiftType) => ({
+                value: shift.alias,
+                label: shift.name
+            }));
+            setShifts(shiftsOption);
         }
-        if (shiftsError) {
-            console.error("failed to load admission", shiftsError);
-        }
-    }, [shiftsData, shiftsError, dispatch]);
+    }, [shiftsData, dispatch]);
 
     const {
         data: StudyProgramData,
-    } = useGetStudyProgramsQuery({page: 0, pageSize: 10});
-    const studyPrograms = useSelector((state: RootState) => selectStudyProgram(state));
+    } = useGetStudyProgramsQuery({page: 0, pageSize: 0});
+    useEffect(() => {
+        if (StudyProgramData) {
+            const studyProgramsOption = StudyProgramData?.content?.map((stuPro: StudyProgramType) => ({
+                value: stuPro.alias,
+                label: stuPro.studyProgramName
+            }));
+            setStudyPrograms(studyProgramsOption);
+        }
+    }, [StudyProgramData, dispatch]);
 
     const {
         data: degreesData,
-    } = useGetDegreesQuery({page: 0, pageSize: 10});
-    const degrees = useSelector((state: RootState) => selectDegree(state));
+    } = useGetDegreesQuery({page: 0, pageSize: 0});
+    useEffect(() => {
+        if (degreesData) {
+            const degreesOption = degreesData?.content?.map((degree: DegreeType) => ({
+                value: degree.alias,
+                label: degree.level
+            }));
+            setDegrees(degreesOption);
+        }
+    }, [degreesData, dispatch]);
+
+    useEffect(() => {
+        if (isSuccess && studentAdmissionData) {
+            setInitialValues({
+                uuid: studentAdmissionData.uuid,
+                isDeleted: studentAdmissionData.isDeleted,
+                nameEn: studentAdmissionData.nameEn,
+                nameKh: studentAdmissionData.nameKh,
+                email: studentAdmissionData.email,
+                highSchool: studentAdmissionData.highSchool,
+                phoneNumber: studentAdmissionData.phoneNumber,
+                dob: studentAdmissionData.dob,
+                pob: studentAdmissionData.pob,
+                bacIiGrade: studentAdmissionData.bacIiGrade,
+                gender: studentAdmissionData.gender,
+                avatar: studentAdmissionData.avatar,
+                address: studentAdmissionData.address,
+                guardianContact: studentAdmissionData.guardianContact,
+                guardianRelationShip: studentAdmissionData.guardianRelationShip,
+                knownIstad: studentAdmissionData.knownIstad,
+                identity: studentAdmissionData.identity,
+                biography: studentAdmissionData.biography,
+                shiftAlias: studentAdmissionData.shiftAlias,
+                studyProgramAlias: studentAdmissionData.studyProgramAlias,
+                degreeAlias: studentAdmissionData.degreeAlias,
+                admission: studentAdmissionData.admission,
+                diplomaSession: studentAdmissionData.diplomaSession,
+                classStudent: studentAdmissionData.classStudent,
+                highSchoolCertificate: studentAdmissionData.highSchoolCertificate,
+                vocationTrainingIiiCertificate: studentAdmissionData.vocationTrainingIiiCertificate,
+                anyValuableCertificate: studentAdmissionData.anyValuableCertificate,
+            });
+            setInitialAlias(studentAdmissionData.uuid);
+            setAvatar(studentAdmissionData.avatar);
+            setIdentity(studentAdmissionData.identity);
+            setHighSchoolCertificate(studentAdmissionData.highSchoolCertificate);
+            setVocationTrainingIiiCertificate(studentAdmissionData.vocationTrainingIiiCertificate);
+            setAnyValuableCertificate(studentAdmissionData.anyValuableCertificate);
+        }
+    }, [isSuccess, studentAdmissionData]);
+
 
     const handleNext = (currentTab: any) => {
         if (currentTab === "personal_info") {
@@ -136,28 +199,43 @@ export function AddStudentAmsForm() {
         }
     };
 
+    const CustomInputFile = ({field, form: {setFieldValue}, previewUrl}: any) => {
 
-    const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: any) => {
+        const [imagePreview, setImagePreview] = useState(previewUrl);
+        const fileInputRef = useRef<HTMLInputElement>(null);
+        const handleContainerClick = () => {
+            if (fileInputRef.current) {
+                fileInputRef.current.click();
+            }
+        };
+
         const handleUploadFile = (e: any) => {
-            const file = e.target.files[0];
-            const localUrl = URL.createObjectURL(file);
-            setFieldValue(field.name, file); // Set the field value in Formik
-            setFieldValue(previewField, localUrl); // Set the preview URL in Formik
+            const file = e.target.files?.[0];
+            if (file) {
+                const localUrl = URL.createObjectURL(file);
+                setImagePreview(localUrl);
+                setFieldValue(field.name, file);
+                setFieldValue(previewUrl, localUrl);
+            }
         };
 
         return (
-            <div className="w-full">
-                <input
-                    type="file"
-                    onChange={handleUploadFile}
-                    className="hidden"
-                    id={field.name}
-                />
-                <label
-                    htmlFor={field.name}
+            <div className="w-full ">
+                <div
                     className="border border-gray-300 hover:bg-lms-background text-gray-900 text-sm rounded-lg bg-white w-full h-[215px] p-2 border-dashed flex justify-center items-center cursor-pointer relative overflow-hidden"
+                    onClick={handleContainerClick}
                 >
-                    {!values[previewField] ? (
+                    {imagePreview ? (
+
+                        <Image
+                            className="object-cover h-full w-full"
+                            src={imagePreview || logo_holder}
+                            alt="preview"
+                            fill
+
+                            // className="object-cover h-full w-full"
+                        />
+                    ) : (
                         <div className="flex flex-col items-center justify-center gap-4">
                             <FiUploadCloud className="text-lms-primary text-[34px]"/>
                             <p className="text-center text-md text-black">
@@ -167,48 +245,80 @@ export function AddStudentAmsForm() {
                                 JPG, PNG or PDF, file size no more than 10MB
                             </p>
                         </div>
-                    ) : (
-                        <img
-                            src={values[previewField]}
-                            alt="preview"
-                            className="object-cover h-full w-full"
-                        />
                     )}
-                </label>
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        className="hidden"
+                        onChange={handleUploadFile}
+                    />
+                </div>
             </div>
         );
     };
 
-
-    const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
+    const handleSubmit = async (values: any, {
+        setSubmitting,
+        resetForm
+    }: FormikHelpers<StudentAdmissionType>) => {
         try {
-            // Upload avatar file
-            const avatarData = new FormData();
-            avatarData.append('file', values.avatar);
-            const avatarResponse = await createAvatar(avatarData).unwrap();
 
-            // Upload identity file
-            const identityData = new FormData();
-            identityData.append('file', values.identity);
-            const identityResponse = await createIdentity(identityData).unwrap();
+            // Handle avatar upload
+            let avatarName = values.avatar;
+            if (values.avatar instanceof File) {
+                const avatarData = new FormData();
+                avatarData.append('file', values.avatar);
+                const avatarResponse = await createAvatar(avatarData).unwrap();
+                avatarName = avatarResponse.name;
+            } else if (values.avatar === avatar) {
+                avatarName = null;
+            }
 
-            // Upload identity file
-            const highSchoolCertificateData = new FormData();
-            highSchoolCertificateData.append('file', values.highSchoolCertificate);
-            const highSchoolCertificateResponse = await createHighSchoolCertificate(highSchoolCertificateData).unwrap();
+            // Handle identity upload
+            let identityName = values.identity;
+            if (values.identity instanceof File) {
+                const identityData = new FormData();
+                identityData.append('file', values.identity);
+                const identityResponse = await createIdentity(identityData).unwrap();
+                identityName = identityResponse.name;
+            } else if (values.identity === identity) {
+                identityName = null;
+            }
 
-            // Upload identity file
-            const vocationTrainingIiiCertificateData = new FormData();
-            vocationTrainingIiiCertificateData.append('file', values.vocationTrainingIiiCertificate);
-            const vocationTrainingIiiCertificateDataResponse = await createVocationTrainingIiiCertificate(vocationTrainingIiiCertificateData).unwrap();
+            // Handle high school certificate upload
+            let highSchoolCertificateName = values.highSchoolCertificate;
+            if (values.highSchoolCertificate instanceof File) {
+                const highSchoolCertificateData = new FormData();
+                highSchoolCertificateData.append('file', values.highSchoolCertificate);
+                const highSchoolCertificateResponse = await createHighSchoolCertificate(highSchoolCertificateData).unwrap();
+                highSchoolCertificateName = highSchoolCertificateResponse.name;
+            } else if (values.highSchoolCertificate === highSchoolCertificate) {
+                highSchoolCertificateName = null;
+            }
 
-            // Upload identity file
-            const anyValuableCertificateData = new FormData();
-            anyValuableCertificateData.append('file', values.anyValuableCertificate);
-            const anyValuableCertificateResponse = await createAnyValuableCertificate(anyValuableCertificateData).unwrap();
+            // Handle vocation training III certificate upload
+            let vocationTrainingIiiCertificateName = values.vocationTrainingIiiCertificate;
+            if (values.vocationTrainingIiiCertificate instanceof File) {
+                const vocationTrainingIiiCertificateData = new FormData();
+                vocationTrainingIiiCertificateData.append('file', values.vocationTrainingIiiCertificate);
+                const vocationTrainingIiiCertificateResponse = await createVocationTrainingIiiCertificate(vocationTrainingIiiCertificateData).unwrap();
+                vocationTrainingIiiCertificateName = vocationTrainingIiiCertificateResponse.name;
+            } else if (values.vocationTrainingIiiCertificate === vocationTrainingIiiCertificate) {
+                vocationTrainingIiiCertificateName = null;
+            }
 
-            // File uploaded successfully, now create the faculty
-            const newStuAdmission: StudentAdmissionType = {
+            // Handle any valuable certificate upload
+            let anyValuableCertificateName = values.anyValuableCertificate;
+            if (values.anyValuableCertificate instanceof File) {
+                const anyValuableCertificateData = new FormData();
+                anyValuableCertificateData.append('file', values.anyValuableCertificate);
+                const anyValuableCertificateResponse = await createAnyValuableCertificate(anyValuableCertificateData).unwrap();
+                anyValuableCertificateName = anyValuableCertificateResponse.name;
+            } else if (values.anyValuableCertificate === anyValuableCertificate) {
+                anyValuableCertificateName = null;
+            }
+
+            const editStuAdmission: StudentAdmissionType = {
                 uuid: values.uuid,
                 isDeleted: values.isDeleted,
                 nameEn: values.nameEn,
@@ -231,19 +341,19 @@ export function AddStudentAmsForm() {
                 classStudent: values.classStudent,
                 gender: values.gender,
                 address: values.address,
-                highSchoolCertificate: highSchoolCertificateResponse.name,
-                vocationTrainingIiiCertificate: vocationTrainingIiiCertificateDataResponse.name,
-                anyValuableCertificate: anyValuableCertificateResponse.name,
-                avatar: avatarResponse.name,
-                identity: identityResponse.name,
+                highSchoolCertificate: highSchoolCertificateName,
+                vocationTrainingIiiCertificate: vocationTrainingIiiCertificateName,
+                anyValuableCertificate: anyValuableCertificateName,
+                avatar: avatarName,
+                identity: identityName,
             };
 
-            const res = await createStuAdmission(newStuAdmission).unwrap();
+            await editStudentAdmissions({uuid: initialAlias, updatedData: editStuAdmission}).unwrap();
             resetForm();
-            refetchStuAdmissions();
+            toast.success('Successfully updated!');
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating faculty: ", error);
+            console.error("Error student admission: ", error);
+            toast.error('Failed to edit student admission!');
         } finally {
             setSubmitting(false);
         }
@@ -252,22 +362,24 @@ export function AddStudentAmsForm() {
 
     return (
         <section
-            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] items-center-center rounded-[10px] none-scroll-bar">
+            className="flex flex-grow flex-col gap-6 bg-white border w-[1240px] items-center-center rounded-[10px] none-scroll-bar overflow-x-auto">
 
             <section className="h-[90px] flex items-center mx-10 ">
                 <h1 className="text-3xl font-bold text-lms-black-90">Student Admission</h1>
             </section>
 
             <Formik
+                enableReinitialize
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
-                {() => (
-                    <Form className="py-4 rounded-lg w-full flex justify-center items-center">
+                {({setFieldValue, isSubmitting}) => (
+                    <Form
+                        className="py-4 rounded-lg w-full flex justify-center items-center none-scroll-bar overflow-x-auto">
 
                         <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="personal_info"
-                              className="w-full py-0 my-0">
+                              className="w-full py-0 my-0 none-scroll-bar overflow-x-auto">
 
                             <TabsList
                                 className=" bg-lms-background w-full h-[150px]  rounded-none px-10 ">
@@ -314,7 +426,7 @@ export function AddStudentAmsForm() {
 
                             {/* Personal Information */}
                             <TabsContent value="personal_info"
-                                         className={`flex justify-center h-full items-center flex-col gap-9 mx-10  py-0 my-0`}>
+                                         className={`flex justify-center h-full items-center flex-col gap-9 mx-10  py-0 my-0 none-scroll-bar overflow-x-auto`}>
 
                                 {/* Personal Information Form Fields */}
                                 <div className="w-full border-b-2 py-6">
@@ -322,7 +434,8 @@ export function AddStudentAmsForm() {
                                 </div>
 
                                 {/* Add your form fields for personal information here */}
-                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-x-9 justify-center items-center">
+                                <div
+                                    className="grid grid-cols-2 2xl:grid-cols-3 gap-x-9 justify-center items-center none-scroll-bar overflow-x-auto">
 
                                     {/*name_en */}
                                     <div className={`${style.inputContainer}`}>
@@ -361,7 +474,7 @@ export function AddStudentAmsForm() {
                                             name="nameKh"
                                             placeholder="Chan Tola"
                                             id="nameKh"
-                                            className={`${style.input}`}
+                                            className={`${style.input} khmer-font`}
                                         />
                                         <ErrorMessage
                                             name="nameKh"
@@ -378,16 +491,11 @@ export function AddStudentAmsForm() {
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
-
                                         <Field
-                                            type="file"
                                             name="avatar"
-                                            id="avatar"
                                             component={CustomInputFile}
-                                            previewField="avatarPreview"
-                                            // setFieldValue={setFieldValue}
-                                            // uploadedFile={uploadedFileAvatar}
-                                            // setUploadedFile={setUploadedFileAvatar}
+                                            setFieldValue={setFieldValue}
+                                            previewUrl={initialValues.avatar}
                                         />
                                         <ErrorMessage
                                             name="avatar"
@@ -557,16 +665,11 @@ export function AddStudentAmsForm() {
                                             </label>
                                             <TbAsterisk className='w-2 h-2 text-lms-error'/>
                                         </div>
-
                                         <Field
-                                            type="file"
                                             name="identity"
-                                            id="identity"
                                             component={CustomInputFile}
-                                            // setFieldValue={setFieldValue}
-                                            // uploadedFile={uploadedFileIdentity}
-                                            // setUploadedFile={setUploadedFileIdentity}
-                                            previewField="identityPreview"
+                                            setFieldValue={setFieldValue}
+                                            previewUrl={initialValues.identity}
                                         />
                                         <ErrorMessage
                                             name="identity"
@@ -749,60 +852,6 @@ export function AddStudentAmsForm() {
                                         />
                                     </div>
 
-                                    {/* Grade */}
-                                    {/*<div className={`${style.inputContainer}  grid col-span-2 2xl:col-span-1`}>*/}
-                                    {/*    <div className="flex">*/}
-                                    {/*        <label className={`${style.label}`} htmlFor="bacIiGrade">*/}
-                                    {/*            Diploma Grade*/}
-                                    {/*        </label>*/}
-                                    {/*        <TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
-                                    {/*    </div>*/}
-
-                                    {/*    <div className="flex flex-wrap justify-between items-center">*/}
-                                    {/*        <Field*/}
-                                    {/*            name="bacIiGrade"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="A"*/}
-                                    {/*            label="A"*/}
-                                    {/*        />*/}
-                                    {/*        <Field*/}
-                                    {/*            name="bacIiGrade"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="B"*/}
-                                    {/*            label="B"*/}
-                                    {/*        />*/}
-                                    {/*        <Field*/}
-                                    {/*            name="bacIiGrade"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="C"*/}
-                                    {/*            label="C"*/}
-                                    {/*        />*/}
-                                    {/*        <Field*/}
-                                    {/*            name="bacIiGrade"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="D"*/}
-                                    {/*            label="D"*/}
-                                    {/*        />*/}
-                                    {/*        <Field*/}
-                                    {/*            name="bacIiGrade"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="E"*/}
-                                    {/*            label="E"*/}
-                                    {/*        />*/}
-                                    {/*        <Field*/}
-                                    {/*            name="bacIiGrade"*/}
-                                    {/*            component={RadioButton}*/}
-                                    {/*            value="F"*/}
-                                    {/*            label="Other/Wait for result"*/}
-                                    {/*        />*/}
-                                    {/*    </div>*/}
-                                    {/*    <ErrorMessage*/}
-                                    {/*        name="bacIiGrade"*/}
-                                    {/*        component={`div`}*/}
-                                    {/*        className={`${style.error}`}*/}
-                                    {/*    />*/}
-                                    {/*</div>*/}
-
                                     <div className={style.inputContainer}>
                                         <div className="flex">
                                             <label className={style.label} htmlFor="bacIiGrade">
@@ -853,13 +902,10 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <Field
-                                            type="file"
                                             name="highSchoolCertificate"
-                                            id="highSchoolCertificate"
                                             component={CustomInputFile}
-                                            previewField="highSchoolCertificatePreview"
-                                            // uploadedFile={uploadedFile}
-                                            // setUploadedFile={setUploadedFile}
+                                            setFieldValue={setFieldValue}
+                                            previewUrl={initialValues.highSchoolCertificate}
                                         />
                                         <ErrorMessage
                                             name="highSchoolCertificate"
@@ -874,15 +920,10 @@ export function AddStudentAmsForm() {
                                             Vocation Training III Certificate
                                         </label>
                                         <Field
-                                            type="file"
                                             name="vocationTrainingIiiCertificate"
-                                            id="vocationTrainingIiiCertificate"
                                             component={CustomInputFile}
-                                            previewField="vocationTrainingIiiCertificatePreview"
-                                            // component={CustomInput}
-                                            // setFieldValue={setFieldValue}
-                                            // uploadedFile={uploadedFile}
-                                            // setUploadedFile={setUploadedFile}
+                                            setFieldValue={setFieldValue}
+                                            previewUrl={initialValues.vocationTrainingIiiCertificate}
                                         />
                                         <ErrorMessage
                                             name="vocationTrainingIiiCertificate"
@@ -897,15 +938,10 @@ export function AddStudentAmsForm() {
                                             Any Valuable Certificate
                                         </label>
                                         <Field
-                                            type="file"
                                             name="anyValuableCertificate"
-                                            id="anyValuableCertificate"
                                             component={CustomInputFile}
-                                            previewField="anyValuableCertificatePreview"
-                                            // component={CustomInput}
-                                            // setFieldValue={setFieldValue}
-                                            // uploadedFile={uploadedFile}
-                                            // setUploadedFile={setUploadedFile}
+                                            setFieldValue={setFieldValue}
+                                            previewUrl={initialValues.anyValuableCertificate}
                                         />
                                         <ErrorMessage
                                             name="anyValuableCertificate"
@@ -947,25 +983,16 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field as="select" name="shiftAlias" id="shiftAlias"
-                                                   className={`${style.input} appearance-none`}>
-                                                <option value="" label="Select Shift"/>
-                                                {Array.isArray(shifts) && shifts.map(shift => (
-                                                    <option key={shift.alias} value={shift.alias} label={shift.alias}/>
-                                                ))}
-                                            </Field>
+                                            <Select
+                                                options={shifts}
+                                                name="shiftAlias"
+                                                onChange={(option: any) => setFieldValue("shiftAlias", option.value)}
+                                            />
                                             <ErrorMessage
                                                 name="shiftAlias"
                                                 component="div"
                                                 className={`${style.error}`}
                                             />
-                                            <div
-                                                className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <IoIosArrowDown
-                                                    className="h-5 w-5 text-gray-400"
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
                                         </div>
                                     </div>
 
@@ -979,14 +1006,11 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field as="select" name="degreeAlias" id="degreeAlias"
-                                                   className={`${style.input} appearance-none`}>
-                                                <option value="" label="Select Degree"/>
-                                                {Array.isArray(degrees) && degrees.map(degree => (
-                                                    <option key={degree.alias} value={degree.alias}
-                                                            label={degree.alias}/>
-                                                ))}
-                                            </Field>
+                                            <Select
+                                                options={degrees}
+                                                name="degreeAlias"
+                                                onChange={(option: any) => setFieldValue("degreeAlias", option.value)}
+                                            />
                                             <ErrorMessage
                                                 name="degreeAlias"
                                                 component="div"
@@ -1012,26 +1036,16 @@ export function AddStudentAmsForm() {
                                         </div>
 
                                         <div className="relative w-full">
-                                            <Field as="select" name="studyProgramAlias" id="studyProgramAlias"
-                                                   className={`${style.input} appearance-none`}>
-                                                <option value="" label="Select Study Program"/>
-                                                {Array.isArray(studyPrograms) && studyPrograms.map(studyProgram => (
-                                                    <option key={studyProgram.alias} value={studyProgram.alias}
-                                                            label={studyProgram.alias}/>
-                                                ))}
-                                            </Field>
+                                            <Select
+                                                options={studyPrograms}
+                                                name="studyProgramAlias"
+                                                onChange={(option: any) => setFieldValue("studyProgramAlias", option.value)}
+                                            />
                                             <ErrorMessage
                                                 name="studyProgramAlias"
                                                 component="div"
                                                 className={`${style.error}`}
                                             />
-                                            <div
-                                                className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                                <IoIosArrowDown
-                                                    className="h-5 w-5 text-gray-400"
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
                                         </div>
 
                                     </div>
@@ -1062,10 +1076,15 @@ export function AddStudentAmsForm() {
                                 </div>
 
                                 <div className="flex justify-end w-full container mx-auto">
-                                    <Button type="submit"
-                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">
-                                        Register
-                                    </Button>
+                                    <DialogFooter>
+                                        <Button
+                                            type="submit"
+                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? "Editing..." : "Save Change"}
+                                        </Button>
+                                    </DialogFooter>
                                 </div>
 
                             </TabsContent>

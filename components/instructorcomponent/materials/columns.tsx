@@ -1,26 +1,14 @@
 "use client";
 
 import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
-import {
-    StatusOption,
-    StudentAdmissionType,
-} from "@/lib/types/admin/admission";
+import {useState, useEffect, ChangeEvent} from "react";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";
-import placeholderPf from "@/public/common/placeholderPf.png";
-import Image from "next/image";
-import ActionsCell from "@/components/admincomponent/admissions/student-admission/StuAdmsActionCell";
+import {MaterialType, StatusOption} from "@/lib/types/instructor/materials";
+import ActionsCell from "@/components/instructorcomponent/materials/MaterialActionCell";
 
 const TableCell = ({getValue, row, column, table}: any) => {
     const initialValue = getValue();
@@ -41,27 +29,6 @@ const TableCell = ({getValue, row, column, table}: any) => {
         setValue(newValue);
         tableMeta?.updateData(row.index, column.id, newValue);
     };
-    // Ensure the "id" column is not editable
-    if (column.id === "id") {
-        return <span>{value}</span>;
-    }
-
-    if (column.id === "profile") {
-        const studentData = row.original;
-        return (
-            <div className="flex items-center">
-                <Image
-                    src={studentData.avatar || placeholderPf}
-                    alt="Profile placeholder"
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full mr-2"
-                />
-                <span>{studentData.nameEn}</span>
-            </div>
-        );
-    }
-
 
     if (tableMeta?.editedRows[row.id]) {
         return columnMeta?.type === "select" ? (
@@ -79,6 +46,54 @@ const TableCell = ({getValue, row, column, table}: any) => {
         ) : (
             <input
                 className="w-full p-2 border-1 border-gray-300 rounded-md"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onBlur={onBlur}
+                type={columnMeta?.type || "text"}
+            />
+        );
+    }
+
+    if (column.id === "description") {
+        const words = value.split(" ");
+        const firstFiveWords = words.slice(0, 5).join(" ");
+        const displayText = words.length > 5 ? `${firstFiveWords}...` : firstFiveWords;
+        return <span>{displayText || "No Description"}</span>;
+    }
+
+    if (column.id === "logo") {
+        return (
+            <div>
+                <img
+                    src={value || "https://via.placeholder.com/150"}
+                    // alt="Logo"
+                    className="w-12 h-12 rounded-full object-contain"
+                />
+            </div>
+
+        );
+    }
+
+    if (column.id === "section") {
+        return <span>{value?.title || "No Section"}</span>;
+    }
+
+    if (tableMeta?.editedRows[row.id]) {
+        return columnMeta?.type === "select" ? (
+            <select
+                className="border-1 border-gray-300 dark:bg-white hover:scale-[105%] hover: cursor-pointer focus:outline-none "
+                onChange={onSelectChange}
+                value={value}
+            >
+                {columnMeta?.options?.map((option: StatusOption) => (
+                    <option key={option.label} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
+        ) : (
+            <input
+                className="w-full p-2 border-1 border-gray-300 "
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={onBlur}
@@ -138,45 +153,57 @@ const TableCell = ({getValue, row, column, table}: any) => {
     return <span>{value}</span>;
 };
 
+export const materialColumns: ColumnDef<MaterialType>[] = [
 
-export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
     {
-        accessorKey: "profile",
+        accessorKey: "title",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    PROFILE
+                    TITLE
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
         cell: TableCell,
-        filterFn: (row, columnId, filterValue) => {
-            const profileName = row.original.nameEn.toLowerCase();
-            return profileName.includes(filterValue.toLowerCase());
-        },
     },
 
     {
-        accessorKey: "email",
+        accessorKey: "section",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    SECTION
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: TableCell,
+    },
+
+    {
+        accessorKey: "description",
         header: () => {
-            return <div>EMAIL</div>;
+            return <div>DESCRIPTION</div>;
         },
         cell: TableCell,
     },
 
     {
-        accessorKey: "degree.level",
+        accessorKey: "fileType",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    DEGREE
+                    TYPE
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
@@ -185,25 +212,17 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
     },
 
     {
-        accessorKey: "shift.name",
+        accessorKey: "isDraft",
         header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    SHIFT
+                    VISIBILITY
                     <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
-        },
-        cell: TableCell,
-    },
-
-    {
-        accessorKey: "studyProgram.studyProgramName",
-        header: () => {
-            return <div>STUDY PROGRAM</div>;
         },
         cell: TableCell,
     },
@@ -221,12 +240,13 @@ export const StudentAdmissionColumns: ColumnDef<StudentAdmissionType>[] = [
                 </Button>
             );
         },
+
+
         cell: TableCell,
     },
-
 
     {
         id: "actions",
         cell: ActionsCell,
-    }
+    },
 ];

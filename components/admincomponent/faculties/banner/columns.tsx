@@ -34,7 +34,7 @@ const TableCell = ({getValue, row, column, table}: any) => {
     };
 
     if (column.id === "title") {
-        return <span className={`w-full line-clamp-1`}>{value}</span>;
+        return <span className={`w-full khmer-font line-clamp-1`}>{value}</span>;
     }
 
     if (column.id === "description") {

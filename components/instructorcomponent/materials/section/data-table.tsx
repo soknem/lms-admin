@@ -2,8 +2,6 @@
 
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
-import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
-//import from shad cn
 import {
     ColumnDef,
     flexRender,
@@ -36,22 +34,20 @@ import {
 
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
-import {CommandInput} from "@/components/ui/command";
-import { CreateMaterialForm } from "../addMaterialForm";
-import {FiPlus} from "react-icons/fi";
+import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
 import {useRouter} from "next/navigation";
+import {CreateSectionForm} from "@/components/instructorcomponent/materials/section/addSectionForm";
 
-//custom component import
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
 }
 
-export function SlideTable<TData, TValue>({
-                                              columns,
-                                              data,
-                                          }: DataTableProps<TData, TValue>) {
+export function SectionTable<TData, TValue>({
+                                                columns,
+                                                data,
+                                            }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -108,30 +104,29 @@ export function SlideTable<TData, TValue>({
         },
     });
 
+    const filterOptions = ["All", "Public", "Draft"];
 
-    const filterOptions = ["All", "Public", "Disable", "Draft"];
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
         const filterValue =
             value === "All"
-                ? undefined
+                ? ""
                 : value === "Public"
-                    ? 1
-                    : value === "Disable"
-                        ? 2
-                        : 3;
-
-        table.getColumn("status")?.setFilterValue(filterValue);
+                    ? false
+                    : value === "Draft"
+                        ? true
+                        : "";
+        table.getColumn("isDraft")?.setFilterValue(filterValue);
     };
+
 
     return (
         <>
-            {/* Search */}
             <div className="flex items-center justify-between gap-4 ">
                 <div className="flex items-center py-4 w-full">
                     <div className="flex items-center w-full relative">
                         <Input
-                            placeholder="Search Slide"
+                            placeholder="Search Section"
                             value={
                                 (table.getColumn("title")?.getFilterValue() as string) ?? ""
                             }
@@ -169,7 +164,7 @@ export function SlideTable<TData, TValue>({
                                 key={option}
                                 onSelect={() => handleFilterChange(option)}
                                 className={`cursor-pointer  ${
-                                    (table.getColumn("status")?.getFilterValue() || "All") ===
+                                    (table.getColumn("isDraft")?.getFilterValue() || "All") ===
                                     option
                                 }`}
                             >
@@ -210,9 +205,7 @@ export function SlideTable<TData, TValue>({
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button className="bg-lms-primary text-white hover:bg-lms-primary" onClick={()=>{router.push("/admin/materials/add-materials")}}>
-                    <FiPlus className="mr-2 h-4 w-4" /> Add Material
-                </Button>
+                <CreateSectionForm/>
             </div>
 
             {/* Table */}

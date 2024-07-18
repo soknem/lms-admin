@@ -215,7 +215,7 @@ export function StudentAdmissionTable<TData, TValue>({
             {/* Table */}
             <div className="w-full rounded-md p-4 bg-white">
                 <Table>
-                    <TableHeader className="text-gray-30">
+                    <TableHeader className="text-lms-gray-30">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {

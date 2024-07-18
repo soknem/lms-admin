@@ -2,9 +2,14 @@ import {istadLmsApi} from "@/lib/api";
 
 export const materialApi = istadLmsApi.injectEndpoints({
     endpoints: (builder) => ({
-        getMaterials: builder.query<any, { page: number; pageSize: number }>({
-            query: ({page = 0, pageSize = 10}) =>
-                `/materials?pageNumber=${page}&pageSize=${pageSize}`,
+        // getMaterials: builder.query<any, { page: number; pageSize: number }>({
+        //     query: ({page = 0, pageSize = 10}) =>
+        //         `/materials?pageNumber=${page}&pageSize=${pageSize}`,
+        //     providesTags: [{type: 'Materials', id: 'LIST'}],
+        // }),
+        getMaterials: builder.query<any, { page: number; pageSize: number, fileType: string }>({
+            query: ({page = 0, pageSize = 10, fileType}) =>
+                `/materials/types/${fileType}?pageNumber=${page}&pageSize=${pageSize}`,
             providesTags: [{type: 'Materials', id: 'LIST'}],
         }),
         filterFiles: builder.mutation<any, { pageNumber: number, pageSize: number, body: any }>({

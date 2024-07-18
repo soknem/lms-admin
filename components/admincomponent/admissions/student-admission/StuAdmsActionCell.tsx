@@ -1,0 +1,118 @@
+import React, {useState} from "react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {Button} from "@/components/ui/button";
+import {MoreHorizontal} from "lucide-react";
+
+import {
+    useDisableFacultyByAliasMutation,
+    useEnableFacultyByAliasMutation
+} from "@/lib/features/admin/faculties/faculty/faculty";
+import {TbCopy, TbEye, TbEyeCancel, TbFileImport, TbPencil} from "react-icons/tb";
+import CardDisableComponent from "@/components/card/staff/CardDisableComponent";
+
+import {useRouter} from "next/navigation";
+
+const ActionsCell = ({row}: any) => {
+    const [isCardVisible, setIsCardVisible] = useState(false);
+    const [isDeleted, setIsDeleted] = useState(row.original.isDeleted);
+
+    const [enableFaculty, setEnableFaculty] = useEnableFacultyByAliasMutation();
+    const [disableFaculty, setDisableFaculty] = useDisableFacultyByAliasMutation();
+    const router = useRouter();
+
+
+    const handleOpenCard = () => {
+        setIsCardVisible(true);
+    };
+
+    const handleConfirm = async (alias: string) => {
+        if (isDeleted) {
+            await enableFaculty(alias).unwrap();
+            setIsDeleted((prev: any) => !prev);
+        } else {
+            await disableFaculty(alias).unwrap();
+            setIsDeleted((prev: any) => !prev);
+        }
+        setIsCardVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsCardVisible(false);
+    };
+
+    const stuAdms = row.original;
+
+
+    return (
+        <div>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4"/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-white">
+                    {/*<DropdownMenuLabel>Actions</DropdownMenuLabel>*/}
+
+                    <DropdownMenuItem
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium "
+                        onClick={() => navigator.clipboard.writeText(stuAdms.name)}
+                    >
+                        <TbCopy size={20} className="text-gray-30 mr-2  "/> Copy Faculty Name
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
+                        onClick={() => {
+                            router.push(`/admin/admissions/student-admission/view-stu-adms/${stuAdms.uuid}`);
+                        }}
+                    >
+                        <TbFileImport size={20} className="text-gray-30 mr-2"/>
+                        View
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className="text-gray-30 focus:text-gray-30 focus:bg-background font-medium"
+                        onClick={() => {
+                            router.push(`/admin/admissions/student-admission/edit-stu-adms/${stuAdms.uuid}`);
+                        }}
+                    >
+                        <TbPencil size={20} className="text-gray-30 mr-2"/>
+                        Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className={` text-${isDeleted ? 'green-600' : 'red-600'} focus:text-${isDeleted ? 'green-600' : 'red-600'} font-medium focus:bg-background`}
+                        onClick={handleOpenCard}
+                    >
+                        {isDeleted ? (
+                            <>
+                                <TbEye size={20} className="text-green-600 mr-2 "/> Enable
+                            </>
+                        ) : (
+                            <>
+                                <TbEyeCancel size={20} className="text-red-600 mr-2 "/> Disable
+                            </>
+                        )}
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            {isCardVisible && (
+                <CardDisableComponent
+                    message={isDeleted ? "Do you really want to enable this item?" : "Do you really want to disable this item?"}
+                    onConfirm={() => handleConfirm(stuAdms.uuid)}
+                    onCancel={handleCancel}
+                    buttonTitle={isDeleted ? "Enable" : "Disable"}
+                />
+            )}
+        </div>
+    );
+}
+export default ActionsCell;

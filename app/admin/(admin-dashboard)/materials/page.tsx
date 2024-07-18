@@ -15,36 +15,45 @@ import {sectionColumns} from "@/components/admincomponent/materials/section/colu
 export default function Materials() {
     const dispatch = useDispatch<AppDispatch>();
 
-    // Materials
-    const {
-        data: materialsData,
-    } = useGetMaterialsQuery({page: 0, pageSize: 10});
+    // Fetching different types of materials
+    const {data: curriculumData} = useGetMaterialsQuery({page: 0, pageSize: 10, fileType: "curriculum"});
+    const {data: slideData} = useGetMaterialsQuery({page: 0, pageSize: 10, fileType: "slide"});
+    const {data: videoData} = useGetMaterialsQuery({page: 0, pageSize: 10, fileType: "youtubeVideo"});
+
+    // Selecting materials from the state
     const materials = useSelector((state: RootState) => selectMaterial(state));
 
+    // Setting materials in the state
     useEffect(() => {
-        if (materialsData) {
-            dispatch(setMaterials(materialsData.content));
+        if (curriculumData) {
+            dispatch(setMaterials(curriculumData.content));
         }
-    }, [materialsData, dispatch]);
+    }, [curriculumData, dispatch]);
 
+    useEffect(() => {
+        if (slideData) {
+            dispatch(setMaterials(slideData.content));
+        }
+    }, [slideData, dispatch]);
 
-    const {
-        data: sectionsData,
-    } = useGetAllSectionQuery({page: 0, pageSize: 10});
+    useEffect(() => {
+        if (videoData) {
+            dispatch(setMaterials(videoData.content));
+        }
+    }, [videoData, dispatch]);
 
+    console.log(materials);
 
+    // Fetching sections
+    const {data: sectionsData} = useGetAllSectionQuery({page: 0, pageSize: 10});
     const sections = useSelector((state: RootState) => selectSection(state));
 
+    // Setting sections in the state
     useEffect(() => {
         if (sectionsData) {
             dispatch(setSections(sectionsData));
         }
     }, [sectionsData, dispatch]);
-
-    const filterDataByFileType = (filetype: string) => {
-        return materials.filter((item: any) => item.fileType === filetype);
-    };
-
 
     return (
         <main className="flex flex-col h-full w-full p-9">
@@ -62,15 +71,15 @@ export default function Materials() {
                 </TabsContent>
 
                 <TabsContent value="curriculums">
-                    <MaterialTable columns={materialColumns} data={filterDataByFileType("curriculum")}/>
+                    <MaterialTable columns={materialColumns} data={curriculumData ? curriculumData.content : []}/>
                 </TabsContent>
 
                 <TabsContent value="slide">
-                    <MaterialTable columns={materialColumns} data={filterDataByFileType("slide")}/>
+                    <MaterialTable columns={materialColumns} data={slideData ? slideData.content : []}/>
                 </TabsContent>
 
                 <TabsContent value="video">
-                    <MaterialTable columns={materialColumns} data={filterDataByFileType("youtubeVideo")}/>
+                    <MaterialTable columns={materialColumns} data={videoData ? videoData.content : []}/>
                 </TabsContent>
             </Tabs>
         </main>

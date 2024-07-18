@@ -35,11 +35,11 @@ const RadioButton = ({field, value, label}: any) => {
             <input
                 type="radio"
                 {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
+                id={value}
+                value={value}
+                checked={field.value === value}
             />
-            <label className="pl-2" htmlFor={value.toString()}>
+            <label className="pl-2" htmlFor={value}>
                 {label}
             </label>
         </div>
@@ -88,7 +88,7 @@ const CustomInputFile = ({field, form: {setFieldValue, values}, previewField}: a
     );
 };
 
-export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
+export function EditSlideForm({uuid, onClose}: { uuid: string; onClose: () => void }) {
     const [open, setOpen] = useState(true);
     const [editMaterial] = useUpdateMaterialByAliasMutation();
     const [initialAlias, setInitialAlias] = useState("");
@@ -198,7 +198,7 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                     // validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue, isSubmitting}) => (
+                    {({setFieldValue}) => (
                         <Form className="py-4 rounded-lg w-full">
 
                             <div className="flex flex-col gap-1 items-center justify-center">
@@ -232,7 +232,7 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                         <label className={`${style.label}`} htmlFor="fileType">
                                             File Type
                                         </label>
-                                        <TbAsterisk className='w-2 h-2 text-lms-error'/>
+                                        {/*<TbAsterisk className='w-2 h-2 text-lms-error'/>*/}
                                     </div>
 
                                     <Field
@@ -328,9 +328,8 @@ export function EditCurriculumForm({uuid, onClose}: { uuid: string; onClose: () 
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
-                                    disabled={isSubmitting}
                                 >
-                                    {isSubmitting ? 'Editing...' : 'Save Change'}
+                                    Save Changes
                                 </Button>
                             </DialogFooter>
                         </Form>
