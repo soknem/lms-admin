@@ -1,19 +1,15 @@
 "use client";
-import {RxCross2} from "react-icons/rx";
-import {IoCheckmarkSharp} from "react-icons/io5";
-import {MdEdit} from "react-icons/md";
 
 import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown, Link} from "lucide-react";
+import {ArrowUpDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {useState, useEffect, ChangeEvent, MouseEvent} from "react";
+import {useState, useEffect, ChangeEvent} from "react";
 
 import {
     StatusOption,
     StudyProgramType,
 } from "@/lib/types/admin/faculty";
 import ActionsCell from "@/components/admincomponent/faculties/studygrogram/StudyProgramActtionCell";
-import {BiSolidMessageSquareEdit} from "react-icons/bi";
 import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
 import {Label} from "@/components/ui/label";
 import StatusBadge from "@/components/common/StatusBadge";

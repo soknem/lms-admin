@@ -15,7 +15,7 @@ import { OptionType, LectureType } from "@/lib/types/admin/academics";
 
 
 import StatusBadge from "@/components/common/StatusBadge";
-import {EndedLectureType} from "@/lib/types/instructor/lecture/lecture";
+import {EndedLectureType} from "@/lib/types/instructor/lecture";
 
 
 const TableCell = ({ getValue, row, column, table }: any) => {

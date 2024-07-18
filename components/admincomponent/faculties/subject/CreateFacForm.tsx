@@ -33,8 +33,34 @@ const initialValues = {
     isDraft: false,
 };
 
+const FILE_SIZE = 1024 * 1024 * 2; // 2MB
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+    title: Yup.string()
+        .required("Title is required")
+        .max(100, "Title must be at most 100 characters"),
+    logo: Yup.mixed()
+        .test("fileFormat", "Unsupported Format", (value: any) => {
+            if (!value) return true;
+            return SUPPORTED_FORMATS.includes(value.type);
+        })
+        .test("fileSize", "File Size is too large", (value: any) => {
+            if (!value) return true;
+            return value.size <= FILE_SIZE;
+        })
+        .nullable(),
+    duration: Yup.number()
+        .required("Duration is required"),
+    theory: Yup.number()
+        .required("Theory hours are required"),
+    practice: Yup.number()
+        .required("Practice hours are required"),
+    internship: Yup.number()
+        .required("Internship hours are required"),
+    isDraft: Yup.boolean()
+        .required("Draft status is required"),
+});
 
 const RadioButton = ({field, value, label}: any) => {
     return (
@@ -44,7 +70,7 @@ const RadioButton = ({field, value, label}: any) => {
                 {...field}
                 id={value}
                 value={value}
-                checked={field.value === value}
+                checked={String(field.value) === value}
             />
             <label className="pl-2" htmlFor={value}>
                 {label}
@@ -60,7 +86,6 @@ const CustomInput = ({field, setFieldValue}: any) => {
         const file = e.target.files[0];
         const localUrl = URL.createObjectURL(file);
         setImagePreview(localUrl);
-
         setFieldValue(field.name, file);
     };
 
@@ -94,7 +119,7 @@ const CustomInput = ({field, setFieldValue}: any) => {
                             src={imagePreview}
                             alt="preview"
                             fill
-                            style={{objectFit: 'contain'}}
+                            style={{objectFit: 'scale-down'}}
                         />
                     </div>
                 )}
@@ -112,42 +137,39 @@ export function CreateSubjectForm() {
 
     const handleSubmit = async (values: any, {setSubmitting, resetForm}: any) => {
         try {
-            // Upload the logo file
-            const fileData = new FormData();
-            fileData.append("file", values.logo);
+            let logoName = '';
 
-            const fileResponse = await createSingleFile(fileData).unwrap();
-
-            if (fileResponse) {
-                // File uploaded successfully, now create the faculty
-
-                const theoryValue = values.theory;
-                const practiceValue = values.practice;
-                const internshipValue = values.internship;
-                const durationValue = (theoryValue * 15) + (practiceValue * 30) + (internshipValue * 45);
-
-
-                const newSubject: SubjectType = {
-                    alias: values.alias,
-                    title: values.title,
-                    duration: durationValue,
-                    theory: theoryValue,
-                    practice: practiceValue,
-                    internship: internshipValue,
-                    description: values.description,
-                    logo: fileResponse.name,
-                    isDraft: values.isDraft,
-                };
-
-
-                const res = await createSubject(newSubject).unwrap();
-                resetForm();
-                refetchSubjects();
-                setIsOpen(false);
-
-                toast.success('Successfully created!');
-
+            if (values.logo) {
+                const fileData = new FormData();
+                fileData.append("file", values.logo);
+                const fileResponse = await createSingleFile(fileData).unwrap();
+                logoName = fileResponse.name;
             }
+
+            const theoryValue = values.theory;
+            const practiceValue = values.practice;
+            const internshipValue = values.internship;
+            const durationValue = (theoryValue * 15) + (practiceValue * 30) + (internshipValue * 45);
+
+            const newSubject: SubjectType = {
+                alias: values.alias,
+                title: values.title,
+                duration: durationValue,
+                theory: theoryValue,
+                practice: practiceValue,
+                internship: internshipValue,
+                description: values.description,
+                logo: logoName,
+                isDraft: values.isDraft,
+            };
+
+
+            const res = await createSubject(newSubject).unwrap();
+            resetForm();
+            refetchSubjects();
+            setIsOpen(false);
+            toast.success('Successfully created!');
+
         } catch (error) {
             toast.error('Failed to create subject!');
         } finally {
@@ -179,7 +201,7 @@ export function CreateSubjectForm() {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({setFieldValue, values}) => (
+                    {({setFieldValue, isSubmitting, values}) => (
 
 
                         <Form className="py-4 rounded-lg w-full ">
@@ -195,7 +217,7 @@ export function CreateSubjectForm() {
 
                                     <Field
                                         type="text"
-                                        placeholder="Introduction to IT"
+                                        placeholder="Introduction to Information Technology"
                                         name="title"
                                         id="title"
                                         onChange={(e: any) => {
@@ -230,6 +252,7 @@ export function CreateSubjectForm() {
 
                                     <Field
                                         disabled
+                                        placeholder="introduction-to-information-technology"
                                         type="text"
                                         name="alias"
                                         id="alias"
@@ -253,10 +276,15 @@ export function CreateSubjectForm() {
                                         </div>
 
                                         <Field
-                                            readOnly
+                                            disabled
                                             name="duration"
                                             className={` ${style.input}`}
                                             value={calculateDuration(values.theory, values.practice, values.internship)}
+                                        />
+                                        <ErrorMessage
+                                            name="duration"
+                                            component="div"
+                                            className={`${style.error}`}
                                         />
                                     </div>
 
@@ -275,6 +303,11 @@ export function CreateSubjectForm() {
                                                 setFieldValue("theory", e.target.value);
                                                 setFieldValue("duration", calculateDuration(Number(e.target.value), values.practice, values.internship));
                                             }}/>
+                                        <ErrorMessage
+                                            name="theory"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
 
                                     <div className="w-[80px] ">
@@ -292,6 +325,11 @@ export function CreateSubjectForm() {
                                                 setFieldValue("practice", e.target.value);
                                                 setFieldValue("duration", calculateDuration(values.theory, Number(e.target.value), values.internship));
                                             }}
+                                        />
+                                        <ErrorMessage
+                                            name="practice"
+                                            component="div"
+                                            className={`${style.error}`}
                                         />
                                     </div>
 
@@ -311,6 +349,11 @@ export function CreateSubjectForm() {
                                                 setFieldValue("duration", calculateDuration(values.theory, values.practice, Number(e.target.value)));
                                             }}
                                         />
+                                        <ErrorMessage
+                                            name="internship"
+                                            component="div"
+                                            className={`${style.error}`}
+                                        />
                                     </div>
                                 </div>
 
@@ -322,7 +365,6 @@ export function CreateSubjectForm() {
                                     <Field
                                         as="textarea"
                                         rows={4}
-                                        placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}
@@ -331,6 +373,28 @@ export function CreateSubjectForm() {
                                         name="description"
                                         component="div"
                                         className={`${style.error}`}
+                                    />
+                                </div>
+
+                                {/* Subject Image*/}
+                                <div className={`${style.inputContainer}  `}>
+                                    <label
+                                        htmlFor="logo"
+                                        className="block text-sm font-medium text-gray-700 my-2"
+                                    >
+                                        Subject Logo
+                                    </label>
+                                    <Field
+                                        type="file"
+                                        name="logo"
+                                        id="logo"
+                                        component={CustomInput}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                    <ErrorMessage
+                                        name="logo"
+                                        component="div"
+                                        className="text-red-500 mt-1 text-sm"
                                     />
                                 </div>
 
@@ -365,27 +429,6 @@ export function CreateSubjectForm() {
                                     />
                                 </div>
 
-                                {/* Subject Image*/}
-                                <div className={`${style.inputContainer}  `}>
-                                    <label
-                                        htmlFor="logo"
-                                        className="block text-sm font-medium text-gray-700 my-2"
-                                    >
-                                        Subject Logo
-                                    </label>
-                                    <Field
-                                        type="file"
-                                        name="logo"
-                                        id="logo"
-                                        component={CustomInput}
-                                        setFieldValue={setFieldValue}
-                                    />
-                                    <ErrorMessage
-                                        name="logo"
-                                        component="div"
-                                        className="text-red-500 mt-1 text-sm"
-                                    />
-                                </div>
                             </div>
 
                             {/* button submit */}
@@ -393,8 +436,9 @@ export function CreateSubjectForm() {
                                 <Button
                                     type="submit"
                                     className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Add
+                                    {isSubmitting ? 'Adding...' : 'Add'}
                                 </Button>
                             </DialogFooter>
                         </Form>

@@ -9,13 +9,15 @@ import React, {useEffect, useState} from "react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {TbAsterisk} from "react-icons/tb";
 import {useCreateSingleFileMutation} from "@/lib/features/uploadfile/file";
-import {useCreateMaterialMutation, useGetMaterialsQuery} from "@/lib/features/admin/materials/material";
+import {useCreateMaterialMutation} from "@/lib/features/admin/materials/material";
 import {MaterialType, SectionType} from "@/lib/types/admin/materials";
-import {AppDispatch, RootState} from "@/lib/store";
+import {AppDispatch} from "@/lib/store";
 import {useGetSubjectsQuery} from "@/lib/features/admin/faculties/subject/subject";
 import {useDispatch} from "react-redux";
 import Select from "react-select";
 import {useGetAllBySubjectAliasQuery} from "@/lib/features/admin/materials/subjectMaterialSection/section";
+import {toast} from "react-hot-toast";
+import {DialogFooter} from "@/components/ui/dialog";
 
 const initialValues = {
     uuid: '',
@@ -57,7 +59,6 @@ export function CreateMaterialForm() {
     const dispatch = useDispatch<AppDispatch>();
     const [createSingleFile] = useCreateSingleFileMutation();
     const [createMaterial] = useCreateMaterialMutation();
-    const {refetch: refetchMaterials} = useGetMaterialsQuery({page: 0, pageSize: 10});
     const [isOpen, setIsOpen] = useState(false);
     const [sections, setSections] = useState([]);
     const [subjects, setSubjects] = useState([]);
@@ -157,7 +158,6 @@ export function CreateMaterialForm() {
     };
 
     const handleSubmitCurriculum = async (values: any, {setSubmitting, resetForm}: any) => {
-        // const dataToSubmit = curriculumData;
 
         try {
             // Upload the logo file
@@ -187,14 +187,12 @@ export function CreateMaterialForm() {
 
                 await createMaterial(newMaterial).unwrap();
                 resetForm();
-                // Handle success (e.g., show a success message or close the dialog)
-                refetchMaterials();
+                toast.success('Successfully created!');
                 setIsOpen(false);
 
             }
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating material: ", error);
+            toast.error('Failed to create curriculum!');
         } finally {
             setSubmitting(false);
         }
@@ -211,7 +209,6 @@ export function CreateMaterialForm() {
             const fileResponse = await createSingleFile(fileData).unwrap();
 
             if (fileResponse) {
-                // File uploaded successfully, now create the faculty
                 const newMaterial: MaterialType = {
                     uuid: values.uuid,
                     title: values.title,
@@ -231,21 +228,18 @@ export function CreateMaterialForm() {
 
                 await createMaterial(newMaterial).unwrap();
                 resetForm();
-                // Handle success (e.g., show a success message or close the dialog)
-                refetchMaterials();
+                toast.success('Successfully created!');
                 setIsOpen(false);
 
             }
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating material: ", error);
+            toast.error('Failed to create slide!');
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleSubmitVideo = async (values: any, {setSubmitting, resetForm}: any) => {
-        // const dataToSubmit = curriculumData;
 
         try {
             // File uploaded successfully, now create the faculty
@@ -268,13 +262,11 @@ export function CreateMaterialForm() {
 
             await createMaterial(newMaterial).unwrap();
             resetForm();
-            // Handle success (e.g., show a success message or close the dialog)
-            refetchMaterials();
+            toast.success('Successfully created!');
             setIsOpen(false);
 
         } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error("Error creating material: ", error);
+            toast.error('Failed to create video!');
         } finally {
             setSubmitting(false);
         }
@@ -365,12 +357,12 @@ export function CreateMaterialForm() {
                     </div>
                     <Formik
                         initialValues={curriculumData}
-                        // validationSchema={validationSchema}
+                        validationSchema={validationSchema}
                         onSubmit={handleSubmitCurriculum}
                         enableReinitialize
                         onValuesChange={(values: any) => handleFormikChange("curriculum", values)}
                     >
-                        {({setFieldValue, values}) => (
+                        {({setFieldValue, isSubmitting}) => (
                             <Form
                                 className="py-4 rounded-lg w-full flex flex-grow justify-center flex-col items-center">
                                 {/* Add your form fields for personal information here */}
@@ -510,17 +502,16 @@ export function CreateMaterialForm() {
 
 
                                 <div className="flex justify-end w-full container gap-4 mx-auto">
-                                    {/*<Button*/}
-                                    {/*    type="button"*/}
-                                    {/*    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"*/}
-                                    {/*    onClick={() => handleNext(activeTab)}*/}
-                                    {/*>*/}
-                                    {/*    Next*/}
-                                    {/*</Button>*/}
-                                    <Button type="submit"
-                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">
-                                        Upload
-                                    </Button>
+                                    {/* Submit Button */}
+                                    <DialogFooter>
+                                        <Button
+                                            type="submit"
+                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Uploading...' : 'Upload'}
+                                        </Button>
+                                    </DialogFooter>
                                 </div>
 
                             </Form>
@@ -543,7 +534,7 @@ export function CreateMaterialForm() {
                         enableReinitialize
                         onValuesChange={(values: any) => handleFormikChange("slide", values)}
                     >
-                        {({setFieldValue}) => (
+                        {({setFieldValue, isSubmitting}) => (
                             <Form
                                 className="py-4 rounded-lg w-full flex flex-grow justify-center flex-col items-center">
                                 {/* Add your form fields for personal information here */}
@@ -561,7 +552,7 @@ export function CreateMaterialForm() {
                                         <Field
                                             type="text"
                                             name="title"
-                                            placeholder="Web Design Curriculum"
+                                            placeholder="Web Design Slide"
                                             id="title"
                                             className={`${style.input}`}
                                         />
@@ -682,17 +673,16 @@ export function CreateMaterialForm() {
                                 </div>
 
                                 <div className="flex justify-end w-full container gap-4 mx-auto">
-                                    {/*<Button*/}
-                                    {/*    type="button"*/}
-                                    {/*    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"*/}
-                                    {/*    onClick={() => handleNext(activeTab)}*/}
-                                    {/*>*/}
-                                    {/*    Next*/}
-                                    {/*</Button>*/}
-                                    <Button type="submit"
-                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">
-                                        Upload
-                                    </Button>
+                                    {/* Submit Button */}
+                                    <DialogFooter>
+                                        <Button
+                                            type="submit"
+                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Uploading...' : 'Upload'}
+                                        </Button>
+                                    </DialogFooter>
                                 </div>
 
                             </Form>
@@ -712,12 +702,12 @@ export function CreateMaterialForm() {
 
                     <Formik
                         initialValues={videoData}
-                        validationSchema={validationSchema}
+                        // validationSchema={validationSchema}
                         onSubmit={handleSubmitVideo}
                         enableReinitialize
                         onValuesChange={(values: any) => handleFormikChange("video", values)}
                     >
-                        {({setFieldValue}) => (
+                        {({setFieldValue, isSubmitting}) => (
                             <Form
                                 className="py-4 rounded-lg w-full flex flex-grow flex-col justify-center items-center">
 
@@ -736,7 +726,7 @@ export function CreateMaterialForm() {
                                         <Field
                                             type="text"
                                             name="title"
-                                            placeholder="Web Design Curriculum"
+                                            placeholder="Web Design video"
                                             id="title"
                                             className={`${style.input}`}
                                         />
@@ -882,17 +872,16 @@ export function CreateMaterialForm() {
                                 </div>
 
                                 <div className="flex justify-end w-full container gap-4 mx-auto">
-                                    {/*<Button*/}
-                                    {/*    type="button"*/}
-                                    {/*    className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"*/}
-                                    {/*    onClick={() => handleNext(activeTab)}*/}
-                                    {/*>*/}
-                                    {/*    Next*/}
-                                    {/*</Button>*/}
-                                    <Button type="submit"
-                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary">
-                                        Upload
-                                    </Button>
+                                    {/* Submit Button */}
+                                    <DialogFooter>
+                                        <Button
+                                            type="submit"
+                                            className="text-white bg-lms-primary rounded-[10px] hover:bg-lms-primary"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Uploading...' : 'Upload'}
+                                        </Button>
+                                    </DialogFooter>
                                 </div>
                             </Form>
                         )}

@@ -1,14 +1,29 @@
 'use client'
-import React, { useEffect } from 'react';
-import Link from 'next/link';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGetStudentAttendanceQuery } from '@/lib/features/instructor/studentAttendance/studentAttendance';
-import { RootState } from '@/lib/store';
-import { selectStudentAttendances, setStudentAttendances } from '@/lib/features/instructor/studentAttendance/studentAttendanceSlice';
-import { StudentAttendanceDataTable } from '@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceDataTable';
-import { StudentAttendanceColumns } from '@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns';
-import { StudentAttendanceType } from '@/lib/types/instructor/lecture/lecture';
+import React, {useEffect} from "react";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import {
+    StudentAttendanceDataTable
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceDataTable";
+import {
+    StudentAttendanceColumns
+} from "@/components/instructorcomponent/lectures/student-attendance/StudentAttendanceColumns";
+import {useDispatch, useSelector} from "react-redux";
+import {useGetStudentAttendanceQuery} from "@/lib/features/instructor/studentAttendance/studentAttendance";
+import {CurrentType, StudentAttendanceType} from "@/lib/types/instructor/lecture";
+import {RootState} from "@/lib/store";
+import {
+    selectStudentAttendances,
+    setStudentAttendances
+} from "@/lib/features/instructor/studentAttendance/studentAttendanceSlice";
+
 
 const StudentAttendance = () => {
     const dispatch = useDispatch();

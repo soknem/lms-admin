@@ -1,68 +1,63 @@
-'use client'
 import * as React from "react";
 import Image from "next/image";
-
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import courseCardData from "./CourseCardData"; // Adjust the path as needed
 import {useRouter} from "next/navigation";
-import {CourseType} from "@/lib/types/student/course";
+import {CourseType} from "@/lib/types/instructor/courseDetail";
 
-
-type CourseCardProps = CourseType & { onClick: () => void };
+type CourseCardProps = CourseType;
 
 export function CardCourseComponent({
                                         title,
                                         credit,
-                                        progress,
                                         semester,
                                         year,
                                         description,
                                         onClick,
                                         instructorProfileImage,
                                         logo,
+                                        progress,
                                     }: CourseCardProps) {
     const router = useRouter();
 
-    const ImageArray = [
-        logo,
-        instructorProfileImage,
-    ]
+    const courseCardData = {
+        images: [
+            {src: logo, alt: "Course Logo"},
+            {src: instructorProfileImage, alt: "Student Photo"},
+        ],
+    };
+
     return (
-        <Card className=" xl:max-w-[566px]  xl:h-[299px]  w-[610px]  bg-white" onClick={onClick}>
+        <Card
+            className="w-[566px] h-[299px] bg-white transition-transform duration-300 transform hover:scale-[101%] relative custom-border-animation"
+            onClick={onClick}
+        >
             <CardHeader className="mx-[40px]">
                 <CardTitle className="text-lms-primary font-bold text-[24px] line-clamp-1">
                     {title.toUpperCase()}
                 </CardTitle>
-                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3">
+                <CardDescription className="text-lms-black90 text-[16px] line-clamp-3 md:h-[70px]">
                     {description}
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex mx-[40px]">
-                <div className="flex items-center -space-x-4 ">
-                    {ImageArray.map((image, index) => {
-                        if (image) {
-                            return (
-                                <Image
-                                    onClick={() => router.push("/instructor/courses/int-profile")}
-                                    key={index}
-                                    src={image}
-                                    alt={`Image ${index}`}
-                                    width={64}
-                                    height={64}
-                                    className=" h-[64px] w-[64] rounded-full object-cover ring-2 ring-white"
-                                />
-                            )
-                        }
-                    })}
-                </div>
-                {/* Add content here */}
+            <CardContent className="flex justify-around relative">
+                <img
+                    src={logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
+                    alt="Course Logo"
+                    className="h-[45px] w-[45px] rounded-full object-cover ring-2 ring-white mt-8"
+                />
+
+                <img
+                    src={instructorProfileImage || "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"}
+                    alt="Instructor Profile"
+                    className=" absolute left-[98px] h-[45px] w-[45px] rounded-full object-cover ring-2 ring-white mt-8 "
+                />
+
                 <div className="mt-4 ml-[100px]">
                     <div className="flex gap-4">
                         <p>Year: {year}</p>

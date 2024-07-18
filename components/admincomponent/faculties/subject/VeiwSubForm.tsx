@@ -25,27 +25,11 @@ import {
     useGetSubjectsQuery
 } from "@/lib/features/admin/faculties/subject/subject";
 import {TbAsterisk} from "react-icons/tb";
+import logo_holder from "@/public/common/logo_holder.png";
 
-const RadioButton = ({field, value, label}: any) => {
-    return (
-        <div>
-            <input
-                type="radio"
-                {...field}
-                id={value.toString()}
-                value={value.toString()}
-                checked={field.value.toString() === value.toString()}
-            />
-            <label className="pl-2" htmlFor={value.toString()}>
-                {label}
-            </label>
-        </div>
-    );
-};
 
-const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
+const CustomInput = ({previewUrl}: any) => {
     const [imagePreview, setImagePreview] = useState(previewUrl);
-
     return (
         <div className="w-full">
             <div
@@ -59,13 +43,13 @@ const CustomInput = ({field, form: {setFieldValue}, previewUrl}: any) => {
                         style={{objectFit: "contain"}}
                     />
                 ) : (
-                    <img
-                        src={previewUrl}
-                        alt="faculty"
-                        className="w-full object-coverl"
+                    <Image
+                        src={previewUrl || logo_holder}
+                        alt="preview"
+                        fill
+                        className="w-full h-full rounded-full object-fill"
                     />
                 )}
-
             </div>
         </div>
     );
@@ -98,7 +82,7 @@ export function ViewSubjectForm({alias, onClose}: { alias: string; onClose: () =
                 theory: subjectData.theory,
                 practice: subjectData.practice,
                 internship: subjectData.internship,
-                description: subjectData.description,
+                description: subjectData.description || "No description",
                 isDraft: subjectData.isDraft,
             });
             setInitialAlias(subjectData.alias);
@@ -222,7 +206,6 @@ export function ViewSubjectForm({alias, onClose}: { alias: string; onClose: () =
                                         disabled
                                         as="textarea"
                                         rows={4}
-                                        placeholder="a foundational program designed to equip you with essential knowledge and skills in the field of IT. This course is tailored for beginners and those looking to strengthen their understanding of information technology concepts and applications. "
                                         name="description"
                                         id="description"
                                         className={`${style.input}`}

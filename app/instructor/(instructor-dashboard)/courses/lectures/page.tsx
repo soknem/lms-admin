@@ -30,7 +30,7 @@ import {RootState} from "@/lib/store";
 import {selectAssessment, setAssessment} from "@/lib/features/instructor/assessment/assessmentSlice";
 import React, {useEffect} from "react";
 import {useGetCurrentLectureQuery} from "@/lib/features/instructor/lecture/currentLecture";
-import {CurrentType, EndedLectureType} from "@/lib/types/instructor/lecture/lecture";
+import {CurrentType, EndedLectureType} from "@/lib/types/instructor/lecture";
 import {selectCurrents, setCurrents} from "@/lib/features/instructor/lecture/currentLectureSlice";
 import {useGetEndedLectureQuery} from "@/lib/features/instructor/endLecture/endedLecture";
 import {selectEndeds, setEndeds} from "@/lib/features/instructor/endLecture/endedLectureSlice";
