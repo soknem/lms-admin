@@ -23,8 +23,9 @@ interface RootLayoutProps {
 export default function RootLayoutParent({children}: RootLayoutProps) {
     const pathname = usePathname();
     // Check if the path includes /instructor/view-profile/[uuid]
-    const showInstructorSidebar = !pathname.match(/\/instructor\/view-profile\/[^/]+/) && !pathname.match(/\/instructor\/courses\/[^/]+/);
-    // const showInstructorCourse = !pathname.match(/\/instructor\/courses\/[^/]+/);
+    const showInstructorSidebar = !pathname.match(/\/instructor\/view-profile\/[^/]+/)
+        && !pathname.match(/\/instructor\/courses\/[^/]+/)
+        && !pathname.match(/\/instructor\/profile\/[^/]+/);
 
     return (
         <html lang="en" suppressHydrationWarning>

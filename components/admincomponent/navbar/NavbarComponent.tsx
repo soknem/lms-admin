@@ -36,7 +36,7 @@ export default function NavbarComponent() {
 
             <div>
                 <p className="text-black font-semibold text-xl ">{username || "Username"}</p>
-                <p className="text-lms-gray-30 font-semibold text-sm  ">{position || "Position"}</p>
+                <p className="text-lms-gray-30 font-semibold text-sm  ">{position || "STUDENT"}</p>
             </div>
 
         </section>

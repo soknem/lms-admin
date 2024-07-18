@@ -86,8 +86,8 @@ We have provided a set of test accounts for you to explore the features of each 
 - **Password:** Instructor@123
 
 #### Student Dashboard
-- **Username:** student@test.com
-- **Password:** Student123
+- **Username:** Noun-Sovanthorn-2002-10-22
+- **Password:** Student@123
 
 <!-- GETTING STARTED -->
 

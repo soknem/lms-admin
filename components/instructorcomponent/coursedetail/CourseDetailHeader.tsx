@@ -2,6 +2,7 @@
 import React from "react";
 import {useRouter} from "next/navigation";
 import {CourseResponse} from "@/lib/types/instructor/courseDetail";
+import Image from "next/image";
 
 export default function CourseDetailHeaderInstructor({
                                                          year,
@@ -58,22 +59,25 @@ export default function CourseDetailHeaderInstructor({
 
                     </div>
                 </div>
-                <div className="ml-[88px]">
-                    <img
-                        src={courseLogo || ''}
+                <div
+                    className="mt-[30px] w-[500px] flex justify-center "
+                    // style={{backgroundImage: `url(${courseLogo})`}}
+                >
+                    <Image
+                        src={courseLogo || 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png'}
                         alt="Course Logo"
-                        width={215}
-                        height={215}
-                        className="w-[215px] h-[215px]"
+                        width={300}
+                        height={200}
+                        quality={100}
                     />
                 </div>
             </section>
             <section className="flex items-center mx-[90px] mt-[50px] ">
-                <img
+                <Image
                     onClick={() =>
-                        router.push(`/instructor/view-profile/${instructor?.uuid}`)
+                        router.push(`/instructor/profile/${instructor?.uuid}`)
                     }
-                    className="w-[60px] h-[60px] rounded-full mr-4"
+                    className=" rounded-full mr-4"
                     src={
                         instructor?.instructorProfileImage ||
                         "https://i.pinimg.com/564x/25/ee/de/25eedef494e9b4ce02b14990c9b5db2d.jpg"
@@ -81,6 +85,7 @@ export default function CourseDetailHeaderInstructor({
                     alt="Instructor"
                     width={60}
                     height={60}
+                    quality={100}
                 />
                 <div>
                     <p className="font-bold text-[20px] text-lms-primary">
@@ -94,7 +99,7 @@ export default function CourseDetailHeaderInstructor({
                     <div className="flex -space-x-6 items-center">
                         {studentProfileImage?.length > 0 ? (
                             studentProfileImage.map((src: string, index: number) => (
-                                <img
+                                <Image
                                     key={index}
                                     src={
                                         src ||

@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import type { CourseDetail } from "@/lib/types/student/course";
+import Image from "next/image";
 
 export default function     CourseDetailHeaderStudent({
                                                       year,
@@ -36,7 +37,7 @@ export default function     CourseDetailHeaderStudent({
                     <p className="text-lms-gray-80 w-[803px] text-[18px] mt-[14px]">
                         {courseDescription || "Course Description"}
                     </p>
-                    <div className="flex items-center mt-[20px]">
+                    <div className="flex items-center mt-[25px]">
                         <span className="mr-4 font-semibold">
                             Credit: {credit || "N/A"}
                         </span>
@@ -51,17 +52,20 @@ export default function     CourseDetailHeaderStudent({
                         </span>
                     </div>
                 </div>
-                <div className="ml-[88px]">
-                    <img
-                        src={courseLogo}
+                <div
+                    className="mt-[30px] w-[500px] flex justify-center "
+                    // style={{backgroundImage: `url(${courseLogo})`}}
+                >
+                    <Image
+                        src={courseLogo || 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png'}
                         alt="Course Logo"
-                        width={215}
-                        height={215}
-                        className="w-[215px] h-[215px]"
+                        width={300}
+                        height={0}
+                        className="h-auto"
                     />
                 </div>
             </section>
-            <section className="flex items-center mx-[90px] mt-[50px]">
+            <section className="flex items-center mx-[90px] mt-12 ">
                 <img
                     onClick={() =>
                         router.push(`/instructor/view-profile/${instructor?.uuid}`)
@@ -83,11 +87,11 @@ export default function     CourseDetailHeaderStudent({
                         {position || 'Unknown Position'}
                     </p>
                 </div>
-                <div className="flex items-center ml-[88px]">
+                <div className="flex items-center ml-[88px] ">
                     <div className="flex -space-x-7 items-center cursor-pointer">
                         {studentProfileImage?.length > 0 ? (
                             studentProfileImage.map((src: string, index: number) => (
-                                <img
+                                <Image
                                     key={index}
                                     src={
                                         src ||
@@ -97,7 +101,7 @@ export default function     CourseDetailHeaderStudent({
                                     alt={`Student ${index + 1}`}
                                     width={40}
                                     height={40}
-                                    className="h-[40px] w-[40px] hover:scale-[100%] rounded-full object-cover ring-2 ring-white"
+                                    className=" h-[40px] hover:scale-[100%] rounded-full object-cover ring-2 ring-white"
                                 />
                             ))
                         ) : (

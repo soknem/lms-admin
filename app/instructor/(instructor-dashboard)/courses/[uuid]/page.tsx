@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import {BreadcrumbWithCustomSeparator} from "@/components/studentcomponent/coursedetail/BreadcrumbComponent";
-import TabComponent from "@/components/studentcomponent/coursedetail/TabComponent";
+import TabComponent from "@/components/instructorcomponent/coursedetail/TabComponent";
 import type {PropsParam} from "@/lib/types/student/course";
 import LoadingComponent from "@/app/student/(student-dashbaord)/loading";
 import {useGetInstructorCourseByUuidQuery} from "@/lib/features/instructor/course/instructorCourse";
@@ -58,13 +58,9 @@ export default function CourseDetail({params}: PropsParam) {
                 <BreadcrumbWithCustomSeparator
                     {...data}
                 />
-
-
-
             </section>
             <section className="mx-[100px]">
                 <TabComponent
-                    courseUuid={uuid}
                     courseTitle={courseDetails.courseTitle}
                     courseDescription={courseDetails.courseDescription || "Unknown Description"}
                     curriculumData={courseDetails.curriculum || null}

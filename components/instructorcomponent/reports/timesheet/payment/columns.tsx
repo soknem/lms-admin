@@ -128,15 +128,13 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "pwRate",
     header: ({ column }) => {
       return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              // To customize the size of each column
-              className="w-[130px] flex justify-start items-start"
-          >
-            PW RATE
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          PW RATE
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
     cell: TableCell,
@@ -145,15 +143,13 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "theoryHours",
     header: ({ column }) => {
       return (
-          <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              // To customize the size of each column
-              className="w-[150px] flex justify-start items-start"
-          >
-            THEORYHOUR
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          THEORYHOUR
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
     cell: TableCell,
@@ -162,16 +158,19 @@ export const PaymentColumns: ColumnDef<PaymentType>[] = [
     accessorKey: "pwHours",
     header: ({ column }) => {
       return (
-          <Button variant="ghost">
-            PW HOUR
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+          PW HOUR
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
     cell: TableCell,
   },
   {
-    accessorKey: "totalAmount",
+    accessorKey: "totalOfSession",
     header: ({ column }) => {
       return (
           <Button variant="ghost">

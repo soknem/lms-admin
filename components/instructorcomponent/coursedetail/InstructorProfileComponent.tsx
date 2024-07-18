@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import Image , {StaticImageData} from "next/image";
+import Image, {StaticImageData} from "next/image";
 import CV from "@/public/staff/cv.png";
 import IdCard from "@/public/staff/idcard.png";
 import {ImLinkedin, ImGithub} from "react-icons/im";
@@ -21,7 +21,6 @@ import placeholderImage from "@/public/common/placeholderPf.png";
 
 type CardProps = {
     id: string;
-    imageSrc: String | StaticImageData;
     name: string;
     education: string[];
     position: string;
@@ -30,36 +29,32 @@ type CardProps = {
     mail: string;
     skills: string[];
     currentAddress: string;
+    profileImage: string | null;
     birthPlace: string;
     linkTelegram: string;
-    nameKh: string;
     uploadCv: string;
     identityCard: string;
     phoneNumber: string;
     bio: string;
-    isDeleted: boolean;
 };
 
-export default function StaffDetailComponent({
-                                                 id,
-                                                 imageSrc,
-                                                 name,
-                                                 position,
-                                                 linkedin,
-                                                 github,
-                                                 mail,
-                                                 skills,
-                                                 currentAddress,
-                                                 birthPlace,
-                                                 linkTelegram,
-                                                 nameKh,
-                                                 uploadCv,
-                                                 identityCard,
-                                                 phoneNumber,
-                                                 bio,
-                                                 education,
-                                                 isDeleted
-                                             }: CardProps) {
+export default function InstructorProfileComponent({
+                                                       id,
+                                                       name,
+                                                       position,
+                                                       linkedin,
+                                                       github,
+                                                       mail,
+                                                       skills,
+                                                       currentAddress,
+                                                       profileImage,
+                                                       linkTelegram,
+                                                       uploadCv,
+                                                       identityCard,
+                                                       phoneNumber,
+                                                       bio,
+                                                       education,
+                                                   }: CardProps) {
 
     const openInNewTab = (url: string) => {
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
@@ -80,7 +75,7 @@ export default function StaffDetailComponent({
                         <Image className="object-cover w-full rounded-[8px]"
                                width={100}
                                height={100}
-                               src={imageSrc as StaticImageData}
+                               src={profileImage || "/placeholder.jpg"}
                                alt="profile"
                         />
                         <div className="flex justify-center gap-4 mt-6">
@@ -127,9 +122,9 @@ export default function StaffDetailComponent({
 
                 <div className="col-span-3 space-y-6">
                     <div className="relative p-6 bg-white rounded-[8px]">
-                        <div className="absolute top-6 right-6">
-                            <MoreInfo staffUuid={id} isDeletedState={isDeleted} position={position}/>
-                        </div>
+                        {/*<div className="absolute top-6 right-6">*/}
+                        {/*    <MoreInfo staffUuid={id} isDeletedState={isDeleted} position={position}/>*/}
+                        {/*</div>*/}
                         <p className="font-bold text-4xl uppercase">{name}</p>
                         <p className="text-lms-gray-30 text-xl font-medium mb-6">{position}</p>
 
@@ -161,29 +156,29 @@ export default function StaffDetailComponent({
                             {bio}
                         </p>
 
-                        {/*<p className="text-3xl font-bold mb-4">Documents</p>*/}
+                        <p className="text-3xl font-bold mb-4">Documents</p>
 
-                        {/*<div className="flex gap-4">*/}
-                        {/*    /!* CV *!/*/}
-                        {/*    <div className="border rounded-[8px] flex items-center p-2 cursor-pointer"*/}
-                        {/*         onClick={() => openInNewTab(uploadCv)}>*/}
-                        {/*        <div className="p-1 mr-4 rounded-[8px]">*/}
-                        {/*            <Image className="w-12 h-12 rounded-[8px]" width={100} height={100} src={CV}*/}
-                        {/*                   alt="cv"/>*/}
-                        {/*        </div>*/}
-                        {/*        <p className="leading-tight mr-4">Curriculum Vitae</p>*/}
-                        {/*    </div>*/}
+                        <div className="flex gap-4">
+                            {/* CV */}
+                            <div className="border rounded-[8px] flex items-center p-2 cursor-pointer"
+                                 onClick={() => openInNewTab(uploadCv)}>
+                                <div className="p-1 mr-4 rounded-[8px]">
+                                    <Image className="w-12 h-12 rounded-[8px]" width={100} height={100} src={CV}
+                                           alt="cv"/>
+                                </div>
+                                <p className="leading-tight mr-4">Curriculum Vitae</p>
+                            </div>
 
-                        {/*    /!* ID Card *!/*/}
-                        {/*    <div className="border rounded-[8px] flex items-center p-2 cursor-pointer"*/}
-                        {/*         onClick={() => openInNewTab(identityCard)}>*/}
-                        {/*        <div className="p-1 mr-4 rounded-[8px]">*/}
-                        {/*            <Image className="w-12 h-12 rounded-[8px]" width={100} height={100} src={IdCard}*/}
-                        {/*                   alt="id card"/>*/}
-                        {/*        </div>*/}
-                        {/*        <p className="leading-tight mr-4">ID Card</p>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
+                            {/* ID Card */}
+                            <div className="border rounded-[8px] flex items-center p-2 cursor-pointer"
+                                 onClick={() => openInNewTab(identityCard)}>
+                                <div className="p-1 mr-4 rounded-[8px]">
+                                    <Image className="w-12 h-12 rounded-[8px]" width={100} height={100} src={IdCard}
+                                           alt="id card"/>
+                                </div>
+                                <p className="leading-tight mr-4">ID Card</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/*<div className="rounded-[8px]">*/}

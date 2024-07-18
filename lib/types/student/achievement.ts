@@ -41,6 +41,7 @@ export type YearOfStudy = {
 export type YearSemesterTableProps = {
     year: number;
     semester: number;
+    gpa : number;
     courses: Course[];
 }
 

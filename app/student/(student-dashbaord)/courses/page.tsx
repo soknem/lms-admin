@@ -108,7 +108,7 @@ export default function Course() {
                     <div className="flex items-center w-full relative">
                         <Input
                             placeholder="Search Course"
-                            className="border-[#E6E6E6] bg-white rounded-[10px] pl-10 text-lms-gray-30 w-full"
+                            className="border-[#E6E6E6] placeholder:font-semibold placeholder-lms-black-90 placeholder-t bg-white rounded-[10px] pl-10 text-lms-gray-30 w-full"
                             onChange={handleSearch}
                             value={searchTerm}
                         />
