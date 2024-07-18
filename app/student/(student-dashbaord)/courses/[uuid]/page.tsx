@@ -50,6 +50,7 @@ export default function CourseDetail({params}: PropsParam) {
             </section>
             <section className="mx-[100px]">
                 <TabComponent
+                    courseUuid={uuid}
                     courseTitle={courseDetails.courseTitle}
                     courseDescription={courseDetails.courseDescription}
                     curriculumData={courseDetails.curriculum || null}

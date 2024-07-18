@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import lectures from "./data/lectures.json";
+import lectures from "../data/lectures.json";
 import {
     InstructorCurrentLectureDataTable
 } from "@/components/instructorcomponent/lectures/current-lecture/InstructorCurrentLectureDataTable";
@@ -39,18 +39,29 @@ import {selectLecture, setLecture} from "@/lib/features/instructor/lectureadd/le
 import {LectureRespondType} from "@/lib/types/admin/academics";
 import {LectureDataTable} from "@/components/admincomponent/academics/lectures/LectureDataTable";
 import {LectureColumns} from "@/components/admincomponent/academics/lectures/LectureColumns";
+import type {PropsParam} from "@/lib/types/student/course";
+import {selectCourseTitle} from "@/lib/features/instructor/course/getCourseTitleSlice";
 
-export default function Lecture() {
+export default function Lecture({params}: PropsParam) {
+    const uuid = params.uuid;
+
     const dispatch = useDispatch();
     const {data: CurrentData, error: Currenterror} = useGetCurrentLectureQuery();
     const {data: EndedData, error: Endederror} = useGetEndedLectureQuery();
     const {data: LectureData,error:LectureError} = useGetLectureQuery({ page: 0, pageSize: 10 });
 
+    if(CurrentData){
+        console.log("current ",CurrentData)
+    }
 
+    if(EndedData){
+        console.log("End ",EndedData)
+    }
 
     const filteredCurrentLectureData: CurrentType[] = useSelector((state: RootState) => selectCurrents(state));
     const filteredEndedLectureData: EndedLectureType[] = useSelector((state: RootState) => selectEndeds(state));
 
+    const courseTitle = localStorage.getItem('courseTitle');
 
     // Effect to update Redux store on data change
     useEffect(() => {
@@ -101,6 +112,8 @@ export default function Lecture() {
         }
     }, [LectureData, LectureError, dispatch]);
 
+    // console.log("data con: ",LectureData.content?.course[0].title)
+
     // // Filter data for current and ended lectures
     // const filteredCurrentLectureData = data.filter(
     //     (lecture) => lecture.status === 1
@@ -130,7 +143,7 @@ export default function Lecture() {
                                 href="/instructor/courses/coursedetail"
                                 className="font-semibold text-gray-30 uppercase"
                             >
-                                INTRODUCTION TO IT
+                                {courseTitle}
                             </Link>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
