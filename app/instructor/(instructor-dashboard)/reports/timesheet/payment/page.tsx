@@ -8,7 +8,7 @@ export default function PaymentPage() {
 
     return (
         <div className="relative h-full">
-            <div className="absolute top-[-20px] left-0 right-0"> {/* Adjust the position with top-[-20px] */}
+            <div className="absolute top-[-72px] left-0 right-0"> {/* Adjust the position with top-[-20px] */}
                 <DateComponent selectedDate={selectedDate} onDateChange={setSelectedDate} />
             </div>
             <div className="mt-8"> {/* Add margin to ensure there's space for DateComponent */}
