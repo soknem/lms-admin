@@ -125,7 +125,7 @@ const ReportInstructorComponent: React.FC = () => {
         </div>
         <div className="mt-9 mx-10">
           <Table className="w-[500px]">
-            <TableHeader>
+            <TableHeader className="font-bold text-[15px] bg-lms-transcript-header">
               <TableRow>
                 <TableCell>INSTRUCTOR</TableCell>
                 <TableCell>TOTAL</TableCell>
@@ -143,12 +143,18 @@ const ReportInstructorComponent: React.FC = () => {
                 <TableCell>{data.totalMale}</TableCell>
                 <TableCell>{data.totalMalePercentage}%</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">Active</TableCell>
+                <TableCell>{data.totalMale}</TableCell>
+                <TableCell>{data.totalActiveInstructorPercentage}%</TableCell>
+              </TableRow>
             </TableBody>
             <TableFooter>
-              <TableRow className="bg-lms-background">
-                <TableCell>TOTAL</TableCell>
+              <TableRow className="font-bold bg-lms-background">
+                <TableCell>Total Instructor</TableCell>
+                <TableCell></TableCell>
+
                 <TableCell>{data.totalInstructor}</TableCell>
-                <TableCell>100%</TableCell>
               </TableRow>
             </TableFooter>
           </Table>

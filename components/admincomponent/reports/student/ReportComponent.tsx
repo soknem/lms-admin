@@ -147,10 +147,10 @@ const ReportComponent: React.FC = () => {
 
     return (
         <div className="bg-lms-white-80 p-4 h-full flex justify-between rounded-xl">
-            <div className="w-[700px] h-[700px]">
+            <div className="w-[700px] h-[700px] mt-5">
                 <canvas ref={chartContainer}></canvas>
             </div>
-            <div className="mx-15">
+            <div className="mx-15 mt-6">
                 <Table className="w-[400px]">
                     <TableHeader className="font-bold text-[15px]  bg-lms-transcript-header">
                         <TableRow>
@@ -186,7 +186,7 @@ const ReportComponent: React.FC = () => {
                             <TableCell>{data.totalHiatusStudentPercentage}%</TableCell>
                         </TableRow>
                     </TableBody>
-                    <TableFooter className="bg-lms-transcript-header ">
+                    <TableFooter className="bg-lms-background ">
                         <TableRow className="font-bold ">
                             <TableCell>Total Student</TableCell>
                             <TableCell></TableCell>

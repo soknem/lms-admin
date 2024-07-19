@@ -146,12 +146,12 @@ const StudentpayComponent: React.FC = () => {
 
   return (
       <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl border">
-        <div className="w-1/2 p-5">
+        <div className="w-[700px] h-[700px]">
           <div className="mb-4 bg-lms-primary text-lms-white-80 rounded w-[150px] text-center h-[35px] p-1">
             Generation 1
           </div>
-          <Table className="w-full">
-            <TableHeader>
+          <Table className="w-[500px]">
+            <TableHeader className="font-bold text-[15px] bg-lms-transcript-header ">
               <TableRow>
                 <TableHead>STUDENT PAYMENT</TableHead>
                 <TableHead>TOTAL</TableHead>
@@ -181,9 +181,10 @@ const StudentpayComponent: React.FC = () => {
             </TableBody>
             <TableFooter>
               <TableRow className="bg-lms-background">
-                <TableCell className="font-medium">TOTAL</TableCell>
+                <TableCell className="font-bold">Total Payment</TableCell>
+                <TableCell></TableCell>
+
                 <TableCell>{payments ? payments.totalStudentPayment : 0}</TableCell>
-                <TableCell>100%</TableCell>
               </TableRow>
             </TableFooter>
           </Table>

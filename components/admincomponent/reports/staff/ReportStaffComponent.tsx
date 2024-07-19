@@ -121,12 +121,12 @@ const ReportStaffComponent: React.FC = () => {
 
   return (
       <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
-        <div className="chart-container w-full h-96 md:w-1/2 mx-10">
+        <div className="w-[500px] h-[500px] ">
           <canvas ref={chartContainer}></canvas>
         </div>
         <div className="mt-9 mx-10">
           <Table className="w-[500px]">
-            <TableHeader>
+            <TableHeader className="font-bold text-[15px]  bg-lms-transcript-header">
               <TableRow>
                 <TableCell>STAFF</TableCell>
                 <TableCell>TOTAL</TableCell>
@@ -148,8 +148,9 @@ const ReportStaffComponent: React.FC = () => {
             <TableFooter>
               <TableRow className="bg-lms-background">
                 <TableCell>TOTAL</TableCell>
+                <TableCell></TableCell>
                 <TableCell>{data.totalStaff}</TableCell>
-                <TableCell>100%</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableFooter>
           </Table>
