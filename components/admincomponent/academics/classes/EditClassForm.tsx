@@ -171,7 +171,7 @@ export default function EditClassForm({ uuid  ,  onClose ,classData }:PropsType 
     return(
         <div className="fixed inset-0 flex items-center justify-center bg-lms-black90 bg-opacity-50">
             <div className="relative bg-white rounded-lg shadow-md p-6  w-[500px] text-left">
-                <h2 className="text-xl font-bold mb-4">Update Lecture</h2>
+                <h2 className="text-xl font-bold mb-4">Update Class</h2>
                 <button className="absolute top-6 right-6" onClick={onClose}><IoCloseOutline className="w-6 h-6"/>
                 </button>
                 <form

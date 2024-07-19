@@ -36,6 +36,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {TbAdjustmentsHorizontal, TbFilter} from "react-icons/tb";
+import {useRouter} from "next/navigation";
 
 //custom component import
 
@@ -103,6 +104,8 @@ export function ScheduleTable<TData, TValue>({
     },
   });
 
+
+  const router = useRouter()
 
   const filterOptions = ["All", "Started", "Pending", "Ended"];
   const handleFilterChange = (value: string) => {
@@ -230,6 +233,8 @@ export function ScheduleTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  // className="hover:cursor-pointer "
+                  // onClick={() => router.push(`/instructor/courses/lectures/72042a68-3b61-44d3-afc0-6991a3c6306c`)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

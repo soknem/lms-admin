@@ -43,6 +43,7 @@ import {paymentApi} from "@/lib/features/instructor/report/timesheet/payment/pay
 import bannerSlice from "@/lib/features/admin/faculties/banner/bannerSlice";
 import instructorSlice from "@/lib/features/admin/report/instructor/instructorSlice";
 import studentPaymentSlice from "@/lib/features/admin/report/studentPayment/studentPaymentSlice";
+import getCourseTitleSlice from "@/lib/features/instructor/course/getCourseTitleSlice";
 
 
 export const makeStore = () => {
@@ -90,6 +91,8 @@ export const makeStore = () => {
             studentAttendance: studentAttendanceSlice,
             userProfile: userProfileSlice,
             studentPayment: studentPaymentSlice,
+            userProfile: userProfileSlice,
+            singleCourse: getCourseTitleSlice
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(istadLmsApi.middleware),
     })
