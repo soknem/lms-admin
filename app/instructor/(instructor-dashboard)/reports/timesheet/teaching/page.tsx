@@ -4,10 +4,10 @@ import { TeachingDataTable } from "@/components/instructorcomponent/reports/time
 import { TeachingColumns } from "@/components/instructorcomponent/reports/timesheet/teaching/columns";
 
 export default function Teaching() {
-    const teachingData: TeachingType[] = teaching;
+    // const teachingData: TeachingType[] = teaching;
     return (
         <main className="flex flex-col gap-4 h-full w-full p-9">
-            <TeachingDataTable columns={TeachingColumns} data={teachingData} />
+            {/*<TeachingDataTable columns={TeachingColumns} data={teachingData} />*/}
         </main>
     );
 }
