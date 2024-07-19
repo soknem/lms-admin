@@ -13,56 +13,44 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {useGetStaffQuery} from "@/lib/features/admin/report/staff/staff";
 
-const genders = [
-  {
-    gender: "Female",
-    percent: "70%",
-    totalAmount: "250",
-  },
-  {
-    gender: "Male",
-    percent: "30%",
-    totalAmount: "150",
-  },
-];
 
 Chart.register(
-  BarController,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend
-);
+    BarController,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Title,
+    Tooltip,
+    Legend
+);;
 
 const ReportStaffComponent: React.FC = () => {
+  const { data, isLoading, error } = useGetStaffQuery();
+
   const chartContainer = useRef<HTMLCanvasElement | null>(null);
   const myChart = useRef<Chart | null>(null);
-
   useEffect(() => {
-    if (chartContainer.current) {
-      const labels = ["Semester 1", "Semester 2"];
-      const data = {
+    if (data && chartContainer.current) {
+      const labels = ["Total Staff"];
+      const chartData = {
         labels: labels,
         datasets: [
           {
             label: "Female",
-            data: [70, 55], // Percentages for Female students
+            data: [data.totalFemalePercentage],
             borderColor: "red",
             backgroundColor: "red",
           },
           {
             label: "Male",
-            data: [30, 45], // Percentages for Male students
+            data: [data.totalMalePercentage],
             borderColor: "blue",
             backgroundColor: "blue",
           },
@@ -71,7 +59,7 @@ const ReportStaffComponent: React.FC = () => {
 
       const config: any = {
         type: "bar",
-        data: data,
+        data: chartData,
         options: {
           responsive: true,
           scales: {
@@ -92,7 +80,7 @@ const ReportStaffComponent: React.FC = () => {
               },
             },
             title: {
-              display: "top",
+              display: true,
               text: "Total Staff",
             },
             tooltip: {
@@ -113,7 +101,6 @@ const ReportStaffComponent: React.FC = () => {
         },
       };
 
-      // Destroy the previous chart instance if it exists
       if (myChart.current) {
         myChart.current.destroy();
       }
@@ -121,48 +108,53 @@ const ReportStaffComponent: React.FC = () => {
       myChart.current = new Chart(chartContainer.current, config);
     }
 
-    // Cleanup function to destroy the chart when the component unmounts or before re-rendering
     return () => {
       if (myChart.current) {
         myChart.current.destroy();
       }
     };
-  }, []);
+  }, [data]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
+
 
   return (
-    <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
-      <div className="chart-container w-full h-96 md:w-1/2 mx-10">
-        <canvas ref={chartContainer}></canvas>
+      <div className="bg-lms-white-80 p-5 h-full flex justify-between rounded-xl">
+        <div className="chart-container w-full h-96 md:w-1/2 mx-10">
+          <canvas ref={chartContainer}></canvas>
+        </div>
+        <div className="mt-9 mx-10">
+          <Table className="w-[500px]">
+            <TableHeader>
+              <TableRow>
+                <TableCell>STAFF</TableCell>
+                <TableCell>TOTAL</TableCell>
+                <TableCell>PERCENT</TableCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-medium">Female</TableCell>
+                <TableCell>{data.totalFemale}</TableCell>
+                <TableCell>{data.totalFemalePercentage}%</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">Male</TableCell>
+                <TableCell>{data.totalMale}</TableCell>
+                <TableCell>{data.totalMalePercentage}%</TableCell>
+              </TableRow>
+            </TableBody>
+            <TableFooter>
+              <TableRow className="bg-lms-background">
+                <TableCell>TOTAL</TableCell>
+                <TableCell>{data.totalStaff}</TableCell>
+                <TableCell>100%</TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </div>
       </div>
-      <div className="mt-9 mx-10">
-        <Table className="w-[500px]">
-        <TableHeader>
-          <TableRow>
-            <TableHead>STAFF</TableHead>
-            <TableHead>TOTAL</TableHead>
-            <TableHead>PERCENT</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {genders.map((gender) => (
-            <TableRow key={gender.gender}>
-              <TableCell className="font-medium">{gender.gender}</TableCell>
-              <TableCell>{gender.totalAmount}</TableCell>
-              <TableCell>{gender.percent}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow className="bg-lms-background">
-            <TableCell>TOTAL</TableCell>
-            <TableCell>200</TableCell>
-            <TableCell>100%</TableCell>
-            </TableRow>
-        </TableFooter>
-      </Table>
-      </div>
-      
-    </div>
   );
 };
 

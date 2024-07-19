@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { OptionType, TranscriptType } from "@/lib/types/admin/academics";
-import { TimesheetType } from "@/lib/types/instructor/timesheet";
+import { PaymentType } from "@/lib/types/instructor/timesheet";
 
 const TableCell = ({ getValue, row, column, table }: any) => {
   const initialValue = getValue();
@@ -72,7 +72,7 @@ const TableCell = ({ getValue, row, column, table }: any) => {
   return <span>{value}</span>;
 };
 
-export const PaymentColumns: ColumnDef<TimesheetType>[] = [
+export const PaymentColumns: ColumnDef<PaymentType>[] = [
   {
     accessorKey: "date",
     header: ({ column }) => {
@@ -89,7 +89,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "session",
+    accessorKey: "timeRange",
     header: ({ column }) => {
       return (
           <Button
@@ -101,9 +101,15 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
           </Button>
       );
     },
-    cell: TableCell,
-  },
-  {
+    cell: ({ row }) => {
+      const { lectureStartTime, lectureEndTime } = row.original;
+      return (
+          <span>{`${lectureStartTime} - ${lectureEndTime}`}</span>
+      );
+    },
+
+
+  },  {
     accessorKey: "theoryRate",
     header: ({ column }) => {
       return (
@@ -136,7 +142,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "theoryHour",
+    accessorKey: "theoryHours",
     header: ({ column }) => {
       return (
           <Button
@@ -153,7 +159,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "pwHour",
+    accessorKey: "pwHours",
     header: ({ column }) => {
       return (
           <Button variant="ghost">
@@ -165,7 +171,7 @@ export const PaymentColumns: ColumnDef<TimesheetType>[] = [
     cell: TableCell,
   },
   {
-    accessorKey: "total",
+    accessorKey: "totalAmount",
     header: ({ column }) => {
       return (
           <Button variant="ghost">

@@ -293,7 +293,7 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
         <div className='rounded-md p-4 bg-white'>
 
           {/* class detail information */}
-          <div className='flex gap-16 p-5'>
+          <div className='flex gap-16 '>
             {/*<div>*/}
             {/*  <Label className='text-lms-gray-30'>Generation</Label>*/}
             {/*  <p className='flex font-medium text-lms-black-90'>Generation 1</p>*/}
@@ -314,20 +314,20 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
             {/*  <p className='flex font-medium text-lms-black-90'>Bachelor</p>*/}
             {/*</div>*/}
 
-            <div>
-              <Label className='text-lms-gray-30'>Card ID</Label>
-              <p className='flex font-medium text-lms-black-90'>Gen 1</p>
-            </div>
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Card ID</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>Gen 1</p>*/}
+            {/*</div>*/}
 
-            <div>
-              <Label className='text-lms-gray-30'>Class</Label>
-              <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>
-            </div>
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Class</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>FY2025 - A3</p>*/}
+            {/*</div>*/}
 
-            <div>
-              <Label className='text-lms-gray-30'>Course</Label>
-              <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>
-            </div>
+            {/*<div>*/}
+            {/*  <Label className='text-lms-gray-30'>Course</Label>*/}
+            {/*  <p className='flex font-medium text-lms-black-90'>Introduction To IT</p>*/}
+            {/*</div>*/}
 
 
           </div>
@@ -388,70 +388,30 @@ export function InstructorCourseAssesmentDataTable<TData, TValue>({
 
 
         </div>
+        <div className='rounded-lg p-4 bg-white flex flex-row justify-between my-4'>
+          <p className='text-lms-success font-bold '>Status :</p>
+          <div className='flex gap-2 text-gray-500 '>
+            <p className='font-semibold text-lms-success'>Active</p>
+            <p className='khmer-font'>សិស្សកំពុងសិក្សា</p>
+          </div>
 
-        <div className="rounded-md border bg-white">
-          {/*<Table>*/}
-          {/*  <TableHeader>*/}
-          {/*    {table.getHeaderGroups().map((headerGroup) => (*/}
-          {/*        <TableRow key={headerGroup.id}>*/}
-          {/*          {headerGroup.headers.map((header) => {*/}
-          {/*            return (*/}
-          {/*                <TableHead key={header.id}>*/}
-          {/*                  {header.isPlaceholder*/}
-          {/*                      ? null*/}
-          {/*                      : flexRender(*/}
-          {/*                          header.column.columnDef.header,*/}
-          {/*                          header.getContext()*/}
-          {/*                      )}*/}
-          {/*                </TableHead>*/}
-          {/*            );*/}
-          {/*          })}*/}
-          {/*        </TableRow>*/}
-          {/*    ))}*/}
-          {/*  </TableHeader>*/}
-          {/*  <TableBody>*/}
-          {/*    {table.getRowModel().rows?.length ? (*/}
-          {/*        table.getRowModel().rows.map((row) => (*/}
-          {/*            <TableRow*/}
-          {/*                key={row.id}*/}
-          {/*                data-state={row.getIsSelected() && 'selected'}*/}
-          {/*            >*/}
-          {/*              {row.getVisibleCells().map((cell) => (*/}
-          {/*                  <TableCell key={cell.id}>*/}
-          {/*                    {flexRender(*/}
-          {/*                        cell.column.columnDef.cell,*/}
-          {/*                        cell.getContext()*/}
-          {/*                    )}*/}
-          {/*                  </TableCell>*/}
-          {/*              ))}*/}
-          {/*            </TableRow>*/}
-          {/*        ))*/}
-          {/*    ) : (*/}
-          {/*        <TableRow>*/}
-          {/*          <TableCell colSpan={columns.length} className="h-24 text-center">*/}
-          {/*            No results.*/}
-          {/*          </TableCell>*/}
-          {/*        </TableRow>*/}
-          {/*    )}*/}
-          {/*  </TableBody>*/}
-          {/*  <TableFooter>*/}
-          {/*    {table.getFooterGroups().map((footerGroup) => (*/}
-          {/*        <TableRow key={footerGroup.id}>*/}
-          {/*          {footerGroup.headers.map((header) => (*/}
-          {/*              <TableHead key={header.id}>*/}
-          {/*                {header.isPlaceholder*/}
-          {/*                    ? null*/}
-          {/*                    : flexRender(*/}
-          {/*                        header.column.columnDef.footer,*/}
-          {/*                        header.getContext()*/}
-          {/*                    )}*/}
-          {/*              </TableHead>*/}
-          {/*          ))}*/}
-          {/*        </TableRow>*/}
-          {/*    ))}*/}
-          {/*  </TableFooter>*/}
-          {/*</Table>*/}
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-accent '>Hiatus</p>
+            <p className='khmer-font'>សិស្សព្យួរការសិក្សា</p>
+          </div>
+
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Drop</p>
+            <p className='khmer-font'>សិស្សបោះបង់ការសិក្សា</p>
+          </div>
+
+          <div className='flex gap-2 text-gray-500'>
+            <p className='font-semibold text-lms-error'>Disable</p>
+            <p className='khmer-font'>សិស្សត្រូវបានបញ្ឈប់ ឬ លុបចេញ</p>
+          </div>
         </div>
+
+
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button
               variant="outline"
